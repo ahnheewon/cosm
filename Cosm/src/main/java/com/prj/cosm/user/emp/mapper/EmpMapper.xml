@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.cosm.emp.mapper.EmpMapper">
+	<!-- 전체 조회 -->
+	<select id="empSelectList" resultType="EmpVO">
+		SELECT * FROM emp ORDER BY
+		emp_no
+	</select>
+
+	<!-- 조회(로그인) -->
+	<select id="empSelect" parameterType="EmpVO" resultType="EmpVO">
+		SELECT * FROM emp
+		<where>
+			<if test="empId!=null||empPassword!=null">
+				emp_id=#{empId}
+				AND emp_password=#{empPassword}
+			</if>
+		</where>
+	</select>
+
+	<!-- 가입 -->
+	<insert id="empInsert" parameterType="EmpVO">
+		<if test="empAuthor==D0102">
+			INSERT INTO customer
+		</if>
+		<if test="empAuthor!=D0102">
+			INSERT INTO emp VALUES()
+		</if>
+	</insert>
+
+	<!-- 정보수정 -->
+	<update id="empUpdate" parameterType="EmpVO">
+
+	</update>
+
+	<!-- 회원탈퇴 -->
+	<delete id="empDelete" parameterType="EmpVO">
+
+	</delete>
+</mapper>
