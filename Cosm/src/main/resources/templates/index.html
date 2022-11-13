@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+
+<html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout.html}">
+	layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,8 +13,11 @@
 
 </head>
 
-<body layout:fragment="content">
-	<div id="app">cosm start!123456</div>
+<body>
+    <div layout:fragment="content" id="app">
+    
+    cosm start!
+    </div>
 </body>
 
 </html>

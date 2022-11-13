@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@MapperScan(basePackages = "com.prj.cosm.mapper")
+@MapperScan(basePackages = "com.prj.cosm.**.mapper")
 @SpringBootApplication
 public class CosmApplication {
 
@@ -14,11 +14,5 @@ public class CosmApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CosmApplication.class, args);
 	}
-	
-	@GetMapping("/")
-	public String home() {
-		return "index";
-	}
-
 
 }
