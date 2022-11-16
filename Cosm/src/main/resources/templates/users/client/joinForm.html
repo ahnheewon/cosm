@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout.html}">
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body layout:fragment="content">
+	<div align="center">
+		<div style="width: 40%; position: relative; top: 50px;">
+			<h2>회원가입</h2>
+			<form action="empInsert" method="post" id="empInsertForm">
+				<!-- <sec:csrfInput/> -->
+				<input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}" />
+				<table>
+					<tbody>
+						<tr>
+							<th>아이디</th>
+							<td><input type="text" id="usersId" name="usersId"></td>
+							<td><button id="checkBtn" type="button" onclick="checkId()"
+									value="no">중복확인</button></td>
+						</tr>
+						<tr>
+							<th>비밀번호</th>
+							<td><input type="password" id="usersPassword"
+								name="usersPassword"></td>
+						</tr>
+						<tr>
+							<th>이름</th>
+							<td><input type="text" id="usersName" name="usersName"></td>
+						</tr>
+
+
+					</tbody>
+				</table>
+				<hr>
+				<button type="button" onclick="checkForm()" class="btn btn-primary">회원추가</button>
+				<button type="button" class="btn btn-secondary"
+					onclick="location.href='/top'">취소</button>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$('#back').click(function() {
+			location.href = "/login"
+			return false;
+		})
+		$('#usersId').on('change', function() {
+			$('#checkBtn').val("no");
+		})
+		function checkForm() {
+			console.log($('#usersId').val())
+			if ($('#usersId').val() == "" || $('#usersId').val() == null) {
+				alert('아이디를 입력하세요!');
+				return false;
+			}
+			if ($('#checkBtn').val() != "Yes") {
+				alert('아이디 중복 확인을 해주십시오');
+				return false;
+			}
+			$('#empInsertForm').submit();
+		}
+
+		function checkId() {
+			var usersId = $('#usersId').val();
+			console.log(usersId);
+			$.ajax({
+				url : "/empCheckId",
+				type : "get",
+				data : {
+					usersId : usersId
+				},
+				async : false,
+				success : function(data) {
+					if (data == 0 && usersId != "") {
+						alert("사용 할 수 있는 아이디 입니다");
+						$('#checkBtn').val("Yes");
+
+					} else {
+						alert("이미 존재하는 아이디 입니다!");
+						$('#usersId').val("");
+						$('#usersId').focus();
+					}
+					console.log(data);
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			})
+		}
+	</script>
+</body>
+</html>
