@@ -1,5 +1,6 @@
 package com.prj.cosm;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,9 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.equipment.equip.service.equipService;
 import com.prj.cosm.equipment.equip.service.equipVO;
-
-
-
+import com.prj.cosm.material.material.service.MaterialService;
+import com.prj.cosm.material.material.service.MaterialVO;
 import com.prj.cosm.sales.orders.service.OrdersService;
 import com.prj.cosm.sales.orders.service.OrdersVO;
 import com.prj.cosm.user.emp.service.EmpService;
@@ -36,6 +37,9 @@ public class MainController {
 
 	@Autowired
 	equipService eService;
+	
+	@Autowired
+	MaterialService mService;
 		
 		// 첫 화면
 		@RequestMapping("/")
@@ -221,4 +225,54 @@ public class MainController {
 	}
 
 	/* main - 주문목록조회 = ajax, get */
+	
+	// 자재팀 영역
+	
+	// 자재 정보 등록폼
+		@GetMapping("minsert")
+		public String mInsertForm(Model model) {
+			model.addAttribute("mno",mService.getMno().getMNo());
+			return "material/mInfoInsert";
+		}	
+
+				
+		// 자재 정보 등록창	
+		@PostMapping("minsert")
+		public String mInsert(MaterialVO mVO, RedirectAttributes ratt) {
+			mService.insertMatarialInfo(mVO);
+			return "redirect:minfo"; // 목록으로 돌아가기
+		}
+		
+		// 거래처 이름 찾기
+		@ResponseBody
+		@GetMapping("/ajax/minsert")
+		public List<MaterialVO> findComNm() {
+		 return mService.findComNm();
+				}
+
+		// 자재 정보 리스트, 재고 변동현황
+		@ResponseBody
+		@GetMapping("/ajax/minfo")
+		public Map mInfoList() {
+			Map<String, Object> map = new HashMap();
+			map.put("list1", mService.mList()); // 자재정보리스트
+			map.put("list2", mService.mioList()); // 재고 변동 현황
+			return map;
+		}
+
+		@GetMapping("minfo")
+		public String mInfoPage() {
+			return "material/material";
+		}
+		
+		// 자재 정보 수정
+		
+
+		// 자재 정보 삭제 => 동시에 삭제됨
+		@ResponseBody
+		@PostMapping("/ajax/mdelinfo") //requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
+		public int mDeleteInfo(@RequestBody MaterialVO vo) {	
+			//System.out.println(vo.getDelmno()+"=================>>>>>>>>>>>>>>");
+			return mService.deleteMatrailInfo(vo.getDelmno());
+		}
 }
