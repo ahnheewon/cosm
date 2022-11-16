@@ -318,6 +318,19 @@ th {
   text-align: -webkit-match-parent;
 }
 
+#empJoinForm > 
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th{
+	border: 1px solid black;
+	text-align: center;
+	
+}
+
+ 
 thead,
 tbody,
 tfoot,

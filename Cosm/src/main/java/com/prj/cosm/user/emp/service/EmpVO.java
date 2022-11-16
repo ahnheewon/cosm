@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class EmpVO {
-	private int empNo;
-	private String empName;
-	private String empId;
-	private String empPassword;
-	private String empSign;
-	private String empPosiotionCode;
-	private String empAuthor;
-	private String jobCode;
+	private String usersNo;
+	private String usersName;
+	private String usersId;
+	private String usersPassword;
+	private String usersSign;
+	private String usersAuthor;
+	private String usersTel;
+	private String usersAddress;
 }

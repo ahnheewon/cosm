@@ -7,15 +7,20 @@ public interface EmpService {
 	public List<EmpVO> empSelectList();
 
 	// 조회(로그인)
-	public EmpVO empSelect(EmpVO vo);
+	public EmpVO empSelect(String usersNo);
 
 	// 가입(직원)
-	public EmpVO empInsert(EmpVO vo);
+	public int empInsert(EmpVO vo);
 
 	// 수정
-	public EmpVO empUpdate(EmpVO vo);
+	public int empUpdate(EmpVO vo);
 
 	// 탈퇴
-	public EmpVO empDelete(EmpVO vo);
+	public int empDelete(EmpVO vo);
 
+	// 사원 권한 리스트
+	public List<String> getAuthorList();
+
+	// 아이디 중복 조회
+	public int checkId(String id);
 }
