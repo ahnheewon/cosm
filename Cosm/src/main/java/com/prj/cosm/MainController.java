@@ -20,6 +20,10 @@ import com.prj.cosm.equipment.equip.service.equipService;
 import com.prj.cosm.equipment.equip.service.equipVO;
 import com.prj.cosm.material.material.service.MaterialService;
 import com.prj.cosm.material.material.service.MaterialVO;
+import com.prj.cosm.produce.instruct.service.InsService;
+import com.prj.cosm.produce.instruct.service.InsVO;
+import com.prj.cosm.produce.plan.service.PlanService;
+import com.prj.cosm.produce.plan.service.PlanVO;
 import com.prj.cosm.sales.orders.service.OrdersService;
 import com.prj.cosm.sales.orders.service.OrdersVO;
 import com.prj.cosm.user.emp.service.EmpService;
@@ -40,6 +44,12 @@ public class MainController {
 	
 	@Autowired
 	MaterialService mService;
+	
+	@Autowired
+	PlanService planService;
+	
+	@Autowired
+	InsService insService;
 		
 		// 첫 화면
 		@RequestMapping("/")
@@ -275,4 +285,129 @@ public class MainController {
 			//System.out.println(vo.getDelmno()+"=================>>>>>>>>>>>>>>");
 			return mService.deleteMatrailInfo(vo.getDelmno());
 		}
+		
+		//=============================생산관리=======================
+		// 생산계획 list에 ajax주는 것
+		@GetMapping("/plan")
+		@ResponseBody
+		public List<PlanVO> plan() {
+			return planService.selectPlanList();
+		}
+
+		// 생산계획 list 화면페이지 plan_no값 넘겨줌
+		@GetMapping("/planList")
+		public String planList(Model model) {
+			model.addAttribute("info", planService.selectPlanNo());
+			return "produce/planList";
+		}
+
+		// 생산계획 등록
+		@PostMapping("planInsert")
+		public String insertPlanInfo(PlanVO planVO) {
+			planService.insertPlanInfo(planVO);
+			return "redirect:planList";
+		}
+
+		// 생산계획 수정
+		@PostMapping("planUpdate")
+		public String updatePlanInfo(PlanVO planVO, RedirectAttributes ratt) {
+			int result = planService.updatePlanInfo(planVO);
+			if (result == 1) {
+				ratt.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+			} else {
+				ratt.addAttribute("msg", "정상적으로 수정되지 않았습니다.");
+			}
+			return "redirect:planList";
+		}
+
+		// 생산계획 삭제
+		@GetMapping("planDelete")
+		public String deletePlanInfo(int planNo, RedirectAttributes ratt) {
+			int result = planService.deletePlanInfo(planNo);
+			if (result == 1) {
+				ratt.addFlashAttribute("msg", "정상적으로 삭제되었습니다.");
+			} else {
+				ratt.addAttribute("msg", "정상적으로 삭제되지 않았습니다.");
+			}
+			return "redirect:planList";
+		}
+
+		// 생산지시 list에 ajax주는 것
+		@GetMapping("/instruct")
+		@ResponseBody
+		public List<Map<String, Object>> instruct() {
+			return insService.selectInsList();
+		}
+
+		// 생산지시 페이지이동
+		@GetMapping("/instructList")
+		public String instructList(Model model) {
+			model.addAttribute("info", insService.selectInsNo());
+			return "produce/instructList";
+		}
+
+		// 생산지시 등록
+		@PostMapping("insInsert")
+		public String insertInsInfo(InsVO insVO) {
+			insService.insertInsInfo(insVO);
+			return "redirect:instructList";
+		}
+
+		// 생산지시 수정
+		@PostMapping("insUpdate")
+		public String updateInsInfo(InsVO insVO, RedirectAttributes ratt) {
+			int result = insService.updateInsInfo(insVO);
+			if (result == 1) {
+				ratt.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+			} else {
+				ratt.addAttribute("msg", "정상적으로 수정되지 않았습니다.");
+			}
+			return "redirect:instructList";
+		}
+
+		// 생산지시 삭제
+		@GetMapping("insDelete")
+		public String deleteInsInfo(int instructNo, RedirectAttributes ratt) {
+			int result = insService.deleteInsInfo(instructNo);
+			if (result == 1) {
+				ratt.addFlashAttribute("msg", "정상적으로 삭제되었습니다.");
+			} else {
+				ratt.addAttribute("msg", "정상적으로 삭제되지 않았습니다.");
+			}
+			return "redirect:instructList";
+		}
+
+		// 완제품 페이지 이동
+		@GetMapping("/regist")
+		public String regist(Model model) {
+
+			return "produce/regist";
+		}
+
+		// BOM 페이지 이동
+		@GetMapping("/bom")
+		public String bom(Model model) {
+
+			return "produce/bom";
+		}
+
+		// 제품 페이지 이동
+		@GetMapping("/product")
+		public String product(Model model) {
+
+			return "produce/product";
+		}
+
+		// 불량관리 페이지 이동
+		@GetMapping("/proError")
+		public String proError(Model model) {
+
+			return "produce/proError";
+		}
+
+		//===========================================================
+		
+		
+		
+		
 }

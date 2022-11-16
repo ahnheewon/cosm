@@ -39,8 +39,8 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> requests
-				.antMatchers("/top", "/login", "/joinForm", "/empCheckId", "/empInsert", "/userSelect").permitAll()
-				.antMatchers("/admin/**").hasAuthority("ROLE_D0101").anyRequest().authenticated()).formLogin()
+				.antMatchers("/top", "/login", "/joinForm", "/empCheckId", "/empInsert", "/userSelect","/planUpdate").permitAll()
+				.antMatchers("/*").hasAuthority("ROLE_D0101").anyRequest().authenticated()).formLogin()
 				.loginPage("/login").usernameParameter("userId").loginProcessingUrl("/login")
 				.successHandler(successHandler()).and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
 				.invalidateHttpSession(true).deleteCookies("JSESSIONID").and().exceptionHandling()
