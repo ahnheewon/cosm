@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class equipVO { 
+public class EquipVO { 
 	// 설비+설비점검+가동시간+실시간측정+공정+(고장)
 	// 부품, 공사내역은 따로해요
 	

@@ -5,47 +5,47 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-public interface equipService {
+public interface EquipService {
 
 	//설비 
 	
 	// 전체조회
-	public List<equipVO> getEquipList();
+	public List<EquipVO> getEquipList();
 	
 	// 단건조회
-	public equipVO getEquipInfo(equipVO vo);
+	public EquipVO getEquipInfo(@Param("equipNo")int equipNo);
 
 	// 등록
-	public Map insertEquip(equipVO vo);
+	public void insertEquip(EquipVO vo);
 	
 	// 수정
-	public int updateEquip(equipVO vo);
+	public int updateEquip(EquipVO vo);
 	
 	// 삭제
 	public int deleteEquip(@Param("equipNo")int equipNo); // 컬럼을 넘길 때는 bno
 	
 	// 입력될 번호를 조회
-	public equipVO getProcessNo();
+	public EquipVO getProcessNo();
 	
 //===================================================================================================
 	//공정 
 	
 	// 전체조회
-	public List<equipVO> getProcessList();
+	public List<EquipVO> getProcessList();
 	
 	// 단건조회
-	public equipVO getProcessInfo(equipVO vo);
+	public EquipVO getProcessInfo(@Param("processNo")int processNo);
 
 	// 등록
-	public Map insertProcess(equipVO vo);
+	public Map insertProcess(EquipVO vo);
 	
 	// 수정
-	public int updateProcess(equipVO vo);
+	public int updateProcess(EquipVO vo);
 	
 	// 삭제
 	public int deleteProcess(@Param("processNo")int processNo); 
 
 	// 입력될 번호를 조회
-	public equipVO getEquipNo();
+	public EquipVO getEquipNo();
 	
 }
