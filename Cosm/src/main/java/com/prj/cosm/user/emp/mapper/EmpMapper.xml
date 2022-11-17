@@ -12,17 +12,25 @@
 		users_no
 	</select>
 
-	<!-- 조회 -->
-	<select id="empSelect" parameterType="EmpVO" resultType="EmpVO">
+	<!-- 조회(로그인) -->
+	<select id="empSelect" resultType="EmpVO">
+		SELECT
+		*
+		FROM users
+		WHERE users_id=#{usersId}
+	</select>
+
+
+	<!-- 상세조회 -->
+	<select id="userInfoSelect" resultType="EmpVO">
 		SELECT
 		users_no,users_name,users_id, code_name as
 		users_author,users_tel,users_address
-		FROM users JOIN
-		code
-		ON users.users_author = code.code_no
+		FROM users JOIN code
+		ON
+		users.users_author = code.code_no
 		WHERE users_no=#{usersNo}
 	</select>
-
 	<!-- 가입 -->
 	<insert id="empInsert" parameterType="EmpVO">
 		<selectKey keyProperty="usersNo" resultType="String"
@@ -50,12 +58,23 @@
 
 	<!-- 정보수정 -->
 	<update id="empUpdate" parameterType="EmpVO">
-		<set></set>
+		UPDATE users
+		<set>
+			<if test="usersPassword!=null and !usersPassword.equals('')">users_password=#{usersPassword}</if>
+			<if test="usersName!=null and !usersName.equals('')">,users_name = #{usersName}</if>
+			<if test="usersAuthor!=null and !usersAuthor.equals('')">,users_author = (SELECT code_no FROM code WHERE code_name
+				= #{usersAuthor})
+			</if>
+			<if test="usersTel!=null and !usersTel.equals('')">,users_tel = #{usersTel}</if>
+			<if test="usersAddress!=null and !usersAddress.equals('')">,users_address=#{usersAddress}</if>
+		</set>
+		WHERE users_no = #{usersNo}
 	</update>
 
 	<!-- 회원탈퇴 -->
 	<delete id="empDelete" parameterType="EmpVO">
-
+		DELETE FROM users WHERE
+		users_no = #{usersNo}
 	</delete>
 
 	<!-- 담당 리스트 조회 -->
