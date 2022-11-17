@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.equipment.equip.service.equipService;
@@ -25,6 +24,8 @@ import com.prj.cosm.produce.instruct.service.InsService;
 import com.prj.cosm.produce.instruct.service.InsVO;
 import com.prj.cosm.produce.plan.service.PlanService;
 import com.prj.cosm.produce.plan.service.PlanVO;
+import com.prj.cosm.produce.regist.service.RegistService;
+import com.prj.cosm.produce.regist.service.RegistVO;
 import com.prj.cosm.sales.orders.service.OrdersService;
 import com.prj.cosm.sales.orders.service.OrdersVO;
 import com.prj.cosm.user.emp.service.EmpService;
@@ -51,6 +52,11 @@ public class MainController {
 
 	@Autowired
 	InsService insService;
+
+
+	@Autowired
+	RegistService registService;
+
 
 	// 첫 화면
 	@RequestMapping("/")
@@ -273,7 +279,9 @@ public class MainController {
 	}
 
 	/* main - 주문목록조회 = ajax, get */
+
 	//영업 end =======================================================
+
 
 	// 자재팀 영역
 
@@ -349,6 +357,7 @@ public class MainController {
 	@PostMapping("planUpdate")
 	public String updatePlanInfo(PlanVO planVO, RedirectAttributes ratt) {
 		int result = planService.updatePlanInfo(planVO);
+
 		if (result == 1) {
 			ratt.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
 		} else {
@@ -361,6 +370,7 @@ public class MainController {
 	@GetMapping("planDelete")
 	public String deletePlanInfo(int planNo, RedirectAttributes ratt) {
 		int result = planService.deletePlanInfo(planNo);
+
 		if (result == 1) {
 			ratt.addFlashAttribute("msg", "정상적으로 삭제되었습니다.");
 		} else {
@@ -404,21 +414,38 @@ public class MainController {
 
 	// 생산지시 삭제
 	@GetMapping("insDelete")
-	public String deleteInsInfo(int instructNo, RedirectAttributes ratt) {
-		int result = insService.deleteInsInfo(instructNo);
-		if (result == 1) {
-			ratt.addFlashAttribute("msg", "정상적으로 삭제되었습니다.");
-		} else {
-			ratt.addAttribute("msg", "정상적으로 삭제되지 않았습니다.");
-		}
-		return "redirect:instructList";
+	@ResponseBody
+	public int deleteInsInfo(int instructNo, RedirectAttributes ratt) {
+		return insService.deleteInsInfo(instructNo);
 	}
 
 	// 완제품 페이지 이동
 	@GetMapping("/regist")
 	public String regist(Model model) {
+		model.addAttribute("info", registService.selectRegistLOT());
+		model.addAttribute("label", registService.selectRegistLabel());
+		return "/produce/regist";
+	}
 
-		return "produce/regist";
+	// 완제품 list에 ajax주는 것
+	@GetMapping("/registList")
+	@ResponseBody
+	public List<Map<String, Object>> regist() {
+		return registService.selectRegistList();
+	}
+
+	// 완제품 등록
+	@PostMapping("registInsert")
+	public String insertRegistInfo(RegistVO registVO) {
+		registService.insertRegistInfo(registVO);
+		return "redirect:regist";
+	}
+
+	// 완제품 삭제
+	@GetMapping("produce/registDelete")
+	@ResponseBody
+	public int deleteRegistInfo(String registLOT, RedirectAttributes ratt) {
+		return registService.deleteRegistInfo(registLOT);
 	}
 
 	// BOM 페이지 이동

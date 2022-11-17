@@ -19,7 +19,6 @@
 	FROM produce_instruct 
 </select>
 
-
 <!-- 지시 등록 -->
 <insert id="insertIns" parameterType="InsVO">
 	INSERT INTO
