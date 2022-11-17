@@ -7,16 +7,19 @@ public interface EmpService {
 	public List<EmpVO> empSelectList();
 
 	// 조회(로그인)
-	public EmpVO empSelect(String usersNo);
+	public EmpVO empSelect(String usersId);
+
+	// 상세조회
+	public EmpVO userInfoSelect(String usersNo);
 
 	// 가입(직원)
-	public int empInsert(EmpVO vo);
+	public int userInsert(EmpVO vo);
 
 	// 수정
-	public int empUpdate(EmpVO vo);
+	public int userUpdate(EmpVO vo);
 
 	// 탈퇴
-	public int empDelete(EmpVO vo);
+	public int userDelete(EmpVO vo);
 
 	// 사원 권한 리스트
 	public List<String> getAuthorList();

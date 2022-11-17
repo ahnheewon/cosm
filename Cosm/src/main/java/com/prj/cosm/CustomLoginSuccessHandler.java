@@ -25,12 +25,11 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			Authentication authentication) throws IOException, ServletException {
 		EmpVO vo = new EmpVO();
 		vo = service.empSelect(authentication.getName());
-
 		request.getSession().setAttribute("usersId", vo.getUsersId());
 		request.getSession().setAttribute("usersNo", vo.getUsersNo());
 		request.getSession().setAttribute("usersAuthor", vo.getUsersAuthor());
 		// 사용자
-		response.sendRedirect(request.getContextPath() + "/top");
+		response.sendRedirect(request.getContextPath() + "/");
 
 	}
 }

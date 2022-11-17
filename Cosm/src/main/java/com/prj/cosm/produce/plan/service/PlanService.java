@@ -1,7 +1,6 @@
 package com.prj.cosm.produce.plan.service;
 
 import java.util.List;
-import java.util.Map;
 
 public interface PlanService {
 	//생산계획 전체조회 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -136,7 +137,7 @@ public class MainController {
 		return "/top";
 	}
 
-	@GetMapping("/empList")
+	@GetMapping("/userList")
 	public String empList(Model model) {
 		model.addAttribute("authorList", service.getAuthorList());
 		return "/users/emp/empList";
@@ -148,28 +149,45 @@ public class MainController {
 		return "/users/emp/empList";
 	}
 
-	@GetMapping("/getEmpList")
+	@GetMapping("/getUserList")
 	@ResponseBody
-	public List<EmpVO> getEmpList() {
+	public List<EmpVO> getUserList() {
 		return service.empSelectList();
 	}
 
-	@GetMapping("/userSelect")
+	@PostMapping("/userSelect")
 	@ResponseBody
 	public EmpVO userSelect(String usersNo) {
-		return service.empSelect(usersNo);
+		return service.userInfoSelect(usersNo);
 	}
 
-	@PostMapping("empInsert")
+	@PostMapping("userInsert")
 	public String empInsert(EmpVO empVO) {
-		service.empInsert(empVO);
-		return "redirect:empList";
+		service.userInsert(empVO);
+		return "redirect:userList";
+	}
+
+	@PostMapping("userUpdate")
+	public String empUpdate(EmpVO empVO) {
+		service.userUpdate(empVO);
+		return "redirect:userList";
+	}
+
+	@PostMapping("userDelete")
+	@ResponseBody
+	public int userDelete(EmpVO empVO) {
+		return service.userDelete(empVO);
+	}
+	
+	@GetMapping("/userInfo")
+	public String userInfo() {
+		return "/users/userInfo";
 	}
 
 //	@RequestMapping(value = "/checkId", method = RequestMethod.POST)
-	@GetMapping("/empCheckId")
+	@GetMapping("/userCheckId")
 	@ResponseBody
-	public int empCheckId(String usersId) {
+	public int userCheckId(String usersId) {
 		return service.checkId(usersId);
 	}
 
@@ -256,8 +274,9 @@ public class MainController {
 
 	/* main - 주문목록조회 = ajax, get */
 	//영업 end =======================================================
+
 	// 자재팀 영역
-	
+
 	// 자재 정보 등록폼
 	@GetMapping("minsert")
 	public String mInsertForm(Model model) {
