@@ -4,40 +4,42 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.prj.cosm.equipment.equip.mapper.equipMapper;
-import com.prj.cosm.equipment.equip.service.equipService;
-import com.prj.cosm.equipment.equip.service.equipVO;
+import com.prj.cosm.equipment.equip.mapper.EquipMapper;
+import com.prj.cosm.equipment.equip.service.EquipService;
+import com.prj.cosm.equipment.equip.service.EquipVO;
 
 @Service
-public class equipServiceImpl implements equipService {
+public class equipServiceImpl implements EquipService {
 
 	@Autowired
-	equipMapper mapper;
+	EquipMapper mapper;
 	
 	
 	
 	@Override
-	public List<equipVO> getEquipList() {
+	public List<EquipVO> getEquipList() {
 		
 		return mapper.getEquipList();
 	}
 
 	@Override
-	public equipVO getEquipInfo(equipVO vo) {
-		return mapper.getEquipInfo(vo);
+	public EquipVO getEquipInfo(int equipNo) {
+		return mapper.getEquipInfo(equipNo);
 	}
 
 	@Override
-	public Map insertEquip(equipVO vo) {
-		int count = mapper.insertEquip(vo);
-		return getResult(count,vo);
+	public void insertEquip(EquipVO vo) {
+		mapper.insertEquip(vo); // 설비등록
+		mapper.insertEquipTime(vo); // 설비시간등록
+		
 	}
 
 	@Override
-	public int updateEquip(equipVO vo) {
+	public int updateEquip(EquipVO vo) {
 		return mapper.updateEquip(vo);
 	}
 
@@ -47,35 +49,35 @@ public class equipServiceImpl implements equipService {
 	}
 
 	@Override
-	public equipVO getEquipNo() {
+	public EquipVO getEquipNo() {
 		return mapper.getEquipNo();
 	}
 
 	@Override
-	public equipVO getProcessNo() {
+	public EquipVO getProcessNo() {
 	
 	return mapper.getProcessNo(); 
 	}
 	
 
 	@Override
-	public List<equipVO> getProcessList() {
+	public List<EquipVO> getProcessList() {
 		return mapper.getProcessList();
 	}
 
 	@Override
-	public equipVO getProcessInfo(equipVO vo) {
-		return mapper.getProcessInfo(vo);
+	public EquipVO getProcessInfo(int processNo) {
+		return mapper.getProcessInfo(processNo);
 	}
 
 	@Override
-	public Map insertProcess(equipVO vo) {
+	public Map insertProcess(EquipVO vo) {
 		int count = mapper.insertProcess(vo);
 		return getResult(count,vo);
 	}
 
 	@Override
-	public int updateProcess(equipVO vo) {
+	public int updateProcess(EquipVO vo) {
 		return mapper.updateProcess(vo);
 	}
 
@@ -84,12 +86,14 @@ public class equipServiceImpl implements equipService {
 		return mapper.deleteProcess(processNo);
 	}
 	
-	public Map getResult(int count,equipVO vo) {
+	public Map getResult(int count,EquipVO vo) {
 		Map<String, Object> result = new HashMap<String,Object>();
 		result.put("result", count);
 		result.put("data", vo);
 		return result;
 
 	}
+
+
 	
 }
