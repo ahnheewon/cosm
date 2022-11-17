@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.prj.cosm.material.material.mapper.MaterialMapper">
+  <!-- 자재번호 -->
+  <select id="getMno" resultType="MaterialVO">
+ 		SELECT NVL(MAX(m_no),0)+1 as m_no
+  		FROM Material
+ 	</select>
+  
+  <!-- 자재정보 전체조회  -->
+ 	<select id="mList" resultType="MaterialVO" >
+ 	SELECT m_no, 
+       	   m_company_id, 
+       	   find_company_name(m_company_id)As m_company_nm, 
+       	   m_name m_name, 
+           m_price, 
+           m_unit_code,
+           find_code_name (m_unit_code) As m_unit_nm,
+           m_category       
+	FROM Material
+ 	</select>
+  
+ 
+  <!-- 자재정보 단건조회 (상세조회)  -->
+ 
+  
+  
+  <!-- 신규 자재 정보 등록  -->
+  <insert id="insertMatarialInfo" parameterType="MaterialVO">  	
+  	INSERT INTO MATERIAL (m_no, 
+  						  m_name, 
+  						  m_category, 
+  						  m_price, 
+  						  m_company_id, 
+  						  m_unit_code,
+  						  m_info )
+  				VALUES (#{mNo},
+  						#{mName},
+  						#{mCategory},
+  						#{mPrice},
+  						#{mCompanyId},
+  						#{mUnitCode},  						
+  						#{mInfo}
+  						) 
+  </insert>
+  
+  
+  
+  <!-- 자재 정보 수정  -->
+  
+  <!-- 자재 정보 삭제 - 재고 수량도 삭제됨 -->
+  <delete id="deleteMatrailInfo" parameterType="MaterialVO">
+  	DELETE 
+  	FROM material 
+	WHERE m_no = #{mNo}
+  </delete>
+  
+  <!-- 자재 변동 내역 리스트  -->
+  <select id="mioList" resultType="MaterialVO">
+  	SELECT m_no, 
+      	   m_company_id, 
+           m_category,      
+           m_name, 
+           m_stock,       
+      	  (select (mio_input_quantity - mio_output_quantity)
+       		from material_io)AS increase,
+      	  TO_DATE(m_date, 'yyyy-MM-dd')AS m_date,  
+      	 (select TO_DATE(mio_input_date, 'yyyy-MM-dd')
+       	  	from material_io)AS mio_input_date,
+      	(select TO_DATE(mio_output_date, 'yyyy-MM-dd') 
+      		from material_io)AS mio_output_date           
+	FROM Material
+	</select> 
+	
+	<!-- 거래처 명 찾기 -->
+	<select id="findComNm" resultType="MaterialVO">
+	SELECT m_company_id,
+    	(select mc_company_name 
+	        from material_company) as m_company_nm,
+		m_no, m_name  
+	FROM material
+	</select>  
+
+  
+  </mapper>

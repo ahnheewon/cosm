@@ -17,7 +17,7 @@ public class WebAccessDenyHandler implements AccessDeniedHandler {
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			org.springframework.security.access.AccessDeniedException accessDeniedException)
 			throws IOException, ServletException {
-//		request.getRequestDispatcher("/error403").forward(request, response);
+		request.getRequestDispatcher("/error403").forward(request, response);
 	}
 
 }
