@@ -10,15 +10,15 @@ import com.prj.cosm.sales.orders.service.OrdersService;
 import com.prj.cosm.sales.orders.service.OrdersVO;
 
 @Service
-public class OrdersServiceImpl implements OrdersService{
+public class OrdersServiceImpl implements OrdersService {
 
 	@Autowired
 	OrdersMapper mapper;
-	
+
 	@Override
 	public int getOrderNo() {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.getOrderNo();
 	}
 
 	@Override
@@ -39,7 +39,6 @@ public class OrdersServiceImpl implements OrdersService{
 		return mapper.insertOrder(vo);
 	}
 
-
 	@Override
 	public int deleteOrder(OrdersVO vo) {
 		// TODO Auto-generated method stub
@@ -49,7 +48,31 @@ public class OrdersServiceImpl implements OrdersService{
 	@Override
 	public int deleteOrderInfo(OrdersVO vo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.deleteOrder(vo);
 	}
 
+	@Override
+	public int deleteCheck(List<String> noList) {
+		// 체크박스 주문정보 단건삭제
+		int result = 0;
+		System.out.println(noList);
+		// 여러개 지우기
+		for (String no : noList) {
+			result += mapper.deleteCheck(no);
+		}
+		// int a = result > 0 ? 1 : 0;
+		return result;
+	}
+
+	// orderProgressCode
+	@Override
+	public int updatePro(List<String> noList) {
+		// 생산지시 업데이트
+		int result = 0;
+		System.out.println("생상지시 상황 : " + noList);
+		for (String no : noList) {
+			result += mapper.updatePro(no);
+		}
+		return result;
+	}
 }

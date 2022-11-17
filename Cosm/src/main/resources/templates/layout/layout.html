@@ -65,7 +65,7 @@
 				<ul class="dropdown-menu dropdown-menu-end"
 					aria-labelledby="navbarDropdown">
 
-					<li><a class="dropdown-item" href="#!">개인정보</a></li>
+					<li><a class="dropdown-item" href="/userInfo">개인정보</a></li>
 					<li><a class="dropdown-item" href="#!">Activity Log</a></li>
 					<li><hr class="dropdown-divider" /></li>
 					<li><div sec:authorize="isAnonymous()">
@@ -106,7 +106,7 @@
 							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
 
-								<a class="nav-link" href="/empList">사원조회</a>
+								<a class="nav-link" href="/userList">사원조회</a>
 							</nav>
 						</div>
 						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -143,7 +143,8 @@
 							</div> Tables
 						</a>
 					</div>
-				</div><<<<<<< ahw1116
+				</div>
+
 				<div class="sb-sidenav-menu">
 					<div class="nav">
 						<div class="sb-sidenav-menu-heading">Core</div>
@@ -153,175 +154,422 @@
 							</div> 설비관리메인
 						</a>
 						<div class="sb-sidenav-menu-heading">Interface</div>
-				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0101')">
-					&nbsp; &nbsp; [[${session.usersId}]]님
-					<div class="nav">
-						<div class="sb-sidenav-menu-heading">회원관리</div>
-						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-							data-bs-target="#collapseLayouts" aria-expanded="false"
-							aria-controls="collapseLayouts">
-							<div class="sb-nav-link-icon">
-								<i class="fas fa-columns"></i>
-							</div> 설비 관리
-							<div class="sb-sidenav-collapse-arrow">
-								<i class="fas fa-angle-down"></i>
-							</div>
-						</a>
-						<div class="collapse" id="collapseLayouts"
-							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-							<nav class="sb-sidenav-menu-nested nav">
-									<a class="nav-link" href="/equipment/process">공정관리</a>
-									<a class="nav-link" href="/equipment/main">점검관리</a>
-									<a class="nav-link" href="/equipment/main">고장관리</a>
-									<a class="nav-link" href="/equipment/main">부품관리</a>
-									<a class="nav-link" href="/equipment/main">공사관리</a>
-							</nav>
-						</div>
-						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-							data-bs-target="#collapsePages" aria-expanded="false"
-							aria-controls="collapsePages">
-							<div class="sb-nav-link-icon">
-								<i class="fas fa-book-open"></i>
-							</div> Pages
-							<div class="sb-sidenav-collapse-arrow">
-								<i class="fas fa-angle-down"></i>
-							</div>
-						</a>
-						<div class="collapse" id="collapsePages"
-							aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-							<nav class="sb-sidenav-menu-nested nav accordion"
-								id="sidenavAccordionPages">
+						<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0101')">
+							&nbsp; &nbsp; [[${session.usersId}]]님
+							<div class="nav">
+								<div class="sb-sidenav-menu-heading">회원관리</div>
 								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-									data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-									aria-controls="pagesCollapseAuth"> Authentication
+									data-bs-target="#collapseLayouts" aria-expanded="false"
+									aria-controls="collapseLayouts">
+									<div class="sb-nav-link-icon">
+										<i class="fas fa-columns"></i>
+									</div> 설비 관리
 									<div class="sb-sidenav-collapse-arrow">
 										<i class="fas fa-angle-down"></i>
 									</div>
 								</a>
-								<div class="collapse" id="pagesCollapseAuth"
-									aria-labelledby="headingOne"
-									data-bs-parent="#sidenavAccordionPages">
+								<div class="collapse" id="collapseLayouts"
+									aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 									<nav class="sb-sidenav-menu-nested nav">
-										<a class="nav-link" href="login.html">Login</a> <a
-											class="nav-link" href="register.html">Register</a> <a
-											class="nav-link" href="password.html">Forgot Password</a>
+										<a class="nav-link" href="/equipment/process">공정관리</a> <a
+											class="nav-link" href="/equipment/main">점검관리</a> <a
+											class="nav-link" href="/equipment/main">고장관리</a> <a
+											class="nav-link" href="/equipment/main">부품관리</a> <a
+											class="nav-link" href="/equipment/main">공사관리</a>
 									</nav>
 								</div>
 								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-									data-bs-target="#pagesCollapseError" aria-expanded="false"
-									aria-controls="pagesCollapseError"> Error
+									data-bs-target="#collapsePages" aria-expanded="false"
+									aria-controls="collapsePages">
+									<div class="sb-nav-link-icon">
+										<i class="fas fa-book-open"></i>
+									</div> Pages
 									<div class="sb-sidenav-collapse-arrow">
 										<i class="fas fa-angle-down"></i>
 									</div>
 								</a>
-								<div class="collapse" id="pagesCollapseError"
-									aria-labelledby="headingOne"
-									data-bs-parent="#sidenavAccordionPages">
-									<nav class="sb-sidenav-menu-nested nav">
-										<a class="nav-link" href="401.html">401 Page</a> <a
-											class="nav-link" href="404.html">404 Page</a> <a
-											class="nav-link" href="500.html">500 Page</a>
-									</nav>
-								</div>
-							</nav>
-						</div>
-						
+								<div class="collapse" id="collapsePages"
+									aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+									<nav class="sb-sidenav-menu-nested nav accordion"
+										id="sidenavAccordionPages">
+										<a class="nav-link collapsed" href="#"
+											data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth"
+											aria-expanded="false" aria-controls="pagesCollapseAuth">
+											Authentication
+											<div class="sb-sidenav-collapse-arrow">
+												<i class="fas fa-angle-down"></i>
+											</div>
+										</a>
+										<div class="collapse" id="pagesCollapseAuth"
+											aria-labelledby="headingOne"
+											data-bs-parent="#sidenavAccordionPages">
+											<nav class="sb-sidenav-menu-nested nav">
+												<a class="nav-link" href="login.html">Login</a> <a
+													class="nav-link" href="register.html">Register</a> <a
+													class="nav-link" href="password.html">Forgot Password</a>
+											</nav>
+										</div>
+										<a class="nav-link collapsed" href="#"
+											data-bs-toggle="collapse"
+											data-bs-target="#pagesCollapseError" aria-expanded="false"
+											aria-controls="pagesCollapseError"> Error
+											<div class="sb-sidenav-collapse-arrow">
+												<i class="fas fa-angle-down"></i>
+											</div>
+										</a>
+										<div class="collapse" id="pagesCollapseError"
+											aria-labelledby="headingOne"
+											data-bs-parent="#sidenavAccordionPages">
+											<nav class="sb-sidenav-menu-nested nav">
+												<a class="nav-link" href="401.html">401 Page</a> <a
+													class="nav-link" href="404.html">404 Page</a> <a
+													class="nav-link" href="500.html">500 Page</a>
+											</nav>
+										</div>
 
-				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0102')">
-					<div class="sb-sidenav-menu">
-						<div class="nav">
-							<div class="sb-sidenav-menu-heading">Core</div>
-							<a class="nav-link" href="index.html">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-tachometer-alt"></i>
-								</div> Dashboard
-							</a>
-							<div class="sb-sidenav-menu-heading">Interface</div>
-							<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-								data-bs-target="#collapseLayouts" aria-expanded="false"
-								aria-controls="collapseLayouts">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-columns"></i>
-								</div> Layouts
-								<div class="sb-sidenav-collapse-arrow">
-									<i class="fas fa-angle-down"></i>
+									</nav>
 								</div>
-							</a>
-							<div class="collapse" id="collapseLayouts"
-								aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-								<nav class="sb-sidenav-menu-nested nav">
-									<a class="nav-link" href="layout-static.html">Static
-										Navigation</a> <a class="nav-link"
-										href="layout-sidenav-light.html">Light Sidenav</a>
-								</nav>
 							</div>
-							<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-								data-bs-target="#collapsePages" aria-expanded="false"
-								aria-controls="collapsePages">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-book-open"></i>
-								</div> Pages
-								<div class="sb-sidenav-collapse-arrow">
-									<i class="fas fa-angle-down"></i>
-								</div>
-							</a>
-							<div class="collapse" id="collapsePages"
-								aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-								<nav class="sb-sidenav-menu-nested nav accordion"
-									id="sidenavAccordionPages">
-									<a class="nav-link collapsed" href="#"
-										data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth"
-										aria-expanded="false" aria-controls="pagesCollapseAuth">
-										Authentication
-										<div class="sb-sidenav-collapse-arrow">
-											<i class="fas fa-angle-down"></i>
-										</div>
-									</a>
-									<div class="collapse" id="pagesCollapseAuth"
-										aria-labelledby="headingOne"
-										data-bs-parent="#sidenavAccordionPages">
-										<nav class="sb-sidenav-menu-nested nav">
-											<a class="nav-link" href="login.html">Login</a> <a
-												class="nav-link" href="register.html">Register</a> <a
-												class="nav-link" href="password.html">Forgot Password</a>
-										</nav>
-									</div>
-									<a class="nav-link collapsed" href="#"
-										data-bs-toggle="collapse" data-bs-target="#pagesCollapseError"
-										aria-expanded="false" aria-controls="pagesCollapseError">
-										Error
-										<div class="sb-sidenav-collapse-arrow">
-											<i class="fas fa-angle-down"></i>
-										</div>
-									</a>
-									<div class="collapse" id="pagesCollapseError"
-										aria-labelledby="headingOne"
-										data-bs-parent="#sidenavAccordionPages">
-										<nav class="sb-sidenav-menu-nested nav">
-											<a class="nav-link" href="401.html">401 Page</a> <a
-												class="nav-link" href="404.html">404 Page</a> <a
-												class="nav-link" href="500.html">500 Page</a>
-										</nav>
-									</div>
-								</nav>
-							</div>
-							<div class="sb-sidenav-menu-heading">Addons</div>
-							<a class="nav-link" href="charts.html">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-chart-area"></i>
-								</div> Charts
-							</a> <a class="nav-link" href="tables.html">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-table"></i>
-								</div> Tables
-							</a>
 						</div>
 					</div>
 				</div>
-				<div class="sb-sidenav-footer">
-					<div class="small">Logged in as:</div>
-					Start Bootstrap
+				<div class="sb-sidenav-menu">
+					<div class="nav">
+						<div class="sb-sidenav-menu-heading">Core</div>
+						<a class="nav-link" href="/planList">
+							<div class="sb-nav-link-icon">
+								<i class="fas fa-tachometer-alt"></i>
+							</div> 생산관리메인
+						</a>
+						<div class="sb-sidenav-menu-heading">Interface</div>
+						<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0101')">
+							&nbsp; &nbsp; [[${session.usersId}]]님
+							<div class="nav">
+								<div class="sb-sidenav-menu-heading">회원관리</div>
+								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+									data-bs-target="#collapseLayouts" aria-expanded="false"
+									aria-controls="collapseLayouts">
+									<div class="sb-nav-link-icon">
+										<i class="fas fa-columns"></i>
+									</div> 생산 관리
+									<div class="sb-sidenav-collapse-arrow">
+										<i class="fas fa-angle-down"></i>
+									</div>
+								</a>
+								<div class="collapse" id="collapseLayouts"
+									aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+									<nav class="sb-sidenav-menu-nested nav">
+										<a class="nav-link" href="/planList">생산계획 관리</a> <a
+											class="nav-link" href="/instructList">생산지시 관리</a> <a
+											class="nav-link" href="/regist">완제품 등록</a> <a
+											class="nav-link" href="/bom">BOM 관리</a> <a class="nav-link"
+											href="/product">제품 관리</a> <a class="nav-link"
+											href="/proError">불량정보 관리</a>
+									</nav>
+								</div>
+								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+									data-bs-target="#collapsePages" aria-expanded="false"
+									aria-controls="collapsePages">
+									<div class="sb-nav-link-icon">
+										<i class="fas fa-book-open"></i>
+									</div> Pages
+									<div class="sb-sidenav-collapse-arrow">
+										<i class="fas fa-angle-down"></i>
+									</div>
+								</a>
+								<div class="collapse" id="collapsePages"
+									aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+									<nav class="sb-sidenav-menu-nested nav accordion"
+										id="sidenavAccordionPages">
+										<a class="nav-link collapsed" href="#"
+											data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth"
+											aria-expanded="false" aria-controls="pagesCollapseAuth">
+											Authentication
+											<div class="sb-sidenav-collapse-arrow">
+												<i class="fas fa-angle-down"></i>
+											</div>
+										</a>
+										<div class="collapse" id="pagesCollapseAuth"
+											aria-labelledby="headingOne"
+											data-bs-parent="#sidenavAccordionPages">
+											<nav class="sb-sidenav-menu-nested nav">
+												<a class="nav-link" href="login.html">Login</a> <a
+													class="nav-link" href="register.html">Register</a> <a
+													class="nav-link" href="password.html">Forgot Password</a>
+											</nav>
+										</div>
+										<a class="nav-link collapsed" href="#"
+											data-bs-toggle="collapse"
+											data-bs-target="#pagesCollapseError" aria-expanded="false"
+											aria-controls="pagesCollapseError"> Error
+											<div class="sb-sidenav-collapse-arrow">
+												<i class="fas fa-angle-down"></i>
+											</div>
+										</a>
+										<div class="collapse" id="pagesCollapseError"
+											aria-labelledby="headingOne"
+											data-bs-parent="#sidenavAccordionPages">
+											<nav class="sb-sidenav-menu-nested nav">
+												<a class="nav-link" href="401.html">401 Page</a> <a
+													class="nav-link" href="404.html">404 Page</a> <a
+													class="nav-link" href="500.html">500 Page</a>
+											</nav>
+										</div>
+									</nav>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
+
+
+								<div class="sb-sidenav-menu">
+									<div class="nav">
+										<div class="sb-sidenav-menu-heading">Core</div>
+										<a class="nav-link" href="/planList">
+											<div class="sb-nav-link-icon">
+												<i class="fas fa-tachometer-alt"></i>
+											</div> 생산관리메인
+										</a>
+										<div class="sb-sidenav-menu-heading">Interface</div>
+										<div class="sb-sidenav-menu"
+											sec:authorize="hasRole('ROLE_D0101')">
+											&nbsp; &nbsp; [[${session.usersId}]]님
+											<div class="nav">
+												<div class="sb-sidenav-menu-heading">회원관리</div>
+												<a class="nav-link collapsed" href="#"
+													data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
+													aria-expanded="false" aria-controls="collapseLayouts">
+													<div class="sb-nav-link-icon">
+														<i class="fas fa-columns"></i>
+													</div> 생산 관리
+													<div class="sb-sidenav-collapse-arrow">
+														<i class="fas fa-angle-down"></i>
+													</div>
+												</a>
+												<div class="collapse" id="collapseLayouts"
+													aria-labelledby="headingOne"
+													data-bs-parent="#sidenavAccordion">
+													<nav class="sb-sidenav-menu-nested nav">
+														<a class="nav-link" href="/planList">생산계획 관리</a> <a
+															class="nav-link" href="/instructList">생산지시 관리</a> <a
+															class="nav-link" href="/regist">완제품 등록</a> <a
+															class="nav-link" href="/bom">BOM 관리</a> <a
+															class="nav-link" href="/product">제품 관리</a> <a
+															class="nav-link" href="/proError">불량정보 관리</a>
+													</nav>
+												</div>
+
+												<!-- Gin start -->
+												<div class="sb-sidenav-menu-heading">영업관리</div>
+												<a class="nav-link collapsed" href="#"
+													data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
+													aria-expanded="false" aria-controls="collapseLayouts">
+													<div class="sb-nav-link-icon">
+														<i class="fas fa-columns"></i>
+													</div> 영업관리
+													<div class="sb-sidenav-collapse-arrow">
+														<i class="fas fa-angle-down"></i>
+													</div>
+												</a>
+												<!-- components부터 부트스트랩 필요, 클래스 맞게 해줘야 이벤트 먹음  -->
+												<div class="collapse" id="collapseLayouts"
+													aria-labelledby="headingOne"
+													data-bs-parent="#sidenavAccordion">
+													<nav class="sb-sidenav-menu-nested nav">
+														<a class="nav-link" href="/orders">주문관리</a> <a
+															class="nav-link" href="/equipment/main">생산관리</a> <a
+															class="nav-link" href="/equipment/main">완제품 검수</a> <a
+															class="nav-link" href="/equipment/main">완제품 출납</a> <a
+															class="nav-link" href="/equipment/main">완제품 재고</a>
+													</nav>
+												</div>
+												
+												
+												<!-- 고객 -->
+												<div class="sb-sidenav-menu-heading">고객관리</div>
+												<a class="nav-link collapsed" href="#"
+													data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
+													aria-expanded="false" aria-controls="collapseLayouts">
+													<div class="sb-nav-link-icon">
+														<i class="fas fa-columns"></i>
+													</div> ***님 환영합니다!
+													<div class="sb-sidenav-collapse-arrow">
+														<i class="fas fa-angle-down"></i>
+													</div>
+												</a>
+												<!-- components부터 부트스트랩 필요, 클래스 맞게 해줘야 이벤트 먹음  -->
+												<div class="collapse" id="collapseLayouts"
+													aria-labelledby="headingOne"
+													data-bs-parent="#sidenavAccordion">
+													<nav class="sb-sidenav-menu-nested nav">
+														<a class="nav-link" href="/insert">주문조회</a> <a
+															class="nav-link" href="/orders">제품리스트</a> <a
+															class="nav-link" href="/orders">마이페이지</a>
+													</nav>
+												</div>
+												<!-- Gin end -->
+
+
+												<a class="nav-link collapsed" href="#"
+													data-bs-toggle="collapse" data-bs-target="#collapsePages"
+													aria-expanded="false" aria-controls="collapsePages">
+													<div class="sb-nav-link-icon">
+														<i class="fas fa-book-open"></i>
+													</div> Pages
+													<div class="sb-sidenav-collapse-arrow">
+														<i class="fas fa-angle-down"></i>
+													</div>
+												</a>
+												<div class="collapse" id="collapsePages"
+													aria-labelledby="headingTwo"
+													data-bs-parent="#sidenavAccordion">
+													<nav class="sb-sidenav-menu-nested nav accordion"
+														id="sidenavAccordionPages">
+														<a class="nav-link collapsed" href="#"
+															data-bs-toggle="collapse"
+															data-bs-target="#pagesCollapseAuth" aria-expanded="false"
+															aria-controls="pagesCollapseAuth"> Authentication
+															<div class="sb-sidenav-collapse-arrow">
+																<i class="fas fa-angle-down"></i>
+															</div>
+														</a>
+														<div class="collapse" id="pagesCollapseAuth"
+															aria-labelledby="headingOne"
+															data-bs-parent="#sidenavAccordionPages">
+															<nav class="sb-sidenav-menu-nested nav">
+																<a class="nav-link" href="login.html">Login</a> <a
+																	class="nav-link" href="register.html">Register</a> <a
+																	class="nav-link" href="password.html">Forgot
+																	Password</a>
+															</nav>
+														</div>
+														<a class="nav-link collapsed" href="#"
+															data-bs-toggle="collapse"
+															data-bs-target="#pagesCollapseError"
+															aria-expanded="false" aria-controls="pagesCollapseError">
+															Error
+															<div class="sb-sidenav-collapse-arrow">
+																<i class="fas fa-angle-down"></i>
+															</div>
+														</a>
+														<div class="collapse" id="pagesCollapseError"
+															aria-labelledby="headingOne"
+															data-bs-parent="#sidenavAccordionPages">
+															<nav class="sb-sidenav-menu-nested nav">
+																<a class="nav-link" href="401.html">401 Page</a> <a
+																	class="nav-link" href="404.html">404 Page</a> <a
+																	class="nav-link" href="500.html">500 Page</a>
+															</nav>
+														</div>
+													</nav>
+												</div>
+
+
+
+												<div class="sb-sidenav-menu"
+													sec:authorize="hasRole('ROLE_D0102')">
+													<div class="sb-sidenav-menu">
+														<div class="nav">
+															<div class="sb-sidenav-menu-heading">Core</div>
+															<a class="nav-link" href="index.html">
+																<div class="sb-nav-link-icon">
+																	<i class="fas fa-tachometer-alt"></i>
+																</div> Dashboard
+															</a>
+															<div class="sb-sidenav-menu-heading">Interface</div>
+															<a class="nav-link collapsed" href="#"
+																data-bs-toggle="collapse"
+																data-bs-target="#collapseLayouts" aria-expanded="false"
+																aria-controls="collapseLayouts">
+																<div class="sb-nav-link-icon">
+																	<i class="fas fa-columns"></i>
+																</div> Layouts
+																<div class="sb-sidenav-collapse-arrow">
+																	<i class="fas fa-angle-down"></i>
+																</div>
+															</a>
+															<div class="collapse" id="collapseLayouts"
+																aria-labelledby="headingOne"
+																data-bs-parent="#sidenavAccordion">
+																<nav class="sb-sidenav-menu-nested nav">
+																	<a class="nav-link" href="layout-static.html">Static
+																		Navigation</a> <a class="nav-link"
+																		href="layout-sidenav-light.html">Light Sidenav</a>
+																</nav>
+															</div>
+															<a class="nav-link collapsed" href="#"
+																data-bs-toggle="collapse"
+																data-bs-target="#collapsePages" aria-expanded="false"
+																aria-controls="collapsePages">
+																<div class="sb-nav-link-icon">
+																	<i class="fas fa-book-open"></i>
+																</div> Pages
+																<div class="sb-sidenav-collapse-arrow">
+																	<i class="fas fa-angle-down"></i>
+																</div>
+															</a>
+															<div class="collapse" id="collapsePages"
+																aria-labelledby="headingTwo"
+																data-bs-parent="#sidenavAccordion">
+																<nav class="sb-sidenav-menu-nested nav accordion"
+																	id="sidenavAccordionPages">
+																	<a class="nav-link collapsed" href="#"
+																		data-bs-toggle="collapse"
+																		data-bs-target="#pagesCollapseAuth"
+																		aria-expanded="false"
+																		aria-controls="pagesCollapseAuth"> Authentication
+																		<div class="sb-sidenav-collapse-arrow">
+																			<i class="fas fa-angle-down"></i>
+																		</div>
+																	</a>
+																	<div class="collapse" id="pagesCollapseAuth"
+																		aria-labelledby="headingOne"
+																		data-bs-parent="#sidenavAccordionPages">
+																		<nav class="sb-sidenav-menu-nested nav">
+																			<a class="nav-link" href="login.html">Login</a> <a
+																				class="nav-link" href="register.html">Register</a> <a
+																				class="nav-link" href="password.html">Forgot
+																				Password</a>
+																		</nav>
+																	</div>
+																	<a class="nav-link collapsed" href="#"
+																		data-bs-toggle="collapse"
+																		data-bs-target="#pagesCollapseError"
+																		aria-expanded="false"
+																		aria-controls="pagesCollapseError"> Error
+																		<div class="sb-sidenav-collapse-arrow">
+																			<i class="fas fa-angle-down"></i>
+																		</div>
+																	</a>
+																	<div class="collapse" id="pagesCollapseError"
+																		aria-labelledby="headingOne"
+																		data-bs-parent="#sidenavAccordionPages">
+																		<nav class="sb-sidenav-menu-nested nav">
+																			<a class="nav-link" href="401.html">401 Page</a> <a
+																				class="nav-link" href="404.html">404 Page</a> <a
+																				class="nav-link" href="500.html">500 Page</a>
+																		</nav>
+																	</div>
+																</nav>
+															</div>
+															<div class="sb-sidenav-menu-heading">Addons</div>
+															<a class="nav-link" href="charts.html">
+																<div class="sb-nav-link-icon">
+																	<i class="fas fa-chart-area"></i>
+																</div> Charts
+															</a> <a class="nav-link" href="tables.html">
+																<div class="sb-nav-link-icon">
+																	<i class="fas fa-table"></i>
+																</div> Tables
+															</a>
+														</div>
+													</div>
+												</div>
+												<div class="sb-sidenav-footer">
+													<div class="small">Logged in as:</div>
+													Start Bootstrap
+												</div>
 			</nav>
 		</div>
 		<div id="layoutSidenav_content">
