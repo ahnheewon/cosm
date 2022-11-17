@@ -38,7 +38,7 @@ public class MainController {
 	EmpService service;
 
 	@Autowired
-	OrdersService ser;
+	OrdersService oService;
 
 	@Autowired
 	equipService eService;
@@ -191,25 +191,34 @@ public class MainController {
 		return service.checkId(usersId);
 	}
 
-	// 고객 --------------------------------
-	// 첫 화면
-	@RequestMapping("/main")
+	
+	
+	//영업 start =======================================================
+	// 고객 주문목록 페이지
+	@RequestMapping("/coder")
 	public List<OrdersVO> client(Model model) {
-		return ser.salesOrderList();
+		return oService.salesOrderList();
 	}
 
-	// 고객 주문목록 관리 메인
-	@RequestMapping("/order")
+	// 고객 - 첫 화면
+	@RequestMapping("/cmain")
 	public String cilentorder(Model model) {
 		return "client/order";
+	}
+
+	// 주문 등록창
+	@PostMapping("insert")
+	public String cinsert(OrdersVO vo, RedirectAttributes ratt) {
+		oService.insertOrder(vo);
+		return "client/insert"; // 목록으로 돌아가기
 	}
 
 	// 고객 - 주문목록데이터
 	@RequestMapping("/orderList")
 	@ResponseBody
 	public List<OrdersVO> clientorderList(Model model) {
-		model.addAttribute("id", ser.getOrderNo());
-		return ser.salesOrderList();
+		model.addAttribute("id", oService.getOrderNo());
+		return oService.salesOrderList();
 	}
 
 	// 고객 주문관리 메인
@@ -227,17 +236,29 @@ public class MainController {
 	// 영업팀 -----------------------------------
 	// 영업 - 주문조회 리스트
 	@ResponseBody
-	@GetMapping("/ajax/orders")
+	@GetMapping("/ajax/orders") //url
 	public List<OrdersVO> ajaxOrder(Model model) {
-		return ser.salesOrderList();
+		return oService.salesOrderList();
+	}
+
+	// 체크박스 단건 삭제 - 영업
+	@ResponseBody
+	@PostMapping("/ajax/delcheckOrder") // requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
+	public int delCheckOrder(@RequestBody OrdersVO vo) {
+		// System.out.println(vo.getDelmno()+"=================>>>>>>>>>>>>>>");
+		return oService.deleteCheck(vo.getNoList());
+	}
+	
+	//체크박스 -> 생산요청 상태변경
+	@ResponseBody
+	@PostMapping("a/upPro")
+
+	@RequestMapping("/test")
+	public String test(Model model) {
+		return "sales/test";
 	}
 
 	// 메인페이지 - 주문관리
-	@RequestMapping("/test")
-	public String test(Model model) {
-		return "sales/dtest";
-	}
-
 	@GetMapping("/orders")
 	public String salesorder(Model model) {
 		return "sales/orders";
@@ -247,11 +268,12 @@ public class MainController {
 	@GetMapping("/ordersList")
 	@ResponseBody
 	public List<OrdersVO> salesorderList(Model model) {
-		model.addAttribute("id", ser.getOrderNo());
-		return ser.salesOrderList();
+		model.addAttribute("id", oService.getOrderNo());
+		return oService.salesOrderList();
 	}
 
 	/* main - 주문목록조회 = ajax, get */
+	//영업 end =======================================================
 
 	// 자재팀 영역
 

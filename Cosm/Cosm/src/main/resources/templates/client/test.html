@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{/layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+<link rel="stylesheet"
+   href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<link rel="stylesheet"
+   href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+
+<script
+   src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+</head>
+
+
+<body>
+
+   <div layout:fragment="content">
+      <div id="grid"></div>
+      <script>
+      
+      window.onload = function(){
+         
+          $.ajax({
+              url : "/plan",
+              method :"GET",
+              dataType : "JSON",
+              success : function(result){
+                  
+                  console.log(result);
+                  for(let plan of result){
+                     plan.planStart = plan.planStart.substr(0,10);
+                     plan.planEnd = plan.planEnd.substr(0,10);
+                  }
+                  grid.resetData(result);
+              },
+              error : function(reject){
+                  console.log(reject);
+              }
+          
+          });
+          
+          var grid = new tui.Grid({
+              el: document.getElementById('grid'),
+              rowHeaders: ['checkbox'],
+              minBodyHeight: 30,
+              pageOptions: {
+                 useClient: true,   // front에서만 페이징 하는 속성
+                  perPage: 5
+              },
+
+              scrollX: false,
+              scrollY: false,
+              columns: [
+              
+                {
+                  header: '생산계획번호',
+                  name: 'planNo',
+                },
+                {
+                  header: '생산량',
+                  name: 'planQuantity',
+                },
+                {
+                  header: '시작일자(desc)',
+                  name: 'planStart',
+                  sortingType: 'desc',
+                   sortable: true
+                },
+                {
+                  header: '종료일자(desc)',
+                  name: 'planEnd',
+                  sortingType: 'desc',
+                   sortable: true
+                },
+                {
+                  header: '기타사항',
+                  name: 'planEx',
+                },
+                {
+                   header: '생산계획 작성',
+                  name : 'formatter'
+                
+                }
+              ],
+              formatter: { key: "dt", label: "기능", width: "150", align: "center", formatter:function(){
+                 return "저장";
+              }}
+            });
+          
+            };
+            
+      </script>
+   </div>
+</body>
+
+
+</html>

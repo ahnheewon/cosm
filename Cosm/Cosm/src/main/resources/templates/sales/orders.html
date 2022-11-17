@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sales main</title>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<!-- Bootstrap -->
+<!-- CSS only -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+	crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+	crossorigin="anonymous">
+    </script>
+</head>
+
+<style>
+#od-btn {
+	float: right;
+}
+</style>
+
+<body>
+
+	<div layout:fragment="content">
+
+		<div align="center" id="od-title">
+			<h3>영업 관리</h3>
+		</div>
+
+
+
+
+		<div>
+			<!-- 탭 목록(버튼) 설정 -->
+			<ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="manage-tab"
+						data-bs-toggle="tab" data-bs-target="#manage" type="button"
+						role="tab" aria-controls="manage" aria-selected="true">주문관리</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="insert-tab" data-bs-toggle="tab"
+						data-bs-target="#insert" type="button" role="tab"
+						aria-controls="insert" aria-selected="false">생산관리</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="insert-tab" data-bs-toggle="tab"
+						data-bs-target="#insert" type="button" role="tab"
+						aria-controls="insert" aria-selected="false">완제품 검수관리</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="insert-tab" data-bs-toggle="tab"
+						data-bs-target="#insert" type="button" role="tab"
+						aria-controls="insert" aria-selected="false">완제품 재고관리</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="insert-tab" data-bs-toggle="tab"
+						data-bs-target="#insert" type="button" role="tab"
+						aria-controls="insert" aria-selected="false">완제품 출고관리</button>
+				</li>
+			</ul>
+		</div>
+
+		<br>
+		<!-- 검색창 start -->
+		<div id="od-container">
+			<ul>
+				<label for="actCd">검색 : </label>
+				<input id="actCd">
+
+
+				<!-- 
+				 <img
+					class="Magnifying-Glass-img" alt="image"
+					src="../images/Magnifying_Glass.png">
+				 -->
+				<button class="btn btn-dark btn-sm">찾기</button>
+			</ul>
+			<!-- 달력불러오기 헤야함 -->
+			<div>
+				<label>제조일자</label>
+
+				<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+					<input id="startpicker-input" type="text" aria-label="Date">
+					<span class="tui-ico-date"></span>
+					<div id="startpicker-container" style="margin-left: -1px;"></div>
+				</div>
+				<span>-</span>
+				<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+					<input id="endpicker-input" type="text" aria-label="Date">
+					<span class="tui-ico-date"></span>
+					<div id="endpicker-container" style="margin-left: -1px;"></div>
+				</div>
+
+				<button class="btn btn-dark btn-sm">조회</button>
+				<button class="btn btn-dark btn-sm">초기화</button>
+			</div>
+
+		</div>
+		<!-- 검색창 end -->
+		<hr>
+
+		<!-- btn 모음 -->
+		<div id="od-btn" style="float: right;">
+
+			<button type="button" class="btn btn-secondary btn-sm"
+				data-bs-toggle="modal" data-bs-target="#myModal1">생산지시요청</button>
+
+			<button class="btn btn-secondary btn-sm">수정</button>
+			<button class="btn btn-secondary btn-sm">추가</button>
+			<button onclick="checkDel()" class="btn btn-secondary btn-sm">삭제</button>
+
+			<div id="od-btn">
+				<button class="btn btn-secondary btn-sm" id="exBtn">엑셀 파일 출력</button>
+			</div>
+
+			<button class="btn btn-secondary btn-sm">PDF</button>
+		</div>
+		<!-- btn 모음 end -->
+
+
+		<!-- 탭 본문 -->
+		<!-- 진행상황 radio -->
+		<table id="form-check">
+
+		</table>
+
+
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane fade show active" id="manage" role="tabpanel"
+				aria-labelledby="manage-tab">
+				<div style="margin: 15px;">
+					<table style="width: 100%;">
+						<tr>
+							<td style="width: 90px;">진행구분 &nbsp;</td>
+							<td colspan="2"><input type="radio" id="whole"
+								name="process" value="whole" checked> <label for="whole">전체</label>
+								<input type="radio" id="confirm" name="process" value="confirm">
+								<label for="confirm">생산팀 확인</label> <input type="radio"
+								id="noOrder" name="process" value="noOrder"> <label
+								for="noOrder">미지시</label> <input type="radio" id="order"
+								name="process" value="order"> <label for="order">지시완료</label></td>
+						</tr>
+
+
+
+						<tr>
+							<td colspan="3">
+								<div id="grid"></div>
+							</td>
+						</tr>
+
+
+						<!-- 
+							<tr>
+								<td></td>
+								<td></td>
+								<td style="text-align: right;">
+									<button type="button" class="btn btn-dark btn-sm">전송</button>
+									<button type="button" class="btn btn-dark btn-sm">취소</button>
+								</td>
+							</tr>
+							 -->
+
+					</table>
+
+				</div>
+			</div>
+
+
+			<!-- 생산지시 관리 tab body -->
+			<div class="tab-pane fade" id="insert" role="tabpanel"
+				aria-labelledby="insert-tab">
+				<div style="margin: 15px;">
+					<table style="width: 100%;">
+						<tr>
+							<td style="width: 140px;">생산지시 조회 &nbsp;</td>
+							<td><input type="text" name="planname" id="planname"></td>
+						</tr>
+						<tr>
+							<td>생산 계획 일자 &nbsp;</td>
+							<td>
+								<div
+									class="tui-datepicker-input tui-datetime-input tui-has-focus">
+									<input type="text" id="datepicker-input" aria-label="Date-Time">
+									<span class="tui-ico-date"></span>
+								</div>
+								<div id="wrapper" style="margin-top: -1px;"></div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="insertGrid" style="width: 100%;"></div>
+							</td>
+						</tr>
+						<tr>
+							<td style="text-align: left;" colspan="2">
+								<!-- 모달버튼 -->
+								<button type="button" class="btn btn-dark btn-sm"
+									data-bs-toggle="modal" data-bs-target="#requestModal">생산요청서
+									조회</button>
+								<button type="button" class="btn btn-dark btn-sm">계획등록</button>
+								<button type="button" id="insertBtn" class="btn btn-dark btn-sm">행
+									추가</button>
+								<button type="button" id="deleteBtn" class="btn btn-dark btn-sm">행
+									삭제</button>
+							</td>
+						</tr>
+					</table>
+
+				</div>
+
+			</div>
+			<!-- 생산지시 관리 tab end -->
+
+
+
+
+
+			<!-- 전체조회 grid filter -->
+			<div id="grid" style="width: 800px"></div>
+
+
+			<script>
+				var today = new Date();
+				var picker = tui.DatePicker.createRangePicker({
+				    startpicker: {
+				        date: today,
+				        input: '#startpicker-input',
+				        container: '#startpicker-container'
+				    },
+				    endpicker: {
+				        date: today,
+				        input: '#endpicker-input',
+				        container: '#endpicker-container'
+				    },
+				    selectableRanges: [
+				        [today, new Date(today.getFullYear() + 1, today.getMonth(), today.getDate())]
+				    ]
+				});
+				//날짜 계산
+				rangeDatepickerInit('#startpicker-input', '#startpicker-container','#endpicker-input','#endpicker-container')
+
+				
+				//엑셀 내보내기
+				$('#exBtn').on('click',function(){
+				   let options = {
+						     includeHeader : true,
+						     includeHiddenColumns : true,
+						     onlySelected : true,
+						     fileName: 'lot List'
+						   };
+			   grid.export('xlsx', options);
+			   });
+				
+					//등록버든 이벤트
+					/*
+					btn = $('#btn btn-dark btn-sm')
+					btn.on("click", onclickHandler)
+
+					function insertOrder() {
+
+					}
+					 */
+
+					window.onload = function() {
+						$.ajax({
+							url : "http://localhost:85/ajax/orders",
+							method : "GET",
+							dataType : "JSON",
+							success : function(result) {
+
+								console.log(result);
+
+								grid.resetData(result);
+							},
+							error : function(reject) {
+								console.log(reject);
+							}
+
+						});
+
+					}
+
+					const grid = new tui.Grid({
+						el : document.getElementById('grid'),
+						/*
+						data: [{
+						orderNo: 1,
+						clientNo: 100,
+						productNo: '11',
+						orderDate: '2022-11-01',
+						deliveryDate: '2022-12-30',
+						productName: 'TPA-110',
+						totalNum: 200,
+						totalPrice: 500000,
+						surtax: 50000,
+						note: '배송전 연락주세요',
+						orderCode: '신규',
+						orderProgressCode: '5259',
+						deliveryInfo : '대기중',
+						ioCode : '대기중'
+						}],
+						 */
+						rowHeaders : [ 'checkbox' ],
+						scrollX : false,
+						scrollY : false,
+						columns : [ {
+							header : '주문번호',
+							name : 'orderNo',
+							width : 'auto'
+						}, {
+							header : '거래처번호',
+							name : 'clientNo',
+						}, {
+							header : '제품번호',
+							name : 'productNo'
+						}, {
+							header : '주문일자',
+							name : 'orderDate'
+						}, {
+							header : '납기일자',
+							name : 'deliveryDate',
+						}, {
+							header : '제품명',
+							name : 'productName',
+						}, {
+							header : '수량',
+							name : 'totalNum',
+						}, {
+							header : '공급가액',
+							name : 'totalPrice',
+						}, {
+							header : '부가세',
+							name : 'surtax',
+
+						}, {
+							header : '요청사항',
+							name : 'note',
+
+						}, {
+							header : '주문타입',
+							name : 'orderCode',
+
+						}, {
+							header : '생산지시',
+							name : 'orderProgressCode',
+
+						}, {
+							header : '배달상황',
+							name : 'deliveryInfo',
+
+						}, {
+							header : '출납상황',
+							name : 'ioCode',
+
+						} ]
+
+					});
+
+					// 1. checkbox 선택
+					// 2. 선택된 checkbox의 값에서 mno 가져오기  버튼 
+					//-> 함수(onclick -> ajax 실행) -> mno 보내주고 삭제
+					// 3. 삭제 실행 (모달창의 확인 클릭)
+					function checkDel() {
+
+						const delOno = [];
+						var obj = grid.getCheckedRows()
+						for (key in obj) {
+							delOno.push(obj[key].delOno);
+							console.log(delOno.push(obj[key].delOno))
+						}
+
+						// debugger
+						//여기서부터 오류
+						$.ajax({
+							url : "http://localhost:85/ajax/delcheckOrder",
+							method : "Post",
+							contentType : "application/json",
+							data : JSON.stringify({
+								"delOno" : delOno
+							}),
+							success : function(result) {
+								console.log(result);
+
+							},
+							error : function(reject) {
+								console.log(reject);
+							}
+						})
+					}
+					
+					
+					
+				</script>
+
+
+		</div>
+	</div>
+
+
+
+
+	<!-- Modal start -->
+	<!-- 생산지시요청 모달 -->
+	<div class="modal fade" id="myModal1">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">생산 지시 요청</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+
+				<form id="insertForm2" action="insertProcess" method="post"
+					onsubmit="formOption1()">
+					<!-- Modal body -->
+					<div class="modal-body">
+						<table class="table">
+							<tr>
+								<td>주문번호</td>
+								<td><input class="form-control" id="processNo"
+									name="processNo" th:value="${pno }" type="text" readonly></td>
+								<td>공정명</td>
+								<td><input class="form-control" id="processName"
+									name=processName type="text" required></td>
+							</tr>
+							<tr>
+								<td>공정내용</td>
+								<td><textarea class="form-control" id="processContent"
+										name="processContent" rows="5" required></textarea></td>
+							</tr>
+							<tr>
+								<td>공정순서</td>
+								<td><input class="form-control" id="processSeq"
+									name="processSeq" type="text" required></td>
+							</tr>
+						</table>
+					</div>
+
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary">등록</button>
+						<button type="button" class="btn btn-danger"
+							data-bs-dismiss="modal">취소</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+	<!-- Modal end  -->
+
+	<script>
+	function formOption1(){
+		document.querySelector('#insertForm1').submit();
+		
+	}
+function formOption2(){
+		
+		document.querySelector('#insertForm2').submit();	
+	}
+
+	</script>
+
+</body>
+</html>

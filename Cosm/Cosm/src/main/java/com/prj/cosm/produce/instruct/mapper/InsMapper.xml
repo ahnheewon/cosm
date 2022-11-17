@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.cosm.produce.instruct.mapper.InsMapper">
+
+<!-- 전체조회 -->
+<select id="getInsList" resultType="map">
+	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd,
+		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
+		   i.instruct_date as instructDate, i.instruct_m_no as instructMNo, 
+		   i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx
+	FROM produce_plan p JOIN produce_instruct i
+	ON p.plan_no = i.instruct_plan_no
+	ORDER BY i.instruct_no DESC
+</select>
+
+<!-- 지시번호 +1 -->
+<select id="getInsNo" resultType="InsVO">
+	SELECT NVL(MAX(instruct_no), 0) + 1 as instruct_no
+	FROM produce_instruct 
+</select>
+
+
+<!-- 지시 등록 -->
+<insert id="insertIns" parameterType="InsVO">
+	INSERT INTO
+	produce_instruct (
+				  instruct_no,
+				  instruct_quantity,
+				  instruct_ex,
+				  instruct_date,
+				  instruct_m_no,
+				  instruct_plan_no,
+				  instruct_progress_code
+				  )
+		   VALUES(
+				  #{instructNo},
+				  #{instructQuantity},
+				  #{instructEx},
+				  #{instructDate},
+				  #{instructMNo},
+				  #{instructPlanNo},
+				  #{instructProgressCode}
+				  )
+</insert>
+
+<!-- 지시 수정 -->
+<update id="updateIns" parameterType="InsVO">
+	UPDATE produce_instruct
+		<set>
+			<if test="instructQuantity != null and !instructQuantity.equals('')">
+				instruct_quantity = #{instructQuantity},
+			</if>
+			<if test="instructEx != null and !instructEx.equals('')">
+				instruct_ex = #{instructEx},
+			</if>
+			<if test="instructMNo != null and !instructMNo.equals('')">
+				instruct_m_no = #{instructMNo},
+			</if>
+		</set>
+	WHERE instruct_no = #{instructNo}
+</update>
+
+<!-- 지시 삭제 -->
+<delete id="deleteIns" parameterType="Integer">
+	DELETE FROM produce_instruct WHERE instruct_no = #{instructNo}
+</delete>
+
+</mapper>
