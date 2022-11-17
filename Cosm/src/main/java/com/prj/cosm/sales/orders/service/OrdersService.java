@@ -21,17 +21,18 @@ public interface OrdersService {
 	// 주문 내역삭제
 	// public int deleteOrderInfo(int orderNo);
 	public int deleteOrderInfo(OrdersVO vo);
-	
-	//수정 
+
+	// 수정
 	public int deleteOrder(OrdersVO vo);
-	
+
+	// 주문정보 삭제 - 영업팀
+	public int deleteCheck(List<String> noList);
+
+	// 생산지시 상태변경
+	public int updatePro(List<String> noList);
 
 	/*
-	데이터 다건 추가시
-	public class GridData<T> {
-		private List<T> updatedRows;
-		private List<T> deletedRows;
-		private List<T> createdRows;
-	}
-	 */ 
+	 * 데이터 다건 추가시 public class GridData<T> { private List<T> updatedRows; private
+	 * List<T> deletedRows; private List<T> createdRows; }
+	 */
 }

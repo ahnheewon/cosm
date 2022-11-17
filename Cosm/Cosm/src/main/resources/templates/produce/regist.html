@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+
+<script
+	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
+
+<!-- modal -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+	crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+	crossorigin="anonymous">
+    </script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="row g-3 align-items-center">
+			<div class="col-auto">
+				<label for="inputPassword6" class="col-form-label">Password</label>
+			</div>
+			<div class="col-auto">
+				<input type="password" id="inputPassword6" class="form-control"
+					aria-describedby="passwordHelpInline">
+			</div>
+			<div class="col-auto">
+				<span id="passwordHelpInline" class="form-text"> Must be 8-20
+					characters long. </span>
+			</div>
+		</div>
+		<select class="form-select" aria-label="Default select example" style="width: 30%">
+			<option selected>Open this select menu</option>
+			<option value="1">One</option>
+			<option value="2">Two</option>
+			<option value="3">Three</option>
+		</select>
+
+
+		<h3>생산완료된 생산지시 리스트</h3>
+		<div id="grid2"></div>
+
+		<hr style="width: 100%">
+		<h3>완제품 등록 리스트</h3>
+		<div id="grid"></div>
+
+
+		<script>
+	window.onload = function () {
+		//ajax 연결로 생산지시리스트 가져오기
+		$.ajax({
+			url: "/instruct",
+			method: "GET",
+			dataType: "JSON",
+			success: function (result) {
+
+				console.log(result);
+				for (let plan of result) {
+					plan.PLANSTART = String(plan.PLANSTART).substr(0, 10);
+					plan.PLANEND = String(plan.PLANEND).substr(0, 10);
+					plan.INSTRUCTDATE = String(plan.INSTRUCTDATE).substr(0, 10);
+				}
+				
+				grid2.resetData(result);
+			},
+			error: function (reject) {
+				console.log(reject);
+			}
+		});
+	};
+	
+	// 생산지시 리스트 그리드
+	var grid2 = new tui.Grid({
+		el: document.getElementById('grid2'),
+		rowHeaders: ['checkbox'],
+		minBodyHeight: 30,
+		pageOptions: {
+			useClient: true, // front에서만 페이징 하는 속성
+			perPage: 5
+		},
+		scrollX: false,
+		scrollY: false,
+		columns: [
+			{
+				header: '생산지시번호',
+				name: 'INSTRUCTNO'
+			},
+			{
+				header: '생산계획번호',
+				name: 'PLANNO'
+			},
+			{
+				header: '생산최종지시량',
+				name: 'INSTRUCTQUANTITY'
+			},
+			{
+				header: '시작일자(desc)',
+				name: 'PLANSTART',
+				sortingType: 'desc',
+				sortable: true
+			},
+			{
+				header: '종료일자(desc)',
+				name: 'PLANEND',
+				sortingType: 'desc',
+				sortable: true
+			},
+			{
+				header: '자재번호',
+				name: 'INSTRUCTMNO'
+			},	
+			{
+				header: '지시일자(desc)',
+				name: 'INSTRUCTDATE',
+				sortingType: 'desc',
+				sortable: true
+			},
+			{
+				header: '진행상황',
+				name: 'INSTRUCTPROGRESSCODE'
+			},	
+			{
+				header: '기타사항',
+				name: 'INSTRUCTEX'
+			},	
+			]
+		});
+	
+	var grid = new tui.Grid({
+			el: document.getElementById('grid'),
+			rowHeaders: ['checkbox'],
+			minBodyHeight: 30,
+			pageOptions: {
+				useClient: true, // front에서만 페이징 하는 속성
+				perPage: 5
+			},
+			scrollX: false,
+			scrollY: false,
+			columns: [
+				{
+					header: 'LOT넘버',
+					name: 'planNo',
+					filter: {
+					       type: 'select',
+					        showApplyBtn: true,
+					        showClearBtn: true
+					      },
+				},
+				{
+					header: '바코드 라벨',
+					name: 'planQuantity',
+				},
+				{
+					header: '수량',
+					name: 'planStart',
+				},
+				{
+					header: '등록일자(desc)',
+					name: 'planEnd',
+					sortingType: 'desc',
+					sortable: true
+				},
+				{
+					header: '제품번호',
+					name: 'planEx',
+				},	
+				{
+					header: '지시번호',
+					name: 'planEx',
+				},	
+				{
+					header: '단위코드',
+					name: 'planEx',
+				},	
+				{
+					header: '검수여부',
+					name: 'planEx',
+				},	
+				],
+			
+			});
+	</script>
+	</div>
+</body>
+</html>

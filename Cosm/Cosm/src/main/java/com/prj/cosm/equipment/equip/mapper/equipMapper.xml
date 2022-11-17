@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.prj.cosm.equipment.equip.mapper.equipMapper">
+ 	
+	
+	<!-- 설비 전체 리스트 -->
+	<select id="getEquipList" resultType="equipVO">
+		SELECT *
+		FROM equip
+	</select>
+	
+	<!-- 설비 단건조회 -->
+	<select id="getEquipInfo" parameterType="equipVO" resultType="equipVO">
+		SELECT e.equip_name, e.equip_type, e.equip_std_vibe, e.equip_std_temp, e.equip_date, t.time_start_date, t.time_end_date
+		FROM equip e, equip_time t
+		Where e.equip_no = t.time_equip_no
+		and e.equip_name= {#equipName}
+	</select>
+	
+	<!-- 설비 등록 -->
+	<insert id="insertEquip" parameterType="equipVO">
+		INSERT INTO EQUIP	   ( equip_no
+								,equip_name
+								,equip_type
+								,equip_std_vibe
+								,equip_std_temp
+								,equip_process
+								,equip_purpose
+								,equip_date
+								)
+									
+						VALUES( #{equipNo}
+								,#{equipName}
+								,#{equipType}
+								,#{equipStdVibe}
+								,#{equipStdTemp}
+								,#{equipProcess}
+								<if test="equipPurpose !=null and !equipPurpose.equals('')">,#{equipPurpose}</if>
+								,SYSDATE
+								)	
+	</insert>
+	
+	<!-- 입력될 설비 번호 조회 -->
+	<select id="getEquipNo" resultType="equipVO">
+		SELECT NVL(MAX(equip_no),0) + 1 AS equip_no
+		FROM EQUIP
+	</select>
+	
+	<!-- 공정 등록 -->
+	<insert id="insertProcess" parameterType="equipVO">
+		INSERT INTO PROCESS	   ( process_no
+								,process_name
+								,process_content
+								,process_seq )
+									
+						VALUES( #{processNo}
+								,#{processName}
+								,#{processContent}
+								,#{processSeq} )	
+	</insert>
+	
+	<!-- 공정 전체 리스트 -->
+	<select id="getProcessList" resultType="equipVO">
+		SELECT *
+		FROM PROCESS
+	</select>
+	
+	<!-- 입력될 공정 번호 조회 -->
+	<select id="getProcessNo" resultType="equipVO">
+		SELECT NVL(MAX(process_no),0) + 1 AS process_no
+		FROM process
+	</select>
+	
+</mapper>
