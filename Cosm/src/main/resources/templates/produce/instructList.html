@@ -29,7 +29,8 @@
     </script>
 </head>
 <body>
-	<div layout:fragment="content">
+	<div layout:fragment="content" style="margin-left: 30px; margin-right: 30px;">
+		<hr style="width: 100%">
 		<h3>생산계획 리스트</h3>
 		<button type="button" class="btn btn-dark btn-sm" onclick="insertData();"
 			data-bs-toggle="modal" data-bs-target="#requestModal"
@@ -218,96 +219,53 @@
 		</div>
 
 
-		<script>
-		// 지시 등록
-		function insertData(){
-			var datas = grid.getCheckedRows();
-			var test = JSON.stringify(datas);
-			$('#planStart').val(datas[0].planStart);
-			$('#planEnd').val(datas[0].planEnd);
-			$('#instructPlanNo').val(datas[0].planNo);
-		}
-		// 지시 수정
-		function updateData(){
-			
-			var datas1 = grid2.getCheckedRows();
-			var test = JSON.stringify(datas1);
-			$('#planNo').val(datas1[0].PLANNO);
-			$('#instructNo').val(datas1[0].INSTRUCTNO);
-			$('#planStart2').val(datas1[0].PLANSTART);
-			$('#planEnd2').val(datas1[0].PLANEND);
-			$('#instructPlanNo').val(datas1[0].PLANNO);
-		}
-		// 삭제 
-		function deleteData() {
-			var datas2 = grid2.getCheckedRows();
-			var test = JSON.stringify(datas2);
-
-			for(instruct of datas2){
-			$.ajax({
-				url : 'insDelete',
-				type : 'get',
-				data : {instructNo : instruct.INSTRUCTNO},
-				success : function(data){
-					console.log(data);
-					location.reload();
-				},
-				error : function(reject){
-					console.log(reject);
-				}
-			});
-			}
-			
-		}
-		
-		//ajax 연결로 생산계획리스트 가져오기
+		<script>	
 		window.onload = function () {
 			// 생산지시번호 +1 로 등록
 			var info = '[[${info.instructNo}]]';
 			$('#planNoInput').val(info)	
 			
-				$.ajax({
-					url: "/plan",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
-
-					
-						for (let plan of result) {
-							plan.planStart = plan.planStart.substr(0, 10);
-							plan.planEnd = plan.planEnd.substr(0, 10);
-						}
-						grid.resetData(result);
-					},
-					error: function (reject) {
-						console.log(reject);
-					}
-				});
-		//ajax 연결로 생산지시리스트 가져오기
-				$.ajax({
-					url: "/instruct",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
-
-						console.log(result);
-						for (let plan of result) {
-							plan.PLANSTART = String(plan.PLANSTART).substr(0, 10);
-							plan.PLANEND = String(plan.PLANEND).substr(0, 10);
-							plan.INSTRUCTDATE = String(plan.INSTRUCTDATE).substr(0, 10);
-						}
-						
-						grid2.resetData(result);
-					},
-					error: function (reject) {
-						console.log(reject);
-					}
-				});
-			};
-		
-		
+			//생산계획리스트 가져오기
+			planList();
+			//생산지시리스트 가져오기
+			instructList();
 			
-			
+			//체크박스 하나만 선택
+			grid.on('check', (ev) => {
+				for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
+					if(i!=`${ev.rowKey}`){
+						grid.uncheck(i);
+					}
+				}
+				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
+					grid2.uncheck(i);
+				}
+			});
+
+			grid2.on('check', (ev) => {
+				for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
+					grid.uncheck(i);
+				}
+				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
+					if(i!=`${ev.rowKey}`){
+						grid2.uncheck(i);
+					}
+				}
+			});
+				
+			grid.on('uncheck', (ev) => {
+				$('input:text').val('');
+			});
+				
+			grid2.on('uncheck', (ev) => {
+				$('input:text').val('');
+			});
+				
+			$('#grid span').remove();
+			$('#grid2 span').remove();
+		};
+		
+
 		// 생산계획 리스트 그리드
 		var grid = new tui.Grid({
 			el: document.getElementById('grid'),
@@ -465,6 +423,82 @@
 				},	
 				]
 			});
+		
+		//생산계획리스트 가져오기
+		function planList(){
+			$.ajax({
+				url: "/plan",
+				method: "GET",
+				dataType: "JSON",
+				success: function (result) {
+					for (let plan of result) {
+						plan.planStart = plan.planStart.substr(0, 10);
+						plan.planEnd = plan.planEnd.substr(0, 10);
+					}
+					grid.resetData(result);
+				},
+				error: function (reject) {
+					console.log(reject);
+				}
+			});
+		}
+		//생산지시리스트 가져오기
+		function instructList(){
+			$.ajax({
+				url: "/instruct",
+				method: "GET",
+				dataType: "JSON",
+				success: function (result) {
+					for (let plan of result) {
+						plan.PLANSTART = String(plan.PLANSTART).substr(0, 10);
+						plan.PLANEND = String(plan.PLANEND).substr(0, 10);
+						plan.INSTRUCTDATE = String(plan.INSTRUCTDATE).substr(0, 10);
+					}	
+						grid2.resetData(result);
+				},
+				error: function (reject) {
+					console.log(reject);
+				}
+			});
+		}
+		// 지시 등록
+		function insertData(){
+			var datas = grid.getCheckedRows();
+			var test = JSON.stringify(datas);
+			$('#planStart').val(datas[0].planStart);
+			$('#planEnd').val(datas[0].planEnd);
+			$('#instructPlanNo').val(datas[0].planNo);
+		}
+		// 지시 수정
+		function updateData(){	
+			var datas1 = grid2.getCheckedRows();
+			var test = JSON.stringify(datas1);
+			$('#planNo').val(datas1[0].PLANNO);
+			$('#instructNo').val(datas1[0].INSTRUCTNO);
+			$('#planStart2').val(datas1[0].PLANSTART);
+			$('#planEnd2').val(datas1[0].PLANEND);
+			$('#instructPlanNo').val(datas1[0].PLANNO);
+		}
+		// 삭제 
+		function deleteData() {
+			var datas2 = grid2.getCheckedRows();
+			var test = JSON.stringify(datas2);
+
+			for(instruct of datas2){
+			$.ajax({
+				url : 'insDelete',
+				type : 'get',
+				data : {instructNo : instruct.INSTRUCTNO},
+				success : function(data){
+					console.log(data);
+					instructList();
+				},
+				error : function(reject){
+					console.log(reject);
+				}
+			});
+			}
+		}
 		</script>
 	</div>
 </body>

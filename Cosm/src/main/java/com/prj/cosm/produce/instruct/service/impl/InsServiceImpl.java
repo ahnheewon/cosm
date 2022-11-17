@@ -45,4 +45,5 @@ public class InsServiceImpl implements InsService {
 		return mapper.deleteIns(instructNo);
 	}
 
+
 }
