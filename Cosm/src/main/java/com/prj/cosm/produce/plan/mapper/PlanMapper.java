@@ -2,7 +2,6 @@ package com.prj.cosm.produce.plan.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 
 import com.prj.cosm.produce.plan.service.PlanVO;
 
