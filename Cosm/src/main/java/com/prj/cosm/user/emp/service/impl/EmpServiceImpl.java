@@ -22,12 +22,17 @@ public class EmpServiceImpl implements EmpService {
 	}
 
 	@Override
-	public EmpVO empSelect(String usersNo) {
-		return mapper.empSelect(usersNo);
+	public EmpVO empSelect(String usersId) {
+		return mapper.empSelect(usersId);
 	}
 
 	@Override
-	public int empInsert(EmpVO vo) {
+	public EmpVO userInfoSelect(String usersNo) {
+		return mapper.userInfoSelect(usersNo);
+	}
+
+	@Override
+	public int userInsert(EmpVO vo) {
 		BCryptPasswordEncoder enco = new BCryptPasswordEncoder();
 		vo.setUsersPassword(enco.encode(vo.getUsersPassword()));
 		if (vo.getUsersAuthor() == null || vo.getUsersAuthor().equals("")) {
@@ -37,12 +42,16 @@ public class EmpServiceImpl implements EmpService {
 	}
 
 	@Override
-	public int empUpdate(EmpVO vo) {
+	public int userUpdate(EmpVO vo) {
+		if (vo.getUsersPassword() != null && !vo.getUsersPassword().equals("")) {
+			BCryptPasswordEncoder enco = new BCryptPasswordEncoder();
+			vo.setUsersPassword(enco.encode(vo.getUsersPassword()));
+		}
 		return mapper.empUpdate(vo);
 	}
 
 	@Override
-	public int empDelete(EmpVO vo) {
+	public int userDelete(EmpVO vo) {
 		return mapper.empDelete(vo);
 	}
 
