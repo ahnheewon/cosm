@@ -305,19 +305,45 @@ public class MainController {
 
 	// 자재팀 영역
 
-	// 자재 정보 등록폼
-	@GetMapping("minsert")
-	public String mInsertForm(Model model) {
-		model.addAttribute("mno", mService.getMno().getMNo());
-		return "material/mInfoInsert";
-	}
+		// 자재 정보 등록폼
+		@GetMapping("minsert")
+		public String mInsertForm(Model model) {
+			// model.addAttribute("mno",mService.getMno().getMNo());
+			return "material/mInfoInsert";
+		}
 
-	// 자재 정보 등록창
-	@PostMapping("minsert")
-	public String mInsert(MaterialVO mVO, RedirectAttributes ratt) {
-		mService.insertMatarialInfo(mVO);
-		return "redirect:minfo"; // 목록으로 돌아가기
-	}
+		// 자재 정보 등록창
+		@PostMapping("minsert")
+		public String mInsert(MaterialVO mVO, RedirectAttributes ratt) {
+			mService.insertMatarialInfo(mVO);
+			return "material/material"; // 목록으로 돌아가기
+		}
+
+		// 거래처 이름 찾기
+		@ResponseBody
+		@GetMapping("/ajax/minsert")
+		public List<MaterialVO> findComNm() {
+			return mService.findComNm();
+		}
+
+		// 신규거래처 등록폼
+		@GetMapping("mregcom")
+		public String mRegComForm(Model model) {
+			model.addAttribute("comId",mService.getComId().getMCompanyId());
+			System.out.println("넘기는 값" + model.addAttribute("comId",mService.getComId().getMCompanyId()));
+			return "material/mRegCom";
+		}
+
+		// 신규거래처 등록창
+		@PostMapping("mregcom")
+		public String mRegCom(MaterialVO mvo) {
+			System.out.println("거래처번호 : "+ mvo);
+			mService.registerMCompany(mvo);
+			
+			return "material/mInfoInsert";
+			 
+		}
+
 
 	// 거래처 이름 찾기
 	@ResponseBody
@@ -341,16 +367,38 @@ public class MainController {
 		return "material/material";
 	}
 
-	// 자재 정보 수정
 
-	// 자재 정보 삭제 => 동시에 삭제됨
-	@ResponseBody
-	@PostMapping("/ajax/mdelinfo") // requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
-	public int mDeleteInfo(@RequestBody MaterialVO vo) {
-		// System.out.println(vo.getDelmno()+"=================>>>>>>>>>>>>>>");
-		return mService.deleteMatrailInfo(vo.getDelmno());
-	}
-
+		// 자재 정보 상세 조회(단건)
+//		@ResponseBody
+//		@GetMapping("/ajax/mInfoView")
+//		public String selectInfo(@RequestParam String mno, Model model) {
+//			model.addAttribute("mInfo", mService.selectInfo(mno));
+//			return "material/mInfoView";			
+//		
+//		}
+//		
+		@ResponseBody
+		@GetMapping("/ajax/mInfoView")
+		public MaterialVO selectInfo(@RequestBody MaterialVO vo) {			
+			return mService.selectInfo(vo.getMNo());				
+		}
+		
+		
+		
+		// 자재 정보 수정
+		@GetMapping("/mupdate/{mno}")
+	    public String edit(@PathVariable("mno") String mno, Model model) {
+			MaterialVO mvo = mService.selectInfo(mno);
+			model.addAttribute("material", mvo);
+	        return "material/mInfoUpdate";
+	    }
+		
+		// 자재 정보 삭제 => 동시에 삭제됨
+		@ResponseBody
+		@PostMapping("/ajax/mdelinfo") // requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
+		public int mDeleteInfo(@RequestBody MaterialVO vo) {
+			return mService.deleteMatrailInfo(vo.getDelmno());
+      }
 	// =============================생산관리=======================
 	// 생산계획 list에 ajax주는 것
 	@GetMapping("/plan")

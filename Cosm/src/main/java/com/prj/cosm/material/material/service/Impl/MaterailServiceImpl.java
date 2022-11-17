@@ -22,9 +22,9 @@ public class MaterailServiceImpl implements MaterialService {
 	}
 
 	@Override
-	public MaterialVO selectInfo(MaterialVO mVO) {
+	public MaterialVO selectInfo(String mno) {
 		// 자재정보 단건조회 (상세조회)
-		return null;
+		return mMapper.selectInfo(getComId());
 	}
 
 	@Override
@@ -46,8 +46,7 @@ public class MaterailServiceImpl implements MaterialService {
 		for (String no : mNo) {
 			result += mMapper.deleteMatrailInfo(no);
 		}
-		int a = result > 0 ? 1 : 0;
-		return a;
+		return result;
 	}
 
 	@Override
@@ -56,16 +55,31 @@ public class MaterailServiceImpl implements MaterialService {
 		return mMapper.mioList();
 	}
 
-	@Override
+	/*@Override
 	public MaterialVO getMno() {
 		// 자재번호 조회하기
 		return mMapper.getMno();
 	}
-
+*/
 	@Override
 	public List<MaterialVO> findComNm() {
 		// 거래처 명 찾기
 		return mMapper.findComNm();
 	}
 
+
+
+	@Override
+	public int registerMCompany(MaterialVO mVO) {
+		// 신규거래처 등록
+		return mMapper.registerMCompany(mVO);
+	}
+
+	@Override
+	public MaterialVO getComId() {
+		// 거래처 번호 조회
+		return mMapper.getComId();
+	}
+
+	
 }

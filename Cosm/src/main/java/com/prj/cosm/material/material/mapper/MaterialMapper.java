@@ -5,10 +5,8 @@ import java.util.List;
 import com.prj.cosm.material.material.service.MaterialVO;
 
 public interface MaterialMapper {
-	
-	// 자재번호 조회
-	public MaterialVO getMno();		
 
+	
 	// 자재정보 전체조회
 	public List<MaterialVO> mList();
 
@@ -27,15 +25,19 @@ public interface MaterialMapper {
 	// 날짜로 자재 검색
 
 	// 자재명으로 자재 검색
-	
-	// 최종수정일로 재고변동 검색 
+
+	// 최종수정일로 재고변동 검색
 
 	// 자재 변동 리스트 전체 조회
 	public List<MaterialVO> mioList();
-	
+
 	// 거래처 명 찾기
 	public List<MaterialVO> findComNm();
-			
 
+	// 신규 거래처 등록
+	public int registerMCompany(MaterialVO mvo);
+
+	// 거래처번호 조회
+	public MaterialVO getComId();
 
 }
