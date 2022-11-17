@@ -9,7 +9,10 @@ public interface EmpMapper {
 	public List<EmpVO> empSelectList(int no);
 
 	// 조회(로그인)
-	public EmpVO empSelect(String usersNo);
+	public EmpVO empSelect(String usersId);
+
+	// 상세조회
+	public EmpVO userInfoSelect(String usersNo);
 
 	// 가입(직원 가입)
 	public int empInsert(EmpVO vo);
