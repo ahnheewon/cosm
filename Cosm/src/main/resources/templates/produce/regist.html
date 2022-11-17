@@ -29,30 +29,52 @@
     </script>
 </head>
 <body>
-	<div layout:fragment="content">
-		<div class="row g-3 align-items-center">
-			<div class="col-auto">
-				<label for="inputPassword6" class="col-form-label">Password</label>
-			</div>
-			<div class="col-auto">
-				<input type="password" id="inputPassword6" class="form-control"
-					aria-describedby="passwordHelpInline">
-			</div>
-			<div class="col-auto">
-				<span id="passwordHelpInline" class="form-text"> Must be 8-20
-					characters long. </span>
-			</div>
-		</div>
-		<select class="form-select" aria-label="Default select example" style="width: 30%">
-			<option selected>Open this select menu</option>
-			<option value="1">One</option>
-			<option value="2">Two</option>
-			<option value="3">Three</option>
-		</select>
-
-
+	<div layout:fragment="content" style="padding-top: 30px">
+		
+		
+		<hr style="width: 100%">
 		<h3>생산완료된 생산지시 리스트</h3>
 		<div id="grid2"></div>
+		<hr style="width: 100%">
+		<form class="row g-3" style="margin-left: 30px; margin-right: 30px;">
+			<div class="col-md-4">
+				<label for="inputEmail4" class="form-label">Email</label> <input
+					type="text" class="form-control" id="inputEmail4" >
+			</div>
+			<div class="col-md-4">
+				<label for="inputPassword4" class="form-label">Password</label> <input
+					type="password" class="form-control" id="inputPassword4" >
+			</div>
+			<div class="col-md-4">
+				<label for="inputAddress" class="form-label">Address</label> <input
+					type="text" class="form-control" id="inputAddress"
+					placeholder="1234 Main St">
+			</div>
+			<div class="col-md-4">
+				<label for="inputAddress2" class="form-label">Address 2</label> <input
+					type="text" class="form-control" id="inputAddress2"
+					placeholder="Apartment, studio, or floor">
+			</div>
+			<div class="col-md-4">
+				<label for="inputCity" class="form-label">City</label> <input
+					type="text" class="form-control" id="inputCity">
+			</div>
+			<div class="col-md-4">
+				<label for="inputState" class="form-label">State</label>
+				 <select id="inputState" class="form-select">
+					<option selected>Choose...</option>
+					<option>...</option>
+				</select>
+			</div>
+		
+			
+			<div class="col-12">
+				<button type="submit" class="btn btn-dark btn-sm"  style="float: right">완제품 등록</button>
+			</div>
+		</form>
+
+
+
 
 		<hr style="width: 100%">
 		<h3>완제품 등록 리스트</h3>
