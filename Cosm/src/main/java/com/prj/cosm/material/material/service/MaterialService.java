@@ -4,13 +4,11 @@ import java.util.List;
 
 
 public interface MaterialService {
-	// 자재번호 조회
-	public MaterialVO getMno();
 	
 	// 자재정보 전체조회
 	public List<MaterialVO> mList(); 
 	// 자재정보 단건조회 (상세조회) 
-	public MaterialVO selectInfo(MaterialVO mVO);
+	public MaterialVO selectInfo(String mno);
 	
 	// 신규 자재 정보 등록
 	public int insertMatarialInfo(MaterialVO mVO);
@@ -30,6 +28,13 @@ public interface MaterialService {
 	
 	// 거래처 명 찾기
 	public List<MaterialVO> findComNm();
+	
+	// 신규 거래처 등록
+	public int registerMCompany(MaterialVO mVO); 
+	
+	// 거래처번호 조회
+	public MaterialVO getComId();
+		
 		
 	
 }

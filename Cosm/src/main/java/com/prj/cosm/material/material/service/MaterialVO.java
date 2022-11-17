@@ -19,9 +19,6 @@ public class MaterialVO {
 	private int mPrice; // 가격
 	private int mStock; // 현재 재고
 	
-	private int mCompanyId; // 거래처번호
-	private String mCompanyNm; // 거래처이름
-	
 	private String mUnitCode; // 단위코드
 	private String mUnitNm; // 단위이름(L,Kg...)
 	private String mInfo; // 상세정보
@@ -40,16 +37,22 @@ public class MaterialVO {
 	private int mioInQntt; // 입고수량
 	private int mioOutQntt; // 출고수량
 	
-	private int increase; // 증감 
+	private String mioInId; // 입고번호
+	private String mioOutId; // 출고번호
 
-	private int mioInId; // 입고번호
-	private int mioOutId; // 출고번호
-
-	private int mioLOT; // LOT_NO
+	private String mioLOT; // LOT_NO
 
 	private String mioMrgNm; // 담당자명
 	private int mioOrderId; // 발주번호
 	private String mioProgress; // 진행코드
 
-	private List<String> delmno; 
+	private List<String> delmno; // 삭제시 매치되는 자재번호
+	private int increase; // 증감 
+	
+	//3. 자재 거래처 정보
+	private int mCompanyId; // 자재 거래처번호
+	private String mCompanyNm; // 자재 거래처이름
+	private String mCompanyTel; // 자재 거래처 번호
+	private String mMngNm; // 자재 거래처 담당자 이름
+	private String mCompanyAdd; //자재 거래처 주소
 }

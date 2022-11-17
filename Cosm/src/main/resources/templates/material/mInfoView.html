@@ -44,34 +44,37 @@
 	<div layout:fragment="content">
 
 		<div class="container">
-			<h2>자재 정보 등록 페이지</h2>
-			<!--자재정보 등록 form-->
-			<form id="frm" name="frm" method="post" action="/minsert">
+			<h2>자재 정보 수정 페이지</h2>
+			<!--자재 정보 수정 페이지 form-->
+			
+			<form id="mInfoFrm" name="mInfoFrm"  th:action="@{'/mupdate/' + ${material.mno}}" method="get">
+        	<input type="hidden" name="_method" value="put" />
+        	<input type="hidden" name="mno" th:value="${material.mno}" />
 				
 				<input type="hidden" th:name="${_csrf.parameterName}"
 							th:value="${_csrf.token}" />
 				<div class="row p-3">
 					<div class="col">
 						<label for="input" class="col-form-label">자재번호</label> <input
-							type="text" class="form-control" name="mNo">
+							type="text" class="form-control" name="mNo" th:value="${material.mNo}">
 
 					</div>
 
 					<div class="col">
 						<label for="input" class="col-form-label">자재명</label> <input
-							type="text" class="form-control" name="mName">
+							type="text" class="form-control" name="mName" th:value="${material.mName}">
 					</div>
 				</div>
 
 				<div class="row p-3">
 					<div class="col">
 						<label for="input" class="col-form-label">거래처번호</label> <input
-							type="text" class="form-control" id="selectCno" name="mCompanyId">
+							type="text" class="form-control" id="selectCno" name="mCompanyId" th:value="${material.mCompanyId}">
 					</div>
 
 					<div class="col">
 						<label for="input" class="col-form-label">거래처명</label> <input
-							type="text" class="form-control" name="mCompanyNm">
+							type="text" class="form-control" name="mCompanyNm" th:value="${material.mCompanyNm}">
 					</div>
 				</div>
 
@@ -79,7 +82,7 @@
 					<div class="col">
 						<div class="form-group">
 							<label for="exampleFormControlSelect1" class="col-form-label">자재분류</label>
-							<input type="text" class="form-control" name="mCategory">
+							<input type="text" class="form-control" name="mCategory" th:value="${material.mCategory}">
 							<!-- <select class="form-control" id="exampleFormControlSelect1"  name="mCategory" >            
         <option>원자재</option>
         <option>부품</option>
@@ -89,7 +92,7 @@
 					<div class="col">
 						<div class="form-group">
 							<label for="exampleFormControlSelect1" class="col-form-label">자재단위</label>
-							<input type="text" class="form-control" name="mUnitCode">
+							<input type="text" class="form-control" name="mUnitCode" th:value="${material.mUnitCode}">
 							<!-- <select class="form-control" id="exampleFormControlSelect1" name="mUnitCode" >            
             <option>L</option>
             <option>Kg</option>
@@ -102,12 +105,12 @@
 					</div>
 					<div class="col">
 						<label for="input" class="col-form-label">단가</label> <input
-							type="text" class="form-control" name="mPrice">
+							type="text" class="form-control" name="mPrice" th:value="${material.mPrice}">
 					</div>
 				</div>
 				<div class="row p-3">
 					<label for="input" class="col-form-label">자재상세정보</label>
-					<textarea class="form-control col-sm-5" rows="5" name="mInfo"></textarea>
+					<textarea class="form-control col-sm-5" rows="5" name="mInfo" th:value="${material.mInfo}"></textarea>
 				</div>
 				<div class="form-group">
 					<label for="exampleFormControlFile1">첨부파일</label> <input
