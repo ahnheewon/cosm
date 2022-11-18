@@ -15,10 +15,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
 import com.prj.cosm.material.material.service.MaterialService;
 import com.prj.cosm.material.material.service.MaterialVO;
+import com.prj.cosm.produce.bom.service.BomService;
+import com.prj.cosm.produce.bom.service.BomVO;
+import com.prj.cosm.produce.goods.service.GoodsService;
+import com.prj.cosm.produce.goods.service.GoodsVO;
 import com.prj.cosm.produce.instruct.service.InsService;
 import com.prj.cosm.produce.instruct.service.InsVO;
 import com.prj.cosm.produce.plan.service.PlanService;
@@ -42,8 +47,8 @@ public class MainController {
 
 	@Autowired
 	EquipService eService;
-		
-  @Autowired
+
+	@Autowired
 	MaterialService mService;
 
 	@Autowired
@@ -52,91 +57,93 @@ public class MainController {
 	@Autowired
 	InsService insService;
 
-
 	@Autowired
 	RegistService registService;
-		// 첫 화면
-		@RequestMapping("/")
-		public String main() {
-			return "/equipment/main";
-		}
-		
-		//
-		@RequestMapping("/equipment/main")
-		public String equipmentMain() {
-			return "/equipment/main";
-		}
-		
-		// pno, eno 값뿌리기.
-		@RequestMapping("/equipment/process")
-		public String equipmentProgress(Model model) {
-			
-			model.addAttribute("pno",eService.getProcessNo().getProcessNo());
-			model.addAttribute("eno",eService.getEquipNo().getEquipNo());
-			model.addAttribute("ep",eService.getProcessList());
-			model.addAttribute("epFirst",eService.getProcessList());
-			
+
+	@Autowired
+	BomService bomService;
+
+	@Autowired
+	GoodsService goodsService;
+
+	// 첫 화면
+	@RequestMapping("/")
+	public String main() {
+		return "/equipment/main";
+	}
+
+	//
+	@RequestMapping("/equipment/main")
+	public String equipmentMain() {
+		return "/equipment/main";
+	}
+
+	// pno, eno 값뿌리기.
+	@RequestMapping("/equipment/process")
+	public String equipmentProgress(Model model) {
+
+		model.addAttribute("pno", eService.getProcessNo().getProcessNo());
+		model.addAttribute("eno", eService.getEquipNo().getEquipNo());
+		model.addAttribute("ep", eService.getProcessList());
+		model.addAttribute("epFirst", eService.getProcessList());
+
 		return "/equipment/process";
-		}
-				
-		// 공정 전체 리스트 조회 데이터
-		@GetMapping("/equipment/processList")
-		@ResponseBody
-		public List<EquipVO> progress(){
-		
+	}
+
+	// 공정 전체 리스트 조회 데이터
+	@GetMapping("/equipment/processList")
+	@ResponseBody
+	public List<EquipVO> progress() {
+
 		return eService.getProcessList();
-		}
-		
-		// 공정 등록
-		@PostMapping("/equipment/insertProcess")
-		public String insertProcess(EquipVO vo, RedirectAttributes ratt) {
-				Map<String, Object> result = eService.insertProcess(vo);
-				ratt.addFlashAttribute("msg",result.get("result")+"건이 등록되었습니다.");
-				return "redirect:/equipment/process"; 
-		}
-		
-		
-		// 설비 전체 리스트 조회 데이터
-		@GetMapping("/equipment/equipList")
-		@ResponseBody
-		public List<EquipVO> equip(){
-		
+	}
+
+	// 공정 등록
+	@PostMapping("/equipment/insertProcess")
+	public String insertProcess(EquipVO vo, RedirectAttributes ratt) {
+		Map<String, Object> result = eService.insertProcess(vo);
+		ratt.addFlashAttribute("msg", result.get("result") + "건이 등록되었습니다.");
+		return "redirect:/equipment/process";
+	}
+
+	// 설비 전체 리스트 조회 데이터
+	@GetMapping("/equipment/equipList")
+	@ResponseBody
+	public List<EquipVO> equip() {
+
 		return eService.getEquipList();
-		}
-		
-		// 설비 등록 (설비별 가동시간도 함께 등록이 돼요!)
-		@PostMapping("/equipment/insertEquip")
-		public String insertEquip(EquipVO vo) {
-			eService.insertEquip(vo);
+	}
+
+	// 설비 등록 (설비별 가동시간도 함께 등록이 돼요!)
+	@PostMapping("/equipment/insertEquip")
+	public String insertEquip(EquipVO vo) {
+		eService.insertEquip(vo);
 		return "redirect:/equipment/process";
-		}
-		
-		// 설비 단건 조회
-		@GetMapping("/equipment/getEquipInfo")
-		@ResponseBody
-		public EquipVO getEquipInfo(Model model, int equipNo) {
-			return eService.getEquipInfo(equipNo);
-			
-		}
-		
-		// 설비 수정!!!
-		@PostMapping("/equipment/updateEquip")
-		@ResponseBody
-		public String updateEquip(EquipVO vo) {
-			eService.updateEquip(vo);
+	}
+
+	// 설비 단건 조회
+	@GetMapping("/equipment/getEquipInfo")
+	@ResponseBody
+	public EquipVO getEquipInfo(Model model, int equipNo) {
+		return eService.getEquipInfo(equipNo);
+
+	}
+
+	// 설비 수정!!!
+	@PostMapping("/equipment/updateEquip")
+	@ResponseBody
+	public String updateEquip(EquipVO vo) {
+		eService.updateEquip(vo);
 		return "redirect:/equipment/process";
-		}
-		
-		// 공정 단건 조회
-				@GetMapping("/equipment/getProcessInfo")
-				@ResponseBody
-				public EquipVO getProcessInfo(Model model, int processNo) {
-					return eService.getProcessInfo(processNo);
-					
-				}
+	}
 
+	// 공정 단건 조회
+	@GetMapping("/equipment/getProcessInfo")
+	@ResponseBody
+	public EquipVO getProcessInfo(Model model, int processNo) {
+		return eService.getProcessInfo(processNo);
 
-
+	}
 
 	// 첫 화면
 	@GetMapping("/main")
@@ -200,7 +207,7 @@ public class MainController {
 	public int userDelete(EmpVO empVO) {
 		return service.userDelete(empVO);
 	}
-	
+
 	@GetMapping("/userInfo")
 	public String userInfo() {
 		return "/users/userInfo";
@@ -213,9 +220,7 @@ public class MainController {
 		return service.checkId(usersId);
 	}
 
-	
-	
-	//영업 start =======================================================
+	// 영업 start =======================================================
 	// 고객 주문목록 페이지
 	@RequestMapping("/coder")
 	public List<OrdersVO> client(Model model) {
@@ -258,7 +263,7 @@ public class MainController {
 	// 영업팀 -----------------------------------
 	// 영업 - 주문조회 리스트
 	@ResponseBody
-	@GetMapping("/ajax/orders") //url
+	@GetMapping("/ajax/orders") // url
 	public List<OrdersVO> ajaxOrder(Model model) {
 		return oService.salesOrderList();
 	}
@@ -270,8 +275,8 @@ public class MainController {
 		// System.out.println(vo.getDelmno()+"=================>>>>>>>>>>>>>>");
 		return oService.deleteCheck(vo.getNoList());
 	}
-	
-	//체크박스 -> 생산요청 상태변경
+
+	// 체크박스 -> 생산요청 상태변경
 	@ResponseBody
 	@PostMapping("a/upPro")
 
@@ -296,52 +301,48 @@ public class MainController {
 
 	/* main - 주문목록조회 = ajax, get */
 
-	//영업 end =======================================================
-
+	// 영업 end =======================================================
 
 	// 자재팀 영역
 
-		// 자재 정보 등록폼
-		@GetMapping("minsert")
-		public String mInsertForm(Model model) {
-			// model.addAttribute("mno",mService.getMno().getMNo());
-			return "material/mInfoInsert";
-		}
+	// 자재 정보 등록폼
+	@GetMapping("minsert")
+	public String mInsertForm(Model model) {
+		// model.addAttribute("mno",mService.getMno().getMNo());
+		return "material/mInfoInsert";
+	}
 
-		// 자재 정보 등록창
-		@PostMapping("minsert")
-		public String mInsert(MaterialVO mVO, RedirectAttributes ratt) {
-			mService.insertMatarialInfo(mVO);
-			return "material/material"; // 목록으로 돌아가기
-		}
+	// 자재 정보 등록창
+	@PostMapping("minsert")
+	public String mInsert(MaterialVO mVO, RedirectAttributes ratt) {
+		mService.insertMatarialInfo(mVO);
+		return "material/material"; // 목록으로 돌아가기
+	}
 
-		// 거래처 이름 찾기
-		@ResponseBody
-		@GetMapping("/ajax/minsert")
-		public List<MaterialVO> findComNm() {
-			return mService.findComNm();
-		}
+	// 거래처 이름 찾기
+	@ResponseBody
+	@GetMapping("/ajax/minsert")
+	public List<MaterialVO> findComNm() {
+		return mService.findComNm();
+	}
 
-		// 신규거래처 등록폼
-		@GetMapping("mregcom")
-		public String mRegComForm(Model model) {
-			model.addAttribute("comId",mService.getComId().getMCompanyId());
-			System.out.println("넘기는 값" + model.addAttribute("comId",mService.getComId().getMCompanyId()));
-			return "material/mRegCom";
-		}
+	// 신규거래처 등록폼
+	@GetMapping("mregcom")
+	public String mRegComForm(Model model) {
+		model.addAttribute("comId", mService.getComId().getMCompanyId());
+		System.out.println("넘기는 값" + model.addAttribute("comId", mService.getComId().getMCompanyId()));
+		return "material/mRegCom";
+	}
 
-		// 신규거래처 등록창
-		@PostMapping("mregcom")
-		public String mRegCom(MaterialVO mvo) {
-			System.out.println("거래처번호 : "+ mvo);
-			mService.registerMCompany(mvo);
-			
-			return "material/mInfoInsert";
-			 
-		}
+	// 신규거래처 등록창
+	@PostMapping("mregcom")
+	public String mRegCom(MaterialVO mvo) {
+		System.out.println("거래처번호 : " + mvo);
+		mService.registerMCompany(mvo);
 
+		return "material/mInfoInsert";
 
-
+	}
 
 	// 자재 정보 리스트, 재고 변동현황
 	@ResponseBody
@@ -358,8 +359,7 @@ public class MainController {
 		return "material/material";
 	}
 
-
-		// 자재 정보 상세 조회(단건)
+	// 자재 정보 상세 조회(단건)
 //		@ResponseBody
 //		@GetMapping("/ajax/mInfoView")
 //		public String selectInfo(@RequestParam String mno, Model model) {
@@ -368,28 +368,27 @@ public class MainController {
 //		
 //		}
 //		
-		@ResponseBody
-		@GetMapping("/ajax/mInfoView")
-		public MaterialVO selectInfo(@RequestBody MaterialVO vo) {			
-			return mService.selectInfo(vo.getMNo());				
-		}
-		
-		
-		
-		// 자재 정보 수정
-		@GetMapping("/mupdate/{mno}")
-	    public String edit(@PathVariable("mno") String mno, Model model) {
-			MaterialVO mvo = mService.selectInfo(mno);
-			model.addAttribute("material", mvo);
-	        return "material/mInfoUpdate";
-	    }
-		
-		// 자재 정보 삭제 => 동시에 삭제됨
-		@ResponseBody
-		@PostMapping("/ajax/mdelinfo") // requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
-		public int mDeleteInfo(@RequestBody MaterialVO vo) {
-			return mService.deleteMatrailInfo(vo.getDelmno());
-      }
+	@ResponseBody
+	@GetMapping("/ajax/mInfoView")
+	public MaterialVO selectInfo(@RequestBody MaterialVO vo) {
+		return mService.selectInfo(vo.getMNo());
+	}
+
+	// 자재 정보 수정
+	@GetMapping("/mupdate/{mno}")
+	public String edit(@PathVariable("mno") String mno, Model model) {
+		MaterialVO mvo = mService.selectInfo(mno);
+		model.addAttribute("material", mvo);
+		return "material/mInfoUpdate";
+	}
+
+	// 자재 정보 삭제 => 동시에 삭제됨
+	@ResponseBody
+	@PostMapping("/ajax/mdelinfo") // requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
+	public int mDeleteInfo(@RequestBody MaterialVO vo) {
+		return mService.deleteMatrailInfo(vo.getDelmno());
+	}
+
 	// =============================생산관리=======================
 	// 생산계획 list에 ajax주는 것
 	@GetMapping("/plan")
@@ -510,16 +509,82 @@ public class MainController {
 	// BOM 페이지 이동
 	@GetMapping("/bom")
 	public String bom(Model model) {
-
+		model.addAttribute("info", bomService.selectBomNo());
 		return "produce/bom";
 	}
 
-	// 제품 페이지 이동
-	@GetMapping("/product")
-	public String product(Model model) {
-
-		return "produce/product";
+	// BOM list에 ajax
+	@GetMapping("produce/bomList")
+	@ResponseBody
+	public List<BomVO> bomList() {
+		return bomService.selectBomList();
 	}
+
+	// BOM 등록
+	@PostMapping("bomInsert")
+	public String insertBomInfo(BomVO bomVO) {
+		bomService.insertBomInfo(bomVO);
+		return "redirect:bom";
+	}
+
+	// BOM 수정
+	@PostMapping("bomUpdate")
+	public String updateBomInfo(BomVO bomVO, RedirectAttributes ratt) {
+		int result = bomService.updateBomInfo(bomVO);
+		if (result == 1) {
+			ratt.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+		} else {
+			ratt.addAttribute("msg", "정상적으로 수정되지 않았습니다.");
+		}
+		return "redirect:bom";
+	}
+
+	// BOM 삭제
+	@GetMapping("produce/bomDelete")
+	@ResponseBody
+	public int deleteBomInfo(int bomNo, RedirectAttributes ratt) {
+		return bomService.deleteBomInfo(bomNo);
+	}
+
+	// 제품 페이지 이동
+	@GetMapping("/goods")
+	public String Goods(Model model) {
+		model.addAttribute("info", goodsService.selectGoodNo());
+		return "produce/goods";
+	}
+
+	// 제품 list에 ajax
+	@GetMapping("produce/goodsList")
+	@ResponseBody
+	public List<GoodsVO> goodsList() {
+		return goodsService.selectGoodList();
+	}
+
+	// 제품 등록
+	@PostMapping("goodsInsert")
+	public String insertgoodsInfo(GoodsVO goodsVO) {
+		goodsService.insertGoodInfo(goodsVO);
+		return "redirect:goods";
+	}
+
+	// 제품정보 수정
+	@PostMapping("goodsUpdate")
+	public String updateGoodsInfo(GoodsVO goodsVO, RedirectAttributes ratt) {
+		int result = goodsService.updateGoodInfo(goodsVO);
+		if (result == 1) {
+			ratt.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+		} else {
+			ratt.addAttribute("msg", "정상적으로 수정되지 않았습니다.");
+		}
+		return "redirect:goods";
+	}
+	
+	// 제품정보 삭제
+		@GetMapping("produce/goodsDelete")
+		@ResponseBody
+		public int deleteGoodsInfo(int goodsNo, RedirectAttributes ratt) {
+			return goodsService.deleteGoodInfo(goodsNo);
+		}
 
 	// 불량관리 페이지 이동
 	@GetMapping("/proError")

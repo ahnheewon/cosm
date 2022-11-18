@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.cosm.produce.goods.mapper.GoodsMapper">
+
+<!-- 전체조회 -->
+<select id="getGoodList" resultType="GoodsVO">
+	SELECT goods_no, goods_name, goods_standard, goods_contents, goods_check, 
+		   goods_date, code_name as unit_code
+	FROM produce_goods JOIN code
+    					ON produce_goods.unit_code = code.code_no
+    ORDER BY goods_no
+</select>
+
+<!-- 제품번호 -->
+<select id="getGoodNo" resultType="GoodsVO">
+	SELECT NVL(MAX(goods_no), 0) + 1 as goods_no
+	FROM produce_goods
+</select>
+
+<!-- 등록 -->
+<select id="insertGood" parameterType="GoodsVO">
+	INSERT INTO produce_goods
+			                (
+			                goods_no, 
+			                goods_name, 
+			                goods_standard, 
+			                goods_contents, 
+			                goods_check,
+			                goods_date, 
+			                unit_code) 
+					VALUES (
+			                #{goodsNo}, 
+			                #{goodsName}, 
+			                #{goodsStandard}, 
+			                #{goodsContents}, 
+			                #{goodsCheck},
+			                #{goodsDate}, 
+			               (SELECT code_no FROM code 
+        					WHERE code_name = #{unitCode} )
+       						) 
+</select>
+<!-- 수정 -->
+<update id="updateGood" parameterType="GoodsVO">
+	UPDATE produce_goods
+		<set>
+			<if test="goodsName != null and !goodsName.equals('')">
+				goods_name = #{goodsName},
+			</if>
+			<if test="goodsStandard != null and !goodsStandard.equals('')">
+				goods_standard = #{goodsStandard},
+			</if>
+			<if test="goodsContents != null and !goodsContents.equals('')">
+				goods_contents = #{goodsContents},
+			</if>
+			<if test="goodsCheck != null and !goodsCheck.equals('')">
+				goods_check = #{goodsCheck},
+			</if>
+			<if test="goodsDate != null and !goodsDate.equals('')">
+				goods_date = #{goodsDate},
+			</if>
+			<if test="unitCode != null and !unitCode.equals('')">
+				unit_code = (SELECT code_no FROM code 
+        					WHERE code_name = #{unitCode} )  						
+			</if>
+		</set>
+	WHERE goods_no = #{goodsNo}
+</update>
+
+<!-- 삭제 -->
+<delete id="deleteGood">
+	DELETE FROM produce_goods WHERE goods_no = #{goodsNo}
+</delete>
+</mapper>
