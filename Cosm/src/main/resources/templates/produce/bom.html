@@ -29,8 +29,406 @@
     </script>
 </head>
 <body>
+<<<<<<< HEAD
 	<div layout:fragment="content">
 	<h3>BOM 리스트</h3>
+=======
+
+	<div layout:fragment="content"
+		style="margin-left: 30px; margin-right: 30px;">
+		<hr style="width: 100%">
+		<h3>BOM 리스트</h3>
+		<button type="button" class="btn btn-dark btn-sm"
+			onclick="deleteData();" style="float: right">BOM 삭제</button>
+		<button type="button" onclick="updateData();"
+			class="btn btn-dark btn-sm" data-bs-toggle="modal"
+			data-bs-target="#requestModala" style="float: right">BOM 수정</button>
+		<div id="grid"></div>
+
+		<hr style="width: 100%">
+		<h3>BOM 등록</h3>
+
+		<hr style="width: 100%">
+		<!-- BOM 등록 폼 -->
+		<form action="bomInsert" method="post" class="row g-3"
+			style="margin-left: 30px; margin-right: 30px;">
+			<!-- <sec:csrfInput/> -->
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}" />
+			<div class="col-md-3">
+				<label for="inputCity" class="form-label">BOM 번호</label> <input
+					type="number" name="bomNo" class="form-control" id="inputCity"
+					readonly="readonly">
+			</div>
+			<div class="col-md-3">
+				<label class="form-label">투입량</label> <input type="number"
+					name="bomQuantity" class="form-control" id="bacodeLabel">
+			</div>
+			<div class="col-md-3">
+				<label for="inputState" class="form-label">제품 번호</label> <select
+					id="inputState" name="bomProductNo" class="form-select">
+					<option selected>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+				</select>
+			</div>
+			<div class="col-md-3">
+				<label for="inputState" class="form-label">자재 번호</label> <select
+					id="inputState" name="bomMaterialNo" class="form-select">
+					<option selected>TPA1001</option>
+					<option>TPA1002</option>
+					<option>TPA1003</option>
+					<option>TPA1004</option>
+					<option>TPA1005</option>
+				</select>
+			</div>
+			<div class="col-12">
+				<button type="submit" class="btn btn-dark btn-sm"
+					style="float: right">BOM 등록</button>
+			</div>
+
+		</form>
+		<hr style="width: 100%">
+		<h3>제품 번호에따른 정보</h3>
+		<div id="grid2"></div>
+		<hr style="width: 100%">
+		<h3>자재 번호에따른 정보</h3>
+		<div id="grid3"></div>
+
+		<!-- BOM 수정 모달 -->
+		<div class="modal fade" id="requestModala" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-l">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">BOM 수정</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<form action="bomUpdate" method="post">
+						<!-- <sec:csrfInput/> -->
+						<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}" />
+						<div class="modal-body">
+							<div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">BOM 번호</span> <input
+										type="number" class="form-control" id="bomNo" name="bomNo"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
+
+								<div class="input-group mb-3">
+									<span class="input-group-text">투입량</span> <input type="number"
+										class="form-control" id="bomQuantity" name="bomQuantity"
+										aria-label="Username" aria-describedby="basic-addon2">
+								</div>
+
+								<div class="input-group mb-3">
+									<span class="input-group-text">제품 번호</span> <input
+										type="number" class="form-control"
+										id="bomProductNo" name="bomProductNo" aria-label="Username"
+										aria-describedby="basic-addon2">
+								</div>
+
+								<div class="input-group mb-3">
+									<span class="input-group-text">자재 번호</span> <input type="text"
+										class="form-control" name="bomMaterialNo"
+										id="bomMaterialNo" aria-label="Username"
+										aria-describedby="basic-addon3">
+								</div>
+
+								<div id="requestModalGrid" style="width: 100%;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary">수정</button>
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">취소</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+		<script>
+	window.onload = function (){
+		// bom번호 +1 로 등록
+		var info = '[[${info.bomNo}]]';
+		$('#inputCity').val(info)	
+		
+		bomList();
+		goodsList();
+		
+		//체크박스 하나만 선택
+		grid.on('check', (ev) => {
+			for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
+				if(i!=`${ev.rowKey}`){
+					grid.uncheck(i);
+				}
+			}
+			for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
+				grid2.uncheck(i);
+			}
+		});
+
+		grid2.on('check', (ev) => {
+			for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
+				grid.uncheck(i);
+			}
+			for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
+				if(i!=`${ev.rowKey}`){
+					grid2.uncheck(i);
+				}
+			}
+		});
+			
+		grid.on('uncheck', (ev) => {
+			$('input:text').val('');
+		});
+			
+		grid2.on('uncheck', (ev) => {
+			$('input:text').val('');
+		});
+			
+		$('#grid span').remove();
+		$('#grid2 span').remove();
+	};
+	
+	
+	
+	//bom리스트 그리드
+	var grid = new tui.Grid({
+		el: document.getElementById('grid'),
+		rowHeaders: ['checkbox'],
+		minBodyHeight: 30,
+		pageOptions: {
+			useClient: true, // front에서만 페이징 하는 속성
+			perPage: 5
+		},
+		scrollX: false,
+		scrollY: false,
+		columns: [
+			{
+				header: 'BOM번호',
+				name: 'bomNo',
+				filter: {
+				       type: 'select',
+				        showApplyBtn: true,
+				        showClearBtn: true
+				      },
+			},
+			{
+				header: '투입량',
+				name: 'bomQuantity',
+			},
+			{
+				header: '제품번호',
+				name: 'bomProductNo',
+			},
+			{
+				header: '제품이름',
+				name: 'goodsName',
+			},
+			{
+				header: '제품기준수량',
+				name: 'goodsStandard',
+			},
+			{
+				header: '제품상세정보',
+				name: 'goodsContents',
+			},
+			{
+				header: '자재번호',
+				name: 'bomMaterialNo',
+			},	
+			{
+				header: '자재명',
+				name: 'mname',
+			},	
+			{
+				header: '자재재고량',
+				name: 'mstock',
+			},	
+			{
+				header: '자재상세정보',
+				name: 'minfo',
+			},	
+			],
+		
+		});
+	
+	//제품정보 그리드
+	var grid2 = new tui.Grid({
+		el: document.getElementById('grid2'),
+		rowHeaders: ['checkbox'],
+		minBodyHeight: 30,
+		pageOptions: {
+			useClient: true, // front에서만 페이징 하는 속성
+			perPage: 5
+		},
+		scrollX: false,
+		scrollY: false,
+		columns: [
+			{
+				header: '제품번호',
+				name: 'goodsNo',
+				filter: {
+				       type: 'select',
+				        showApplyBtn: true,
+				        showClearBtn: true
+				      },
+			},
+			{
+				header: '제품명',
+				name: 'goodsName',
+			},
+			{
+				header: '제품기준수량',
+				name: 'goodsStandard',
+			},
+			{
+				header: '제품설명',
+				name: 'goodsContents',
+			},
+			{
+				header: '제품검수기준',
+				name: 'goodsCheck',
+			},
+			{
+				header: '제작기간',
+				name: 'goodsDate',
+			},
+			{
+				header: '단위코드',
+				name: 'unitCode',
+			},	
+			],
+		
+		});
+	
+	//자재정보 그리드
+	var grid3 = new tui.Grid({
+		el: document.getElementById('grid3'),
+		rowHeaders: ['checkbox'],
+		minBodyHeight: 30,
+		pageOptions: {
+			useClient: true, // front에서만 페이징 하는 속성
+			perPage: 5
+		},
+		scrollX: false,
+		scrollY: false,
+		columns: [
+			{
+				header: 'BOM번호',
+				name: 'bomNo',
+				filter: {
+				       type: 'select',
+				        showApplyBtn: true,
+				        showClearBtn: true
+				      },
+			},
+			{
+				header: '투입량',
+				name: 'bomQuantity',
+			},
+			{
+				header: '제품이름',
+				name: 'goodstName',
+			},
+			{
+				header: '제품기준수량',
+				name: 'productStandard',
+			},
+			{
+				header: '제품상세정보',
+				name: 'productContents',
+			},
+			{
+				header: '자재명',
+				name: 'mname',
+			},	
+			{
+				header: '자재재고량',
+				name: 'mstock',
+			},	
+			{
+				header: '자재상세정보',
+				name: 'minfo',
+			},	
+			],
+		
+		});
+		
+		
+		// bom리스트 불러오기
+		function bomList(){
+			$.ajax({
+				url: "produce/bomList",
+				method: "GET",
+				dataType: "JSON",
+				success: function (result) {
+					grid.resetData(result);
+					console.log(result);
+				},
+				error: function (reject) {
+					console.log(reject);
+				}
+		});
+		}
+		
+		// 제품리스트 불러오기
+		function goodsList(){
+			$.ajax({
+				url: "produce/goodsList",
+				method: "GET",
+				dataType: "JSON",
+				success: function (result) {
+					grid2.resetData(result);
+					console.log(result);
+				},
+				error: function (reject) {
+					console.log(reject);
+				}
+		});
+		}
+		
+		// bom수정
+		function updateData(){	
+			var datas1 = grid.getCheckedRows();
+			console.log(datas1)
+			var test = JSON.stringify(datas1);
+			$('#bomNo').val(datas1[0].bomNo);
+			$('#bomQuantity').val(datas1[0].bomQuantity);
+			$('#bomProductNo').val(datas1[0].bomProductNo);
+			$('#bomMaterialNo').val(datas1[0].bomMaterialNo);
+		}
+		
+		// bom삭제
+		function deleteData() {
+			var datas = grid.getCheckedRows();
+			console.log(datas);
+
+			for(bom of datas){
+				$.ajax({
+					url : 'produce/bomDelete',
+					type : 'get',
+					data : {bomNo : bom.bomNo},
+					success : function(data){
+						console.log(data);
+						bomList();
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				});
+				}
+		}
+	</script>
+>>>>>>> refs/heads/master
 	</div>
 </body>
 </html>
