@@ -14,8 +14,8 @@ public class MorderVO {
 	// 1. 자재 입출고 - 입,출고된 자재 리스트
 	
 	private String mioLotNo;// 입고LOT 
-	private String mioNo;// 입고번호
-	
+	private String inputId; //입고번호
+	private String outputId;//출고번호
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern="yyyy-MM-dd")
@@ -37,7 +37,7 @@ public class MorderVO {
 	
 	// 2. 발주관리
 	private String mioName; // 자재명
-	private String mNo; // 자재번호
+	private String mioNo; // 자재번호
 	private String mOrderid; // 발주번호
 	
 	private Integer moTtPrice;// 총금액

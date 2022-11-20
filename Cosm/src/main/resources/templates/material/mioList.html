@@ -61,10 +61,10 @@ inputGrid = new tui.Grid({
 	columns : // 컬럼명
 	[ {
 		header : '입고번호',
-		name : 'mioNo'
+		name : 'inputId'
 	}, {
 		header : '자재번호',
-		name : 'mcompanyId'
+		name : 'mioNo'
 	}, {
 		header : '자재명',
 		name : 'mioName'
@@ -93,19 +93,19 @@ moGrid = new tui.Grid({
 	scrollY : false, // 가로 스크롤
 	columns : [ {
 		header : '출고번호',
-		name : 'mioOutDate'
+		name : 'outputId'
 	}, {
 		header : '자재번호',
-		name : 'mcompanyId'
+		name : 'mioNo'
 	}, {
 		header : '자재명',
-		name : 'mcategory'
+		name : 'mioName'
 	}, {
 		header : '출고수량',
-		name : 'mname'
+		name : 'mioOutQntt'
 	}, {
 		header : '출고날짜',
-		name : 'mstock'
+		name : 'mioOutDate'
 	}],
 	pageOptions : {
 		perPage : 10
@@ -135,6 +135,23 @@ tui.Grid.applyTheme("normal", {
 	},
 
 });
+
+
+	function mioList(){
+		$.ajax({
+			url : "http://localhost:85/ajax/miolist",
+			method : "GET",
+			success : function(result) {
+				infoGrid.resetData((result.list1)); 
+				mioGrid.resetData((result.list2));
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+
+	}
+
 </script>
 </div>
 </body>
