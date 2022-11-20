@@ -43,6 +43,12 @@ public class PlanServiceImpl implements PlanService {
 		
 	}
 
+	@Override
+	public PlanVO selectInfo(int planNo) {
+		// TODO Auto-generated method stub
+		return mapper.selectInfo(selectPlanNo());
+	}
+
 	
 
 }

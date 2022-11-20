@@ -47,9 +47,10 @@
 
 			<div class="tab_content" id="all_content">
 				<h3>미계획 주문서 리스트</h3>
-				<button type="button" class="btn btn-dark btn-sm" onclick="insertData();"
-					data-bs-toggle="modal" data-bs-target="#requestModal"
-					style="float: right">생산계획 작성</button>
+				<button type="button" class="btn btn-dark btn-sm"
+					onclick="insertData();" data-bs-toggle="modal"
+					data-bs-target="#requestModal" style="float: right">생산계획
+					작성</button>
 				<div id="grid"></div>
 
 
@@ -62,6 +63,10 @@
 					class="btn btn-dark btn-sm" data-bs-toggle="modal"
 					data-bs-target="#requestModala" style="float: right">생산계획
 					수정</button>
+				<button type="button" onclick="selectData();"
+					class="btn btn-dark btn-sm" data-bs-toggle="modal"
+					data-bs-target="#requestModala" style="float: right">생산계획
+					상세조회</button>
 				<div id="grid2"></div>
 			</div>
 
@@ -92,10 +97,10 @@
 						<div class="modal-body">
 							<div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">생산계획번호</span> <input type="number"
-										class="form-control" id="planNoInput" name="planNo"
-										aria-label="Username" aria-describedby="basic-addon1"
-										readonly="readonly">
+									<span class="input-group-text">생산계획번호</span> <input
+										type="number" class="form-control" id="planNoInput"
+										name="planNo" aria-label="Username"
+										aria-describedby="basic-addon1" readonly="readonly">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">주문번호</span> <input type="number"
@@ -115,14 +120,14 @@
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
 								</div>
-								
+
 								<div class="input-group mb-3">
-									<span class="input-group-text">BOM번호</span> 
-									<select id="planBomNo" name="planBomNo" class="form-select">
-									<option selected>1</option>
-									<option>2</option>
-									<option>3</option>
-								</select>
+									<span class="input-group-text">BOM번호</span> <select
+										id="planBomNo" name="planBomNo" class="form-select">
+										<option selected>1</option>
+										<option>2</option>
+										<option>3</option>
+									</select>
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">주문량</span> <input type="number"
@@ -137,14 +142,16 @@
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">주문일자</span> <input type="date"
-										class="form-control"  name="orderDate" id="orderDate"
-										aria-label="Username" aria-describedby="basic-addon3" readonly="readonly">
+										class="form-control" name="orderDate" id="orderDate"
+										aria-label="Username" aria-describedby="basic-addon3"
+										readonly="readonly">
 								</div>
-								
+
 								<div class="input-group mb-3">
 									<span class="input-group-text">납기일자</span> <input type="date"
-										class="form-control"  name="deliveryDate" id="deliveryDate"
-										aria-label="Username" aria-describedby="basic-addon3" readonly="readonly">
+										class="form-control" name="deliveryDate" id="deliveryDate"
+										aria-label="Username" aria-describedby="basic-addon3"
+										readonly="readonly">
 								</div>
 
 								<div class="input-group mb-3">
@@ -196,35 +203,55 @@
 							<div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">생산계획번호</span> <input type="text"
-										class="form-control" id="planNo" name="planNo"
+										class="form-control" id="planNo2" name="planNo"
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
 								</div>
-
+								<div class="input-group mb-3">
+									<span class="input-group-text">주문번호</span> <input type="number"
+										class="form-control" id="planOrderNo2" name="planOrderNo"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">제품번호</span> <input type="number"
+										class="form-control" id="planProductNo2" name="planProductNo"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
+								
+								<div class="input-group mb-3">
+									<span class="input-group-text">BOM번호</span> <select
+										id="planBomNo2" name="planBomNo" class="form-select">
+										<option selected>1</option>
+										<option>2</option>
+										<option>3</option>
+									</select>
+								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">생산량</span> <input type="number"
-										class="form-control" id="planQuantity" name="planQuantity"
+										class="form-control" id="planQuantity2" name="planQuantity"
 										aria-label="Username" aria-describedby="basic-addon2">
 								</div>
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">시작일자</span> <input type="date"
 										class="form-control" placeholder="시작일자" name="planStart"
-										id="planStart" aria-label="Username"
+										id="planStart2" aria-label="Username"
 										aria-describedby="basic-addon3">
 								</div>
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">종료일자</span> <input type="date"
 										class="form-control" placeholder="종료일자" name="planEnd"
-										id="planEnd" aria-label="Username"
+										id="planEnd2" aria-label="Username"
 										aria-describedby="basic-addon4">
 								</div>
 
 
 								<div class="input-group">
 									<span class="input-group-text">기타사항</span>
-									<textarea class="form-control" name="planEx" id="planEx"
+									<textarea class="form-control" name="planEx" id="planEx2"
 										aria-label="With textarea"></textarea>
 								</div>
 
@@ -251,6 +278,8 @@
 			//생산계획리스트 불러오기
 			planList();
 			orderList();
+			bomList();
+			goodsList();
 			
 			
 			//체크박스 하나만 선택
@@ -307,6 +336,10 @@
 					name: 'planNo',
 				},
 				{
+					header: '주문번호',
+					name: 'planOrderNo',
+				},
+				{
 					header: '생산량',
 					name: 'planQuantity',
 				},
@@ -322,6 +355,14 @@
 					sortingType: 'desc',
 					sortable: true
 				},
+				{
+					header: 'BOM번호',
+					name: 'planBomNo',
+				},	
+				{
+					header: '제품번호',
+					name: 'planProductNo',
+				},	
 				{
 					header: '기타사항',
 					name: 'planEx',
@@ -472,33 +513,34 @@
 			
 			scrollX: false,
 			scrollY: false,
-			columns: [
-				{
-					header: '생산계획번호',
-					name: 'planNo',
+			columns : [ {
+				header : '제품번호',
+				name : 'goodsNo',
+				filter : {
+					type : 'select',
+					showApplyBtn : true,
+					showClearBtn : true
 				},
-				{
-					header: '생산량',
-					name: 'planQuantity',
-				},
-				{
-					header: '시작일자(desc)',
-					name: 'planStart',
-					sortingType: 'desc',
-					sortable: true
-				},
-				{
-					header: '종료일자(desc)',
-					name: 'planEnd',
-					sortingType: 'desc',
-					sortable: true
-				},
-				{
-					header: '기타사항',
-					name: 'planEx',
-				},	
-				
-				]
+			}, {
+				header : '제품명',
+				name : 'goodsName',
+			}, {
+				header : '제품기준수량',
+				name : 'goodsStandard',
+			}, {
+				header : '제품설명',
+				name : 'goodsContents',
+			}, {
+				header : '제품검수기준',
+				name : 'goodsCheck',
+			}, {
+				header : '제작기간',
+				name : 'goodsDate',
+			}, {
+				header : '단위코드',
+				name : 'unitCode',
+			}, ],
+
 			});
 		 //주문서 리스트 불러오기
 		 function orderList(){
@@ -553,6 +595,20 @@
 					}
 			});
 			}
+			// 제품리스트 불러오기
+			function goodsList() {
+				$.ajax({
+					url : "produce/goodsList",
+					method : "GET",
+					dataType : "JSON",
+					success : function(result) {
+						grid4.resetData(result);
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				});
+			}
 		//tab기능할때 grid 깨지는 거 방지
 		const selectMno = document.getElementById('programming');
 			selectMno.addEventListener('click',function(){
@@ -585,11 +641,14 @@
 			var planData=[];
 			var datas = grid2.getCheckedRows();
 			var test = JSON.stringify(datas);
-			$('#planNo').val(datas[0].planNo);	
-			$('#planQuantity').val(datas[0].planQuantity);
-			$('#planStart').val(datas[0].planStart);
-			$('#planEnd').val(datas[0].planEnd);
-			$('#planEx').val(datas[0].planEx);
+			$('#planNo2').val(datas[0].planNo);	
+			$('#planQuantity2').val(datas[0].planQuantity);
+			$('#planStart2').val(datas[0].planStart);
+			$('#planEnd2').val(datas[0].planEnd);
+			$('#planEx2').val(datas[0].planEx);
+			$('#planOrderNo2').val(datas[0].planOrderNo);
+			$('#planProductNo2').val(datas[0].planProductNo);
+			$('#planBomNo2').val(datas[0].planBomNo);
 		}
 					
 		// 삭제 
