@@ -1146,7 +1146,7 @@ public class MainController {
 		public int deleteGoodsInfo(int goodsNo, RedirectAttributes ratt) {
 			return goodsService.deleteGoodInfo(goodsNo);
 		}
->>>>>>> refs/heads/master
+
 
 	// 불량관리 페이지 이동
 	@GetMapping("/proError")
