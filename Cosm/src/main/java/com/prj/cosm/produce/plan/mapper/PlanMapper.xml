@@ -22,14 +22,20 @@
 				  plan_quantity,
 				  plan_start,
 				  plan_end,
-				  plan_ex
+				  plan_ex,
+				  plan_product_no,
+				  plan_bom_no,
+				  plan_order_no
 				  )
 		   VALUES(
 				  #{planNo},
 				  #{planQuantity},
 				  #{planStart},
 				  #{planEnd},
-				  #{planEx}
+				  #{planEx},
+				  #{planProductNo},
+				  #{planBomNo},
+				  #{planOrderNo}
 				  )
 </insert>
 
