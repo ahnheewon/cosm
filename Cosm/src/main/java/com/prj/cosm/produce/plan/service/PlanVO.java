@@ -18,4 +18,16 @@ public class PlanVO {
 	private int planProductNo;
 	private int planBomNo;
 	private int planOrderNo;
+	
+	//bom
+	private int bomNo;
+	private int bomQuantity;
+	
+	//제품
+	private int goodsNo;
+	private String goodsName;
+	private int goodsStandard;
+	private String goodsContents;
+	private String goodsCheck;
+	private String goods_date;
 }

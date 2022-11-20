@@ -22,14 +22,20 @@
 				  plan_quantity,
 				  plan_start,
 				  plan_end,
-				  plan_ex
+				  plan_ex,
+				  plan_product_no,
+				  plan_bom_no,
+				  plan_order_no
 				  )
 		   VALUES(
 				  #{planNo},
 				  #{planQuantity},
 				  #{planStart},
 				  #{planEnd},
-				  #{planEx}
+				  #{planEx},
+				  #{planProductNo},
+				  #{planBomNo},
+				  #{planOrderNo}
 				  )
 </insert>
 
@@ -47,8 +53,12 @@
 				plan_end = #{planEnd},
 			</if>
 			<if test="planEx != null and !planEx.equals('')">
-				plan_ex = #{planEx}
+				plan_ex = #{planEx},
 			</if>
+			<if test="planBomNo != null and !planBomNo.equals('')">
+				plan_bom_no = #{planBomNo}
+			</if>
+			
 		</set>
 	WHERE plan_no = #{planNo}
 </update>
