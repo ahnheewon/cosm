@@ -39,7 +39,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> requests
-				.antMatchers("/top", "/login", "/joinForm", "/empCheckId", "/empInsert", "/userSelect", "/planUpdate", "/planInsert", "/insUpdate", "/insInsert", "/registInsert", "/minsert","/ajax/mdelinfo")
+				.antMatchers("/top", "/login", "/joinForm", "/empCheckId", "/empInsert", "/userSelect", "/planUpdate", "/planInsert", "/insUpdate", "/insInsert", "/registInsert", "/minsert","/ajax/mdelinfo","/bomInsert", "/goodsInsert", "/goods")
 				.permitAll().antMatchers("/*").hasAuthority("ROLE_D0101").antMatchers("/*").hasAuthority("ROLE_D0102").anyRequest().authenticated()).formLogin()
 				.loginPage("/login").usernameParameter("userId").loginProcessingUrl("/login")
 				.successHandler(successHandler()).and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
