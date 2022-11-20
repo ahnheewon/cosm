@@ -39,8 +39,9 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> requests
-				.antMatchers("/top", "/login", "/joinForm", "/empCheckId", "/empInsert", "/userSelect", "/planUpdate", "/planInsert", "/insUpdate", "/insInsert", "/registInsert", "/minsert","/ajax/mdelinfo","/bomInsert", "/goodsInsert", "/goods")
-				.permitAll().antMatchers("/*").hasAuthority("ROLE_D0101").antMatchers("/*").hasAuthority("ROLE_D0102").anyRequest().authenticated()).formLogin()
+				.antMatchers("/","/top", "/login", "/joinForm", "/empCheckId", "/userInsert", "/userSelect", "/planUpdate", "/planInsert", "/insUpdate", "/insInsert", "/registInsert", "/minsert","/ajax/mdelinfo","/userCheckId")
+				.permitAll().antMatchers("/*").hasAuthority("ROLE_D0101").antMatchers("/*").hasAuthority("ROLE_D0102").antMatchers("/equipment/**").hasAuthority("ROLE_D0108").anyRequest().authenticated()).formLogin()
+
 				.loginPage("/login").usernameParameter("userId").loginProcessingUrl("/login")
 				.successHandler(successHandler()).and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
 				.invalidateHttpSession(true).deleteCookies("JSESSIONID").and().exceptionHandling()
