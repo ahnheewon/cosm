@@ -220,6 +220,16 @@ public class MainController {
 		return service.checkId(usersId);
 	}
 
+	@PostMapping("/userConfirm")
+	@ResponseBody
+	public int userConfirm(@RequestBody EmpVO vo) {
+		System.out.println("--------------------------------");
+		System.out.println(vo);
+		return service.userConfirm(vo);
+	}
+
+//	여기까지 진정욱
+
 	// 영업 start =======================================================
 	// 고객 주문목록 페이지
 	@RequestMapping("/coder")
