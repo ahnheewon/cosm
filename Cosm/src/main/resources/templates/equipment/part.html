@@ -34,7 +34,7 @@
 			        </div>
 			
 			        <div class="column">
-			          <h5>발주 내역</h5>
+			          <h5>변동 내역</h5>
 			          <div class="searchbox">
 			            <div class="header">
 			         	<button type="button" class="btn btn-dark btn-sm margin5"
@@ -64,7 +64,6 @@
 	const part = new tui.Grid({
 			    el: document.querySelector('#part'),
 			    pagination:true,
-			    rowHeaders: ['checkbox'],
 				pageOptions: {
 					useClient: true,
 					perPage: 4
@@ -72,20 +71,16 @@
 				
 			    columns: [
 			    {
-			        header: '설비명',
-			        name: 'equipName'
+			        header: '부품번호',
+			        name: 'partNo'
 			    },
 			    {
-			        header: '점검예정일',
-			        name: 'partDueDate'
+			        header: '부품명',
+			        name: 'partName'
 			    },
 			    {
-			        header: '점검이유',
-			        name: 'partReason'
-			    },
-			    {
-			        header: '특이사항',
-			        name: 'partPs'
+			        header: '적용설비',
+			        name: 'partEquipName'
 			    }
 			    ]
 			});
@@ -101,7 +96,7 @@
     
 	})
 	
-/*  발주 그리드  */	
+/*  변동 그리드  */	
 		const partBuyGrid = new tui.Grid({
 		    el: document.querySelector('#partBuy'),
 		    pagination:true,

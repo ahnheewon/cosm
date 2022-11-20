@@ -313,7 +313,7 @@ function filter(){
           }
         }
  */
-    })
+  })
 }
 
 /* 적용 공정 선택하게 하는 함수 */ 
@@ -687,15 +687,17 @@ function filter(){
 			        
 		})
 		
-	    /* 설비 그리드 셀 클릭-> 모달 팝업 이벤트 */
+	    /* 설비 그리드 행 클릭-> 모달 팝업 이벤트 */
 	    
-	    equipGrid.on('click', ev => {
-	    	const eno = equipGrid.getValue(ev.rowKey,ev.columnName);
+	    	equipGrid.on('click', ev => {
+	    	const enoRow = equipGrid.getRow(ev.rowKey);
+	    	const eno = enoRow.equipNo;
 	    	console.log(eno);
+	    	console.log(enoRow);
 	   /*  if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
 	    	console.log(ev);
 	    	
-	    	if(ev.columnName == 'equipNo'){
+	    	if(ev.rowKey == enoRow.rowKey){
 				if(eno != null){
 		    	const myModal3 = new bootstrap.Modal('#myModal3',{backdrop: 'static',keyboard:false})
 		    	// 생성 시 모달 속성을 넣어줍니다.
@@ -711,12 +713,13 @@ function filter(){
 		 /* 공정 그리드 셀 클릭-> 모달 팝업 이벤트 */
 		 
 	    processGrid.on('click', ev => {
-	    	const pno = processGrid.getValue(ev.rowKey,ev.columnName);
+	    	const pnoRow = processGrid.getRow(ev.rowKey); // 행 (객체)
+	    	const pno = pnoRow.processNo; // 행의 공정번호
 	    	console.log(pno);
 	   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
 	    	console.log(ev);
 	    	
-	    	if(ev.columnName == 'processNo'){
+	    	if(ev.rowKey == pnoRow.rowKey){
 				if(pno != null){
 		    	const myModal4 = new bootstrap.Modal('#myModal4',{backdrop: 'static',keyboard:false})
 		    	// 생성 시 모달 속성을 넣어줍니다.

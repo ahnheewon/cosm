@@ -55,7 +55,7 @@
 	</insert>
 		
 	<!-- 공사 수정 -->
-	<update id="updateEquip" parameterType="workVO">
+	<update id="updateWork" parameterType="workVO">
 	UPDATE equip
 	<set>
 		<if test="equipName !=null and !equipName.equals('')">

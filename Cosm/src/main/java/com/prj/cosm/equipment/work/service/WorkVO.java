@@ -14,12 +14,12 @@ public class WorkVO {
 
 	// 공사
 
-	private int workNo;
-	private int workEquipNo;
+	private Integer workNo;
+	private Integer workEquipNo;
 	private String workName;
 	private String workContent;
 	private String workCompany;
-	private int workPay;
+	private Integer workPay;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date workDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -30,9 +30,9 @@ public class WorkVO {
 	
 	// 결재 정보
 	
-	private int signWorkNo;
-	private int signEmpNo;
-	private int signSeq;
+	private Integer signWorkNo;
+	private Integer signEmpNo;
+	private Integer signSeq;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date signDate;
 	private String signCode;
@@ -44,7 +44,7 @@ public class WorkVO {
 	private String codeAdno;
 	
 	// 회원
-	private int usersNo;
+	private Integer usersNo;
 	private String usersName;
 	private String usersId;
 	private String usersPassword;
@@ -53,24 +53,24 @@ public class WorkVO {
 	private String usersAuthor; // 권한코드
 	
 	// 설비
-	private int equipNo;
+	private Integer equipNo;
 	private String equipName;
-	private int equipProcess; // 적용공정
+	private Integer equipProcess; // 적용공정
 	private String equipType;
 	private String equipPurpose;
-	private int equipCheckCycle;
+	private Integer equipCheckCycle;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date equipDate;
 
-	private int equipRate;
-	private int equipStdVibe;
-	private int equipStdTemp;
-	private int equipState;
-	private int unitCode;
+	private Integer equipRate;
+	private Integer equipStdVibe;
+	private Integer equipStdTemp;
+	private Integer equipState;
+	private Integer unitCode;
 
 	// 설비별 가동 시간
-	private int timeEquipNo;
+	private Integer timeEquipNo;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date timeStartDate;
@@ -79,10 +79,10 @@ public class WorkVO {
 	private Date timeEndDate;
 
 	// 실시간 측정
-	private int rtcNo;
-	private int rtcEquipNo;
-	private int rtcVibe;
-	private int rtcTemp;
+	private Integer rtcNo;
+	private Integer rtcEquipNo;
+	private Integer rtcVibe;
+	private Integer rtcTemp;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date rtcDate;

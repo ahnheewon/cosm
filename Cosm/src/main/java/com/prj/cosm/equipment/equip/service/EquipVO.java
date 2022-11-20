@@ -15,24 +15,24 @@ public class EquipVO {
 	// 부품, 공사내역은 따로해요
 	
 	//설비
-	private int equipNo;
+	private Integer equipNo;
 	private String equipName;
-	private int equipProcess; // 적용공정
+	private Integer equipProcess; // 적용공정
 	private String equipType;
 	private String equipPurpose;
-	private int equipCheckCycle;
+	private Integer equipCheckCycle;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date equipDate;
 	
-	private int equipRate;
-	private int equipStdVibe;
-	private int equipStdTemp;
-	private int equipState;
-	private int unitCode;
+	private Integer equipRate;
+	private Integer equipStdVibe;
+	private Integer equipStdTemp;
+	private Integer equipState;
+	private Integer unitCode;
 	
 	// 설비별 가동 시간
-	private int timeEquipNo;
+	private Integer timeEquipNo;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date timeStartDate;
@@ -41,24 +41,24 @@ public class EquipVO {
 	private Date timeEndDate;
 	
 	// 실시간 측정
-	private int rtcNo;
-	private int rtcEquipNo;
-	private int rtcVibe;
-	private int rtcTemp;
+	private Integer rtcNo;
+	private Integer rtcEquipNo;
+	private Integer rtcVibe;
+	private Integer rtcTemp;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date rtcDate;
 	
 	// 공정
-	private int processNo;
+	private Integer processNo;
 	private String processName;
 	private String processContent;
-	private int processSeq;
+	private Integer processSeq;
 	
 	// 점검관련
 	
-	private int testNo;
-	private int testEquipNo;
+	private Integer testNo;
+	private Integer testEquipNo;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date testDate;
 	private String testReason;
@@ -68,8 +68,8 @@ public class EquipVO {
 	private Date testDueDate;
 	
 	// 고장관련
-	private int failNo;
-	private int failEquipNo;
+	private Integer failNo;
+	private Integer failEquipNo;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date failDate;

@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
+import com.prj.cosm.equipment.part.service.PartService;
+import com.prj.cosm.equipment.part.service.PartVO;
 import com.prj.cosm.equipment.work.service.WorkService;
 import com.prj.cosm.equipment.work.service.WorkVO;
 import com.prj.cosm.sales.orders.service.OrdersService;
@@ -38,6 +40,9 @@ public class MainController {
 	
 	@Autowired
 	WorkService wService;
+	
+	@Autowired
+	PartService pService;
 		
 		// 첫 화면
 		@RequestMapping("/equipment/main")
@@ -194,6 +199,14 @@ public class MainController {
 		public String equipmentPart(Model model) {
 			return "/equipment/part";
 		}
+		
+		// 부품 전체 리스트 조회
+				@GetMapping("/equipment/partList")
+				@ResponseBody
+				public List<PartVO> part(){
+										
+				return pService.getPartList();
+				}
 
 		
 //================================================================================================================================	
