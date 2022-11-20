@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.prj.cosm.equipment.work.mapper.WorkMapper">
+<!-- ############################################################################################  -->																						 																						
+ 																					<!-- 공사 -->	
+	
+	<!-- 공사 전체 리스트 -->
+	<select id="getWorkList" resultType="workVO">
+		SELECT *
+		FROM work
+		ORDER BY WORK_NO
+	</select>
+	
+	<!-- 공사 단건조회 -->
+	<select id="getWorkInfo" parameterType="Integer" resultType="workVO">
+		SELECT e.equip_no, e.equip_name, e.equip_type, e.equip_std_vibe, e.equip_std_temp, e.equip_date,e.equip_purpose, t.time_start_date, t.time_end_date
+		FROM equip e, equip_time t
+		Where e.equip_no = t.time_equip_no
+		and e.equip_no= #{value}
+	</select>
+	
+	<!-- 공사 등록 -->
+	<insert id="insertWork" parameterType="workVO">
+		INSERT INTO EQUIP	( equip_no
+						,equip_name
+						,equip_type
+						,equip_std_vibe
+                        ,equip_std_temp
+						,equip_process
+						,equip_purpose
+						,equip_date
+						)
+        values (#{equipNo},#{equipName},#{equipType},#{equipStdVibe},#{equipStdTemp},#{equipProcess},#{equipPurpose},SYSDATE)
+
+	</insert>
+	
+	<!-- 공사 시간 등록 -->
+	<insert id="insertWorkTime" parameterType="workVO">
+  
+    <selectKey keyProperty="timeEquipNo" resultType="Integer" order="BEFORE">
+      select MAX(equip_no) from equip
+    </selectKey>
+    INSERT INTO EQUIP_TIME ( 
+						time_equip_no
+                       <if test="timeStartDate != null and timeStartDate != ''">,time_start_date</if>
+						<if test="timeEndDate != null and timeEndDate != ''">,time_end_date</if>
+						)
+		        values (#{timeEquipNo}
+		        <if test="timeStartDate != null and timeStartDate != ''">,#{timeStartDate}</if>
+		        <if test="timeEndDate != null and timeEndDate != ''">,#{timeEndDate}</if>
+		        )
+	</insert>
+		
+	<!-- 공사 수정 -->
+	<update id="updateEquip" parameterType="workVO">
+	UPDATE equip
+	<set>
+		<if test="equipName !=null and !equipName.equals('')">
+		equip_name = #{equipName},
+		</if>
+		<if test="equipType !=null and !equipType.equals('')">
+		equip_type = #{equipType},
+		</if>
+		<if test="equipStdVibe !=null">
+		equip_std_vibe = #{equipStdVibe},
+		</if>
+		<if test="equipStdTemp !=null">
+		equip_std_temp = #{equipStdTemp},
+		</if>
+		<if test="equipPurpose !=null and !equipPurpose.equals('')">
+		equip_purpose = #{equipPurpose}
+		</if>									
+	</set>
+		WHERE equip_no = #{equipNo}
+	
+	</update>
+	
+	<!-- 공사 삭제 -->
+	<delete id="deleteWork" parameterType="Integer">
+	DELETE EQUIP
+	WHERE EQUIP_NO = #{equipNo}
+	</delete>
+	
+	<!-- 공사 삭제 시 공사별 가동 시간 데이터 삭제 -->
+	<delete id="deleteWorkTime" parameterType="Integer">
+	DELETE EQUIP_TIME
+	WHERE TIME_EQUIP_NO = #{equipNo}
+	</delete>
+	
+	<!-- 공사 삭제 시 번호 정렬 update문 -->
+	<update id="updatedeleteWorkNo" parameterType="Integer">
+	UPDATE EQUIP
+	SET EQUIP_NO = EQUIP_NO-1
+	WHERE EQUIP_NO <![CDATA[>]]> #{equipNo}
+	</update>
+	
+	<!-- 공사 삭제 시 번호 정렬 update문 -->
+	<update id="updateDeleteTimeEquipNo" parameterType="Integer">
+	UPDATE EQUIP_TIME
+	SET TIME_EQUIP_NO = TIME_EQUIP_NO-1
+	WHERE TIME_EQUIP_NO <![CDATA[>]]> #{equipNo}
+	</update>
+	
+	<!-- 입력될 공사 번호 조회 -->
+	<select id="getWorkNo" resultType="workVO">
+		SELECT NVL(MAX(equip_no),0) + 1 AS equip_no
+		FROM EQUIP
+	</select>
+	
+	<!-- 등록할 때 설비명 조회 (다중행)-->
+	<select id="getEquipName" resultType="workVO">
+	SELECT equip_name
+	FROM equip
+	ORDER BY equip_no
+	</select>
+	
+<!-- ############################################################################################  -->
+																		
+
+
+</mapper>

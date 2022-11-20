@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>client Order</title>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+<!-- 
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+	fill="currentColor" class="bi bi-arrow-through-heart"
+	viewBox="0 0 16 16">
+  <path fill-rule="evenodd"
+		d="M2.854 15.854A.5.5 0 0 1 2 15.5V14H.5a.5.5 0 0 1-.354-.854l1.5-1.5A.5.5 0 0 1 2 11.5h1.793l.53-.53c-.771-.802-1.328-1.58-1.704-2.32-.798-1.575-.775-2.996-.213-4.092C3.426 2.565 6.18 1.809 8 3.233c1.25-.98 2.944-.928 4.212-.152L13.292 2 12.147.854A.5.5 0 0 1 12.5 0h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.854.354L14 2.707l-1.006 1.006c.236.248.44.531.6.845.562 1.096.585 2.517-.213 4.092-.793 1.563-2.395 3.288-5.105 5.08L8 13.912l-.276-.182a21.86 21.86 0 0 1-2.685-2.062l-.539.54V14a.5.5 0 0 1-.146.354l-1.5 1.5Zm2.893-4.894A20.419 20.419 0 0 0 8 12.71c2.456-1.666 3.827-3.207 4.489-4.512.679-1.34.607-2.42.215-3.185-.817-1.595-3.087-2.054-4.346-.761L8 4.62l-.358-.368c-1.259-1.293-3.53-.834-4.346.761-.392.766-.464 1.845.215 3.185.323.636.815 1.33 1.519 2.065l1.866-1.867a.5.5 0 1 1 .708.708L5.747 10.96Z" />
+</svg>
+ -->
+<style>
+#od-btn {
+	float: right;
+}
+</style>
+
+</head>
+
+
+
+
+<body>
+	주문등록 - 등록리스트, 주문하기 버틍 -> 모달창으로
+
+
+	<div layout:fragment="content">
+	
+		
+		
+		<div id="od-title">
+			<h3>***님 주문목록입니다.</h3>
+		</div>
+
+		<table id="form-check">
+			<tr>
+				<td>진행 상황</td>
+				<td><input class="form-check-input" type="radio"
+					name="flexRadioDefault" id="odAll" value="option1" checked>
+					<label class="form-check-label" for="odAll">전체</label></td>
+
+				<td><input class="form-check-input" type="radio"
+					name="flexRadioDefault" id="odIng" value="option2"> <label
+					class="form-check-label" for="odIng">진행</label></td>
+
+				<td><input class="form-check-input" type="radio"
+					name="flexRadioDefault" id="odEnd" value="option13"> <label
+					class="form-check-label" for="odEnd">완료</label></td>
+			</tr>
+		</table>
+
+		<div class="modal" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">거래처 목록</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>Modal body text goes here.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save
+							changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="od-container">
+			<label for="actCd">거래처</label> <input id="actCd"><img
+				class="Magnifying-Glass-img" alt="image"
+				src="../images/Magnifying_Glass.png"><input type="text"
+				readonly><br> <label for="prdNm">제품명</label> <input
+				id="prdNm"><img class="Magnifying-Glass-img" alt="image"
+				src="../images/Magnifying_Glass.png"><input type="text"
+				readonly><br> <label>주문일자</label>
+
+			<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+				<input id="startpicker-input" type="text" aria-label="Date">
+				<span class="tui-ico-date"></span>
+				<div id="startpicker-container" style="margin-left: -1px;"></div>
+			</div>
+			<span>-</span>
+			<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+				<input id="endpicker-input" type="text" aria-label="Date"> <span
+					class="tui-ico-date"></span>
+				<div id="endpicker-container" style="margin-left: -1px;"></div>
+			</div>
+		</div>
+
+
+
+		<div id="od-btn">
+			<button class="btn btn-dark btn-sm">조회</button>
+			<button class="btn btn-dark btn-sm">초기화</button>
+			<button class="btn btn-dark btn-sm">추가</button>
+			<button class="btn btn-dark btn-sm">선택삭제</button>
+			<button class="btn btn-dark btn-sm">저장</button>
+			<button class="btn btn-dark btn-sm">엑셀</button>
+			<button class="btn btn-dark btn-sm">PDF</button>
+		</div>
+
+		<div id="grid"></div>
+
+		<script>
+			var today = new Date();
+			var picker = tui.DatePicker.createRangePicker({
+				startpicker : {
+					date : today,
+					input : '#startpicker-input',
+					container : '#startpicker-container'
+				},
+				endpicker : {
+					date : today,
+					input : '#endpicker-input',
+					container : '#endpicker-container'
+				},
+				selectableRanges : [ [
+						today,
+						new Date(today.getFullYear() + 1, today.getMonth(),
+								today.getDate()) ] ]
+			});
+
+			const grid = new tui.Grid({
+				el : document.getElementById('grid'),
+				data : [ {
+					orderNo : 1,
+					clientNo : 100,
+					productNo : '11',
+					orderDate : '2022-11-01',
+					deliveryDate : '2022-12-30',
+					productName : 'TPA-110',
+					totalNum : 200,
+					totalPrice : 500000,
+					surtax : 50000,
+					note : '배송전 연락주세요',
+					orderCode : '신규',
+					orderProgressCode : '5259',
+
+				} ],
+				rowHeaders : [ 'checkbox' ],
+				scrollX : false,
+				scrollY : false,
+				columns : [ {
+					header : '주문번호',
+					name : 'orderNo',
+					width : 'auto'
+				}, {
+					header : '거래처번호',
+					name : 'clientNo',
+				}, {
+					header : '제품번호',
+					name : 'productNo'
+				}, {
+					header : '주문일자',
+					name : 'orderDate'
+				}, {
+					header : '납기일자',
+					name : 'deliveryDate',
+				}, {
+					header : '제품명',
+					name : 'productName',
+				}, {
+					header : '수량',
+					name : 'totalNum',
+				}, {
+					header : '공급가액',
+					name : 'totalPrice',
+				}, {
+					header : '부가세',
+					name : 'surtax',
+
+				}, {
+					header : '요청사항',
+					name : 'note',
+
+				}, {
+					header : '주문타입',
+					name : 'orderCode',
+
+				}, {
+					header : '진행사항',
+					name : 'orderProgressCode',
+
+				} ]
+			});
+
+			var myModal = document.getElementById('myModal')
+			var myInput = document.getElementById('myInput')
+
+			myModal.addEventListener('shown.bs.modal', function() {
+				myInput.focus()
+			})
+		</script>
+
+	</div>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{/layout/layout.html}">
+<head>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<!-- style and js -->
+<link rel="stylesheet" href="/equipmentCss/main.css"/>
+
+</head>
+<body>
+
+	<div layout:fragment="content" style="height: 900px; overflow: scroll; margin:15px;">
+			  <h2>유지 관리</h2>
+  
+		<div> 
+            <!-- 탭 목록(버튼) 설정 -->
+            <ul class="nav nav-tabs nav-pills" style="padding-top:15px;" id="myTab" role="tablist">
+               <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="maintenanceTab"
+                     data-bs-toggle="tab" data-bs-target="#maintenance" type="button"
+                     role="tab" aria-controls="maintenance" aria-selected="true" >보수</button>
+               </li>
+               <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="workTab" data-bs-toggle="tab"
+                     data-bs-target="#work" type="button" role="tab"
+                     aria-controls="work" aria-selected="false">공사</button>
+               </li>
+            </ul>
+            
+            <!-- 탭 본문 -->
+            <div class="tab-content" id="myTabContent">
+	               <!-- 보수 탭 -->
+	               <div class="tab-pane fade show active" id="maintenance" role="tabpanel"
+	                  aria-labelledby="maintenance-tab">
+	                  <div style="margin: 15px;">
+	                     <table style="width: 100%;">                        
+	                           <tr>
+	                              <td colspan="3">
+	                                 <div class="row">
+	                                    <div class="column">
+	                                      <h5>점검 내역</h5>
+	                                     	<div class="searchbox">
+								            <div class="header">
+								         	<button type="button" class="btn btn-dark btn-sm margin5"
+								         	data-bs-toggle="modal" data-bs-target="#myModal1">등록</button>
+											     <input onkeyup="filter()" style="float:right;" type="text" id="value" placeholder="Type to Search">
+											 </div>
+					      				   </div>
+					      				   
+	                                       <div id="testGrid">
+	                                       </div>
+	                                       
+	                                    </div>
+	                            
+	                                    <div class="column">
+	                                      <h5>고장 내역</h5>
+	                                     	<div class="searchbox">
+								            <div class="header">
+								         	<button type="button" class="btn btn-dark btn-sm margin5"
+								         	data-bs-toggle="modal" data-bs-target="#myModal2">등록</button>
+											     <input onkeyup="filter()" style="float:right;" type="text" id="value" placeholder="Type to Search">
+											 </div>
+					      				   </div>
+					      				   
+	                                       <div id="failGrid">
+	                                       </div>
+	                                         
+	                                    </div>			        		
+	                                 </div>
+	                              </td>
+	                           </tr>                       
+	                     </table>
+	
+	                  </div>
+	
+	               </div>
+	               
+	               <!-- 공사 탭 -->
+	               <div class="tab-pane fade" id="work" role="tabpanel"
+	                  aria-labelledby="work-tab">
+	                  <div>
+	                     <table style="width: 100%;">
+	                       		<tr>
+	                              <td>
+	                                 <div style="clear: both; margin: 15px;">  
+	                                 	<div style="padding: 30px;">  
+	                                      <h5>공사 내역 관리</h5>
+	                                      <div class="searchbox">
+							              <div class="header">
+							         	  <button type="button" class="btn btn-dark btn-sm margin5"
+							         	  data-bs-toggle="modal" data-bs-target="#myModal3">등록</button>
+										     <input onkeyup="filter()" style="float:right;" type="text" id="value" placeholder="Type to Search">
+										  </div>
+				      				      </div>
+	                                         
+	                                      <div id="workGrid">
+	                                      </div>
+	                                    </div>			        		
+	                                 </div>
+	                              </td>
+	                           </tr>
+	                     </table>
+	                  </div>
+	               </div>
+        </div>
+	</div>
+
+
+
+<script type="text/javascript">
+/* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */
+/* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */	
+
+
+// 그리드 초기화
+
+/*------------
+   // 탭 버튼 클릭
+   ----------------*/
+	const mt = document.querySelector('#maintenanceTab');
+  	mt.addEventListener('shown.bs.tab',function(){
+	   testGrid.refreshLayout();
+ 	  	failGrid.refreshLayout();
+	});
+	
+	const wt = document.querySelector('#workTab');
+	wt.addEventListener('shown.bs.tab',function(){
+	   workGrid.refreshLayout();
+ 	  	
+	});
+   
+
+/*  점검 그리드  */	
+	const testGrid = new tui.Grid({
+			    el: document.querySelector('#testGrid'),
+			    pagination:true,
+			    rowHeaders: ['checkbox'],
+				pageOptions: {
+					useClient: true,
+					perPage: 4
+				},
+			    columns: [
+			    {
+					header:'점검번호',
+					name:'testNo'
+				},
+			    {
+			        header: '설비명',
+			        name: 'equipName'
+			    },
+			    {
+			        header: '점검예정일',
+			        name: 'testDueDate'
+			    },
+			    {
+			        header: '점검이유',
+			        name: 'testReason'
+			    },
+			    {
+			        header: '특이사항',
+			        name: 'testPs'
+			    }
+			    ]
+			});
+
+	/* 점검 리스트 불러오는 아작스 */
+
+	url="/equipment/testList"
+	fetch(url) 
+	.then(res=>res.json())
+	.then(obj=>{
+	    console.log(obj);
+	    testGrid.resetData(obj);
+    
+	})
+
+
+	
+/*  고장 그리드  */	
+		const failGrid = new tui.Grid({
+		    el: document.querySelector('#failGrid'),
+		    pagination:true,
+		    rowHeaders: ['checkbox'],
+			pageOptions: {
+				useClient: true,
+				perPage: 4
+			},
+		    columns: [
+		    {
+				header:'고장번호',
+				name:'failNo'
+			},
+		    {
+		        header: '설비명',
+		        name: 'equipName'
+		    },
+		    {
+		        header: '고장발생일',
+		        name: 'failDate'
+		    },
+		    {
+		        header: '고장내역',
+		        name: 'failContent'
+		    },
+		    {
+		        header: '특이사항',
+		        name: 'failPs'
+		    }
+		    ]
+		});
+		
+		/* 고장 리스트 불러오는 아작스 */
+	    
+	    url="/equipment/failList"
+	    fetch(url) 
+	    .then(res=>res.json())
+	    .then(obj=>{
+	        console.log(obj);
+	        failGrid.resetData(obj);
+	        
+	    })
+
+
+
+	
+/*  공사 그리드  */	
+		const workGrid = new tui.Grid({
+		    el: document.querySelector('#workGrid'),
+		    pagination:true,
+			pageOptions: {
+				useClient: true,
+				perPage: 4
+			},
+		    columns: [
+		    {
+			   	header:'공사번호',
+			    name:'workNo'
+			},
+		    {
+		        header: '공사명',
+		        name: 'workName'
+		    },
+		    {
+		        header: '공사예정일',
+		        name: 'workDate'
+		    },
+		    {
+		        header: '공사내역',
+		        name: 'workContent'
+		    },
+		    {
+		        header: '특이사항',
+		        name: 'workPs'
+		    }
+		    ]
+		});
+		
+		/* 공사 리스트 불러오는 아작스 */
+	    
+	    url="/equipment/workList"
+	    fetch(url) 
+	    .then(res=>res.json())
+	    .then(obj=>{
+	        console.log(obj);
+	        workGrid.resetData(obj);
+	        
+	    })
+		
+ 
+
+
+
+
+    
+
+
+
+</script>
+</div>
+</body>
+</html>
