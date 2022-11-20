@@ -25,6 +25,8 @@ import com.prj.cosm.produce.plan.service.PlanService;
 import com.prj.cosm.produce.plan.service.PlanVO;
 import com.prj.cosm.produce.regist.service.RegistService;
 import com.prj.cosm.produce.regist.service.RegistVO;
+import com.prj.cosm.sales.client.service.ClientService;
+import com.prj.cosm.sales.client.service.ClientVO;
 import com.prj.cosm.sales.orders.service.OrdersService;
 import com.prj.cosm.sales.orders.service.OrdersVO;
 import com.prj.cosm.user.emp.service.EmpService;
@@ -54,6 +56,9 @@ public class MainController {
 
 	@Autowired
 	RegistService registService;
+
+	@Autowired
+	ClientService cService;
 
 	// 첫 화면
 	@RequestMapping("/")
@@ -183,6 +188,12 @@ public class MainController {
 
 	@PostMapping("userInsert")
 	public String empInsert(EmpVO empVO) {
+		service.userInsert(empVO);
+		return "redirect:userList";
+	}
+
+	@PostMapping("clientInsert")
+	public String clientInsert(EmpVO empVO, ClientVO cVO) {
 		service.userInsert(empVO);
 		return "redirect:userList";
 	}

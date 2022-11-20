@@ -15,11 +15,11 @@
 	<div align="center">
 		<div style="width: 40%; position: relative; top: 50px;">
 			<h2>회원가입</h2>
-			<form action="userInsert" method="post" id="empInsertForm">
+			<form action="clientInsert" method="post" id="empInsertForm">
 				<!-- <sec:csrfInput/> -->
 				<input type="hidden" th:name="${_csrf.parameterName}"
-					th:value="${_csrf.token}" />
-					<input type="hidden" name="usersAuthor" value="고객">
+					th:value="${_csrf.token}" /> <input type="hidden"
+					name="usersAuthor" value="고객">
 				<table>
 					<tbody>
 						<tr>
@@ -38,7 +38,22 @@
 							<td><input type="text" id="usersName" name="usersName"></td>
 						</tr>
 
-
+						<tr>
+							<th>거래처명</th>
+							<td><input type="text" id="name" name="name"></td>
+						</tr>
+						<tr>
+							<th>담당자명</th>
+							<td><input type="text" id="manager" name="manager"></td>
+						</tr>
+						<tr>
+							<th>사업자번호</th>
+							<td><input type="text" id="businessNo" name="businessNo"></td>
+						</tr>
+						<tr>
+							<th>사업자등록증</th>
+							<td><input type="text" id="licenseImg" name="licenseImg"></td>
+						</tr>
 					</tbody>
 				</table>
 				<hr>
