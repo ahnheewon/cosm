@@ -14,7 +14,6 @@ public interface PartService {
 	// 단건 조회
 	public PartVO getPartInfo(int partNo);
 
-
 	// 등록
 	public int insertPart(PartVO vo);
 
@@ -30,6 +29,13 @@ public interface PartService {
 	// 입력될 번호를 조회
 	public PartVO getPartNo();
 
-	// ===================================================================================================
+// ===================================================================================================
+	// 부품 변동
+	
+	// 전체조회
+	public List<PartVO> getPartIOList();
+
+	// 부품 등록
+	public int insertPartIO(PartVO vo);
 
 }

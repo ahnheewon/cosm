@@ -112,6 +112,7 @@ public class MainController {
 		}
 		
 //================================================================================================================================	
+		
 		// 공정 전체 리스트 조회 데이터
 		@GetMapping("/equipment/processList")
 		@ResponseBody
@@ -168,6 +169,8 @@ public class MainController {
 			return "/equipment/maintenance";
 		}
 		
+	//점검	
+		
 		// 점검 전체 리스트 조회
 		@GetMapping("/equipment/testList")
 		@ResponseBody
@@ -175,7 +178,41 @@ public class MainController {
 						
 		return eService.getTestList();
 		}
-			
+		
+		// 점검 등록
+		@PostMapping("/equipment/insertTest")
+		public String insertTest(EquipVO vo, RedirectAttributes ratt) {
+			eService.insertTest(vo);
+			return "redirect:/equipment/maintenance";
+		}
+
+		// 점검 단건 조회
+		@GetMapping("/equipment/getTestInfo")
+		@ResponseBody
+		public EquipVO getTestInfo(Model model, int testNo) {
+			return eService.getTestInfo(testNo);
+
+		}
+
+		// 점검 수정
+		@PostMapping("/equipment/updateTest")
+		@ResponseBody
+		public EquipVO updateTest(EquipVO vo) {
+			eService.updateTest(vo);
+			return vo; // "{re:true}"
+		}
+
+		// 점검 삭제
+		@DeleteMapping("/equipment/deleteTest/{processNo}")
+		@ResponseBody
+		public int deleteTest(@PathVariable int testNo) {
+			int result = eService.deleteTest(testNo);
+			return result;
+		}	
+		
+		
+	//고장
+		
 		// 고장 전체 리스트 조회
 		@GetMapping("/equipment/failList")
 		@ResponseBody
@@ -184,16 +221,68 @@ public class MainController {
 		return eService.getFailList();
 		}
 		
+		// 고장 등록
+		@PostMapping("/equipment/insertFail")
+		public String insertFail(EquipVO vo, RedirectAttributes ratt) {
+			eService.insertFail(vo);
+			return "redirect:/equipment/maintenance";
+		}
+
+		// 고장 단건 조회
+		@GetMapping("/equipment/getFailInfo")
+		@ResponseBody
+		public EquipVO getFailInfo(Model model, int processNo) {
+			return eService.getFailInfo(processNo);
+
+		}
+
+		// 고장 수정
+		@PostMapping("/equipment/updateFail")
+		@ResponseBody
+		public EquipVO updateFail(EquipVO vo) {
+			eService.updateFail(vo);
+			return vo; // "{re:true}"
+		}
+
+		// 고장 삭제
+		@DeleteMapping("/equipment/deleteFail/{failNo}")
+		@ResponseBody
+		public int deleteFail(@PathVariable int failNo) {
+			int result = eService.deleteFail(failNo);
+			return result;
+		}
+		
+//================================================================================================================================
+// 공사
+		
 		// 공사 전체 리스트 조회
 		@GetMapping("/equipment/workList")
 		@ResponseBody
 		public List<WorkVO> work(){
 								
-		return wService.getWorkList();
+			return wService.getWorkList();
 		}
+		
+		// 공사 단건 조회
+		@GetMapping("/equipment/getWorkInfo")
+		@ResponseBody
+		public WorkVO getWorkInfo(Model model, int workNo) {
+			return wService.getWorkInfo(workNo);
+
+		}
+		
+		// 공사 등록
+		@PostMapping("/equipment/insertWork")
+		public String insertWork(EquipVO vo, RedirectAttributes ratt) {
+			eService.insertFail(vo);
+		return "redirect:/equipment/maintenance"; 
+				}
+		
+		//공사 결재안건 수정
 	
 //================================================================================================================================
-
+// 부품
+		
 		// 부품 관리 페이지 이동화면
 		@RequestMapping("/equipment/part")
 		public String equipmentPart(Model model) {
@@ -201,14 +290,35 @@ public class MainController {
 		}
 		
 		// 부품 전체 리스트 조회
-				@GetMapping("/equipment/partList")
-				@ResponseBody
-				public List<PartVO> part(){
+		@GetMapping("/equipment/partList")
+		@ResponseBody
+		public List<PartVO> part(){
 										
-				return pService.getPartList();
-				}
-
+			return pService.getPartList();
+		}
 		
+		// 부품 등록은 따로하지 않고 DB에서 넣습니다.
+		
+		// 부품 수정
+		@PostMapping("/equipment/updatePart")
+		@ResponseBody
+		public int updatePart(PartVO vo) {
+			int result = pService.updatePart(vo);
+			result = result + pService.insertPartIO(vo);
+			return result; // "{re:true}"
+		}
+		
+		// 부품변동 전체 리스트 조회
+		@GetMapping("/equipment/partList")
+		@ResponseBody
+		public List<PartVO> partIo(){
+										
+		return pService.getPartIOList();
+		}
+		
+		// 부품변동 등록은 부품 수정할때 처리됩니다.
+	
+
 //================================================================================================================================	
 		
 	// 첫 화면

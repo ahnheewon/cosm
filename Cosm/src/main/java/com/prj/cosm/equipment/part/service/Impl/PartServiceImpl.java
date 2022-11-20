@@ -53,6 +53,18 @@ public class PartServiceImpl implements PartService {
 		return mapper.getPartNo();
 	}
 
+//============================================================================================================================
+	
+	@Override
+	public List<PartVO> getPartIOList() {
+		return mapper.getPartIOList();
+	}
+
+	@Override
+	public int insertPartIO(PartVO vo) {
+		return mapper.insertPart(vo);
+	}
+
 
 
 
@@ -61,7 +73,6 @@ public class PartServiceImpl implements PartService {
 
 																	
 
-//============================================================================================================================
 	
 	
 }

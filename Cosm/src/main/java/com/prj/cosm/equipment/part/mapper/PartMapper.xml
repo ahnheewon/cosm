@@ -86,14 +86,14 @@
 <!-- ############################################################################################  -->
 	
 	<!-- 변동내역 리스트 -->															
-	<select id="getPartIoList" resultType="partVO">
+	<select id="getPartIOList" resultType="partVO">
 	SELECT *
 	FROM PART_IO
 	ORDER BY IO_PART_NO DESC
 	</select>
 	
 	<!-- 부품 수량 변동될 때 insert문 -->
-	<insert id="insertPartIo" parameterType="partVO">
+	<insert id="insertPartIO" parameterType="partVO">
 		INSERT INTO PART_IO   ( io_part_no
 								,io_amount
 								,io_date
