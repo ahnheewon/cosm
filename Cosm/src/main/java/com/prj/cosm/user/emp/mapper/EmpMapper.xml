@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.cosm.user.emp.mapper.EmpMapper">
+	<!-- 전체 조회 -->
+	<select id="empSelectList" resultType="EmpVO">
+		SELECT
+		users_no,users_name,users_id,users_password, code_name as
+		users_author
+		FROM users JOIN code
+		ON users.users_author = code.code_no
+		ORDER BY
+		users_no
+	</select>
+
+	<!-- 조회(로그인) -->
+	<select id="empSelect" resultType="EmpVO">
+		SELECT
+		*
+		FROM users
+		WHERE users_id=#{usersId}
+	</select>
+
+
+	<!-- 상세조회 -->
+	<select id="userInfoSelect" resultType="EmpVO">
+		SELECT
+		users_no,users_name,users_id, code_name as
+		users_author,users_tel,users_address
+		FROM users JOIN code
+		ON
+		users.users_author = code.code_no
+		WHERE users_no=#{usersNo}
+	</select>
+	<!-- 가입 -->
+	<insert id="empInsert" parameterType="EmpVO">
+		<selectKey keyProperty="usersNo" resultType="String"
+			order="BEFORE">
+			<if test="usersAuthor=='고객'">
+				SELECT
+				'CUS_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(users_no,-4)),0)+1,4,0)
+				FROM users WHERE users_no LIKE 'CUS_'||TO_CHAR(SYSDATE,'rrrr')||'%'
+			</if>
+			<if test="usersAuthor!='고객'">
+				SELECT
+				'COSM_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(users_no,-4)),0)+1,4,0)
+				FROM users WHERE users_no LIKE 'COSM_'||TO_CHAR(SYSDATE,'rrrr')||'%'
+			</if>
+		</selectKey>
+		INSERT INTO users(users_no, users_name, users_id,
+		users_password,
+		users_author,users_tel,users_address) VALUES(#{usersNo}, #{usersName},
+		#{usersId},
+		#{usersPassword},
+		(SELECT code_no FROM code WHERE code_name
+		=
+		#{usersAuthor}),#{usersTel},#{usersAddress})
+	</insert>
+
+	<!-- 정보수정 -->
+	<update id="empUpdate" parameterType="EmpVO">
+		UPDATE users
+		<set>
+			<if test="usersPassword!=null and !usersPassword.equals('')">users_password=#{usersPassword}</if>
+			<if test="usersName!=null and !usersName.equals('')">,users_name = #{usersName}</if>
+			<if test="usersAuthor!=null and !usersAuthor.equals('')">,users_author = (SELECT code_no FROM code WHERE code_name
+				= #{usersAuthor})
+			</if>
+			<if test="usersTel!=null and !usersTel.equals('')">,users_tel = #{usersTel}</if>
+			<if test="usersAddress!=null and !usersAddress.equals('')">,users_address=#{usersAddress}</if>
+		</set>
+		WHERE users_no = #{usersNo}
+	</update>
+
+	<!-- 회원탈퇴 -->
+	<delete id="empDelete" parameterType="EmpVO">
+		DELETE FROM users WHERE
+		users_no = #{usersNo}
+	</delete>
+
+	<!-- 담당 리스트 조회 -->
+	<select id="getAuthorList" resultType="String">
+		SELECT code_name FROM code
+		WHERE code_adno = 'D01'
+		ORDER BY code_no
+	</select>
+
+	<!-- 아이디 중복 조회 -->
+	<select id="checkId" resultType="Integer">
+		SELECT
+		COUNT(users_id)
+		FROM
+		users
+		WHERE
+		users_id=#{usersId}
+	</select>
+</mapper>

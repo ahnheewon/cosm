@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.cosm.sales.orders.mapper.OrdersMapper">
+	<!-- 주문번호순으로 정렬 - public int getOrderNo(); -->
+	<select id="getOrderNo">
+		SELECT NVL(MAX(order_no), 0)
+		+ 1 as orderNo FROM
+		orders
+	</select>
+
+
+	<!-- 주문 전체조회 -->
+	<select id="orderList" resultType="OrdersVO">
+		select * from orders
+		ORDER BY
+		order_no
+	</select>
+
+
+	<!-- 주문 단건조회 -->
+
+	<select id="orderInfo" parameterType="OrdersVO"
+		resultType="ordersVO">
+		SELECT * FROM orders
+		WHERE ORDER_NO = #{orderNo}
+	</select>
+
+
+
+	<!-- 주문 등록 -->
+	<!-- ORDER_CODE - 신규,불량,재주문 추가하기 -->
+	<insert id="insertOrder" parameterType="OrdersVO">
+		INSERT INTO orders (
+		ORDER_NO,
+		CLIENT_NO,
+		PRODUCT_NO,
+		ORDER_DATE,
+		DELIVERY_DATE,
+		PRODUCT_NAME,
+		TOTAL_NUM,
+		TOTAL_PRICE,
+		SURTAX,
+		NOTE,
+		ORDER_CODE,
+		ORDER_PROGRESS_CODE,
+		DELIVERY_INFO,
+		IO_CODE)
+		values (
+		#{orderNo},
+		#{clientNo},
+		#{productNo},
+		#{orderDate},
+		#{deliveryDate},
+		#{productName},
+		#{totalNum},
+		#{totalPrice},
+		#{surtax},
+		#{note},
+		#{orderCode},
+		#{orderProgressCode},
+		#{deliveryInfo},
+		#{ioCode}
+		)
+	</insert>
+
+
+	<!-- 주문 내역삭제 -->
+	<delete id="deleteOrder" parameterType="OrdersVO">
+		DELETE FROM orders where
+		ORDER_NO = #{orderNo}
+	</delete>
+
+	<!-- 체크박스 단건삭제 -->
+	<delete id="deleteCheck" parameterType="String">
+		DELETE FROM orders where
+		ORDER_NO = #{noList}
+	</delete>
+
+	<!-- 주문수정(주문상태) (재고입출고 상황) (배송상황) -->
+	<!-- <if test="title != null and !title.equals('')"> title = #{title}, </if> -->
+	<update id="updateOrder" parameterType="OrdersVO">
+		UPDATE orders
+		<set>
+			<if
+				test="order_progress_code != null and !order_progress_code.equals('')">
+				order_progress_code = #{orderProgressCode}
+			</if>
+			<if test="delivery_info != null and !delivery_info.equals('')">
+				,delivery_info = #{deliveryInfo}
+			</if>
+			<if test="io_code != null and !io_code_equals('')">
+				, io_code = #{ioCode}
+			</if>
+		</set>
+		WHERE order_no = #{orderNo}
+	</update>
+
+	<!-- 생산지시요청 -> 실시간 상태변경-->
+	<update id="updatePro" parameterType="String">
+		UPDATE orders SET order_progress_code =
+		(SELECT code_no FROM CODE WHERE code_name = #{orderProgressCode})
+		WHERE order_no=#{orderNo};
+	</update>
+</mapper>

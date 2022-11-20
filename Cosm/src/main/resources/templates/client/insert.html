@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sales main</title>
+
+
+<!-- Bootstrap -->
+<!-- CSS only -->
+
+<!-- JavaScript Bundle with Popper -->
+
+
+</head>
+
+<style>
+#od-btn {
+	float: right;
+}
+</style>
+
+<body>
+
+	<div layout:fragment="content">
+
+		<div id="od-title">
+			<h3>***님 주문목록입니다.</h3>
+		</div>
+
+
+		<div>
+			<!-- 탭 목록(버튼) 설정 -->
+			<ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="manage-tab"
+						data-bs-toggle="tab" data-bs-target="#manage" type="button"
+						role="tab" aria-controls="manage" aria-selected="true">주문관리</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="insert-tab" data-bs-toggle="tab"
+						data-bs-target="#insert" type="button" role="tab"
+						aria-controls="insert" aria-selected="false">제품 보기</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="insert-tab" data-bs-toggle="tab"
+						data-bs-target="#insert" type="button" role="tab"
+						aria-controls="insert" aria-selected="false">마이페이지</button>
+				</li>
+
+			</ul>
+		</div>
+
+		<div class="row">
+			<div class="column">
+				<h5>실시간 주문 진행 상황</h5>
+				<div>
+					<div class="container">
+						<img src="/salesImg/3.jpg" alt="배송상황사진">
+					</div>
+				</div>
+			</div>
+
+
+			<table id="form-check">
+				<tr>
+					<td>진행 조회</td>
+					<td><input class="form-check-input" type="radio"
+						name="flexRadioDefault" id="odAll" value="option1" checked>
+						<label class="form-check-label" for="odAll">전체</label></td>
+
+					<td><input class="form-check-input" type="radio"
+						name="flexRadioDefault" id="odIng" value="option2"> <label
+						class="form-check-label" for="odIng">진행</label></td>
+
+					<td><input class="form-check-input" type="radio"
+						name="flexRadioDefault" id="odEnd" value="option13"> <label
+						class="form-check-label" for="odEnd">완료</label></td>
+				</tr>
+			</table>
+
+			<div class="modal" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">거래처 목록</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p>Modal body text goes here.</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save
+								changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="od-container">
+				<label for="actCd">거래처</label> <input id="actCd"><img
+					class="Magnifying-Glass-img" alt="image"
+					src="../images/Magnifying_Glass.png"><input type="text"
+					readonly><br> <label for="prdNm">제품명</label> <input
+					id="prdNm"><img class="Magnifying-Glass-img" alt="image"
+					src="../images/Magnifying_Glass.png"><input type="text"
+					readonly><br> <label>주문일자</label>
+
+				<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+					<input id="startpicker-input" type="text" aria-label="Date">
+					<span class="tui-ico-date"></span>
+					<div id="startpicker-container" style="margin-left: -1px;"></div>
+				</div>
+				<span>-</span>
+				<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+					<input id="endpicker-input" type="text" aria-label="Date">
+					<span class="tui-ico-date"></span>
+					<div id="endpicker-container" style="margin-left: -1px;"></div>
+				</div>
+			</div>
+
+
+
+			<div id="od-btn">
+				<button class="btn btn-dark btn-sm">조회</button>
+				<button class="btn btn-dark btn-sm">초기화</button>
+				<button class="btn btn-dark btn-sm">추가</button>
+				<button class="btn btn-dark btn-sm">선택삭제</button>
+				<button class="btn btn-dark btn-sm">저장</button>
+				<button class="btn btn-dark btn-sm">엑셀</button>
+				<button class="btn btn-dark btn-sm">PDF</button>
+			</div>
+
+			<div id="grid"></div>
+
+			<script>
+				var today = new Date();
+				var picker = tui.DatePicker.createRangePicker({
+					startpicker : {
+						date : today,
+						input : '#startpicker-input',
+						container : '#startpicker-container'
+					},
+					endpicker : {
+						date : today,
+						input : '#endpicker-input',
+						container : '#endpicker-container'
+					},
+					selectableRanges : [ [
+							today,
+							new Date(today.getFullYear() + 1, today.getMonth(),
+									today.getDate()) ] ]
+				});
+
+				const grid = new tui.Grid({
+					el : document.getElementById('grid'),
+					data : [ {
+						orderNo : 1,
+						clientNo : 100,
+						productNo : '11',
+						orderDate : '2022-11-01',
+						deliveryDate : '2022-12-30',
+						productName : 'TPA-110',
+						totalNum : 200,
+						totalPrice : 500000,
+						surtax : 50000,
+						note : '배송전 연락주세요',
+						orderCode : '신규',
+						orderProgressCode : '5259',
+
+					} ],
+					rowHeaders : [ 'checkbox' ],
+					scrollX : false,
+					scrollY : false,
+					columns : [ {
+						header : '주문번호',
+						name : 'orderNo',
+						width : 'auto'
+					}, {
+						header : '거래처번호',
+						name : 'clientNo',
+					}, {
+						header : '제품번호',
+						name : 'productNo'
+					}, {
+						header : '주문일자',
+						name : 'orderDate'
+					}, {
+						header : '납기일자',
+						name : 'deliveryDate',
+					}, {
+						header : '제품명',
+						name : 'productName',
+					}, {
+						header : '수량',
+						name : 'totalNum',
+					}, {
+						header : '공급가액',
+						name : 'totalPrice',
+					}, {
+						header : '부가세',
+						name : 'surtax',
+
+					}, {
+						header : '요청사항',
+						name : 'note',
+
+					}, {
+						header : '주문타입',
+						name : 'orderCode',
+
+					}, {
+						header : '진행사항',
+						name : 'orderProgressCode',
+
+					} ]
+				});
+
+				var myModal = document.getElementById('myModal')
+				var myInput = document.getElementById('myInput')
+
+				myModal.addEventListener('shown.bs.modal', function() {
+					myInput.focus()
+				})
+			</script>
+
+		</div>
+</body>
+</html>

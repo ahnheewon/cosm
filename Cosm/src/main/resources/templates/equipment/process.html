@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{/layout/layout.html}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<!-- style and js -->
+<link rel="stylesheet" href="/equipmentCss/main.css"/>
+
+<style type="text/css">
+.textWidth {
+	width:250%;
+}
+
+</style>
+
+</head>
+<body>
+
+ 	<div layout:fragment="content" style="height: 900px; overflow: scroll">
+ 	
+		  <!-- model and view로 보낸 데이터 [[${pno}]] 이런식으로 써야합니다 밖에서 쓰려면. -->
+		  <h2>공정 관리</h2>
+		
+		  <div class="row">
+			        <div class="column">
+			          <h5>공정 관리</h5>
+			         	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal1">
+						등록</button>
+
+			          <div id="processList">
+		                 
+	              	  </div>
+
+		        	</div>
+		
+			        <div class="column">
+			          <h5>설비 관리</h5><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal2">등록</button>
+					  <div id="equipList">
+		                 
+	              	  </div>
+			        </div>
+		
+		  </div>
+
+	<!-- The Modal 1 공정모달 -->
+	<div class="modal fade" id="myModal1">
+		<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+	
+			<!-- Modal Header -->
+			<div class="modal-header">
+			<h4 class="modal-title">공정 등록</h4>
+			<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+	
+			<form id="insertForm1" action="insertProcess" method="post">
+			<!-- <sec:csrfInput/> -->
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+			<!-- Modal body -->
+			<div class="modal-body">
+				<table class="table">
+                    <tr>
+						<td>공정번호</td>
+                        <td><input class="form-control" id="processNo" name="processNo" th:value="${pno }" type="text" readonly></td>
+                        <td>공정명</td>
+                        <td><input class="form-control" id="processName" name=processName type="text" required></td>
+                    </tr>
+                    <tr>
+                        <td>공정내용</td>
+                        <td><textarea class="form-control" id="processContent" name="processContent" rows="5" required></textarea></td>
+                    </tr> 
+ 					<tr>
+                        <td>공정순서</td>
+                        <td><input class="form-control" id="processSeq" name="processSeq" type="text" required></td>
+                    </tr>
+               	 	</table>
+			</div>
+	
+			<!-- Modal footer -->
+			<div class="modal-footer">
+			<button type="submit" class="btn btn-primary">등록</button>
+			<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+			</div>
+				</form>               
+	
+		</div>
+		</div>
+	</div>
+	
+	<!-- The Modal 2 설비모달 -->
+	<div class="modal fade" id="myModal2">
+		<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+	
+			<!-- Modal Header -->
+			<div class="modal-header">
+			<h4 class="modal-title">설비 등록</h4>
+			<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+	
+			<form id="insertForm2" action="insertEquip" method="post">
+			<!-- <sec:csrfInput/> -->
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+			<!-- Modal body -->
+			<div class="modal-body">
+				<table class="table">	
+                    <tr>
+						<td>설비번호</td>
+                        <td><input class="form-control" id="equipNo" name="equipNo" th:value="${eno }" type="text" readonly></td>
+                        <td>설비명</td>
+                        <td><input class="form-control" id="equipName" name="equipName" type="text" required></td>
+                    </tr>
+                    <tr>
+                        <td>설비타입</td>
+                        <td><input class="form-control" id="equipType" name="equipType" type="text" required></td>
+						<td>적용공정</td>
+                        <td><input class="form-control" id="equipProcess" name="equipProcess" type="hidden" th:value="1"> 
+							        <select class="form-control" id="equipProcessSelect" onchange="changeSelect(this.value);" >            
+							           <option th:each="ep : ${ep}">[[${ep.processNo}]]</option>
+					  				</select></td>          
+                    </tr>
+                     <tr>
+                        <td>정상진동</td>
+                        <td><input class="form-control" id="equipStdVibe" name="equipStdVibe" type="text" required></td>
+                        <td>정상온도</td>
+                        <td><input class="form-control" id="equipStdTemp" name="equipStdTemp" type="text" required></td>
+                    </tr>
+                    <tr>
+                        <td>설비설명</td>
+                        <td><textarea class="form-control textWidth" id="equipPurpose" name="equipPurpose" rows="5"></textarea></td>
+                    </tr>                  
+                </table>
+			</div>
+	
+			<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">등록</button>
+					<button type="button" class="btn btn-danger"  data-bs-dismiss="modal">취소</button>
+				</div>
+		</form>
+	
+		</div>
+		</div>
+	</div>
+	
+	<!-- The Modal 3 설비 단건 조회 모달 -->
+	<div class="modal fade" id="myModal3" data-backdrop="static" data-keyboard="false">
+		
+		<div class="modal-dialog modal-dialog-centered" >
+		<div class="modal-content">
+	
+				<!-- Modal Header -->
+				<div class="modal-header">
+				<h4 class="modal-title">설비 정보</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+	
+			<form id="updateForm" method="post">
+			<!-- <sec:csrfInput/> -->
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+				
+				<!-- Modal body -->
+				<div id="equipInfo" class="modal-body">
+				<table class="table">
+						
+	                    <tr>
+							<td>설비명</td>
+	                        <td><input class="form-control wantUpdate" id="selectEquipName" name="equipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->
+	                        <td>설비타입</td>
+	                        <td><input class="form-control wantUpdate" id="selectEquipType" name="equipType" type="text" readonly></td>		              
+	                    </tr>
+	                     <tr>
+	                        <td>정상진동</td>
+	                        <td><input class="form-control wantUpdate" id="selectEquipStdVibe" name="equipStdVibe" type="text" readonly></td>
+	                        <td>정상온도</td>
+	                        <td><input class="form-control wantUpdate" id="selectEquipStdTemp" name="equipStdTemp" type="text" readonly></td>
+	                    </tr>
+	                     <tr>
+	                        <td>설치시기</td>
+	                        <td><input class="form-control" id="selectEquipDate" name="equipDate" type="text" readonly></td>
+	                        <td>가동시간</td>
+	                        <td><input class="form-control" id="selectEquipStartDate" name="equipStartDate" type="text" readonly></td>
+	                        <td>정지시간</td>
+	                        <td><input class="form-control" id="selectEquipEndDate" name="equipEndDate" type="text" readonly></td>
+	                    </tr>
+	                    <tr>
+	                        <td>설비설명</td>
+	                        <td><textarea class="form-control wantUpdate textWidth" id="selectEquipPurpose" name="equipPurpose" rows="5" readonly></textarea></td>
+	                    </tr>                  
+	                </table>
+				</div>
+	
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" onclick="updateBtn()" class="btn btn-primary updateBtn">수정</button>
+						<button type="button" onclick="deleteBtn()" class="btn btn-primary">삭제</button>
+						<button type="button"  onclick="cancelUpdate()"  class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+					</div>
+			</form>
+	
+		</div>
+		</div>
+	</div>
+	
+	<!-- The Modal 4 공정 단건 조회 모달 -->
+	<div class="modal fade" id="myModal4">
+		
+		<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+	
+			<!-- Modal Header -->
+			<div class="modal-header">
+			<h4 class="modal-title">공정 정보</h4>
+			<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+	
+		
+			<!-- Modal body -->
+			<div id="equipInfo" class="modal-body">
+			<table class="table">
+					
+                    <tr>
+						<td>공정명</td>
+                        <td><input class="form-control" id="selectProcessName" name="processName" type="text"  readonly></td>              
+                    </tr>
+                    <tr>
+                        <td>공정설명</td>
+                        <td><textarea class="form-control" id="selectProcessContent" name="processContent" rows="5" readonly></textarea></td>
+                    </tr> 
+                     <tr>
+                        <td>공정순서</td>
+                        <td><input class="form-control" id="selectProcessSeq" name="processSeq" type="text" readonly></td>     
+                    </tr>
+                                   
+                </table>
+			</div>
+	
+			<!-- Modal footer -->
+			<div class="modal-footer">
+			<button type="submit" class="btn btn-primary">수정</button>
+			<button type="button"class="btn btn-danger"  data-bs-dismiss="modal">취소</button>
+		</div>
+
+	
+		</div>
+		</div>
+	</div>
+ 
+	<script>
+/* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */
+/* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */	
+
+	// 적용 공정 선택하게 하는 함수
+	function changeSelect() { 
+		let ep = document.querySelector('#equipProcessSelect').value;
+		document.querySelector('#equipProcess').value = parseInt(ep);
+	}
+	
+	// 설비 수정 하려는 함수
+	function updateBtn() {
+		
+		console.log("수정버튼 클릭");
+		const wantUpdate = document.getElementsByClassName('wantUpdate');	 
+		for (var i = 0; i< wantUpdate.length; i++) {
+            wantUpdate[i].readOnly = false;
+            wantUpdate[i].required = true; 
+        }
+		document.querySelector('.updateBtn').innerText='저장';
+		document.querySelector('.updateBtn').setAttribute('onclick','updateEquip()');
+		//동시에 버튼의 onclick값도 바뀌게^^
+			           
+	}
+
+	//설비 수정 함수
+	
+	function updateEquip() {
+
+		 url="/equipment/updateEquip"
+		    fetch(url,{method: 'POST'})
+		    .then(res=>console.log(res))
+		    .then(obj=>{
+		        console.log(obj);
+			})
+			.catch((error) => console.log("error:", error));
+			
+			document.querySelector('.updateBtn').innerText='수정';
+			document.querySelector('.updateBtn').setAttribute('type','submit');
+			document.querySelector('.updateBtn').setAttribute('onclick','updateBtn()');		
+			const modal = document.getElementById('myModal3');
+		
+		// 모달 꺼야되는데 ㅠㅠ modal.modal('hide');
+
+	   
+	}
+	
+	
+	//설비 수정 취소 함수
+	
+	function cancelUpdate() {
+		console.log("수정 취소버튼 클릭");
+		const wantUpdate = document.getElementsByClassName('wantUpdate');	 
+		for (var i = 0; i< wantUpdate.length; i++) {
+            wantUpdate[i].readOnly =true;
+            wantUpdate[i].required = false;
+        }
+		document.querySelector('.updateBtn').innerText='수정';
+		document.querySelector('.updateBtn').setAttribute('onclick','updateBtn()');
+	}
+	
+
+	// 설비 삭제 하는 함수
+	
+	function deleteBtn() {
+	
+		/* url="/equipment/deleteEquip"
+		    fetch(url,{method: 'POST'}) 
+		    .then(res=>res.json())
+		    .then(obj=>{
+
+		    }) */
+	}
+
+/*  공정 리스트 불러오는 아작스 */
+		url="/equipment/processList"
+	    fetch(url) 
+	    .then(res=>res.json())
+	    .then(obj=>{
+	        console.log(obj);
+	        process.resetData(obj);
+	       
+	    })
+	    
+/* 설비 리스트 불러오는 아작스 */
+	    url="/equipment/equipList"
+	    fetch(url) 
+	    .then(res=>res.json())
+	    .then(obj=>{
+	        console.log(obj);
+	        equip.resetData(obj);
+	        
+	    })
+	    
+/*  설비 단건조회 불러오는 아작스 함수 */
+
+	    function getEquipNo(equipNo) {
+			
+	    url="/equipment/getEquipInfo?equipNo="+equipNo // get방식이라 ?equipNo=
+	    fetch(url) 
+	    .then(res=>res.json())
+	    .then(obj=>{
+	        console.log(obj);
+	        document.querySelector('#selectEquipName').value=obj.equipName;
+	        document.querySelector('#selectEquipType').value=obj.equipType;
+	        document.querySelector('#selectEquipStdVibe').value=obj.equipStdVibe;
+	        document.querySelector('#selectEquipStdTemp').value=obj.equipStdTemp;
+			
+	        document.querySelector('#selectEquipDate').value=obj.equipDate;
+	        const a = document.querySelector('#selectEquipStartDate').value
+	        const b = document.querySelector('#selectEquipEndDate').value
+			if(a == undefined){
+				a.value=''
+				b.value=''
+			}
+	        document.querySelector('#selectEquipPurpose').value=obj.equipPurpose;
+	    })
+	    
+		}
+		
+/*  공정 단건조회 불러오는 아작스 함수 */
+
+	    function getProcessNo(processNo) {
+			
+	    url="/equipment/getProcessInfo?processNo="+processNo // get방식이라 ?equipNo=
+	    fetch(url) 
+	    .then(res=>res.json())
+	    .then(obj=>{
+	        console.log(obj);
+			document.querySelector('#selectProcessName').value=obj.processName;
+	        document.querySelector('#selectProcessContent').value=obj.processContent;
+	        document.querySelector('#selectProcessSeq').value=obj.processSeq;
+	       
+	    })
+	    
+		}
+		
+		
+		
+		const process = new tui.Grid({ //공정 그리드
+		    el: document.querySelector('#processList'),
+		    scrollY: false,
+			pagination:true,
+			pageOptions: {
+				useClient: true,
+				perPage: 4
+			},
+		    columns: [
+		    {
+				header: '공정번호',
+				name: 'processNo'
+				    },
+		    {
+		        header: '공정명',
+		        name: 'processName'
+		    },
+		    {
+		        header: '공정내용',
+		        name: 'processContent'
+		    },
+		    {
+		        header: '공정순서',
+		        name: 'processSeq'
+		    }
+		    ]
+		});
+	    
+	    const equip = new tui.Grid({ // 설비 그리드
+		    el: document.querySelector('#equipList'),
+			pagination:true,
+			pageOptions: {
+				useClient: true,
+				perPage: 4
+			},
+		    columns: [
+		    {
+				header: '설비번호',
+				name: 'equipNo'
+				    },
+		    {
+		        header: '설비타입',
+		        name: 'equipType'
+		    },
+		    {
+		        header: '설비용도',
+		        name: 'equipPurpose'
+		    },
+		    {
+		        header: '적용공정',
+		        name: 'equipProcess'
+		    }
+		    ]
+		});
+
+	    // 그리드 클릭 이벤트
+	    
+	    equip.on('click', ev => {
+	    	console.log(equip.getValue(ev.rowKey,ev.columnName));
+	    	const eno = equip.getValue(ev.rowKey,ev.columnName);
+	   /*  if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
+	    	console.log(ev);
+	    	
+	    	if(ev.columnName == 'equipNo'){
+				if(equip.getValue(ev.rowKey,ev.columnName) != null){
+		    	const myModal3 = new bootstrap.Modal('#myModal3',{backdrop: 'static',keyboard:false})
+		    	// 생성 시 모달 속성을 넣어줍니다.
+		    	const modalToggle1 = document.getElementById('myModal3'); 
+		    	
+				getEquipNo(eno);
+		    	myModal3.show(modalToggle1);
+				}
+	    	}
+		});
+	    
+	    
+	    process.on('click', ev => {
+	    	console.log(process.getValue(ev.rowKey,ev.columnName));
+	    	const pno = process.getValue(ev.rowKey,ev.columnName);
+	   /*  if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
+	    	console.log(ev);
+	    	
+	    	if(ev.columnName == 'processNo'){
+				if(process.getValue(ev.rowKey,ev.columnName) != null){
+		    	const myModal4 = new bootstrap.Modal('#myModal4',{backdrop: 'static',keyboard:false})
+		    	// 생성 시 모달 속성을 넣어줍니다.
+		    	const modalToggle2 = document.getElementById('myModal4'); 
+		    	
+				getProcessNo(pno);
+		    	myModal4.show(modalToggle2);
+				}
+	    	}
+		});
+	    
+	
+</script>
+
+	</div>
+</body>
+</html>

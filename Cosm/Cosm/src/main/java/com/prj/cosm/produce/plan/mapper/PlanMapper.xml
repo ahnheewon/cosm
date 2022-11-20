@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.cosm.produce.plan.mapper.PlanMapper">
+
+<!-- 전체조회 -->
+<select id="getPlanList" resultType="PlanVO">
+	SELECT * FROM produce_plan ORDER BY plan_no DESC
+</select>
+
+<!-- 생산계획번호 +1 -->
+<select id="getPlanNo" resultType="PlanVO">
+	SELECT NVL(MAX(plan_no), 0) + 1 as plan_no
+	FROM produce_plan
+</select>
+
+<!-- 생산계획등록 -->
+<insert id="insertPlan" parameterType="PlanVO">
+	
+	INSERT INTO
+	produce_plan (
+				  plan_no,
+				  plan_quantity,
+				  plan_start,
+				  plan_end,
+				  plan_ex
+				  )
+		   VALUES(
+				  #{planNo},
+				  #{planQuantity},
+				  #{planStart},
+				  #{planEnd},
+				  #{planEx}
+				  )
+</insert>
+
+<!-- 생산계획 수정 -->
+<update id="updatePlan" parameterType="PlanVO">
+	UPDATE produce_plan
+		<set>
+			<if test="planQuantity != null and !planQuantity.equals('')">
+				plan_quantity = #{planQuantity},
+			</if>
+			<if test="planStart != null and !planStart.equals('')">
+				plan_start = #{planStart},
+			</if>
+			<if test="planEnd != null and !planEnd.equals('')">
+				plan_end = #{planEnd},
+			</if>
+			<if test="planEx != null and !planEx.equals('')">
+				plan_ex = #{planEx}
+			</if>
+		</set>
+	WHERE plan_no = #{planNo}
+</update>
+
+<!-- 생산계획 삭제 -->
+<delete id="deletePlan" parameterType="Integer">
+	DELETE FROM produce_plan WHERE plan_no = #{planNo}
+</delete>
+</mapper>

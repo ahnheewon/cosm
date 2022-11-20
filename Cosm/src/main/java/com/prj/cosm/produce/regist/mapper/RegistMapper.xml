@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.cosm.produce.regist.mapper.RegistMapper">
+
+<!-- 전체조회 -->
+<select id="getRegistList" resultType="map">
+	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, r.code_no, r.inspection
+	FROM produce_instruct i JOIN produce_regist r
+	ON i.instruct_no = r.regist_instruct_no
+	ORDER BY i.instruct_no DESC
+</select>
+
+<!-- LOT번호 -->
+<select id="getRegistLOT" resultType="RegistVO">
+	SELECT 'LOT_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(regist_LOT,-4)),0)+1,4,0) as regist_LOT
+	FROM produce_regist WHERE regist_LOT LIKE 'LOT_'||TO_CHAR(SYSDATE,'rrrr')||'%'
+</select>
+
+<!-- 바코드번호 -->
+<select id="getRegistLabel" resultType="RegistVO">
+	SELECT 'BACODE_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(regist_label,-4)),0)+1,4,0) as regist_label
+	FROM produce_regist WHERE regist_label LIKE 'BACODE_'||TO_CHAR(SYSDATE,'rrrr')||'%'
+</select>
+
+<!-- 등록 -->
+<insert id="insertRegist" parameterType="RegistVO">
+	
+	INSERT INTO
+	produce_regist (
+					regist_LOT,
+					regist_quantity,
+					regist_label,
+					regist_error,
+					regist_product_no,
+					regist_instruct_no,
+					code_no,
+					inspection
+					)
+			VALUES (
+					#{registLOT},
+					#{registQuantity},
+					#{registLabel},
+					#{registError},
+					#{registProductNo},
+					#{registInstructNo},
+					#{codeNo},
+					#{inspection}
+					)	
+</insert>
+
+<delete id="deleteRegist">
+	DELETE FROM produce_regist WHERE regist_LOT = #{registLOT}
+</delete>
+</mapper>

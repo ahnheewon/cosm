@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style type="text/css">
+.container {
+	position: relative;
+	top: 10%;
+}
+
+#parEl #parEl2 {
+	position: relative;
+	top: 10%;
+	place-items: center;
+}
+
+#insBtn {
+	position: relative;
+	left: 35%
+}
+
+#delBtn {
+	position: relative;
+	left: 35%
+}
+</style>
+</head>
+
+<body layout:fragment="content">
+	<div class="container">
+		<div class="row">
+			<div align="center" class="col-4 parEl">
+				<h2>사원목록</h2>
+
+				<div id="grid"></div>
+			</div>
+			<div class="col-4">
+				<div align="center" class="parEl2">
+					<h2>고객목록</h2>
+
+					<div id="grid2"></div>
+				</div>
+			</div>
+			<div class="col-4" align="center">
+				<h2>세부정보</h2>
+				<form action="userInsert" method="post" id="userInsertForm">
+					<!-- <sec:csrfInput/> -->
+					<input type="hidden" th:name="${_csrf.parameterName}"
+						th:value="${_csrf.token}" />
+					<table>
+						<tbody>
+							<tr>
+								<th>회원번호</th>
+								<td><input type="text" id="usersNo" name="usersNo"
+									readonly="readonly"></td>
+							</tr>
+							<tr>
+								<th>아이디</th>
+								<td><input type="text" id="usersId" name="usersId">
+								</td>
+								<td><button id="checkBtn" type="button" onclick="checkId()"
+										value="no">중복확인</button></td>
+							</tr>
+							<tr>
+								<th>비밀번호</th>
+								<td><input type="password" id="usersPassword"
+									name="usersPassword"></td>
+							</tr>
+							<tr>
+								<th>이름</th>
+								<td><input type="text" id="usersName" name="usersName"></td>
+							</tr>
+							<tr>
+								<th>담당</th>
+								<td><input type="text" id="usersAuthor" name="usersAuthor"
+									readonly="readonly"></td>
+								<td><select id="selectAuthor">
+										<option selected="selected">------</option>
+										<th:block th:each="author : ${authorList}">
+											<option th:text="${author}"></option>
+										</th:block>
+								</select></td>
+							</tr>
+							<tr>
+								<th>연락처</th>
+								<td><input type="text" id="usersTel" name="usersTel"></td>
+							</tr>
+							<tr>
+								<th>주소</th>
+								<td><input type="text" id="usersAddress"
+									name="usersAddress"></td>
+							</tr>
+						</tbody>
+					</table>
+					<hr>
+					<button type="button" onclick="userInsert()"
+						class="btn btn-primary" id="insertBtn">회원추가</button>
+					<button type="button" onclick="userUpdate()"
+						class="btn btn-secondary">수정</button>
+					<button type="button" onclick="userDelete()"
+						class="btn btn-primary">삭제</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+		window.onload = function () {
+			getUserList();
+		};
+		
+		const header = $("meta[name='_csrf_header']").attr('content');
+        const token = $("meta[name='_csrf']").attr('content');
+		
+		$('#insBtn').click(function () {
+			const myModalAlternative = new bootstrap.Modal('#mNoModal')
+			const modalToggle = document.getElementById('mNoModal');
+			myModalAlternative.show(modalToggle)
+
+		})
+		$('#selectAuthor').change(function () {
+			$('#usersAuthor').val($(this).val());
+		})
+
+		$('#usersId').on('change', function () {
+			$('#checkBtn').val("no");
+		})
+
+		
+		function userDelete(){
+			
+			var usersNo = $('#usersNo').val()
+			$.ajax({
+				url:"userDelete",
+				type:"post",
+				data:{usersNo:usersNo},
+				beforeSend: function(xhr){xhr.setRequestHeader(header, token);},
+				success:function(data){
+					alert(data+'건이 삭제 되었습니다');
+
+					$('input:text').val('');
+					$('#insertBtn').prop('disabled',false);
+					getUserList();
+				},
+				error:function(reject){
+					console.log(reject);
+				}
+			})
+			return false;
+		}
+		
+		
+		function checkForm() {
+			console.log($('#usersId').val())
+			if ($('#usersId').val() == "" || $('#usersId').val() == null) {
+				alert('아이디를 입력하세요!');
+				return false;
+			}
+			if ($('#checkBtn').val() != "Yes") {
+				alert('아이디 중복 확인을 해주십시오');
+				return false;
+			}
+			if ($('#usersAuthor').val() == "" ||
+				$('#usersAuthor').val() == null) {
+				alert('담당을 선택해주세요!');
+				return false;
+			}
+			return true;
+		}
+		function userUpdate() {
+			$('#userInsertForm').prop('action', "/userUpdate");
+			if (checkForm()) {
+				$('#userInsertForm').submit();
+			}
+		}
+
+		function userInsert() {
+			if (checkForm()) {
+				$('#userInsertForm').submit();
+			};
+		}
+		
+		function checkId() {
+			var usersId = $('#usersId').val();
+			console.log(usersId);
+			$.ajax({
+				url: "/userCheckId",
+				type: "get",
+				data: {
+					usersId: usersId
+				},
+				async: false,
+				success: function (data) {
+					if (data == 0 && usersId != "") {
+						alert("사용 할 수 있는 아이디 입니다");
+						$('#checkBtn').val("Yes");
+
+					} else {
+						alert("이미 존재하는 아이디 입니다!");
+						$('#usersId').val("");
+						$('#usersId').focus();
+					}
+					console.log(data);
+				},
+				error: function (reject) {
+					console.log(reject);
+				}
+			})
+		}
+
+
+		function callUser(no) {
+			console.log(no);
+
+			console.log()
+			$.ajax({
+				url: '/userSelect',
+				type:'post',
+				data: {
+					usersNo: no
+				},beforeSend: function(xhr){xhr.setRequestHeader(header, token);},
+				success: function (data) {
+					for (obj in data) {
+						$('#' + obj).val(data[obj])
+						console.log(obj, data[obj])
+					}
+				},
+				error: function (reject) {
+					console.log(reject);
+				}
+			})
+		}
+
+		var grid = new tui.Grid({
+			el: document.getElementById('grid'),
+			rowHeaders: ['checkbox'],
+			minBodyHeight: 30,
+			pageOptions: {
+				useClient: true, // front에서만 페이징 하는 속성
+				perPage: 20
+			},selectionUnit:'cell',
+			scrollX: false,
+			scrollY: false,
+			columns: [{
+				header: '사원번호',
+				name: 'usersNo',
+				sortable: true,
+				sortingType: 'asc',
+				width: '150',
+				align: 'right'
+			}, {
+				header: '이름',
+				name: 'usersName',
+				width: '80',
+				align: 'left'
+			}, {
+				header: '아이디',
+				name: 'usersId',
+				width: '100',
+				align: 'left'
+			}, {
+				header: '담당',
+				name: 'usersAuthor',
+				width: '100',
+				align: 'left'
+			}],
+			formatter: {
+				key: "dt",
+				label: "기능",
+				width: "150",
+				align: "center",
+				formatter: function () {
+					return "저장";
+				}
+			}
+		});
+
+		var grid2 = new tui.Grid({
+			el: document.getElementById('grid2'),
+			rowHeaders: ['checkbox'],
+			minBodyHeight: 30,
+			pageOptions: {
+				useClient: true, // front에서만 페이징 하는 속성
+				perPage: 20
+			},
+
+			scrollX: false,
+			scrollY: false,
+			columns: [
+
+				{
+					header: '고객번호',
+					name: 'usersNo',
+					sortable: true,
+					sortingType: 'asc',
+					width: '200',
+					align: 'right'
+				}, {
+					header: '이름',
+					name: 'usersName',
+					width: '150',
+					align: 'left'
+				}, {
+					header: '아이디',
+					name: 'usersId',
+					width: '200',
+					align: 'left'
+				}
+			],
+			formatter: {
+				key: "dt",
+				label: "기능",
+				width: "150",
+				align: "center",
+				formatter: function () {
+					return "저장";
+				}
+			}
+		});
+
+		grid.on('check', (ev) => {
+			for (let i = 0; i < $('#grid input:checkbox[name="_checked"]').length; i++) {
+				if (i != `${ev.rowKey}`) {
+					grid.uncheck(i);
+				}
+			}
+			for (let i = 0; i < $('#grid2 input:checkbox[name="_checked"]').length; i++) {
+				grid2.uncheck(i);
+			}
+			callUser($(grid.getCheckedRows())[0].usersNo)
+			blockUse();
+		});
+
+
+		grid2.on('check', (ev) => {
+			for (let i = 0; i < $('#grid input:checkbox[name="_checked"]').length; i++) {
+				grid.uncheck(i);
+			}
+			for (let i = 0; i < $('#grid2 input:checkbox[name="_checked"]').length; i++) {
+				if (i != `${ev.rowKey}`) {
+					grid2.uncheck(i);
+				}
+			}
+			callUser($(grid2.getCheckedRows())[0].usersNo)
+			blockUse();
+		});
+		function blockUse(){
+			$('#insertBtn').prop('disabled',true);
+			$('#usersId').prop('readonly', true);
+			$('#checkBtn').val('Yes');
+		}
+		function letUse(){
+			$('input:text').val('');
+			$('#usersId').prop('readonly', false);
+			$('#insertBtn').prop('disabled',false);
+		}
+		grid.on('uncheck', (ev) => {
+			letUse();
+		});
+
+		grid2.on('uncheck', (ev) => {
+			letUse();
+		});
+
+		$('#grid span input:checkbox').remove();
+		$('#grid2 span').remove();
+
+		function getUserList() {
+			$.ajax({
+				url: "/getUserList",
+				dataType: "JSON",
+				success: function (result) {
+					var empList = [];
+					var clientList = [];
+					$.each(result, function (idx, obj) {
+						let str = obj.usersNo.substr(0, 3);
+						if (str == 'CUS') {
+							clientList.push(obj);
+						} else if (str == 'COS') {
+							empList.push(obj);
+						}
+					})
+					grid.resetData(empList);
+					grid2.resetData(clientList);
+				},
+				error: function (reject) {
+					console.log(reject);
+				}
+			});
+		}
+	</script>
+</body>
+
+</html>
