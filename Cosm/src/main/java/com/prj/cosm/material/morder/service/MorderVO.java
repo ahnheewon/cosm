@@ -2,6 +2,13 @@ package com.prj.cosm.material.morder.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.Data;
+
+@Data
 public class MorderVO {
 	
 	// 1. 자재 입출고 - 입,출고된 자재 리스트
@@ -9,39 +16,40 @@ public class MorderVO {
 	private String mioLotNo;// 입고LOT 
 	private String mioNo;// 입고번호
 	
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date mioInDate;// 입고일자
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date mioOutDate;// 출고일자
 	
-	private Integer mComId;// 거래처번호
-	private String mComNm;// 거래처이름
-	private String mcomMrgNm;// 담당자이름
+	private Integer mioComId;// 거래처번호
+	private String mioComNm;// 거래처이름
+	private String mioComMrg;// 관리 담당자이름
 	
 	private int mioInQntt; // 입고수량
 	private int mioOutQntt; // 출고수량
 	
-	
-	
-	// 진행코드
+	private String mioProgcode; // 진행코드
 	
 	
 	// 2. 발주관리
+	private String mioName; // 자재명
+	private String mNo; // 자재번호
+	private String mOrderid; // 발주번호
 	
-	// 자재번호
+	private Integer moTtPrice;// 총금액
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date moDate;// 신청일자
 	
-	// 발주명
+	private Integer moUnitPrice;// 발주단가
+	private Integer moNum;// 발주수량
 	
-	// 총금액
+	private String moProgcode; //진행코드
 	
-	// 신청일자
-	
-	// 발주단가
-	
-	// 발주수량
-	
-	//진행코드
-	
-	
-	
-	
+		
 
 }

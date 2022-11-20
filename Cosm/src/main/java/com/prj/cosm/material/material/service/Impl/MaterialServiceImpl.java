@@ -10,7 +10,7 @@ import com.prj.cosm.material.material.service.MaterialService;
 import com.prj.cosm.material.material.service.MaterialVO;
 
 @Service
-public class MaterailServiceImpl implements MaterialService {
+public class MaterialServiceImpl implements MaterialService {
 
 	@Autowired
 	MaterialMapper mMapper;

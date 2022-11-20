@@ -23,6 +23,7 @@ import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
 import com.prj.cosm.material.material.service.MaterialService;
 import com.prj.cosm.material.material.service.MaterialVO;
+import com.prj.cosm.material.morder.service.MorderService;
 import com.prj.cosm.produce.instruct.service.InsService;
 import com.prj.cosm.produce.instruct.service.InsVO;
 import com.prj.cosm.produce.plan.service.PlanService;
@@ -59,6 +60,8 @@ public class MainController {
 	@Autowired
 	InsService insService;
 
+	@Autowired
+	MorderService moSerivce;
 
 	@Autowired
 	RegistService registService;
@@ -339,12 +342,12 @@ public class MainController {
 			return "material/mRegCom";
 		}
 
-		// 신규거래처 등록창
+		// 신규거래처 등록 실행
 		@PostMapping("mregcom")
-		public String mRegCom(MaterialVO mvo, Model model) {			
+		public String mRegCom(MaterialVO mvo) {			
 			mService.registerMCompany(mvo);
 			
-			return "material/mInfoInsert";
+			return "redirect:minsert";
 			 
 		}
 
@@ -366,6 +369,8 @@ public class MainController {
 		return "material/material";
 	}
 	
+		
+		
 	// 자재명으로 검색
 	/*@GetMapping("/search")
 	public String getSearchProducts(MaterialVO vo) throws JsonProcessingException{ 
@@ -422,6 +427,24 @@ public class MainController {
 		return mService.deleteMatrailInfo(vo.getDelmno());
 			
       }
+	
+	
+	// 입고, 출고 리스트 
+		@ResponseBody
+		@GetMapping("/ajax/miolist")
+		public Map mioList() {
+			Map<String, Object> map = new HashMap();
+			map.put("list1", moSerivce.mioInputList() ); // 자재정보리스트
+			map.put("list2", moSerivce.mioOutputList() ); // 재고 변동 현황
+			
+			return map;
+		}
+
+		@GetMapping("miolist")
+		public String mioPage(MaterialVO mvo, Model model) {
+			return "material/mioList";
+		}
+	
 	
 	
 	// =============================생산관리=======================
