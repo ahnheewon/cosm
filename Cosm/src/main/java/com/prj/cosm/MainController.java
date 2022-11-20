@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,13 +14,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
+import com.prj.cosm.equipment.equip.service.equipService;
+import com.prj.cosm.equipment.equip.service.equipVO;
 import com.prj.cosm.material.material.service.MaterialService;
 import com.prj.cosm.material.material.service.MaterialVO;
+import com.prj.cosm.produce.bom.service.BomService;
+import com.prj.cosm.produce.bom.service.BomVO;
+import com.prj.cosm.produce.goods.service.GoodsService;
+import com.prj.cosm.produce.goods.service.GoodsVO;
 import com.prj.cosm.produce.instruct.service.InsService;
 import com.prj.cosm.produce.instruct.service.InsVO;
 import com.prj.cosm.produce.plan.service.PlanService;
@@ -57,6 +65,12 @@ public class MainController {
 
 	@Autowired
 	ClientService cService;
+
+	@Autowired
+	BomService bomService;
+
+	@Autowired
+	GoodsService goodsService;
 
 	// 첫 화면
 	@RequestMapping("/")
@@ -136,7 +150,6 @@ public class MainController {
 		return eService.getProcessInfo(processNo);
 
 	}
-
 
 
 	// 영업 start =======================================================
@@ -231,6 +244,7 @@ public class MainController {
 		return "material/mInfoInsert";
 	}
 
+
 	// 자재 정보 등록창
 	@PostMapping("minsert")
 	public String mInsert(MaterialVO mVO, RedirectAttributes ratt) {
@@ -258,9 +272,7 @@ public class MainController {
 	public String mRegCom(MaterialVO mvo) {
 		System.out.println("거래처번호 : " + mvo);
 		mService.registerMCompany(mvo);
-
 		return "material/mInfoInsert";
-
 	}
 
 	// 자재 정보 리스트, 재고 변동현황
@@ -428,16 +440,82 @@ public class MainController {
 	// BOM 페이지 이동
 	@GetMapping("/bom")
 	public String bom(Model model) {
-
+		model.addAttribute("info", bomService.selectBomNo());
 		return "produce/bom";
 	}
 
-	// 제품 페이지 이동
-	@GetMapping("/product")
-	public String product(Model model) {
-
-		return "produce/product";
+	// BOM list에 ajax
+	@GetMapping("produce/bomList")
+	@ResponseBody
+	public List<BomVO> bomList() {
+		return bomService.selectBomList();
 	}
+
+	// BOM 등록
+	@PostMapping("bomInsert")
+	public String insertBomInfo(BomVO bomVO) {
+		bomService.insertBomInfo(bomVO);
+		return "redirect:bom";
+	}
+
+	// BOM 수정
+	@PostMapping("bomUpdate")
+	public String updateBomInfo(BomVO bomVO, RedirectAttributes ratt) {
+		int result = bomService.updateBomInfo(bomVO);
+		if (result == 1) {
+			ratt.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+		} else {
+			ratt.addAttribute("msg", "정상적으로 수정되지 않았습니다.");
+		}
+		return "redirect:bom";
+	}
+
+	// BOM 삭제
+	@GetMapping("produce/bomDelete")
+	@ResponseBody
+	public int deleteBomInfo(int bomNo, RedirectAttributes ratt) {
+		return bomService.deleteBomInfo(bomNo);
+	}
+
+	// 제품 페이지 이동
+	@GetMapping("/goods")
+	public String Goods(Model model) {
+		model.addAttribute("info", goodsService.selectGoodNo());
+		return "produce/goods";
+	}
+
+	// 제품 list에 ajax
+	@GetMapping("produce/goodsList")
+	@ResponseBody
+	public List<GoodsVO> goodsList() {
+		return goodsService.selectGoodList();
+	}
+
+	// 제품 등록
+	@PostMapping("goodsInsert")
+	public String insertgoodsInfo(GoodsVO goodsVO) {
+		goodsService.insertGoodInfo(goodsVO);
+		return "redirect:goods";
+	}
+
+	// 제품정보 수정
+	@PostMapping("goodsUpdate")
+	public String updateGoodsInfo(GoodsVO goodsVO, RedirectAttributes ratt) {
+		int result = goodsService.updateGoodInfo(goodsVO);
+		if (result == 1) {
+			ratt.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+		} else {
+			ratt.addAttribute("msg", "정상적으로 수정되지 않았습니다.");
+		}
+		return "redirect:goods";
+	}
+	
+	// 제품정보 삭제
+		@GetMapping("produce/goodsDelete")
+		@ResponseBody
+		public int deleteGoodsInfo(int goodsNo, RedirectAttributes ratt) {
+			return goodsService.deleteGoodInfo(goodsNo);
+		}
 
 	// 불량관리 페이지 이동
 	@GetMapping("/proError")
