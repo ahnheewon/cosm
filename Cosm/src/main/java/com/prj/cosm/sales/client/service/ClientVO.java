@@ -32,7 +32,7 @@ public class ClientVO {
 			private String businessNo; // 사업자번호
 			private Date regDate; // 등록일자
 			private String licenseImg; // 사업자 등록증 -> api로 확인
-			private Integer userNo; // 회원번호
+			private String userNo; // 회원번호
 			
 		
 		
