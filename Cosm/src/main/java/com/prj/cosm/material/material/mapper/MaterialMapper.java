@@ -12,6 +12,9 @@ public interface MaterialMapper {
 
 	// 자재정보 단건조회 (상세조회)
 	public MaterialVO selectInfo(MaterialVO mVO);
+	
+	// 자재 정보 상세 조회 (업데이트용)
+	public MaterialVO selectInfoMat(MaterialVO mVO);
 
 	// 신규 자재 정보 등록
 	public int insertMatarialInfo(MaterialVO mVO);
@@ -39,5 +42,16 @@ public interface MaterialMapper {
 
 	// 거래처번호 조회
 	public MaterialVO getComId();
+	
+	// 단위 코드 조회
+	public List<MaterialVO> getUnitList();
+	
+	// 자재분류 코드 조회
+	public List<MaterialVO> getCategoryList();
+	
+	// 게시글 갯수 조회
+	public int getTotal(MaterialVO mVo);
+			
+
 
 }

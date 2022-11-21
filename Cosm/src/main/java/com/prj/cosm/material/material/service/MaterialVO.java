@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -24,14 +26,18 @@ public class MaterialVO {
 	private String mInfo; // 상세정보
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date mDate; // 최종수정일
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date mRegDate; // 등록일자
 
 	// 2. 자재 변동 내역
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date mioInputDate;// 입고일자
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date mioOutputDate;// 출고일자
 
 	private int mioInQntt; // 입고수량
@@ -54,5 +60,13 @@ public class MaterialVO {
 	private String mCompanyNm; // 자재 거래처이름
 	private String mCompanyTel; // 자재 거래처 번호
 	private String mMngNm; // 자재 거래처 담당자 이름
+	private String mZipCode; // 거래처 우편번호
 	private String mCompanyAdd; //자재 거래처 주소
+	private String mAddrDetail; //자재 거래처 주소(상세)
+	
+	// 4. code, search  
+	private String codeName; //단위코드 이름
+	private String keyword; // 검색시 키워드 
+	
+
 }

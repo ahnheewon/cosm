@@ -8,10 +8,13 @@ public interface MaterialService {
 	// 자재정보 전체조회
 	public List<MaterialVO> mList(); 
 	// 자재정보 단건조회 (상세조회) 
-	public MaterialVO selectInfo(String mno);
+	public MaterialVO selectInfo(MaterialVO mVO);
 	
 	// 신규 자재 정보 등록
 	public int insertMatarialInfo(MaterialVO mVO);
+	
+	// 자재 정보 조회 
+	public MaterialVO selectInfoMat(MaterialVO mVO);
 	// 자재 정보 수정 
 	public int updateMatrailInfo(MaterialVO mVO);
 	// 자재 정보 삭제 - 재고 수량도 삭제됨
@@ -34,7 +37,16 @@ public interface MaterialService {
 	
 	// 거래처번호 조회
 	public MaterialVO getComId();
+	
+	// 단위 코드 조회
+	public List<MaterialVO> getUnitList();
 		
-		
+	// 자재분류 코드 조회
+	public List<MaterialVO> getCategoryList();
+	
+	// 게시글 갯수 조회
+	public int getTotal(MaterialVO mVo);
+	
+
 	
 }
