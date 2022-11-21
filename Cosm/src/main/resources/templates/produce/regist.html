@@ -98,8 +98,6 @@
 
 
 			<div class="col-12">
-				<button type="button" class="btn btn-dark btn-sm"
-					onclick="deleteData();" style="float: right">완제품 삭제</button>
 				<button type="submit" class="btn btn-dark btn-sm"
 					style="float: right">완제품 등록</button>
 			</div>
@@ -107,9 +105,34 @@
 
 		<hr style="width: 100%">
 		<h3>완제품 등록 리스트</h3>
+				<button type="button" class="btn btn-dark btn-sm"
+					 style="float: right" id="delbtn">완제품 삭제</button>
 		<div id="grid"></div>
 
-
+		<!-- 삭제 모달-->
+		<div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">완제품 등록 정보 삭제</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body" style="text-align: center">
+						<h5>해당 완제품 정보가 삭제됩니다.</h5>
+						<h5>출고완료된 제품인지 확인하시길 바랍니다.</h5>
+						<h5>정말로 삭제하시겠습니까?</h5>
+					</div>
+					<div class="modal-footer" style="text-align: center">
+						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+						<button type="button" class="btn btn-primary"
+							data-bs-dismiss="modal" onclick="deleteData()">확인</button>
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<script>
 	window.onload = function () {
 		
@@ -325,6 +348,14 @@
 			}
 		});
 	}
+	//삭제모달
+	let delbtn = document.getElementById('delbtn');
+	delbtn.addEventListener('click', function() {
+		let myModalAlternative = new bootstrap.Modal('#delModal')
+		let modalToggle = document.getElementById('delModal');
+		myModalAlternative.show(modalToggle)
+
+	})
 	//삭제
 	function deleteData() {
 		var datas2 = grid.getCheckedRows();

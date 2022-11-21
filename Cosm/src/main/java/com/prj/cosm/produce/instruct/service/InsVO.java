@@ -14,8 +14,8 @@ public class InsVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date instructDate;
 	private int instructPlanNo;
-	private int instructMNo;
+	private String instructMNo;
 	private String instructProgressCode;
-	
+	private int instructMaterialNum;
 	
 }

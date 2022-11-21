@@ -40,8 +40,8 @@
 		<hr style="width: 100%">
 
 		<h3>생산지시 리스트</h3>
-		<button type="button" onclick="deleteData();"
-			class="btn btn-dark btn-sm" style="float: right" id="deleteBtn">생산지시
+		<button type="button" 
+			class="btn btn-dark btn-sm" style="float: right" id="delbtn">생산지시
 			삭제</button>
 		<button type="button" onclick="updateData();"
 			class="btn btn-dark btn-sm" data-bs-toggle="modal"
@@ -82,11 +82,16 @@
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
 								</div>
-
+								<div class="input-group mb-3">
+									<span class="input-group-text">생산계획량</span> <input type="number"
+										class="form-control" placeholder="생산계획량" name="planQuantity"
+										id="planQuantity" readonly="readonly"
+										aria-label="Username" aria-describedby="basic-addon2">
+								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">최종생산지시량</span> <input
-										type="number" class="form-control" placeholder="생산량"
-										name="instructQuantity" aria-label="Username"
+										type="number" class="form-control" placeholder="최종생산지시량"
+										name="instructQuantity" id="instructQuantity" aria-label="Username"
 										aria-describedby="basic-addon2">
 								</div>
 
@@ -111,18 +116,29 @@
 										aria-label="Username" aria-describedby="basic-addon4">
 								</div>
 
+								
 								<div class="input-group mb-3">
-									<span class="input-group-text">자재번호</span> <input type="number"
-										class="form-control" placeholder="자재번호" name="instructMNo"
+									<span class="input-group-text">자재번호</span> 
+								<select id="instructMNo" name="instructMNo" class="form-select">
+									<option selected>MM1002</option>
+									<option>MM1003</option>
+									<option>MM1004</option>
+								</select>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">투입될 자재량</span> <input type="number"
+										class="form-control" placeholder="자재량" name="instructMaterialNum"
 										aria-label="Username" aria-describedby="basic-addon4">
 								</div>
 								
 								<div class="input-group mb-3">
-									<span class="input-group-text">진행상황</span> <input type="text"
-										class="form-control" placeholder="진행상황" name="instructProgressCode"
-										aria-label="Username" aria-describedby="basic-addon4">
+									<span class="input-group-text">진행상황</span> 
+								<select id="instructProgressCode" name="instructProgressCode" class="form-select">
+									<option selected>진행중</option>
+									<option>미실시</option>
+									<option>완료</option>
+								</select>
 								</div>
-
 								<div class="input-group">
 									<span class="input-group-text">기타사항</span>
 									<textarea class="form-control" name="instructEx"
@@ -174,7 +190,7 @@
 								
 								<div class="input-group mb-3">
 									<span class="input-group-text">최종생산지시량</span> <input
-										type="number" class="form-control" placeholder="생산량"
+										type="number" class="form-control" id="instructQuantity2"
 										name="instructQuantity" aria-label="Username"
 										aria-describedby="basic-addon2">
 								</div>
@@ -194,9 +210,24 @@
 								</div>
 								
 								<div class="input-group mb-3">
-									<span class="input-group-text">자재번호</span> <input type="number"
-										class="form-control" placeholder="자재번호" name="instructMNo"
+									<span class="input-group-text">자재번호</span> <input type="text"
+										class="form-control" name="instructMNo" id="instructMNo2"
 										aria-label="Username" aria-describedby="basic-addon4">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">투입될 자재량</span> <input type="number"
+										class="form-control" name="instructMaterialNum" id="instructMaterialNum"
+										aria-label="Username" aria-describedby="basic-addon4">
+								</div>
+								
+								<div class="input-group mb-3">
+									<span class="input-group-text">진행상황</span> 
+								<select id="instructProgressCode" name="instructProgressCode" class="form-select">
+									<option selected>진행중</option>
+									<option>미실시</option>
+									<option>진행중</option>
+									<option>완료</option>
+								</select>
 								</div>
 
 								<div class="input-group">
@@ -217,7 +248,29 @@
 				</div>
 			</div>
 		</div>
-
+		<!-- 삭제 모달-->
+		<div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">생산지시 정보 삭제</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body" style="text-align: center">
+						<h5>해당 생산지시 정보가 삭제됩니다.</h5>
+						<h5>정말로 삭제하시겠습니까?</h5>
+					</div>
+					<div class="modal-footer" style="text-align: center">
+						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+						<button type="button" class="btn btn-primary"
+							data-bs-dismiss="modal" onclick="deleteData()">확인</button>
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<script>	
 		window.onload = function () {
@@ -229,6 +282,7 @@
 			planList();
 			//생산지시리스트 가져오기
 			instructList();
+			mList();
 			
 			//체크박스 하나만 선택
 			grid.on('check', (ev) => {
@@ -288,6 +342,10 @@
 					      },
 				},
 				{
+					header: '주문번호',
+					name: 'planOrderNo',
+				},
+				{
 					header: '생산량',
 					name: 'planQuantity',
 				},
@@ -304,10 +362,18 @@
 					sortable: true
 				},
 				{
+					header: 'BOM번호',
+					name: 'planBomNo',
+				},	
+				{
+					header: '제품번호',
+					name: 'planProductNo',
+				},	
+				{
 					header: '기타사항',
 					name: 'planEx',
 				},	
-				],
+				]
 			
 			});
 		// 생산지시 리스트 그리드
@@ -349,6 +415,10 @@
 				{
 					header: '자재번호',
 					name: 'INSTRUCTMNO'
+				},
+				{
+					header: '투입될 자재량',
+					name: 'INSTRUCTMATERIALNUM'
 				},	
 				{
 					header: '지시일자(desc)',
@@ -358,7 +428,7 @@
 				},
 				{
 					header: '진행상황',
-					name: 'INSTRUCTPROGRESSCODE'
+					name: 'INSTRUCT_PROGRESS_CODE'
 				},	
 				{
 					header: '기타사항',
@@ -378,50 +448,34 @@
 			},
 			scrollX: false,
 			scrollY: false,
-			columns: [
-				{
-					header: '생산지시번호',
-					name: 'planNo',
-				},
-				{
-					header: '생산계획번호',
-					name: 'planQuantity',
-				},
-				{
-					header: '생산최종지시량',
-					name: 'planQuantity',
-				},
-				{
-					header: '시작일자(desc)',
-					name: 'planStart',
-					sortingType: 'desc',
-					sortable: true
-				},
-				{
-					header: '종료일자(desc)',
-					name: 'planEnd',
-					sortingType: 'desc',
-					sortable: true
-				},
-				{
-					header: '투입될자재량',
-					name: 'planEx',
-				},	
-				{
-					header: '지시일자(desc)',
-					name: 'planStart',
-					sortingType: 'desc',
-					sortable: true
-				},
-				{
-					header: '진행상황',
-					name: 'planEx',
-				},	
-				{
-					header: '기타사항',
-					name: 'planEx',
-				},	
-				]
+			columns : [ {
+				header : '자재번호',
+				name : 'mno'
+			}, {
+				header : '거래처번호',
+				name : 'mcompanyId'
+			}, {
+				header : '분류',
+				name : 'mcategory'
+			}, {
+				header : '자재명',
+				name : 'mname'
+			}, {
+				header : '현재 재고',
+				name : 'mstock'
+			}, {
+				header : '증감',
+				name : 'increase'
+			}, {
+				header : '최종수정일',
+				name : 'mdate'
+			}, {
+				header : '입고일자',
+				name : 'mioInputDate'
+			}, {
+				header : '사용일자',
+				name : 'mioOutputDate'
+			} ],
 			});
 		
 		//생산계획리스트 가져오기
@@ -431,6 +485,7 @@
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
+					
 					for (let plan of result) {
 						plan.planStart = plan.planStart.substr(0, 10);
 						plan.planEnd = plan.planEnd.substr(0, 10);
@@ -449,6 +504,7 @@
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
+					console.log(result);
 					for (let plan of result) {
 						plan.PLANSTART = String(plan.PLANSTART).substr(0, 10);
 						plan.PLANEND = String(plan.PLANEND).substr(0, 10);
@@ -461,6 +517,22 @@
 				}
 			});
 		}
+		//자재재고 리스트 가져오기
+		function mList() {
+			$.ajax({
+				url : "http://localhost:85/ajax/minfo",
+				method : "GET",
+				success : function(result) {
+					
+					console.log(result);
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			})
+
+		}
+		
 		// 지시 등록
 		function insertData(){
 			var datas = grid.getCheckedRows();
@@ -468,17 +540,33 @@
 			$('#planStart').val(datas[0].planStart);
 			$('#planEnd').val(datas[0].planEnd);
 			$('#instructPlanNo').val(datas[0].planNo);
+			$('#planQuantity').val(datas[0].planQuantity);
 		}
 		// 지시 수정
 		function updateData(){	
 			var datas1 = grid2.getCheckedRows();
+			console.log(datas1);
 			var test = JSON.stringify(datas1);
 			$('#planNo').val(datas1[0].PLANNO);
 			$('#instructNo').val(datas1[0].INSTRUCTNO);
 			$('#planStart2').val(datas1[0].PLANSTART);
 			$('#planEnd2').val(datas1[0].PLANEND);
 			$('#instructPlanNo').val(datas1[0].PLANNO);
+			$('#instructMaterialNum').val(datas1[0].INSTRUCTMATERIALNUM);
+			$('#instructMNo2').val(datas1[0].INSTRUCTMNO);
+			$('#instructQuantity2').val(datas1[0].INSTRUCTQUANTITY);
+			$('#instructEx').val(datas1[0].INSTRUCTEX);
 		}
+		
+		//삭제모달
+		let delbtn = document.getElementById('delbtn');
+		delbtn.addEventListener('click', function() {
+			let myModalAlternative = new bootstrap.Modal('#delModal')
+			let modalToggle = document.getElementById('delModal');
+			myModalAlternative.show(modalToggle)
+
+		})
+		
 		// 삭제 
 		function deleteData() {
 			var datas2 = grid2.getCheckedRows();

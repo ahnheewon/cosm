@@ -30,7 +30,7 @@
 </head>
 <body>
 
-	<div layout:fragment="content">
+	
 	<h3>BOM 리스트</h3>
 
 	<div layout:fragment="content"
@@ -38,7 +38,7 @@
 		<hr style="width: 100%">
 		<h3>BOM 리스트</h3>
 		<button type="button" class="btn btn-dark btn-sm"
-			onclick="deleteData();" style="float: right">BOM 삭제</button>
+			id="delbtn" style="float: right">BOM 삭제</button>
 		<button type="button" onclick="updateData();"
 			class="btn btn-dark btn-sm" data-bs-toggle="modal"
 			data-bs-target="#requestModala" style="float: right">BOM 수정</button>
@@ -148,6 +148,29 @@
 								data-bs-dismiss="modal">취소</button>
 						</div>
 					</form>
+				</div>
+			</div>
+		</div>
+		<!-- 삭제 모달-->
+		<div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">BOM 정보 삭제</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body" style="text-align: center">
+						<h5>해당 BOM 정보가 삭제됩니다.</h5>
+						<h5>정말로 삭제하시겠습니까?</h5>
+					</div>
+					<div class="modal-footer" style="text-align: center">
+						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+						<button type="button" class="btn btn-primary"
+							data-bs-dismiss="modal" onclick="deleteData()">확인</button>
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -366,7 +389,7 @@
 		// bom리스트 불러오기
 		function bomList(){
 			$.ajax({
-				url: "produce/bomList",
+				url: "/produce/bomList",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -387,7 +410,7 @@
 				dataType: "JSON",
 				success: function (result) {
 					grid2.resetData(result);
-					console.log(result);
+					
 				},
 				error: function (reject) {
 					console.log(reject);
@@ -405,6 +428,15 @@
 			$('#bomProductNo').val(datas1[0].bomProductNo);
 			$('#bomMaterialNo').val(datas1[0].bomMaterialNo);
 		}
+		
+		//삭제모달
+		let delbtn = document.getElementById('delbtn');
+		delbtn.addEventListener('click', function() {
+			let myModalAlternative = new bootstrap.Modal('#delModal')
+			let modalToggle = document.getElementById('delModal');
+			myModalAlternative.show(modalToggle)
+
+		})
 		
 		// bom삭제
 		function deleteData() {
