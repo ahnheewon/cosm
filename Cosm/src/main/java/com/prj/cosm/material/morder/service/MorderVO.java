@@ -25,7 +25,7 @@ public class MorderVO {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date mioOutDate;// 출고일자
 	
-	private Integer mioComId;// 거래처번호
+	private String mioComId;// 거래처번호
 	private String mioComNm;// 거래처이름
 	private String mioComMrg;// 관리 담당자이름
 	

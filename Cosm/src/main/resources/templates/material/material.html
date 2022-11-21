@@ -414,6 +414,7 @@ img {
 				success : function(result) {
 					infoGrid.resetData((result.list1)); 
 					mioGrid.resetData((result.list2));
+					console.log(result);
 				},
 				error : function(reject) {
 					console.log(reject);
@@ -499,8 +500,10 @@ img {
 
 				let delmno = [];
 				let obj = infoGrid.getCheckedRows()
+				
 				for (key in obj) {
 					delmno.push(obj[key].mno);
+					
 				}
 				// debugger
 				let header = $("meta[name='_csrf_header']").attr('content');

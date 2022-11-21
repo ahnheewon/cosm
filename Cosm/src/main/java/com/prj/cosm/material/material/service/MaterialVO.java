@@ -52,11 +52,11 @@ public class MaterialVO {
 	private int mioOrderId; // 발주번호
 	private String mioProgress; // 진행코드
 
-	private List<String> delmno; // 삭제시 매치되는 자재번호
+	private List<String> delmno; // 삭제시 매치되는 자재번호...들
 	private int increase; // 증감 
 	
 	//3. 자재 거래처 정보
-	private int mCompanyId; // 자재 거래처번호
+	private String mCompanyId; // 자재 거래처번호
 	private String mCompanyNm; // 자재 거래처이름
 	private String mCompanyTel; // 자재 거래처 번호
 	private String mMngNm; // 자재 거래처 담당자 이름

@@ -44,8 +44,8 @@ public interface MaterialService {
 	// 자재분류 코드 조회
 	public List<MaterialVO> getCategoryList();
 	
-	// 게시글 갯수 조회
-	public int getTotal(MaterialVO mVo);
+	// 자재 번호 조회
+	//public MaterialVO getMno();
 	
 
 	
