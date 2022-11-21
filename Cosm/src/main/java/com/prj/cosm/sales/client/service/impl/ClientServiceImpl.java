@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.prj.cosm.sales.client.mapper.ClientMapper;
 import com.prj.cosm.sales.client.service.ClientService;
+import com.prj.cosm.sales.client.service.ClientVO;
 import com.prj.cosm.sales.orders.service.OrdersVO;
 
 @Service
@@ -16,33 +17,27 @@ public class ClientServiceImpl implements ClientService  {
 	ClientMapper mapper;
 	
 	@Override
-	public int getOrderNo() {
-		//주문번호 +1
+	public int clientIn(ClientVO cvo) {
+		// 고객 가입
+		return mapper.clientIn(cvo);
+	}
+
+	@Override
+	public List<ClientVO> myInfo(ClientVO cvo) {
+		// 고객 정보조회
+		return mapper.myInfo(cvo);
+	}
+
+	@Override
+	public int updateMy(ClientVO cvo) {
+		// 고객 정보수정
 		return 0;
 	}
 
 	@Override
-	public List<OrdersVO> salesOrderList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public OrdersVO selectOrderInfo(OrdersVO vo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public OrdersVO insertOrder(OrdersVO vo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public OrdersVO deleteOrderInfo(OrdersVO vo) {
-		// TODO Auto-generated method stub
-		return null;
+	public int deleteMy(ClientVO cvo) {
+		// 고객 탈퇴-삭제
+		return 0;
 	}
 
 }

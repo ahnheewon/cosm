@@ -45,12 +45,13 @@ public class MainController {
 
 	
 
-	@Autowired
-	OrdersService oService;
-
+	
 	@Autowired
 	EquipService eService;
 
+	@Autowired
+	EquipService eService;
+  
 	@Autowired
 	PlanService planService;
 
@@ -59,9 +60,8 @@ public class MainController {
 
 	@Autowired
 	RegistService registService;
-
-
-	@Autowired
+  
+  @Autowired
 	ClientService cService;
 
 	@Autowired
@@ -132,7 +132,6 @@ public class MainController {
 
 	}
 
-
 	// 설비 수정!!!
 	@PostMapping("/equipment/updateEquip")
 	@ResponseBody
@@ -147,46 +146,6 @@ public class MainController {
 	public EquipVO getProcessInfo(Model model, int processNo) {
 		return eService.getProcessInfo(processNo);
 
-	}
-
-	// 영업 start =======================================================
-	// 고객 주문목록 페이지
-	@RequestMapping("/coder")
-	public List<OrdersVO> client(Model model) {
-		return oService.salesOrderList();
-	}
-
-	// 고객 - 첫 화면
-	@RequestMapping("/cmain")
-	public String cilentorder(Model model) {
-		return "client/order";
-	}
-
-	// 주문 등록창
-	@PostMapping("insert")
-	public String cinsert(OrdersVO vo, RedirectAttributes ratt) {
-		oService.insertOrder(vo);
-		return "client/insert"; // 목록으로 돌아가기
-	}
-
-	// 고객 - 주문목록데이터
-	@RequestMapping("/orderList")
-	@ResponseBody
-	public List<OrdersVO> clientorderList(Model model) {
-		model.addAttribute("id", oService.getOrderNo());
-		return oService.salesOrderList();
-	}
-
-	// 고객 주문관리 메인
-	@RequestMapping("/insert")
-	public String clientOrder(Model model) {
-		return "client/insert";
-	}
-
-	// 마이페이지
-	@RequestMapping("/my")
-	public String clientMypage(Model model) {
-		return "client/myPage";
 	}
 
 	// 영업팀 -----------------------------------
@@ -208,25 +167,8 @@ public class MainController {
 	// 체크박스 -> 생산요청 상태변경
 	@ResponseBody
 	@PostMapping("a/upPro")
-
-	@RequestMapping("/test")
-	public String test(Model model) {
-		return "sales/test";
 	}
 
-	// 메인페이지 - 주문관리
-	@GetMapping("/orders")
-	public String salesorder(Model model) {
-		return "sales/orders";
-	}
-
-	// 사원 - 주문목록데이터
-	@GetMapping("/ordersList")
-	@ResponseBody
-	public List<OrdersVO> salesorderList(Model model) {
-		model.addAttribute("id", oService.getOrderNo());
-		return oService.salesOrderList();
-	}
 
 	/* main - 주문목록조회 = ajax, get */
 

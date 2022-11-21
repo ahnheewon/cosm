@@ -17,43 +17,43 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Override
 	public int getOrderNo() {
-		// TODO Auto-generated method stub
+		// 주문번호순 정렬
 		return mapper.getOrderNo();
 	}
 
 	@Override
 	public List<OrdersVO> salesOrderList() {
-		// TODO Auto-generated method stub
+		// 주문전체조회
 		return mapper.orderList();
 	}
 
 	@Override
 	public OrdersVO selectOrderInfo(OrdersVO vo) {
-		// TODO Auto-generated method stub
+		//주문 상세조회 - 단건
 		return mapper.orderInfo(vo);
 	}
 
 	@Override
 	public int insertOrder(OrdersVO vo) {
-		// TODO Auto-generated method stub
+		// TODO 주문등록
 		return mapper.insertOrder(vo);
 	}
 
 	@Override
 	public int deleteOrder(OrdersVO vo) {
-		// TODO Auto-generated method stub
+		// 주문 삭제
 		return mapper.deleteOrder(vo);
 	}
 
 	@Override
 	public int deleteOrderInfo(OrdersVO vo) {
-		// TODO Auto-generated method stub
+		// 단건 수정
 		return mapper.deleteOrder(vo);
 	}
 
 	@Override
 	public int deleteCheck(List<String> noList) {
-		// 체크박스 주문정보 단건삭제
+		// 체크박스 주문정보 여러건 삭제
 		int result = 0;
 		System.out.println(noList);
 		// 여러개 지우기
@@ -64,15 +64,26 @@ public class OrdersServiceImpl implements OrdersService {
 		return result;
 	}
 
-	// orderProgressCode
+	// 여러건 수정
 	@Override
-	public int updatePro(List<String> noList) {
-		// 생산지시 업데이트
+	public int updatePro(List<OrdersVO> list) {
 		int result = 0;
-		System.out.println("생상지시 상황 : " + noList);
-		for (String no : noList) {
-			result += mapper.updatePro(no);
+		System.out.println("생상지시 상황 : " + list);
+		for (OrdersVO vo : list) {
+			result += mapper.updateOrder(vo);
 		}
 		return result;
 	}
+
+//	@Override
+//	public int makePro(OrdersVO vo) {
+//		//주문이 들어오면 -> 생산지시 요청 단건
+//		return 0;
+//	}
+	
+//	@Override
+//	public int makePros(List<OrdersVO> list) {
+//		//주문이 들어오면 -> 생산지시 요청 여러건
+//		return 0;
+//	}
 }
