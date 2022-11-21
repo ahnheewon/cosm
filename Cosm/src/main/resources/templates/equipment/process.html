@@ -184,27 +184,35 @@
 						<table class="table">
 		                    <tr>
 								<td>설비명</td>
-		                        <td><input class="form-control wantUpdate" id="selectEquipName" name="equipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->
+		                        <td><input class="form-control wantUpdate" 
+		                        	id="selectEquipName" name="equipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->
 		                        <td>설비타입</td>
-		                        <td><input class="form-control wantUpdate" id="selectEquipType" name="equipType" type="text" readonly></td>		              
+		                        <td><input class="form-control wantUpdate" 
+		                        	id="selectEquipType" name="equipType" type="text" readonly></td>		              
 		                    </tr>
 		                     <tr>
 		                        <td>정상진동</td>
-		                        <td><input class="form-control wantUpdate" id="selectEquipStdVibe" name="equipStdVibe" type="text" readonly></td>
+		                        <td><input class="form-control wantUpdate" 
+		                        	id="selectEquipStdVibe" name="equipStdVibe" type="text" readonly></td>
 		                        <td>정상온도</td>
-		                        <td><input class="form-control wantUpdate" id="selectEquipStdTemp" name="equipStdTemp" type="text" readonly></td>
+		                        <td><input class="form-control wantUpdate" 
+		                        	id="selectEquipStdTemp" name="equipStdTemp" type="text" readonly></td>
 		                    </tr>
 		                     <tr>
 		                        <td>설치시기</td>
-		                        <td><input class="form-control" id="selectEquipDate" name="equipDate" type="text" readonly></td>
+		                        <td><input class="form-control" 
+		                        	id="selectEquipDate" name="equipDate" type="text" readonly></td>
 		                        <td>가동시간</td>
-		                        <td><input class="form-control" id="selectEquipStartDate" name="equipStartDate" type="text" readonly></td>
+		                        <td><input class="form-control" 
+		                        	id="selectEquipStartDate" name="equipStartDate" type="text" readonly></td>
 		                        <td>정지시간</td>
-		                        <td><input class="form-control" id="selectEquipEndDate" name="equipEndDate" type="text" readonly></td>
+		                        <td><input class="form-control" 
+		                        	id="selectEquipEndDate" name="equipEndDate" type="text" readonly></td>
 		                    </tr>
 		                    <tr>
 		                        <td>설비설명</td>
-		                        <td><textarea class="form-control wantUpdate textWidth" id="selectEquipPurpose" name="equipPurpose" rows="5" readonly></textarea></td>
+		                        <td><textarea class="form-control wantUpdate textWidth" 
+		                        	id="selectEquipPurpose" name="equipPurpose" rows="5" readonly></textarea></td>
 		                    </tr>                  
 		                </table>
 					</div>
@@ -660,7 +668,11 @@ function filter(){
 		    {
 				header: '설비번호',
 				name: 'equipNo'
-				    },
+			}, 
+			{
+				header: '설비명',
+				name: 'equipName'
+			},
 		    {
 		        header: '설비타입',
 		        name: 'equipType'

@@ -157,6 +157,11 @@ public class EquipController {
 		// 유지 관리 페이지 이동화면
 		@RequestMapping("/equipment/maintenance")
 		public String equipmentMaintenance(Model model) {
+			
+			model.addAttribute("equip",eService.getEquipList());
+			model.addAttribute("equipFirst",eService.getEquipList().get(0));
+			model.addAttribute("tno",eService.getTestNo().getTestNo());
+			model.addAttribute("fno",eService.getFailNo().getFailNo());
 			return "/equipment/maintenance";
 		}
 		

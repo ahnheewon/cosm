@@ -59,18 +59,20 @@ public class EquipVO {
 	
 	private Integer testNo;
 	private Integer testEquipNo;
+	private String testEquipName;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date testDate;
 	private String testReason;
-	private String testPs;
+	private String testContent;
 	private String testYn;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date testDueDate;
 	
 	// 고장관련
+	private Integer failRepairYn;
 	private Integer failNo;
 	private Integer failEquipNo;
-	
+	private String failEquipName;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date failDate;
 	
