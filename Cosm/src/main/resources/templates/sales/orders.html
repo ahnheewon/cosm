@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
@@ -12,23 +13,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Sales main</title>
-<!-- 엑셀 다운 CDN-->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 
-<style>
-#od-btn {
-	float: right;
-}
 
-#toast-container>div {
-	opacity: 1;
-}
-
-.toast-top-center {
-	top: 70px;
-}
-</style>
 </head>
 
 
@@ -37,7 +23,8 @@
 	<div layout:fragment="content">
 		<!-- ok -->
 
-		<div align="center" id="od-title">
+
+		<div align="center">
 			<h3>영업 관리</h3>
 		</div>
 
@@ -47,6 +34,7 @@
 		<div>
 			<!-- tab div -->
 			<!-- 탭 버튼 설정 -->
+			<!--주문관리 tab btn-->
 			<ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
 				<li class="nav-item" role="presentation">
 					<button class="nav-link active" id="manage-tab"
@@ -55,26 +43,22 @@
 				</li>
 				<!--주문관리 tab btn-->
 
+				<!--완제품 검수관리 tab-->
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="insert-tab" data-bs-toggle="tab"
+					<button class="nav-link" id="myTab2" data-bs-toggle="tab"
 						data-bs-target="#insert" type="button" role="tab"
-						aria-controls="insert" aria-selected="false">생산관리</button>
-				</li>
-				<!--생산지시 tab-->
-
-				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="proTest-tab" data-bs-toggle="tab"
-						data-bs-target="#pTest" type="button" role="tab"
 						aria-controls="insert" aria-selected="false">완제품 검수관리</button>
 				</li>
+				<!--완제품 검수관리 tab-->
+
 
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="proStock-tab" data-bs-toggle="tab"
+					<button class="nav-link" id="myTab3" data-bs-toggle="tab"
 						data-bs-target="#pStock" type="button" role="tab"
 						aria-controls="insert" aria-selected="false">완제품 재고관리</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="proOut-tab" data-bs-toggle="tab"
+					<button class="nav-link" id="myTab4" data-bs-toggle="tab"
 						data-bs-target="#pOut" type="button" role="tab"
 						aria-controls="insert" aria-selected="false">완제품 출고관리</button>
 				</li>
@@ -86,7 +70,7 @@
 			<div class="tab-content" id="myTabContent">
 				<!--주문관리 탭-->
 				<div class="tab-pane fade show active" id="manage" role="tabpanel"
-					aria-labelledby="manage-tab">
+					aria-labelledby="myTab">
 					<div style="margin: 15px;">
 
 						<!-- 검색창 start -->
@@ -96,29 +80,34 @@
 						<button class="btn btn-dark btn-sm">찾기</button>
 						<!-- 검색창 end -->
 
+
+						<!-- chart grid filter -->
+						<div>
+							<div id="chartGrid"></div>
+						</div>
+
+
 						<table style="width: 100%;">
 
 							<tr>
-								<td style="width: 80px">계획일자 &nbsp;</td>
+
+								<!-- 
+								<td>납기일자 &nbsp;</td>
 								<td>
-									<!-- date-picker -->
-									<div
-										class="tui-datepicker-input tui-datetime-input tui-has-focus">
-										<input id="startpicker-input" type="text" aria-label="Date">
-										<span class="tui-ico-date"></span>
-										<div id="startpicker-container" style="margin-left: -1px;"></div>
-									</div> <span>-</span>
 									<div
 										class="tui-datepicker-input tui-datetime-input tui-has-focus">
 										<input id="endpicker-input" type="text" aria-label="Date">
 										<span class="tui-ico-date"></span>
 										<div id="endpicker-container" style="margin-left: -1px;"></div>
 									</div>
+
 									<button type="button" id="searchBtn"
 										class="btn btn-dark btn-sm">찾기</button>
 									<button type="button" id="cancelBtn"
 										class="btn btn-dark btn-sm">초기화</button>
 								</td>
+								 -->
+
 								<td>
 									<!-- 
 							$('#delbtn').on('click', checkDel); // 체크박스 - 삭제버튼 이벤트
@@ -126,33 +115,27 @@
 							$('#newPro').on('click', newPro); //신규생산 지시버튼 이벤트 -> 체크박스 다중선택 가능
 							$('#exlBtn').on('click', exl); //엑셀버튼 클릭 이벤트			
 							 -->
-										<button id="newPro" type="button"
-											class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-											data-bs-target="#pctRequest">생산지시요청</button>
-										<button id="updatebtn" class="btn btn-secondary btn-sm">수정</button>
-										<button class="btn btn-secondary btn-sm">추가</button>
-										<button id="delbtn" class="btn btn-secondary btn-sm">삭제</button>
-										<button id="exBtn" class="btn btn-secondary btn-sm">엑셀</button>
-										<button class="btn btn-secondary btn-sm">PDF</button>
-								
-							
-								
-								
+									<button id="newPro" type="button"
+										class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+										data-bs-target="#pctRequest">신규</button>
+									<button id="proPlz" class="btn btn-secondary btn-sm">접수</button>
+									<button id="updatebtn" class="btn btn-secondary btn-sm">수정</button>
+									<button id="delbtn" class="btn btn-secondary btn-sm">삭제</button>
+									<button id="exlBtn" class="btn btn-secondary btn-sm">엑셀</button>
+									<button class="btn btn-secondary btn-sm">PDF</button>
+
 								</td>
 							</tr>
 
-							
 
-									
-									
 
 							<tr>
 								<td colspan="3">
 									<!-- 전체조회 grid filter -->
-									<div id="grid" style="width: 800px"></div>
-
+									<div id="grid"></div>
 								</td>
 							</tr>
+
 							<tr>
 								<td></td>
 								<td></td>
@@ -179,7 +162,7 @@
 
 				<!-- 생산 관리 tab body -->
 				<!-- 등록 탭 -->
-				<div class="tab-pane fade" id="insert" role="tabpanel"
+				<div class="tab-pane fade" id="myTab2" role="tabpanel"
 					aria-labelledby="insert-tab">
 					<div style="margin: 15px;">
 						<table style="width: 100%;">
@@ -252,7 +235,9 @@
 				</div>
 			</div>
 		</div>
-		<!-- 주문정보삭제 모달  -->
+
+
+
 		<!-- 제품리스트 모달 -->
 		<div class="modal" id="materialModal" tabindex="-1">
 			<div class="modal-dialog modal-xl">
@@ -275,54 +260,71 @@
 
 
 		<script>
-			/*데이터피커, 엑셀0, PDF, 수정0 - 만들기 11/18*/
+			/*데이터피커-보류, 엑셀0, PDF, 수정0, 신규 -> 접수 0, 차트, 삭제전 경고창 - 만들거 11/21*/
+			const header = $("meta[name='_csrf_header']").attr('content');
+			const token = $("meta[name='_csrf']").attr('content');
 
 			//date picker 초기화
 			//searchInit();
 
 
-			//그리드 초기화
-			//let Ordergrid = tabOrderGrid(); //주문관리 탭 초기화
-			//let insertGrid = tab2GridInit(); // 생산요청 탭 그리드 초기화
+			/*------------------------------
+			 그리드 리프레시
+			--------------------------------*/
+			function gridRef(){
+				const matIn = document.getElementById('matIn-tab');
+				matIn.addEventListener('click',function(){
+					grid.refreshLayout();
+				})
+				
+				const matOut = document.getElementById('matOut-tab');
+				matOut.addEventListener('click',function(){
+					grid2.refreshLayout();
+				})
+			}
+		
 
 			//버튼 이벤트 핸들러
 			$('#delbtn').on('click', checkDel); // 체크박스 - 삭제버튼 이벤트
 			$('#updatebtn').on('click', updatebtn); //주문 - 수정		
-			$('#newPro').on('click', newPro); //신규생산 지시버튼 이벤트 -> 체크박스 다중선택 가능
+			$('#newPro').on('click', newPro); //신규주문 클릭 이벤트 -> 체크박스 다중선택 가능
 			$('#exlBtn').on('click', exl); //엑셀버튼 클릭 이벤트
+			$('#proPlz').on('click', proPlz); //요청 클릭 이벤트 - 신규txt->완료로 변환
 
 
-			/*------------
-			 datepicker
-			----------------*/
-			function searchInit() {
-				// toast - datepicker
-				pickerInit('#wrapper', '#datepicker-input', getToday());
-				rangeDatepickerInit('#startpicker-input', '#startpicker-container', '#endpicker-input', '#endpicker-container')
-			}
 
 
 			/*----------------------
 			주문목록 아작스연결
 			----------------------*/
-			window.onload = function () {
-				$.ajax({
-					url: "http://localhost:85/ajax/orders",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
-
-						//console.log(result);
-
-						grid.resetData(result);
-					},
-					error: function (reject) {
-						console.log(reject);
-					}
-
-				});
+			window.onload= function() {
+			orderList();
 			}
 
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+			const data = {
+					  categories: ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+					  series: [
+					    {
+					      name: 'Budget',
+					      data: [5000, 3000, 5000, 7000, 6000, 4000, 1000]
+					    },
+					    {
+					      name: 'Income',
+					      data: [8000, 4000, 7000, 2000, 6000, 3000, 5000]
+					    },
+					    {
+					      name: 'Expenses',
+					      data: [4000, 4000, 6000, 3000, 4000, 5000, 7000]
+					    },
+					    {
+					      name: 'Debt',
+					      data: [3000, 4000, 3000, 1000, 2000, 4000, 3000]
+					    }
+					  ]
+					}
+			
 
 			//주문 목록 리스트 
 			const grid = new tui.Grid({
@@ -386,30 +388,9 @@
 					name: 'orderCode'
 
 
-				}, {
-					header: '생산지시',
-					name: 'orderProgressCode',
-					formatter: 'listItemText',
-					editor: {
-						type: 'select',
-						options: {
-							listItems: [{
-									text: '대기중',
-									value: 'B0101'
-								},
-								{
-									text: '진행중',
-									value: 'A0102'
-								},
-								{
-									text: '완료',
-									value: 'A0103'
-								}
-							]
-						}
-					}
+				}, 
 
-				}, {
+				 {
 					header: '배달상황',
 					name: 'deliveryInfo',
 					formatter: 'listItemText',
@@ -444,12 +425,12 @@
 									value: 'B0101'
 								},
 								{
-									text: '진행중',
-									value: 'A0102'
+									text: '배송중',
+									value: 'B0102'
 								},
 								{
-									text: '완료',
-									value: 'A0103'
+									text: '배송완료',
+									value: 'B0103'
 								}
 							]
 						}
@@ -530,9 +511,6 @@
 			수정 버튼 클릭(출납, 배송, 생산 셀렉트엔터)
 			----------------*/
 			function updatebtn() {
-
-				var header = $("meta[name='_csrf_header']").attr('content');
-				var token = $("meta[name='_csrf']").attr('content');
 				// debugger
 				$.ajax({
 					url: "/ajax/upOrders",
@@ -569,43 +547,75 @@
 				});
 			};
 
-			//체크된 신규 주문 -> 버튼클릭 -> 신규 -> 상태 접수로 바뀜 -> 생산계획리스트
-			/*
-				$('#ordPro').on('click', ordPro);
-	
-				function ordPro() {
-					
-					var header = $("meta[name='_csrf_header']").attr('content');
-					var token = $("meta[name='_csrf']").attr('content');
-					// debugger
-					$.ajax({
-						url: "/ajax/ordPro",
-						method: "Post",
-						contentType: "application/json",
-						data: JSON.stringify(grid.getModifiedRows().updatedRows),
-						beforeSend: function (xhr) {
-							xhr.setRequestHeader(header, token);
-						},
-						success: function (result) {
-							console.log(result);
-							
-						},
-						error: function (reject) {
-							console.log(reject);
-						}
-					})
+			/*------------
+			접수버튼 클릭(신규 -> 접수로 txt변환)
+			--------------*/
+			function proPlz(){
+				/*
+				var recNos = ''; // 접수번호 초기화
+				for(let i=0; i<grid.getCheckedRows().length; i++){
+					if(i != 0){
+						recNos += ',';
+					}
+					recNos += grid.getCheckedRows()[i].orderNo
 				}
-						*/
+				grid.getCheckedRows();
+	            console.log(recNos);	
+				*/
+				 
+				//체크안하고 접수 버튼 클릭시 알림창
+				var rec = grid.getCheckedRows();
+	            if (rec == 0) {
+	                alert('신규 주문을 선택해 주세요.');
+	            }
+			
+	            $.ajax({
+	            	url:"/ajax/recNos",
+	            	method: "Post",
+	            	data: JSON.stringify(grid.getCheckedRows()),
+	            	contentType : "application/json",
+	            	beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+	            	success:function(result){
+	            		console.log(result);
+	            		orderList();
+	            	},
+	            	error:function(error){
+	            		console.log(error);
+	            	}
+	            })
+			}
+			
 
 			/*------------
-			// 엑셀 다운받기
+			 아작스 연결 - 주문목록
+			----------------*/
+			function orderList() {
+				$.ajax({
+					url: "/ajax/orders",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+
+				});
+			}
+			
+			
+			/*------------
+			 엑셀 다운받기
 			----------------*/
 			function exl() {
 				let options = {
 					includeHeader: true,
 					includeHiddenColumns: true,
 					onlySelected: true,
-					fileName: 'Order List'
+					fileName: 'OrderList'
 				};
 				grid.export('xlsx', options);
 			};
@@ -618,7 +628,7 @@
 
 
 			//tab2 - 생산관리 start
-			
+			function myTab2
 			//tab2 - 생산관리 end
 		</script>
 

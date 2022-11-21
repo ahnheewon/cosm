@@ -21,8 +21,6 @@ import com.prj.cosm.sales.orders.service.OrdersVO;
 public class OrderClientController {
 	@Autowired
 	OrdersService oService;
-
-	// 영업 start =======================================================
 	
 	// 고객 주문목록 페이지
 	@RequestMapping("/coder")
@@ -63,7 +61,7 @@ public class OrderClientController {
 		return "client/myPage";
 	}
 
-	// 영업 --------------------------
+	// 영업==========================================================================================
 	// 주문조회 리스트
 	@ResponseBody
 	@GetMapping("/ajax/orders") // url
@@ -75,7 +73,6 @@ public class OrderClientController {
 	@ResponseBody
 	@PostMapping("/ajax/delcheckOrder") // requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
 	public int delCheckOrder(@RequestBody OrdersVO vo) {
-		// System.out.println(vo.getDelmno()+"=================>>>>>>>>>>>>>>");
 		return oService.deleteCheck(vo.getNoList());
 	}
 
@@ -87,13 +84,15 @@ public class OrderClientController {
 
 		return result;
 	}
+	
+	// 접수 버튼 이벤트
+	@ResponseBody
+	@PostMapping("/ajax/recNos")
+	public int recNos(@RequestBody List<OrdersVO> vo , RedirectAttributes ratt) {
+		int result = oService.recNos(vo);
+		return result;
+	}
 
-	// 생산지시 요청 -> 수락하면 완료
-//		@ResponseBody
-//		@PostMapping("ajax/makePro")
-//		public int makePro(@RequestBody List<OrdersVO> list, RedirectAttributes ratt) {
-//			int result = oService.
-//		}
 
 	// 테스트용
 	@RequestMapping("/test")
@@ -115,11 +114,9 @@ public class OrderClientController {
 		return oService.salesOrderList();
 	}
 
-	// 완제품관리 - 탭으로 제어
-//		@RequestMapping
-//		@GetMapping("/fpro")
-//		public List<E>;
 
+	
+	
 	/* main - 주문목록조회 = ajax, get */
 
 	// 영업 end =======================================================

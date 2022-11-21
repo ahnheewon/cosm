@@ -31,11 +31,8 @@ public interface OrdersService {
 	// 생산지시 상태변경(주문번호, 상태값 )
 	public int updatePro(List<OrdersVO> noList);
 
-	// 체크 후 -> 생산지시요청 
-	//public int makePro(OrdersVO vo);
-
-	//여러건 요청
-	//int makePros(List<OrdersVO> list);
+	// 신규 -> 접수버튼 -> 접수
+	public int recNos(List<OrdersVO> vo);
 
 	/*
 	 * 데이터 다건 추가시 public class GridData<T> { private List<T> updatedRows; private

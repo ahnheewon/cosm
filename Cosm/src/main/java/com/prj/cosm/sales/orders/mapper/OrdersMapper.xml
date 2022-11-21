@@ -78,6 +78,17 @@
 		ORDER_NO = #{noList}
 	</delete>
 
+	<!-- 생산 접수 버튼 이벤트 -->
+	<!-- recNos값 하나만 들고와줘서 주기만 하면됨 -->
+	<update id="recNos">
+		UPDATE orders SET ORDER_CODE = '접수' WHERE order_no IN
+		<foreach collection="vo" item="recNos" open="(" close=")"
+			separator=",">
+			#{recNos.orderNo}
+		</foreach>
+	</update>
+
+
 	<!-- 주문수정(주문 신규/재주문 상태) (출고 상황) (배송상황) -->
 	<!-- <if test="title != null and !title.equals('')"> title = #{title}, </if> -->
 	<update id="updateOrder" parameterType="OrdersVO">
@@ -97,7 +108,4 @@
 		WHERE order_no = #{orderNo}
 	</update>
 
-	<!-- 샌산 지시 요청 -->
-	
-	
 </mapper>

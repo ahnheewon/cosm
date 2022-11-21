@@ -29,7 +29,7 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Override
 	public OrdersVO selectOrderInfo(OrdersVO vo) {
-		//주문 상세조회 - 단건
+		// 주문 상세조회 - 단건
 		return mapper.orderInfo(vo);
 	}
 
@@ -75,15 +75,11 @@ public class OrdersServiceImpl implements OrdersService {
 		return result;
 	}
 
-//	@Override
-//	public int makePro(OrdersVO vo) {
-//		//주문이 들어오면 -> 생산지시 요청 단건
-//		return 0;
-//	}
-	
-//	@Override
-//	public int makePros(List<OrdersVO> list) {
-//		//주문이 들어오면 -> 생산지시 요청 여러건
-//		return 0;
-//	}
+	@Override
+	public int recNos(List<OrdersVO> vo) {
+		// 신규 -> 접수
+		int result = mapper.recNos(vo);
+		return result;
+	}
+
 }
