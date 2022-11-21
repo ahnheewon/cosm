@@ -36,7 +36,6 @@ public class EmpServiceImpl implements EmpService {
 	public int userInsert(EmpVO vo) {
 		BCryptPasswordEncoder enco = new BCryptPasswordEncoder();
 		vo.setUsersPassword(enco.encode(vo.getUsersPassword()));
-		System.out.println(vo);
 		return mapper.empInsert(vo);
 	}
 
