@@ -33,19 +33,25 @@ public class MaterialController {
 	MorderService moSerivce;
 
 
+	// ===============================================================
+	
 	// 자재 정보 등록폼 (이동)
 	@GetMapping("minsert")
 	public String mInsertForm(MaterialVO mVO, Model model) {
 		model.addAttribute("category", mService.getCategoryList());
 		model.addAttribute("unit", mService.getUnitList());
+		//MaterialVO mno =mService.getMno();
+		//model.addAttribute("mno", mno.getMNo());
+		
+		//System.out.println("자재번호 값이 맞나여?" + mno.getMNo());
 		return "material/mInfoInsert";
 	}
 
 	// 자재 정보 등록창 (실행)
 	@PostMapping("minsert")
 	public String mInsert(MaterialVO mVO, Model model) {
-		mService.insertMatarialInfo(mVO);
-
+		mService.insertMatarialInfo(mVO);		
+		
 		return "material/material"; // 목록으로 돌아가기
 	}
 
@@ -62,6 +68,7 @@ public class MaterialController {
 		model.addAttribute("comId", mService.getComId().getMCompanyId());
 		System.out.println("넘기는 값" + model.addAttribute("comId", mService.getComId().getMCompanyId()));
 		return "material/mRegCom";
+		
 	}
 
 	// 신규거래처 등록 실행
@@ -89,23 +96,7 @@ public class MaterialController {
 		return "material/material";
 	}
 
-	// 자재명으로 검색
-	/*
-	 * @GetMapping("/search") public String getSearchProducts(MaterialVO vo) throws
-	 * JsonProcessingException{ // 자바 -> json 객체 변환 ObjectMapper mapper = new
-	 * ObjectMapper(); HashMap<String, Object> hashMap = new HashMap<String,
-	 * Object>(); log.info("====searchKey==" + vo.getKeyword());
-	 * 
-	 * if(vo.getKeyword() == null) { vo.setKeyword(""); } List<MaterialVO> mlist =
-	 * mService.mList(); hashMap.put("mlist", mlist); String json =
-	 * mapper.writerWithDefaultPrettyPrinter().writeValueAsString(hashMap);
-	 * log.info("json String =============================================" + json);
-	 * 
-	 * return json;
-	 * 
-	 * 
-	 * }
-	 */
+	
 
 	// 자재 정보 상세조회(단건)
 	@ResponseBody

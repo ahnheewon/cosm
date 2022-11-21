@@ -100,11 +100,13 @@ public class MaterialServiceImpl implements MaterialService {
 		return mMapper.getCategoryList();
 	}
 
-	@Override
-	public int getTotal(MaterialVO mVo) {
-		// 게시글 갯수 조회
-		return mMapper.getTotal(mVo);
-	}
+//	@Override
+//	public MaterialVO getMno() {
+//		// 자재 번호 조회
+//		return mMapper.getMno();
+//	}
+
+
 
 
 

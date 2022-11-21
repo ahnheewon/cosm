@@ -52,7 +52,7 @@
 	</div>
 <script>
 //재고 정보 관리 (상단)
-let miGrid;
+let inputGrid;
 
 inputGrid = new tui.Grid({
 
@@ -85,9 +85,9 @@ inputGrid = new tui.Grid({
 
 
 // 현재 재고 현황(하단)
-let moGrid;
+let outputGrid;
 
-moGrid = new tui.Grid({
+outputGrid = new tui.Grid({
 
 	el : document.getElementById('grid2'),
 	rowHeaders : [ 'rowNum' ], // 가장 왼쪽 체크박스
@@ -144,8 +144,8 @@ tui.Grid.applyTheme("normal", {
 			url : "http://localhost:85/ajax/miolist",
 			method : "GET",
 			success : function(result) {
-				infoGrid.resetData((result.list1)); 
-				mioGrid.resetData((result.list2));
+				inputGrid.resetData((result.list1)); 
+				outputGrid.resetData((result.list2));
 			},
 			error : function(reject) {
 				console.log(reject);

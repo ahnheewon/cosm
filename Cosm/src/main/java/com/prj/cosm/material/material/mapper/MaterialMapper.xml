@@ -7,17 +7,10 @@
 
   <!-- 거래처 번호 -->
   <select id="getComId" resultType="MaterialVO">
- 	SELECT (NVL(MAX(mc_company_id),0) + 1) as m_company_id 
-	FROM material_company
- 	</select>
- 	
- 	<!-- 게시물 총 개수 -->
- 	<select id="getTotal" resultType="int">
- 	 select count(*) from material
- 	   <if test="keyword != null">
-     WHERE m_name like '%'||#{keyword}||'%'    
-    </if>
- 	</select>
+ 	SELECT CONCAT('COSMMC', TO_CHAR(NVL(MAX(SUBSTR(m_company_id, -4)), 0)+1))as m_company_id
+	FROM MATERIAL
+ </select> 
+
   
   <!-- 자재정보 전체조회  -->
  	<select id="mList" resultType="MaterialVO" >
@@ -32,9 +25,8 @@
 		ON m.m_unit_code = c.code_no
       JOIN MATERIAL_COMPANY mc 
         ON m.m_company_id = mc.mc_company_id
-    <if test="keyword != null">
-     WHERE m_name like '%'||#{keyword}||'%'    
-    </if>
+    ORDER BY m.m_no
+    
  	</select>
   
  
@@ -68,6 +60,17 @@
  	
   <!-- 신규 자재 정보 등록  -->
   <insert id="insertMatarialInfo" parameterType="MaterialVO">  	
+  <selectKey keyProperty="mNo" resultType="String"
+			order="BEFORE">
+  <if test="mCategory =='원자재'">
+		SELECT CONCAT('MM', TO_CHAR(NVL(MAX(SUBSTR(m_no, -4)), 0)+1))as m_no
+		FROM MATERIAL
+	</if>
+	<if test="mCategory =='부품'">
+		SELECT CONCAT('MP', TO_CHAR(NVL(MAX(SUBSTR(m_no, -4)), 0)+1))as m_no
+		FROM MATERIAL
+	</if>	
+  </selectKey>
   	INSERT INTO MATERIAL (m_no, 
   						  m_name, 
   						  m_category, 
@@ -111,11 +114,13 @@
   
   <!-- 자재 변동 내역 리스트  -->
   <select id="mioList" resultType="MaterialVO">
-  	SELECT m.m_no, m.m_company_id, m.m_category, m.m_name, m.m_stock,       
-      	  (mio.mio_input_quantity - mio.mio_output_quantity)AS increase,          
-      	 	m.m_date, mio.mio_input_date, mio.mio_output_date           
+  	SELECT m.m_no, m.m_company_id, m.m_category, m.m_name, 
+       (mio.mio_input_quantity - mio.mio_output_quantity) AS m_stock,       
+        mio.mio_output_quantity AS increase,          
+ 	 	m.m_date, mio.mio_input_date, mio.mio_output_date           
 	FROM Material m JOIN Material_io mio 
-		ON m.m_no = mio.mio_no
+			ON m.m_no = mio.mio_no
+	 ORDER BY m.m_no
 	</select> 
 	
 	<!-- 거래처 명 찾기 -->
@@ -126,7 +131,8 @@
     	SELECT mc_company_id as m_company_id , 
     		   mc_company_name as m_company_nm,    		    
     		   mc_manager_name as m_mng_nm
-    	FROM material_company
+    	FROM material_company    	
+	    ORDER BY mc_company_id
 	</select>  
 
 	<!-- 거래처 등록  -->
