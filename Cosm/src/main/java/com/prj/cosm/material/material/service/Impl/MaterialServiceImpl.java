@@ -10,7 +10,7 @@ import com.prj.cosm.material.material.service.MaterialService;
 import com.prj.cosm.material.material.service.MaterialVO;
 
 @Service
-public class MaterailServiceImpl implements MaterialService {
+public class MaterialServiceImpl implements MaterialService {
 
 	@Autowired
 	MaterialMapper mMapper;
@@ -22,9 +22,15 @@ public class MaterailServiceImpl implements MaterialService {
 	}
 
 	@Override
-	public MaterialVO selectInfo(String mno) {
+	public MaterialVO selectInfo(MaterialVO mVO) {
 		// 자재정보 단건조회 (상세조회)
-		return mMapper.selectInfo(getComId());
+		return mMapper.selectInfo(mVO);
+	}
+	
+	@Override
+	public MaterialVO selectInfoMat(MaterialVO mVO) {
+		//  자재정보 단건조회 (상세조회)_업데이트용
+		return mMapper.selectInfoMat(mVO);
 	}
 
 	@Override
@@ -80,6 +86,27 @@ public class MaterailServiceImpl implements MaterialService {
 		// 거래처 번호 조회
 		return mMapper.getComId();
 	}
+
+
+	@Override
+	public List<MaterialVO> getUnitList() {
+		// 단위 코드 조회(select option)
+		return mMapper.getUnitList();
+	}
+
+	@Override
+	public List<MaterialVO> getCategoryList() {
+		// 자재 분류 조회(select option)
+		return mMapper.getCategoryList();
+	}
+
+	@Override
+	public int getTotal(MaterialVO mVo) {
+		// 게시글 갯수 조회
+		return mMapper.getTotal(mVo);
+	}
+
+
 
 	
 }

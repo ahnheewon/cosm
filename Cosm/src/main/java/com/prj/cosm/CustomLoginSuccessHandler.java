@@ -1,3 +1,4 @@
+
 package com.prj.cosm;
 
 import java.io.IOException;
@@ -37,3 +38,4 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		}
 	}
 }
+
