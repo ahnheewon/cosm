@@ -63,9 +63,9 @@
 					class="btn btn-dark btn-sm" data-bs-toggle="modal"
 					data-bs-target="#requestModala" style="float: right">생산계획
 					수정</button>
-				<button type="button" onclick="selectData();"
+				<button type="button" onclick="getPlanInfo();" id="selectInfo"
 					class="btn btn-dark btn-sm" data-bs-toggle="modal"
-					data-bs-target="#requestModala" style="float: right">생산계획
+					data-bs-target="#requestModalb" style="float: right">생산계획
 					상세조회</button>
 				<div id="grid2"></div>
 			</div>
@@ -267,7 +267,35 @@
 				</div>
 			</div>
 		</div>
-
+		<!-- 생산계획 상세조회 모달 -->
+		<div class="modal fade" id="requestModalb" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">생산계획서 상세조회</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					
+						<!-- <sec:csrfInput/> -->
+						<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}" />
+						<div class="modal-body">
+							<div>
+								
+								<div id="requestModalGrid" style="width: 100%;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary">등록</button>
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">취소</button>
+						</div>
+					
+				</div>
+			</div>
+		</div>
 
 		<script>
 		window.onload = function () {
@@ -503,6 +531,7 @@
 		
 		//제품정보 리스트 그리드
 		 var grid4 = new tui.Grid({
+			 
 			el: document.getElementById('grid4'),
 			rowHeaders: ['checkbox'],
 			minBodyHeight: 30,
@@ -542,6 +571,8 @@
 			}, ],
 
 			});
+		
+		
 		 //주문서 리스트 불러오기
 		 function orderList(){
 			 $.ajax({
@@ -615,16 +646,38 @@
 			grid4.refreshLayout();
 			grid3.refreshLayout();
 				
-		})
+			})
 		const selectMno2 = document.getElementById('design');
 			selectMno2.addEventListener('click',function(){
 			grid4.refreshLayout();
 			grid3.refreshLayout();
-		})
+			})
+		
+		//단건조회
+		function getPlanInfo(){
+			var datas = grid2.getCheckedRows();
+			console.log(datas);
+			for(plan of datas){
+				$.ajax({
+					url : 'produce/getPlanInfo',
+					type : 'get',
+					data : {planNo : plan.planNo},
+					success : function(data){
+						console.log(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				});
+			}
+		}
+		
+		
 		//등록
 		function insertData() {
 			var planData=[];
 			var datas = grid.getCheckedRows();
+			console.log(datas);
 			var test = JSON.stringify(datas);
 			$('#orderNo').val(datas[0].orderNo);
 			$('#planProductNo').val(datas[0].productNo);
@@ -638,6 +691,7 @@
 		
 		//수정
 		function updateData() {
+			
 			var planData=[];
 			var datas = grid2.getCheckedRows();
 			var test = JSON.stringify(datas);
