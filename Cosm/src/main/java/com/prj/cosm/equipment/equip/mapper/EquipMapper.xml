@@ -194,8 +194,10 @@
 
 	<!-- 점검 전체 리스트 -->
 	<select id="getTestList" resultType="equipVO">
-	SELECT * 
-	FROM TEST
+	SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
+	FROM equip e, TEST T
+	where e.equip_no = T.TEST_equip_no 
+	ORDER BY test_no DESC
 	</select>
 	
 	<!-- 점검 단건 조회-->
@@ -205,30 +207,52 @@
 	
 	<!-- 점검일정 등록 -->
 	<insert id="insertTest" parameterType="equipVO">
+
+		 INSERT INTO TEST ( test_no
+							,test_equip_no
+							,test_reason
+	                        ,test_yn
+	                        ,test_due_date
+							)
+	        		values ( #{testNo}
+					        ,(SELECT equip_no
+						      FROM equip
+						      WHERE equip_name = #{testEquipName})
+					        ,#{testReason}
+					        ,'N'
+					        ,#{testDueDate})
+
 	</insert>
 	
 	<!-- 점검 수정 -->
 	<update id="updateTest" parameterType="equipVO">
+	
 	</update>
 	
 	<!-- 점검 삭제 -->
 	<delete id="deleteTest" parameterType="Integer">
+	
 	</delete>
 	
 	<!-- 점검 삭제 시 번호 정렬 update문-->
 	<update id="updateDeleteTestNo" parameterType="Integer">
+	
 	</update>
 	
 	<!-- 입력될 점검 번호 조회 -->
 	<select id="getTestNo" resultType="equipVO">
+	SELECT NVL(MAX(TEST_no),0) + 1 AS TEST_NO
+	FROM TEST
 	</select>
 	
 <!-- ############################################################################################  -->
 																					<!-- 고장  -->
-	<!-- 고장 전체 리스트 -->
+	<!-- 고장 리스트 -->
 	<select id="getFailList" resultType="equipVO">
-	SELECT *
-	FROM FAIL
+	SELECT f.fail_no, f.fail_equip_no,e.equip_name,f.fail_date,f.fail_content,f.fail_repair_yn
+	FROM equip e, FAIL f
+	where e.equip_no = f.fail_equip_no 
+	ORDER BY fail_no DESC
 	</select>
 	
 	<!-- 고장 단건 조회-->
@@ -237,6 +261,20 @@
 	
 	<!-- 고장 등록 -->
 	<insert id="insertFail" parameterType="equipVO">
+	 	  INSERT INTO fail ( fail_no
+							,fail_equip_no
+							,fail_content
+	                        ,fail_date
+	                        ,fail_repair_yn
+							)
+	        		values ( #{failNo}
+					        ,(SELECT equip_no
+						      FROM equip
+						      WHERE equip_name = #{failEquipName}
+					        ,#{failContent}
+					        ,SYSDATE
+					        ,'N'
+					        )
 	</insert>	   	
 	
 	<!-- 고장 수정 -->
@@ -253,6 +291,8 @@
 	
 	<!-- 입력될 고장 번호 조회 -->
 	<select id="getFailNo" resultType="equipVO">
+	SELECT NVL(MAX(fail_no),0) + 1 AS FAIL_NO
+	FROM FAIL
 	</select>
 	
 	
