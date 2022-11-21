@@ -17,7 +17,8 @@
 		SELECT
 		*
 		FROM users
-		WHERE users_id=#{usersId}
+		WHERE
+		users_id=#{usersId}
 	</select>
 
 
@@ -46,14 +47,32 @@
 				FROM users WHERE users_no LIKE 'COSM_'||TO_CHAR(SYSDATE,'rrrr')||'%'
 			</if>
 		</selectKey>
-		INSERT INTO users(users_no, users_name, users_id,
+		INSERT INTO users(
+		users_no, users_name, users_id,
 		users_password,
-		users_author,users_tel,users_address) VALUES(#{usersNo}, #{usersName},
-		#{usersId},
+		users_author
+		<if test="usersTel!=null and !usersTel.equals('')">
+			,users_tel
+		</if>
+		<if test="usersAddress!=null and !usersAddress.equals('')">
+			,users_address
+		</if>
+		)
+		VALUES(
+		#{usersNo}, #{usersName},#{usersId},
 		#{usersPassword},
-		(SELECT code_no FROM code WHERE code_name
+		(SELECT
+		code_no
+		FROM code WHERE code_name
 		=
-		#{usersAuthor}),#{usersTel},#{usersAddress})
+		#{usersAuthor})
+		<if test="usersTel!=null and !usersTel.equals('')">
+			,#{usersTel}
+		</if>
+		<if test="usersAddress!=null and !usersAddress.equals('')">
+			,#{usersAddress}
+		</if>
+		)
 	</insert>
 
 	<!-- 정보수정 -->
@@ -92,5 +111,11 @@
 		users
 		WHERE
 		users_id=#{usersId}
+	</select>
+
+	<!-- 개인정보 회원 확인 -->
+	<select id="userConfirm" parameterType="EmpVO"
+		resultType="String">
+		SELECT users_password FROM users WHERE users_no=#{usersNo}
 	</select>
 </mapper>

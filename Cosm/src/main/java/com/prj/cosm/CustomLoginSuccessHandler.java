@@ -1,3 +1,4 @@
+
 package com.prj.cosm;
 
 import java.io.IOException;
@@ -28,8 +29,13 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		request.getSession().setAttribute("usersId", vo.getUsersId());
 		request.getSession().setAttribute("usersNo", vo.getUsersNo());
 		request.getSession().setAttribute("usersAuthor", vo.getUsersAuthor());
+		System.out.println(vo.getUsersPassword());
 		// 사용자
-		response.sendRedirect(request.getContextPath() + "/");
-
+		if (vo.getUsersAuthor().equals("D0108")) {
+			response.sendRedirect(request.getContextPath() + "/equipment/main");
+		} else {
+			response.sendRedirect(request.getContextPath() + "/");
+		}
 	}
 }
+

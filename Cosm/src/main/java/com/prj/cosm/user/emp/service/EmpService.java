@@ -1,3 +1,4 @@
+
 package com.prj.cosm.user.emp.service;
 
 import java.util.List;
@@ -26,4 +27,8 @@ public interface EmpService {
 
 	// 아이디 중복 조회
 	public int checkId(String id);
+	
+	// 개인정보 비밀번호 확인
+	public int userConfirm(EmpVO vo);
 }
+

@@ -1,3 +1,4 @@
+
 package com.prj.cosm.user.emp.service.impl;
 
 import java.util.List;
@@ -35,9 +36,7 @@ public class EmpServiceImpl implements EmpService {
 	public int userInsert(EmpVO vo) {
 		BCryptPasswordEncoder enco = new BCryptPasswordEncoder();
 		vo.setUsersPassword(enco.encode(vo.getUsersPassword()));
-		if (vo.getUsersAuthor() == null || vo.getUsersAuthor().equals("")) {
-			vo.setUsersAuthor("고객");
-		}
+		System.out.println(vo);
 		return mapper.empInsert(vo);
 	}
 
@@ -63,6 +62,17 @@ public class EmpServiceImpl implements EmpService {
 	@Override
 	public int checkId(String id) {
 		return mapper.checkId(id);
+	}
+
+	@Override
+	public int userConfirm(EmpVO vo) {
+		int result = 0;
+		BCryptPasswordEncoder enco = new BCryptPasswordEncoder();
+		String beforePw = mapper.userConfirm(vo);
+		if (enco.matches(vo.getUsersPassword(), beforePw)) {
+			result = 1;
+		}
+		return result;
 	}
 
 }
