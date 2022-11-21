@@ -1,5 +1,5 @@
 
-package com.prj.cosm;
+package com.prj.cosm.security;
 
 import java.io.IOException;
 

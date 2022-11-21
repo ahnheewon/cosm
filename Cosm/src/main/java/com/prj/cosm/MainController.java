@@ -1,30 +1,24 @@
 package com.prj.cosm;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
-import com.prj.cosm.equipment.equip.service.equipService;
-import com.prj.cosm.equipment.equip.service.equipVO;
-import com.prj.cosm.material.material.service.MaterialService;
-import com.prj.cosm.material.material.service.MaterialVO;
-import com.prj.cosm.material.morder.service.MorderService;
-
+import com.prj.cosm.produce.bom.service.BomService;
+import com.prj.cosm.produce.bom.service.BomVO;
+import com.prj.cosm.produce.goods.service.GoodsService;
+import com.prj.cosm.produce.goods.service.GoodsVO;
 import com.prj.cosm.produce.instruct.service.InsService;
 import com.prj.cosm.produce.instruct.service.InsVO;
 import com.prj.cosm.produce.plan.service.PlanService;
@@ -32,9 +26,6 @@ import com.prj.cosm.produce.plan.service.PlanVO;
 import com.prj.cosm.produce.regist.service.RegistService;
 import com.prj.cosm.produce.regist.service.RegistVO;
 import com.prj.cosm.sales.client.service.ClientService;
-import com.prj.cosm.sales.orders.service.OrdersService;
-import com.prj.cosm.sales.orders.service.OrdersVO;
-import com.prj.cosm.user.emp.service.EmpService;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -43,15 +34,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class MainController {
 
-	
-
-	
 	@Autowired
 	EquipService eService;
 
-	@Autowired
-	EquipService eService;
-  
 	@Autowired
 	PlanService planService;
 
@@ -60,8 +45,8 @@ public class MainController {
 
 	@Autowired
 	RegistService registService;
-  
-  @Autowired
+
+	@Autowired
 	ClientService cService;
 
 	@Autowired
@@ -69,6 +54,7 @@ public class MainController {
 
 	@Autowired
 	GoodsService goodsService;
+
 	// 첫 화면
 	@RequestMapping("/")
 	public String main() {
@@ -150,25 +136,6 @@ public class MainController {
 
 	// 영업팀 -----------------------------------
 	// 영업 - 주문조회 리스트
-	@ResponseBody
-	@GetMapping("/ajax/orders") // url
-	public List<OrdersVO> ajaxOrder(Model model) {
-		return oService.salesOrderList();
-	}
-
-	// 체크박스 단건 삭제 - 영업
-	@ResponseBody
-	@PostMapping("/ajax/delcheckOrder") // requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
-	public int delCheckOrder(@RequestBody OrdersVO vo) {
-		// System.out.println(vo.getDelmno()+"=================>>>>>>>>>>>>>>");
-		return oService.deleteCheck(vo.getNoList());
-	}
-
-	// 체크박스 -> 생산요청 상태변경
-	@ResponseBody
-	@PostMapping("a/upPro")
-	}
-
 
 	/* main - 주문목록조회 = ajax, get */
 
@@ -363,13 +330,13 @@ public class MainController {
 		}
 		return "redirect:goods";
 	}
-	
+
 	// 제품정보 삭제
-		@GetMapping("produce/goodsDelete")
-		@ResponseBody
-		public int deleteGoodsInfo(int goodsNo, RedirectAttributes ratt) {
-			return goodsService.deleteGoodInfo(goodsNo);
-		}
+	@GetMapping("produce/goodsDelete")
+	@ResponseBody
+	public int deleteGoodsInfo(int goodsNo, RedirectAttributes ratt) {
+		return goodsService.deleteGoodInfo(goodsNo);
+	}
 
 	// 불량관리 페이지 이동
 	@GetMapping("/proError")

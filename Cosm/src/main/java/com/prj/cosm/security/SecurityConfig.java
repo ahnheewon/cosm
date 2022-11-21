@@ -1,4 +1,4 @@
-package com.prj.cosm;
+package com.prj.cosm.security;
 
 import javax.sql.DataSource;
 
