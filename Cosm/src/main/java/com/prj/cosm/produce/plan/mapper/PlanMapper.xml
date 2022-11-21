@@ -13,6 +13,18 @@
 	FROM produce_plan
 </select>
 
+<!-- 생산계획 단건조회 -->
+<select id="getPlanInfo" parameterType="Integer" resultType="planVO">
+	SELECT p.plan_no, p.plan_quantity, p.plan_start, p.plan_end, p.plan_ex, 
+		   p.plan_product_no, p.plan_bom_no, p.plan_order_no, b.bom_quantity, 
+		   g.goods_name, g.goods_standard, g.goods_contents, g.goods_check, g.goods_date
+	FROM produce_plan p JOIN produce_bom b
+                    ON p.plan_bom_no = b.bom_no
+                    JOIN produce_goods g
+                    ON p.plan_product_no = g.goods_no
+    WHERE p.plan_no = #{planNo}
+</select>
+
 <!-- 생산계획등록 -->
 <insert id="insertPlan" parameterType="PlanVO">
 	

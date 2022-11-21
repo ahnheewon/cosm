@@ -11,7 +11,7 @@ public interface PlanMapper {
 		public List<PlanVO> getPlanList();
 		
 		// 생산계획 단건조회
-		public PlanVO selectInfo(PlanVO planVO); 
+		public PlanVO getPlanInfo(int planNo); 
 		
 		//상세조회
 		public PlanVO getPlanNo();
