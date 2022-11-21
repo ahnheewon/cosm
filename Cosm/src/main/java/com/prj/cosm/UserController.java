@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.prj.cosm.sales.client.service.ClientService;
 import com.prj.cosm.sales.client.service.ClientVO;
 import com.prj.cosm.user.emp.service.EmpService;
 import com.prj.cosm.user.emp.service.EmpVO;
@@ -21,6 +23,9 @@ public class UserController {
 //	여기서부터 진정욱
 	@Autowired
 	EmpService service;
+
+	@Autowired
+	ClientService cService;
 
 	// 첫 화면
 	@GetMapping("/main")
@@ -67,16 +72,23 @@ public class UserController {
 		return service.userInfoSelect(usersNo);
 	}
 
-	@PostMapping("userInsert")
+	@PostMapping("/userInsert")
 	public String empInsert(EmpVO empVO) {
 		service.userInsert(empVO);
 		return "redirect:userList";
 	}
 
-	@PostMapping("clientInsert")
+	@RequestMapping("/clientInsert")
 	public String clientInsert(EmpVO empVO, ClientVO cVO) {
-		service.userInsert(empVO);
-		return "redirect:userList";
+		System.out.println(empVO);
+		System.out.println(cVO);
+		int result = service.userInsert(empVO);
+		if (result == 1) {
+			cVO.setUserNo(service.empSelect(empVO.getUsersId()).getUsersNo());
+			cService.clientIn(cVO);
+		}
+		System.out.println(result + "--------------------------------------------");
+		return "redirect:login";
 	}
 
 	@PostMapping("userUpdate")
