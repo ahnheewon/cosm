@@ -4,32 +4,68 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.prj.cosm.material.material.mapper.MaterialMapper">
-  <!-- 자재번호 -->
+
+  <!-- 거래처 번호 -->
   <select id="getComId" resultType="MaterialVO">
  	SELECT (NVL(MAX(mc_company_id),0) + 1) as m_company_id 
 	FROM material_company
  	</select>
+ 	
+ 	<!-- 게시물 총 개수 -->
+ 	<select id="getTotal" resultType="int">
+ 	 select count(*) from material
+ 	   <if test="keyword != null">
+     WHERE m_name like '%'||#{keyword}||'%'    
+    </if>
+ 	</select>
   
   <!-- 자재정보 전체조회  -->
  	<select id="mList" resultType="MaterialVO" >
- 	SELECT m_no, 
-       	   m_company_id, 
-       	   find_company_name(m_company_id)As m_company_nm, 
-       	   m_name m_name, 
-           m_price, 
-           m_unit_code,
-           find_code_name (m_unit_code) As m_unit_nm,
-           m_category       
-	FROM Material
+ 	  SELECT m. m_no, 
+       		 m. m_company_id, 
+       		mc.mc_company_name As m_company_nm, 
+      		m.m_name m_name, 
+        	m.m_price, 
+        	c.code_name As m_unit_code,       
+        	m.m_category       
+	FROM Material m JOIN CODE c 
+		ON m.m_unit_code = c.code_no
+      JOIN MATERIAL_COMPANY mc 
+        ON m.m_company_id = mc.mc_company_id
+    <if test="keyword != null">
+     WHERE m_name like '%'||#{keyword}||'%'    
+    </if>
  	</select>
   
  
   <!-- 자재정보 단건조회 (상세조회)  -->
  	<select id="selectInfo" resultType="MaterialVO">
- 	SELECT 
+ 	SELECT m_no, m_name, m_info
+ 	FROM material
+ 	WHERE m_no = #{mNo}
  	</select>
   
+  <!-- 자재정보 단건조회 (업데이트용)  -->
   
+  	<select id="selectInfoMat" resultType="MaterialVO">
+ 	  SELECT m.m_no, 
+           m.m_name, 
+  		   m.m_category, 
+           m.m_price, 
+  		   m.m_company_id, 
+           mc.mc_company_name AS m_company_nm, 
+           (select code_name 
+           from code
+           where code_no = m_unit_code)As m_unit_code,
+           m.m_info,
+           m.m_date,
+           m.m_reg_date  		    
+ 	FROM material m JOIN material_company mc 
+        ON mc.mc_company_id = m.m_company_id
+ 	WHERE m_no = #{mNo}
+ 	</select>
+ 	
+ 	
   <!-- 신규 자재 정보 등록  -->
   <insert id="insertMatarialInfo" parameterType="MaterialVO">  	
   	INSERT INTO MATERIAL (m_no, 
@@ -44,7 +80,8 @@
   						#{mCategory},
   						#{mPrice},
   						#{mCompanyId},
-  						#{mUnitCode},  						
+  						(SELECT code_no FROM code WHERE code_name
+						= #{mUnitCode}),  						
   						#{mInfo}
   						) 
   </insert>
@@ -52,7 +89,19 @@
   
   
   <!-- 자재 정보 수정  -->
-  
+  <update id="updateMatrailInfo" parameterType="MaterialVO"> 
+  	UPDATE material 
+	SET m_name = #{mName}, 
+    	m_category = #{mCategory},
+   		m_price = #{mPrice},
+   		m_company_id = #{mCompanyId},
+    	m_unit_code = (SELECT code_no 
+    					FROM code 
+    					WHERE code_name = #{mUnitCode}),
+    	m_date = TO_DATE(sysdate, 'yyyy-MM-dd'),
+    	m_info = #{mInfo}
+ 	WHERE m_no = #{mNo} 
+  </update>
   <!-- 자재 정보 삭제 - 재고 수량도 삭제됨 -->
   <delete id="deleteMatrailInfo" parameterType="MaterialVO">
   	DELETE 
@@ -87,12 +136,31 @@
                    	 mc_company_name, 
                      mc_company_tel, 
                      mc_manager_name, 
-                     mc_company_address)
+                     mc_zipcode,
+                     mc_company_address,
+                     mc_addr_detail)
 			VALUES (#{mCompanyId},
 					#{mCompanyNm},
 					#{mCompanyTel},
 					#{mMngNm},
-					#{mCompanyAdd}) 			
+					#{mZipCode},
+					#{mCompanyAdd},
+					#{mAddrDetail}) 			
 	</insert>
+	
+	
+	<!-- 단위코드 조회 -->
+	<select id="getUnitList" resultType="MaterialVO">
+		SELECT code_name FROM code
+		WHERE code_adno = 'F01'
+		ORDER BY code_no
+	</select>
+  
+  <!-- 자재 분류 조회 -->
+	<select id="getCategoryList" resultType="MaterialVO">
+		SELECT DISTINCT(m_category) 
+		FROM material
+	</select>
+
   
   </mapper>

@@ -44,7 +44,7 @@ public class OrdersVO {
 		private String ioCode;			//출납상황
 	
 		
-		//체크박스 삭제, 상태변경
+		//체크박스 삭제, 셀렉트박스 상태변경, 체큿 생산지시 요청
 		private List<String> noList;
 		
 		//조인할 아이들

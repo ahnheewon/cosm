@@ -105,23 +105,19 @@ img {
 <body>
 	<div layout:fragment="content">
 		<div class="container">
-			<h2>내 주문관리</h2>
+			<h2>완제품 관리</h2>
 
 			<div class="row">
 				<div class="column">
+					<h2>완제품 조회, 출납, 배송</h2>
 					<div id="wrap">
 						<div class="column">
-							<strong>실시간 주문 진행 상황</strong>
-
-							<div class="container">
-								<img style="width: 100px; height: 100px;" src="/salesImg/3.jpg"
-									alt="배송상황사진"> -> <img
-									style="width: 100px; height: 100px;" src="/salesImg/3.jpg"
-									alt="배송상황사진"> -> <img
-									style="width: 100px; height: 100px;" src="/salesImg/3.jpg"
-									alt="배송상황사진">
+							<h5>실시간 주문 진행 상황</h5>
+							<div>
+								<div class="container">
+									<img style="width: 100px; height: 100px;" src="/salesImg/3.jpg" alt="배송상황사진">
+								</div>
 							</div>
-
 						</div>
 						<form>
 							<div id="search">
@@ -131,7 +127,7 @@ img {
 								</div>
 							</div>
 						</form>
-
+            
 						<div id="regdate" style="z-index: 1100">
 							<span>등록일자</span>
 							<div
@@ -154,24 +150,23 @@ img {
 
 							<div id="btn">
 								<button type="button" class="btn btn-secondary btn-sm"
-									id="insertbtn" onclick="mInfoInsert()">주문하기 (신규/재주문)</button>
+									id="delbtn">정보 삭제</button>
 								<button type="button" class="btn btn-secondary btn-sm"
-									id="delbtn">주문 삭제</button>
+									id="updatebtn" onclick="location.href='mInfoUpdate'">정보
+									수정</button>
 								<button type="button" class="btn btn-secondary btn-sm"
-									id="updatebtn" onclick="location.href='mInfoUpdate'">내
-									정보 수정</button>
+									id="insertbtn" onclick="mInfoInsert()">정보 등록</button>
 								<button type="button" class="btn btn-secondary btn-sm"
-									id="regbtn">문의하기</button>
+									id="regbtn">자재 발주</button>
 							</div>
 						</div>
 						<div>
-							<h2>진행중인 주문 조회</h2>
 							<div id="grid"></div>
 						</div>
 					</div>
 				</div>
 				<div class="column">
-					<h2>구매내역</h2>
+					<h2>자재 변동 현황</h2>
 
 					<div id="mdate" style="margin-left: 10px; z-index: 1001;">
 						<span>수정일자</span>
@@ -224,7 +219,7 @@ img {
 				</div>
 			</div>
 		</div>
-
+		
 		<!-- 자재 정보 상세내역 모달-->
 		<div class="modal" tabindex="-1" id="mInfoModal" style="z-index: 1300">
 			<div class="modal-dialog modal-lg">
@@ -234,7 +229,9 @@ img {
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<div class="modal-body" style="text-align: center"></div>
+					<div class="modal-body" style="text-align: center">
+					
+					</div>
 					<div class="modal-footer" style="text-align: center">
 						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
 						<button type="button" class="btn btn-primary"
@@ -285,7 +282,7 @@ img {
 								today.getDate()) ] ]
 			});
 
-			// 진행중인 주문조회 (상단)
+			// 재고 정보 관리 (상단)
 			let infoGrid;
 
 			infoGrid = new tui.Grid({
@@ -295,60 +292,35 @@ img {
 				scrollX : false, // 세로 스크롤 
 				scrollY : false, // 가로 스크롤
 				columns : // 컬럼명
-					[{
-					header: '주문번호',
-					name: 'orderNo',
-					width: 'auto'
+				[ {
+					header : '자재번호',
+					name : 'mno'
 				}, {
-					header: '거래처번호',
-					name: 'clientNo',
+					header : '거래처번호',
+					name : 'mcompanyId'
 				}, {
-					header: '제품번호',
-					name: 'productNo'
+					header : '자재명',
+					name : 'mname'
 				}, {
-					header: '주문일자',
-					name: 'orderDate'
+					header : '거래처명',
+					name : 'mcompanyNm'
 				}, {
-					header: '납기일자',
-					name: 'deliveryDate',
+					header : '단가',
+					name : 'mprice'
 				}, {
-					header: '제품명',
-					name: 'productName',
+					header : '단위',
+					name : 'munitCode'
 				}, {
-					header: '수량',
-					name: 'totalNum',
-				}, {
-					header: '공급가액',
-					name: 'totalPrice',
-				}, {
-					header: '부가세',
-					name: 'surtax',
-
-				}, {
-					header: '요청사항',
-					name: 'note',
-
-				}, {
-					header: '주문타입',
-					name: 'orderCode',
-
-				}, {
-					header: '생산지시',
-					name: 'orderProgressCode'
-
-				}, {
-					header: '배달상황',
-					name: 'deliveryInfo'
-
-				}, {
-					header: '출납상황',
-					name: 'ioCode'
-				}]
+					header : '분류',
+					name : 'mcategory'
+				} ],
+				pageOptions : {
+					perPage : 10
+				},
 				//draggable : true
 
 			})
 
-			//그리드 스타일 
 			tui.Grid.applyTheme("normal", {
 				cell : {
 					nomal : {
@@ -374,7 +346,7 @@ img {
 
 			function test() {
 				$.ajax({
-					url : "http://localhost:85/ajax/orders",
+					url : "http://localhost:85/ajax/minfo",
 					method : "GET",
 					success : function(result) {
 						infoGrid.resetData((result.list1)); //resetData : 데이터 조회해서 가져오기 -> eval() : String -> json
@@ -527,121 +499,6 @@ img {
 				})
 			}
 		</script>
-
-		<!-- 오류나면 여기보셈 -->
-		<!-- Modal start .  주문등록/수정 모달-->
-		<div class="modal fade" id="pctReauest">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-
-					<!-- Modal Header -->
-					<div class="modal-header">
-						<h4 class="modal-title">요청</h4>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-					</div>
-
-					<form id="insertForm2" action="insertProcess" method="post"
-						onsubmit="formOption1()">
-						<!-- Modal body -->
-						<div class="modal-body">
-							<table class="table">
-								<tr>
-									<td>주문번호</td>
-									<td><input class="form-control" id="orderNo"
-										name="orderNo" value="" type="text" readonly></td>
-									<td>거래처번호</td>
-									<td><input class="form-control" id="clientNo"
-										name=clientNo type="text" required></td>
-								</tr>
-								<tr>
-									<td>공정내용</td>
-									<td><textarea class="form-control" id="productNo"
-											name="productNo" rows="5" required></textarea></td>
-								</tr>
-								<tr>
-									<td>주문일자</td>
-									<td><input class="form-control" id="orderDate"
-										name="orderDate" type="text" required></td>
-								</tr>
-								<tr>
-									<td>납기일자</td>
-									<td><input class="form-control" id="deliveryDate"
-										name="deliveryDate" type="text" required></td>
-								</tr>
-								<tr>
-									<td>제품명</td>
-									<td><input class="form-control" id="productName"
-										name="productName" type="text" required></td>
-								</tr>
-								<tr>
-									<td>수량</td>
-									<td><input class="form-control" id="totalNum"
-										name="totalNum" type="text" required></td>
-								</tr>
-								<tr>
-									<td>공급가액</td>
-									<td><input class="form-control" id="totalPrice"
-										name="totalPrice" type="text" required></td>
-								</tr>
-								<tr>
-									<td>부가세</td>
-									<td><input class="form-control" id="surtax" name="surtax"
-										type="text" required></td>
-								</tr>
-								<tr>
-									<td>요청사항</td>
-									<td><input class="form-control" id="note" name="note"
-										type="text" required></td>
-								</tr>
-								<tr>
-									<td>코드번호</td>
-									<td><input class="form-control" id="orderCode"
-										name="orderCode" type="text" required></td>
-								</tr>
-								<tr>
-									<td>진행상황</td>
-									<td><input class="form-control" id="orderProgressCode"
-										name="orderProgressCode" type="text" required></td>
-								</tr>
-								<tr>
-									<td>배송상황</td>
-									<td><input class="form-control" id="deliveryInfo"
-										name="deliveryInfo" type="text" required></td>
-								</tr>
-								<tr>
-									<td>출납상황</td>
-									<td><input class="form-control" id="ioCode" name="ioCode"
-										type="text" required></td>
-								</tr>
-
-							</table>
-						</div>
-
-						<!-- Modal footer . 주문등록/수정 모달-->
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary">등록</button>
-							<button type="button" class="btn btn-danger"
-								data-bs-dismiss="modal">취소</button>
-						</div>
-					</form>
-
-				</div>
-			</div>
-		</div>
-		<!-- Modal end  -->
-
-		<script>
-		/*
-		function formOption1() {
-			document.querySelector('#insertForm1').submit();
-
-		}
-		function formOption2() {
-
-			document.querySelector('#insertForm2').submit();
-		}
-	*/
-	</script>
 </body>
 
 </html>

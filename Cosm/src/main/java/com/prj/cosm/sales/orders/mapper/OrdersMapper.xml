@@ -78,29 +78,26 @@
 		ORDER_NO = #{noList}
 	</delete>
 
-	<!-- 주문수정(주문상태) (재고입출고 상황) (배송상황) -->
+	<!-- 주문수정(주문 신규/재주문 상태) (출고 상황) (배송상황) -->
 	<!-- <if test="title != null and !title.equals('')"> title = #{title}, </if> -->
 	<update id="updateOrder" parameterType="OrdersVO">
 		UPDATE orders
 		<set>
 			<if
-				test="order_progress_code != null and !order_progress_code.equals('')">
+				test="orderProgressCode != null and !orderProgressCode.equals('')">
 				order_progress_code = #{orderProgressCode}
 			</if>
-			<if test="delivery_info != null and !delivery_info.equals('')">
+			<if test="deliveryInfo != null and !deliveryInfo.equals('')">
 				,delivery_info = #{deliveryInfo}
 			</if>
-			<if test="io_code != null and !io_code_equals('')">
+			<if test="ioCode != null and !ioCode.equals('')">
 				, io_code = #{ioCode}
 			</if>
 		</set>
 		WHERE order_no = #{orderNo}
 	</update>
 
-	<!-- 생산지시요청 -> 실시간 상태변경-->
-	<update id="updatePro" parameterType="String">
-		UPDATE orders SET order_progress_code =
-		(SELECT code_no FROM CODE WHERE code_name = #{orderProgressCode})
-		WHERE order_no=#{orderNo};
-	</update>
+	<!-- 샌산 지시 요청 -->
+	
+	
 </mapper>
