@@ -29,6 +29,7 @@
 	integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
 	crossorigin="anonymous">
 </script>
+
 </head>
 
 
@@ -56,8 +57,8 @@
 
 				<hr style="width: 100%">
 				<h3>생산계획 리스트</h3>
-				<button type="button" onclick="deleteData();"
-					class="btn btn-dark btn-sm" style="float: right" id="deleteBtn">생산계획
+				<button type="button"
+					class="btn btn-dark btn-sm" style="float: right" id="delbtn">생산계획
 					삭제</button>
 				<button type="button" onclick="updateData();"
 					class="btn btn-dark btn-sm" data-bs-toggle="modal"
@@ -177,7 +178,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">등록</button>
+							<button type="submit" class="btn btn-primary" >등록</button>
 							<button type="button" class="btn btn-secondary"
 								data-bs-dismiss="modal">취소</button>
 						</div>
@@ -268,6 +269,7 @@
 			</div>
 		</div>
 		<!-- 생산계획 상세조회 모달 -->
+
 		<div class="modal fade" id="requestModalb" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-xl">
@@ -277,22 +279,130 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					
 						<!-- <sec:csrfInput/> -->
 						<input type="hidden" th:name="${_csrf.parameterName}"
 							th:value="${_csrf.token}" />
 						<div class="modal-body">
 							<div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">생산계획번호</span> <input type="text"
+										class="form-control" id="planNo3" name="planNo"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">주문번호</span> <input type="number"
+										class="form-control" id="planOrderNo3" name="planOrderNo"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">제품번호</span> <input type="number"
+										class="form-control" id="planProductNo3" name="planProductNo"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">제품이름</span> <input type="text"
+										class="form-control" id="goodsName3" name="goodsName"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">제품기준수량</span> <input type="number"
+										class="form-control" id="goodsStandard3" name="goodsStandard"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">제품설명</span> <input type="text"
+										class="form-control" id="goodsContents3" name="goodsContents"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">제품검수기준</span> <input type="text"
+										class="form-control" id="goodsCheck3" name="goodsCheck"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">제품제작기간</span> <input type="text"
+										class="form-control" id="goodsDate3" name="goodsDate"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
 								
+								<div class="input-group mb-3">
+									<span class="input-group-text">BOM번호</span> <input type="number"
+										class="form-control" id="planBomNo3" name="planBomNo"
+										aria-label="Username" aria-describedby="basic-addon2"
+										readonly="readonly">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">BOM 자재투입량</span> <input type="number"
+										class="form-control" id="bomQuantity3" name="bomQuantity"
+										aria-label="Username" aria-describedby="basic-addon2"
+										readonly="readonly">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">생산량</span> <input type="number"
+										class="form-control" id="planQuantity3" name="planQuantity"
+										aria-label="Username" aria-describedby="basic-addon2"
+										readonly="readonly">
+								</div>
+
+								<div class="input-group mb-3">
+									<span class="input-group-text">시작일자</span> <input type="date"
+										class="form-control" placeholder="시작일자" name="planStart"
+										id="planStart3" aria-label="Username"
+										aria-describedby="basic-addon3" readonly="readonly">
+								</div>
+
+								<div class="input-group mb-3">
+									<span class="input-group-text">종료일자</span> <input type="date"
+										class="form-control" placeholder="종료일자" name="planEnd"
+										id="planEnd3" aria-label="Username"
+										aria-describedby="basic-addon4" readonly="readonly">
+								</div>
+
+
+								<div class="input-group">
+									<span class="input-group-text">기타사항</span>
+									<textarea class="form-control" name="planEx" id="planEx3"
+										aria-label="With textarea" readonly="readonly"></textarea>
+								</div>
+
 								<div id="requestModalGrid" style="width: 100%;"></div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">등록</button>
 							<button type="button" class="btn btn-secondary"
-								data-bs-dismiss="modal">취소</button>
+								data-bs-dismiss="modal">확인</button>
 						</div>
-					
+				</div>
+			</div>
+		</div>
+		<!-- 삭제 모달-->
+		<div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">생산계획 정보 삭제</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body" style="text-align: center">
+						<h5>해당 생산계획 정보가 삭제됩니다.</h5>
+						<h5>정말로 삭제하시겠습니까?</h5>
+					</div>
+					<div class="modal-footer" style="text-align: center">
+						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+						<button type="button" class="btn btn-primary"
+							data-bs-dismiss="modal" onclick="deleteData()">확인</button>
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -465,19 +575,12 @@
 		 var grid3 = new tui.Grid({
 			 
 			el: document.getElementById('grid3'),
-			rowHeaders: ['checkbox'],
 			minBodyHeight: 30,
 			pageOptions: {
 				useClient: true, // front에서만 페이징 하는 속성
 				perPage: 5
 			},
-			data : [{
-				planNo : '1',
-				planQuantity : '200',
-				planStart : '2022-03-03',
-				planEnd : '2022-08-08',
-				planEx : '안녕하세요'
-			}],
+			
 			scrollX: false,
 			scrollY: false,
 			columns: [
@@ -533,7 +636,6 @@
 		 var grid4 = new tui.Grid({
 			 
 			el: document.getElementById('grid4'),
-			rowHeaders: ['checkbox'],
 			minBodyHeight: 30,
 			pageOptions: {
 				useClient: true, // front에서만 페이징 하는 속성
@@ -640,6 +742,39 @@
 					}
 				});
 			}
+			function getPlanInfo(){
+				var datas = grid2.getCheckedRows();
+				var test = JSON.stringify(datas);
+				console.log(datas);
+				for(plan of datas){
+					$.ajax({
+						url : 'produce/getPlanInfo',
+						type : 'get',
+						data : {planNo : plan.planNo},
+						success : function(data){
+							console.log(data);
+							document.querySelector('#planNo3').value=data.planNo;
+							document.querySelector('#planQuantity3').value=data.planQuantity;
+							document.querySelector('#planStart3').value=data.planStart;
+							document.querySelector('#planEnd3').value=data.planEnd;
+							document.querySelector('#planEx3').value=data.planEx;
+							document.querySelector('#planOrderNo3').value=data.planOrderNo;
+							document.querySelector('#planProductNo3').value=data.planProductNo;
+							document.querySelector('#planBomNo3').value=data.planBomNo;
+							document.querySelector('#bomQuantity3').value=data.bomQuantity;
+							document.querySelector('#goodsName3').value=data.goodsName;
+							document.querySelector('#goodsStandard3').value=data.goodsStandard;
+							document.querySelector('#goodsContents3').value=data.goodsContents;
+							document.querySelector('#goodsCheck3').value=data.goodsCheck;
+							document.querySelector('#goodsDate3').value=data.goodsDate;
+							
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					});
+				}
+			}
 		//tab기능할때 grid 깨지는 거 방지
 		const selectMno = document.getElementById('programming');
 			selectMno.addEventListener('click',function(){
@@ -653,24 +788,6 @@
 			grid3.refreshLayout();
 			})
 		
-		//단건조회
-		function getPlanInfo(){
-			var datas = grid2.getCheckedRows();
-			console.log(datas);
-			for(plan of datas){
-				$.ajax({
-					url : 'produce/getPlanInfo',
-					type : 'get',
-					data : {planNo : plan.planNo},
-					success : function(data){
-						console.log(data);
-					},
-					error : function(reject){
-						console.log(reject);
-					}
-				});
-			}
-		}
 		
 		
 		//등록
@@ -704,7 +821,16 @@
 			$('#planProductNo2').val(datas[0].planProductNo);
 			$('#planBomNo2').val(datas[0].planBomNo);
 		}
-					
+		
+		//삭제모달
+		let delbtn = document.getElementById('delbtn');
+		delbtn.addEventListener('click', function() {
+			let myModalAlternative = new bootstrap.Modal('#delModal')
+			let modalToggle = document.getElementById('delModal');
+			myModalAlternative.show(modalToggle)
+
+		})
+		
 		// 삭제 
 		function deleteData() {
 			var planData=[];

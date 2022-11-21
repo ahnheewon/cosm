@@ -173,7 +173,7 @@ public class ProduceController {
 		}
 
 		// BOM list에 ajax
-		@GetMapping("produce/bomList")
+		@GetMapping("/produce/bomList")
 		@ResponseBody
 		public List<BomVO> bomList() {
 			return bomService.selectBomList();

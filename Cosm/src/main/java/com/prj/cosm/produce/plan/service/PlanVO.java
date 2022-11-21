@@ -29,5 +29,5 @@ public class PlanVO {
 	private int goodsStandard;
 	private String goodsContents;
 	private String goodsCheck;
-	private String goods_date;
+	private String goodsDate;
 }

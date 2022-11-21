@@ -7,9 +7,13 @@
 	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd,
 		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
 		   i.instruct_date as instructDate, i.instruct_m_no as instructMNo, 
-		   i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx
+		   i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
+		   i.instruct_material_num as instructMaterialNum,
+           code_name as instruct_progress_code
 	FROM produce_plan p JOIN produce_instruct i
-	ON p.plan_no = i.instruct_plan_no
+                        ON p.plan_no = i.instruct_plan_no
+                        JOIN code
+                        ON i.instruct_progress_code = code.code_no
 	ORDER BY i.instruct_no DESC
 </select>
 
@@ -21,25 +25,25 @@
 
 <!-- 지시 등록 -->
 <insert id="insertIns" parameterType="InsVO">
-	INSERT INTO
-	produce_instruct (
-				  instruct_no,
-				  instruct_quantity,
-				  instruct_ex,
-				  instruct_date,
-				  instruct_m_no,
-				  instruct_plan_no,
-				  instruct_progress_code
-				  )
-		   VALUES(
-				  #{instructNo},
-				  #{instructQuantity},
-				  #{instructEx},
-				  #{instructDate},
-				  #{instructMNo},
-				  #{instructPlanNo},
-				  #{instructProgressCode}
-				  )
+	INSERT INTO produce_instruct
+                (instruct_no, 
+                instruct_quantity, 
+                instruct_ex, 
+                instruct_date, 
+                instruct_plan_no,
+                instruct_m_no, 
+                instruct_progress_code,
+                instruct_material_num) 
+		VALUES ( #{instructNo}, 
+       			 #{instructQuantity}, 
+        		 #{instructEx}, 
+       			 #{instructDate}, 
+       			 #{instructPlanNo}, 
+       			 #{instructMNo},
+       			 (SELECT code_no FROM code 
+       			  WHERE code_name = #{instructProgressCode}),
+        		 #{instructMaterialNum}
+       			 )
 </insert>
 
 <!-- 지시 수정 -->
@@ -54,6 +58,13 @@
 			</if>
 			<if test="instructMNo != null and !instructMNo.equals('')">
 				instruct_m_no = #{instructMNo},
+			</if>
+			<if test="instructMaterialNum != null and !instructMaterialNum.equals('')">
+				instruct_material_num = #{instructMaterialNum},
+			</if>
+			<if test="instructProgressCode != null and !instructProgressCode.equals('')">
+				instruct_progress_code = (SELECT code_no FROM code 
+       			  WHERE code_name = #{instructProgressCode})
 			</if>
 		</set>
 	WHERE instruct_no = #{instructNo}
