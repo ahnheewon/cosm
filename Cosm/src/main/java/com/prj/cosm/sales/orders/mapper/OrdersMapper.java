@@ -33,7 +33,9 @@ public interface OrdersMapper {
 		//주문정보 삭제 - 영업팀 main - service - impl - mapper - xml 
 		public int deleteCheck(String noList);
 		
-		//생산지시 상태변경
-		public int updatePro(String noList);
+		//체크 후 -> 생산지시요청
+		//public int makePro(OrdersVO vo);
+		
+	
 		
 }

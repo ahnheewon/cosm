@@ -16,6 +16,7 @@ period
 info
 img
 */
+	private int no; //등록번호
 	private String name; // 제품명
 	private int price; // 단가
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

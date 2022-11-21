@@ -2,9 +2,40 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.prj.cosm.sales.client.mapper.ClientMapper">
-  <!--  -->
-  <!--  -->
-  <!--  -->
-  <!--  -->
-  </mapper>
+  <mapper namespace="com.prj.cosm.sales.client.mapper.ClientMapper" >	
+	
+	<!-- 회원 등록 -->
+	<insert id="clientIn" parameterType="ClientVO">
+		insert into client(
+				CLIENT_NO,
+				NAME,
+				MANAGER,
+				BUSINESS_NO,
+				REG_DATE,
+				LICENSE_IMG,
+				USER_NO
+			) values(
+				#{clientNo},
+				#{name},
+				#{manager},
+				#{businessNo},
+				#{regDate},
+				#{licenseImg},
+				#{userNo}
+			)
+	</insert>
+	<!-- 조회 -->
+	<select id="myInfo" resultType="ClientVO">
+	select * from client order by client_no
+	</select>
+	<!-- 수정 -->
+	<update id="">
+	
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="">
+	DELETE FROM client where client_no = #{clientNo}
+	
+	</delete>
+</mapper>
