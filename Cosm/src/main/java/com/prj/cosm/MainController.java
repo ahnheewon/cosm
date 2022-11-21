@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,24 +13,28 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
+import com.prj.cosm.equipment.equip.service.equipService;
+import com.prj.cosm.equipment.equip.service.equipVO;
 import com.prj.cosm.material.material.service.MaterialService;
 import com.prj.cosm.material.material.service.MaterialVO;
 import com.prj.cosm.material.morder.service.MorderService;
+
 import com.prj.cosm.produce.instruct.service.InsService;
 import com.prj.cosm.produce.instruct.service.InsVO;
 import com.prj.cosm.produce.plan.service.PlanService;
 import com.prj.cosm.produce.plan.service.PlanVO;
 import com.prj.cosm.produce.regist.service.RegistService;
 import com.prj.cosm.produce.regist.service.RegistVO;
+import com.prj.cosm.sales.client.service.ClientService;
 import com.prj.cosm.sales.orders.service.OrdersService;
 import com.prj.cosm.sales.orders.service.OrdersVO;
 import com.prj.cosm.user.emp.service.EmpService;
-import com.prj.cosm.user.emp.service.EmpVO;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -38,16 +43,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class MainController {
 
-	@Autowired
-	EmpService service;
+	
 
 	@Autowired
 	OrdersService oService;
 
 	@Autowired
 	EquipService eService;
-
-
 
 	@Autowired
 	PlanService planService;
@@ -59,6 +61,14 @@ public class MainController {
 	RegistService registService;
 
 
+	@Autowired
+	ClientService cService;
+
+	@Autowired
+	BomService bomService;
+
+	@Autowired
+	GoodsService goodsService;
 	// 첫 화면
 	@RequestMapping("/")
 	public String main() {
@@ -122,6 +132,7 @@ public class MainController {
 
 	}
 
+
 	// 설비 수정!!!
 	@PostMapping("/equipment/updateEquip")
 	@ResponseBody
@@ -136,81 +147,6 @@ public class MainController {
 	public EquipVO getProcessInfo(Model model, int processNo) {
 		return eService.getProcessInfo(processNo);
 
-	}
-
-	// 첫 화면
-	@GetMapping("/main")
-	public String main(Model model) {
-		return "/index";
-	}
-
-	@GetMapping("/login")
-	public String login() {
-		return "/login";
-	}
-
-	@GetMapping("/joinForm")
-	public String joinForm() {
-		return "/users/client/joinForm";
-	}
-
-	@GetMapping("/top")
-	public String top() {
-		return "/top";
-	}
-
-	@GetMapping("/userList")
-	public String empList(Model model) {
-		model.addAttribute("authorList", service.getAuthorList());
-		return "/users/emp/empList";
-	}
-
-	@GetMapping("/clientList")
-	public String clientList(Model model) {
-		model.addAttribute("authorList", service.getAuthorList());
-		return "/users/emp/empList";
-	}
-
-	@GetMapping("/getUserList")
-	@ResponseBody
-	public List<EmpVO> getUserList() {
-		return service.empSelectList();
-	}
-
-	@PostMapping("/userSelect")
-	@ResponseBody
-	public EmpVO userSelect(String usersNo) {
-		return service.userInfoSelect(usersNo);
-	}
-
-	@PostMapping("userInsert")
-	public String empInsert(EmpVO empVO) {
-		service.userInsert(empVO);
-		return "redirect:userList";
-	}
-
-	@PostMapping("userUpdate")
-	public String empUpdate(EmpVO empVO) {
-		service.userUpdate(empVO);
-		return "redirect:userList";
-	}
-
-	@PostMapping("userDelete")
-	@ResponseBody
-	public int userDelete(EmpVO empVO) {
-		return service.userDelete(empVO);
-	}
-
-	@GetMapping("/userInfo")
-	public String userInfo() {
-		return "/users/userInfo";
-	}
-
-//	@RequestMapping(value = "/checkId", method = RequestMethod.POST)
-	@GetMapping("/userCheckId")
-	@ResponseBody
-	public int userCheckId(String usersId) {
-		return service.checkId(usersId);
 	}
 
 	// 영업 start =======================================================
@@ -295,7 +231,6 @@ public class MainController {
 	/* main - 주문목록조회 = ajax, get */
 
 	// 영업 end =======================================================
-
 
 	// =============================생산관리=======================
 	// 생산계획 list에 ajax주는 것
@@ -417,16 +352,82 @@ public class MainController {
 	// BOM 페이지 이동
 	@GetMapping("/bom")
 	public String bom(Model model) {
-
+		model.addAttribute("info", bomService.selectBomNo());
 		return "produce/bom";
 	}
 
-	// 제품 페이지 이동
-	@GetMapping("/product")
-	public String product(Model model) {
-
-		return "produce/product";
+	// BOM list에 ajax
+	@GetMapping("produce/bomList")
+	@ResponseBody
+	public List<BomVO> bomList() {
+		return bomService.selectBomList();
 	}
+
+	// BOM 등록
+	@PostMapping("bomInsert")
+	public String insertBomInfo(BomVO bomVO) {
+		bomService.insertBomInfo(bomVO);
+		return "redirect:bom";
+	}
+
+	// BOM 수정
+	@PostMapping("bomUpdate")
+	public String updateBomInfo(BomVO bomVO, RedirectAttributes ratt) {
+		int result = bomService.updateBomInfo(bomVO);
+		if (result == 1) {
+			ratt.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+		} else {
+			ratt.addAttribute("msg", "정상적으로 수정되지 않았습니다.");
+		}
+		return "redirect:bom";
+	}
+
+	// BOM 삭제
+	@GetMapping("produce/bomDelete")
+	@ResponseBody
+	public int deleteBomInfo(int bomNo, RedirectAttributes ratt) {
+		return bomService.deleteBomInfo(bomNo);
+	}
+
+	// 제품 페이지 이동
+	@GetMapping("/goods")
+	public String Goods(Model model) {
+		model.addAttribute("info", goodsService.selectGoodNo());
+		return "produce/goods";
+	}
+
+	// 제품 list에 ajax
+	@GetMapping("produce/goodsList")
+	@ResponseBody
+	public List<GoodsVO> goodsList() {
+		return goodsService.selectGoodList();
+	}
+
+	// 제품 등록
+	@PostMapping("goodsInsert")
+	public String insertgoodsInfo(GoodsVO goodsVO) {
+		goodsService.insertGoodInfo(goodsVO);
+		return "redirect:goods";
+	}
+
+	// 제품정보 수정
+	@PostMapping("goodsUpdate")
+	public String updateGoodsInfo(GoodsVO goodsVO, RedirectAttributes ratt) {
+		int result = goodsService.updateGoodInfo(goodsVO);
+		if (result == 1) {
+			ratt.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+		} else {
+			ratt.addAttribute("msg", "정상적으로 수정되지 않았습니다.");
+		}
+		return "redirect:goods";
+	}
+	
+	// 제품정보 삭제
+		@GetMapping("produce/goodsDelete")
+		@ResponseBody
+		public int deleteGoodsInfo(int goodsNo, RedirectAttributes ratt) {
+			return goodsService.deleteGoodInfo(goodsNo);
+		}
 
 	// 불량관리 페이지 이동
 	@GetMapping("/proError")

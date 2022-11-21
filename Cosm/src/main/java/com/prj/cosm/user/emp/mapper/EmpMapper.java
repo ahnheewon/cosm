@@ -30,4 +30,7 @@ public interface EmpMapper {
 	// 아이디 중복 조회
 	public int checkId(String usersId);
 
+	// 개인정보 비밀번호 확인
+	public String userConfirm(EmpVO vo);
+
 }
