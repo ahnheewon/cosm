@@ -13,8 +13,8 @@
 
 <!-- 제품번호 -->
 <select id="getGoodNo" resultType="GoodsVO">
-	SELECT NVL(MAX(goods_no), 0) + 1 as goods_no
-	FROM produce_goods
+	SELECT 'PRO_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(goods_no,-4)),0)+1,4,0) as goods_no
+	FROM produce_goods WHERE goods_no LIKE 'PRO_'||TO_CHAR(SYSDATE,'rrrr')||'%'
 </select>
 
 <!-- 등록 -->
@@ -70,4 +70,11 @@
 <delete id="deleteGood">
 	DELETE FROM produce_goods WHERE goods_no = #{goodsNo}
 </delete>
+
+<!-- 단위코드 조회 -->
+<select id="getUnitList" resultType="GoodsVO">
+	SELECT code_name FROM code
+	WHERE code_adno = 'F01'
+	ORDER BY code_no
+</select>
 </mapper>

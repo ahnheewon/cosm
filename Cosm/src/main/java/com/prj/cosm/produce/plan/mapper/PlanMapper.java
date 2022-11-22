@@ -11,7 +11,7 @@ public interface PlanMapper {
 		public List<PlanVO> getPlanList();
 		
 		// 생산계획 단건조회
-		public PlanVO getPlanInfo(int planNo); 
+		public PlanVO getPlanInfo(String planNo); 
 		
 		//상세조회
 		public PlanVO getPlanNo();
@@ -23,5 +23,14 @@ public interface PlanMapper {
 		public int updatePlan(PlanVO planVO);
 		
 		//삭제
-		public int deletePlan(int planNo);
+		public int deletePlan(String planNo);
+		
+		//제품번호 리스트
+		public List<PlanVO> getGoodsNoList();
+		
+		//BOM번호 리스트
+		public List<PlanVO> getBomNoList();
+		
+		//생산지시 시 페이지 빠지기
+		public int updatePlay(PlanVO planVO);
 }

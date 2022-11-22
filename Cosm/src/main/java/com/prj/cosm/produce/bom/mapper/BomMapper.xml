@@ -15,8 +15,8 @@
 
 <!-- bom번호 -->
 <select id="getBomNo" resultType="BomVO">
-	SELECT NVL(MAX(bom_no), 0) + 1 as bom_no
-	FROM produce_bom
+	SELECT 'BOM_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(bom_no,-4)),0)+1,4,0) as bom_no
+	FROM produce_bom WHERE bom_no LIKE 'BOM_'||TO_CHAR(SYSDATE,'rrrr')||'%'
 </select>
 <!-- 등록 -->
 <insert id="insertBom" parameterType="BomVO">

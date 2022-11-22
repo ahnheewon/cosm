@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.method.annotation.RedirectAttributesMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.produce.bom.service.BomService;
@@ -53,13 +54,15 @@ public class ProduceController {
 		@GetMapping("/planList")
 		public String planList(Model model) {
 			model.addAttribute("info", planService.selectPlanNo());
+			model.addAttribute("goodsNo", planService.getGoodsNoList());
+			model.addAttribute("bomNo", planService.getBomNoList());
 			return "produce/planList";
 		}
 		
 		//생산계획 단건 조회
 		@GetMapping("/produce/getPlanInfo")
 		@ResponseBody
-		public PlanVO getPlanInfo(Model model, int planNo) {
+		public PlanVO getPlanInfo(Model model, String planNo) {
 			return planService.getPlanInfo(planNo);
 		}
 
@@ -85,7 +88,7 @@ public class ProduceController {
 
 		// 생산계획 삭제
 		@GetMapping("planDelete")
-		public String deletePlanInfo(int planNo, RedirectAttributes ratt) {
+		public String deletePlanInfo(String planNo, RedirectAttributes ratt) {
 			int result = planService.deletePlanInfo(planNo);
 
 			if (result == 1) {
@@ -107,7 +110,20 @@ public class ProduceController {
 		@GetMapping("/instructList")
 		public String instructList(Model model) {
 			model.addAttribute("info", insService.selectInsNo());
+			model.addAttribute("mNo", insService.getMaterialNoList());
+			model.addAttribute("playNo", insService.getPlayList());
 			return "produce/instructList";
+		}
+		// 생산지시 등록시 생산계획 리스트 업데이트
+		@PostMapping("/insPlay")
+		public String updatePlanPlay(PlanVO planVO, RedirectAttributes ratt) {
+			int result = planService.updatePlay(planVO);
+			if (result == 1) {
+				ratt.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+			} else {
+				ratt.addAttribute("msg", "정상적으로 수정되지 않았습니다.");
+			}
+			return "redirect:instructList";
 		}
 
 		// 생산지시 등록
@@ -132,7 +148,7 @@ public class ProduceController {
 		// 생산지시 삭제
 		@GetMapping("insDelete")
 		@ResponseBody
-		public int deleteInsInfo(int instructNo, RedirectAttributes ratt) {
+		public int deleteInsInfo(String instructNo, RedirectAttributes ratt) {
 			return insService.deleteInsInfo(instructNo);
 		}
 
@@ -141,7 +157,15 @@ public class ProduceController {
 		public String regist(Model model) {
 			model.addAttribute("info", registService.selectRegistLOT());
 			model.addAttribute("label", registService.selectRegistLabel());
+			model.addAttribute("playNo", registService.getPlayList());
+			model.addAttribute("unit", registService.getUnitList());
 			return "/produce/regist";
+		}
+		// 생산완료된 생산지시 list ajax
+		@GetMapping("/complete")
+		@ResponseBody
+		public List<Map<String, Object>> completeList() {
+			return insService.completeList();
 		}
 
 		// 완제품 list에 ajax주는 것
@@ -201,7 +225,7 @@ public class ProduceController {
 		// BOM 삭제
 		@GetMapping("produce/bomDelete")
 		@ResponseBody
-		public int deleteBomInfo(int bomNo, RedirectAttributes ratt) {
+		public int deleteBomInfo(String bomNo, RedirectAttributes ratt) {
 			return bomService.deleteBomInfo(bomNo);
 		}
 
@@ -209,6 +233,7 @@ public class ProduceController {
 		@GetMapping("/goods")
 		public String Goods(Model model) {
 			model.addAttribute("info", goodsService.selectGoodNo());
+			model.addAttribute("unit", goodsService.getUnitList());
 			return "produce/goods";
 		}
 
@@ -241,7 +266,7 @@ public class ProduceController {
 		// 제품정보 삭제
 			@GetMapping("produce/goodsDelete")
 			@ResponseBody
-			public int deleteGoodsInfo(int goodsNo, RedirectAttributes ratt) {
+			public int deleteGoodsInfo(String goodsNo, RedirectAttributes ratt) {
 				return goodsService.deleteGoodInfo(goodsNo);
 			}
 

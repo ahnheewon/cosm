@@ -4,7 +4,7 @@
 
 <!-- 전체조회 -->
 <select id="getInsList" resultType="map">
-	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd,
+	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd, p.plan_product_no as planProductNo,
 		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
 		   i.instruct_date as instructDate, i.instruct_m_no as instructMNo, 
 		   i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
@@ -17,10 +17,26 @@
 	ORDER BY i.instruct_no DESC
 </select>
 
+<!-- 생산완료된것 전체조회 -->
+<select id="completeList" resultType="map">
+	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd, p.plan_product_no as planProductNo,
+		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
+		   i.instruct_date as instructDate, i.instruct_m_no as instructMNo, 
+		   i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
+		   i.instruct_material_num as instructMaterialNum,
+           code_name as instruct_progress_code
+	FROM produce_plan p JOIN produce_instruct i
+                        ON p.plan_no = i.instruct_plan_no
+                        JOIN code
+                        ON i.instruct_progress_code = code.code_no
+    WHERE instruct_progress_code = 'A0103'
+	ORDER BY i.instruct_no DESC
+</select>
+
 <!-- 지시번호 +1 -->
 <select id="getInsNo" resultType="InsVO">
-	SELECT NVL(MAX(instruct_no), 0) + 1 as instruct_no
-	FROM produce_instruct 
+	SELECT 'COP_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(instruct_no,-4)),0)+1,4,0) as instruct_no
+	FROM produce_instruct WHERE instruct_no LIKE 'COP_'||TO_CHAR(SYSDATE,'rrrr')||'%'
 </select>
 
 <!-- 지시 등록 -->
@@ -71,8 +87,21 @@
 </update>
 
 <!-- 지시 삭제 -->
-<delete id="deleteIns" parameterType="Integer">
+<delete id="deleteIns">
 	DELETE FROM produce_instruct WHERE instruct_no = #{instructNo}
 </delete>
 
+<!-- 자재번호 리스트 -->
+<select id="getMaterialNoList" resultType="InsVO">
+	SELECT DISTINCT(m_no)
+	FROM material
+	ORDER BY m_no
+</select>
+
+<!-- 진행상황 리스트 -->
+<select id="getPlayList" resultType="InsVO">
+	SELECT code_name FROM code
+	WHERE code_adno = 'A01'
+	ORDER BY code_no
+</select>
 </mapper>

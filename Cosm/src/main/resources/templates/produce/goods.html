@@ -28,20 +28,22 @@
 	crossorigin="anonymous">
 	
 </script>
+<!-- alert창 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
 	<div layout:fragment="content"
 		style="margin-left: 30px; margin-right: 30px;">
 		<hr style="width: 100%">
 		<h3>제품 리스트</h3>
-		<button type="button" 
-			class="btn btn-dark btn-sm" style="float: right" id="delbtn">제품
-			삭제</button>
+		<button type="button" class="btn btn-dark btn-sm" style="float: right"
+			id="delbtn">제품 삭제</button>
 		<button type="button" onclick="updateData();"
 			class="btn btn-dark btn-sm" data-bs-toggle="modal"
 			data-bs-target="#requestModala" style="float: right">제품 수정</button>
-		<button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal"
-			data-bs-target="#requestModal" style="float: right">제품 등록</button>
+		<button type="button" class="btn btn-dark btn-sm"
+			data-bs-toggle="modal" data-bs-target="#requestModal"
+			style="float: right">제품 등록</button>
 		<div id="grid"></div>
 
 		<!-- 제품 등록 모달 -->
@@ -54,14 +56,14 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<form action="goodsInsert" method="post">
+					<form action="goodsInsert" method="post" id="insertFrm">
 						<!-- <sec:csrfInput/> -->
 						<input type="hidden" th:name="${_csrf.parameterName}"
 							th:value="${_csrf.token}" />
 						<div class="modal-body">
 							<div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">제품번호</span> <input type="number"
+									<span class="input-group-text">제품번호</span> <input type="text"
 										class="form-control" id="goodsNo" name="goodsNo"
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
@@ -81,30 +83,25 @@
 										aria-describedby="basic-addon2">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">제품 검수기준</span> 
-									<select id="goodsCheck" name="goodsCheck" class="form-select">
-									<option selected>단위별수량</option>
-									<option>질량대비수량</option>
-									<option>TPA농도</option>
-								</select>
+									<span class="input-group-text">제품 검수기준</span> <select
+										id="goodsCheck" name="goodsCheck" class="form-select">
+										<option selected>단위별수량</option>
+										<option>질량대비수량</option>
+										<option>TPA농도</option>
+									</select>
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">제작기간</span> 
-									<input type="text" class="form-control" placeholder="제작기간" name="goodsDate"
+									<span class="input-group-text">제작기간</span> <input type="text"
+										class="form-control" placeholder="제작기간" name="goodsDate"
 										id="goodsDate" aria-label="Username"
 										aria-describedby="basic-addon4">
 								</div>
 
 								<div class="input-group mb-3">
-									<span class="input-group-text">단위코드</span> 
-								<select id="unitCode" name="unitCode" class="form-select">
-									<option selected>L</option>
-									<option>kg</option>
-									<option>mg/L</option>
-									<option>EA</option>
-									<option>AY</option>
-									<option>kg/s</option>
-								</select>
+									<span class="input-group-text">단위코드</span> <select
+										id="unitCode" name="unitCode" class="form-select">
+										<option th:each="unit : ${unit}">[[${unit.codeName}]]</option>
+									</select>
 								</div>
 								<div class="input-group">
 									<span class="input-group-text">제품설명</span>
@@ -116,7 +113,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">등록</button>
+							<button type="button" class="btn btn-primary" id="alertStart">등록</button>
 							<button type="button" class="btn btn-secondary"
 								data-bs-dismiss="modal">취소</button>
 						</div>
@@ -124,7 +121,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- 제품 수정 모달 -->
 		<div class="modal fade" id="requestModala" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -135,14 +132,14 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<form action="goodsUpdate" method="post">
+					<form action="goodsUpdate" method="post" id="insertFrm2">
 						<!-- <sec:csrfInput/> -->
 						<input type="hidden" th:name="${_csrf.parameterName}"
 							th:value="${_csrf.token}" />
 						<div class="modal-body">
 							<div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">제품번호</span> <input type="number"
+									<span class="input-group-text">제품번호</span> <input type="text"
 										class="form-control" id="goodsNo2" name="goodsNo"
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
@@ -151,41 +148,34 @@
 								<div class="input-group mb-3">
 									<span class="input-group-text">제품명</span> <input type="text"
 										class="form-control" id="goodsName2" name="goodsName"
-										 aria-label="Username"
-										aria-describedby="basic-addon1">
+										aria-label="Username" aria-describedby="basic-addon1">
 								</div>
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">제품기준수량</span> <input
-										type="number" class="form-control"
-										id="goodsStandard2" name="goodsStandard" aria-label="Username"
+										type="number" class="form-control" id="goodsStandard2"
+										name="goodsStandard" aria-label="Username"
 										aria-describedby="basic-addon2">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">제품 검수기준</span> 
-									<select id="goodsCheck2" name="goodsCheck" class="form-select">
-									<option selected>단위별수량</option>
-									<option>질량대비수량</option>
-									<option>TPA농도</option>
-								</select>
+									<span class="input-group-text">제품 검수기준</span> <select
+										id="goodsCheck2" name="goodsCheck" class="form-select">
+										<option selected>단위별수량</option>
+										<option>질량대비수량</option>
+										<option>TPA농도</option>
+									</select>
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">제작기간</span> 
-									<input type="text" class="form-control" name="goodsDate"
-										id="goodsDate2" aria-label="Username"
-										aria-describedby="basic-addon4">
+									<span class="input-group-text">제작기간</span> <input type="text"
+										class="form-control" name="goodsDate" id="goodsDate2"
+										aria-label="Username" aria-describedby="basic-addon4">
 								</div>
 
 								<div class="input-group mb-3">
-									<span class="input-group-text">단위코드</span> 
-								<select id="unitCode2" name="unitCode" class="form-select">
-									<option selected>L</option>
-									<option>kg</option>
-									<option>mg/L</option>
-									<option>EA</option>
-									<option>AY</option>
-									<option>kg/s</option>
-								</select>
+									<span class="input-group-text">단위코드</span> <select
+										id="unitCode2" name="unitCode" class="form-select">
+									<option th:each="unit : ${unit}">[[${unit.codeName}]]</option>
+									</select>
 								</div>
 								<div class="input-group">
 									<span class="input-group-text">제품설명</span>
@@ -197,7 +187,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">수정</button>
+							<button type="button" class="btn btn-primary" id="alertStart2">수정</button>
 							<button type="button" class="btn btn-secondary"
 								data-bs-dismiss="modal">취소</button>
 						</div>
@@ -205,29 +195,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- 삭제 모달-->
-		<div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">제품 정보 삭제</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="text-align: center">
-						<h5>해당 제품 정보가 삭제됩니다.</h5>
-						<h5>정말로 삭제하시겠습니까?</h5>
-					</div>
-					<div class="modal-footer" style="text-align: center">
-						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-						<button type="button" class="btn btn-primary"
-							data-bs-dismiss="modal" onclick="deleteData()">확인</button>
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-		</div>
+
 		<script>
 			window.onload = function() {
 				// 제품번호 +1 로 등록
@@ -248,6 +216,8 @@
 					$('input:text').val('');
 				});	
 				$('#grid span').remove();
+				
+				
 			}
 	
 			//제품정보리스트 그리드
@@ -318,35 +288,77 @@
 				$('#goodsCheck2').val(datas1[0].goodsCheck);
 				$('#goodsDate2').val(datas1[0].goodsDate);
 				$('#unitCode2').val(datas1[0].unitCode);
+				
 			}
-			
-			//삭제모달
-			let delbtn = document.getElementById('delbtn');
-			delbtn.addEventListener('click', function() {
-				let myModalAlternative = new bootstrap.Modal('#delModal')
-				let modalToggle = document.getElementById('delModal');
-				myModalAlternative.show(modalToggle)
-
-			})
+			//제풍등록 확인창
+			$().ready(function () {
+	            $("#alertStart").click(function () {
+	                Swal.fire({
+	                    icon: 'success',
+	                    title: '제품등록이 완료되었습니다.',
+	                    text: 'success~',
+	                }).then(function(){
+	                	$('#insertFrm').submit();
+	                });
+	                    return false;	                
+	            });
+	        });
+			//제품수정 확인창
+			$().ready(function () {
+	            $("#alertStart2").click(function () {
+	                Swal.fire({
+	                    icon: 'success',
+	                    title: '제품수정이 완료되었습니다.',
+	                    text: 'success~',
+	                }).then(function(){
+	                	$('#insertFrm2').submit();
+	                });
+	                    return false;	                
+	            });
+	        });
 			// 제품정보 삭제
-			function deleteData() {
-				var datas = grid.getCheckedRows();
-				console.log(datas);
-				for(goods of datas){
-					$.ajax({
-						url : 'produce/goodsDelete',
-						type : 'get',
-						data : {goodsNo : goods.goodsNo},
-						success : function(data){
-							console.log(data);
-							goodsList();
-						},
-						error : function(reject){
-							console.log(reject);
-						}
-					});
-					}
-			}
+				$().ready(function () {
+		            $("#delbtn").click(function () {
+		                Swal.fire({
+		                    title: '선택한 제품을 삭제하시겠습니까?',
+		                    text: "다시 되돌릴 수 없습니다. 신중하세요.",
+		                    icon: 'question',
+		                    showCancelButton: true,
+		                    confirmButtonColor: 'black',
+		                    cancelButtonColor: '#d33',
+		                    confirmButtonText: '승인',
+		                    cancelButtonText: '취소'
+		                }).then((result) => {
+		                	var datas = grid.getCheckedRows();
+		    				console.log(datas);
+		                    if (result.isConfirmed) {
+		                    	for(goods of datas){
+		        					$.ajax({
+		        						url : 'produce/goodsDelete',
+		        						type : 'get',
+		        						data : {goodsNo : goods.goodsNo},
+		        						success : function(data){
+		        							Swal.fire(
+		        				                    '삭제가 완료되었습니다.',
+		        				                    '화끈하시네요~!',
+		        				                    'success'
+		        				                )
+		        							goodsList();
+		        						},
+		        						error : function(reject){
+		        							console.log(reject);
+		        						}
+		        					});
+		        					}
+		                    }
+		                })
+		            });
+		        });
+				
+				
+				
+				
+			
 		</script>
 	</div>
 </body>

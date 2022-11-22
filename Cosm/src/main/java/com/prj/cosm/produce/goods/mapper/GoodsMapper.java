@@ -14,5 +14,8 @@ public interface GoodsMapper {
 	
 	public int updateGood(GoodsVO goodsVO);
 	
-	public int deleteGood(int goodsNo);
+	public int deleteGood(String goodsNo);
+	
+	//단위코드
+	public List<GoodsVO> getUnitList();
 }
