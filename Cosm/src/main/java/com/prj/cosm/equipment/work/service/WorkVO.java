@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,19 +22,23 @@ public class WorkVO {
 	private String workContent;
 	private String workCompany;
 	private Integer workPay;
+	@JsonFormat(pattern = "yyyy-MM-dd") // date picker
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date workDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date workEndDate;
 	private String workPs;
 	private String workCode;
-	
+
+	private String workEquipName;  //임시방편 그릇
 	
 	// 결재 정보
 	
 	private Integer signWorkNo;
-	private Integer signEmpNo;
+	private String signEmpNo;
 	private Integer signSeq;
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date signDate;
 	private String signCode;
@@ -69,22 +75,5 @@ public class WorkVO {
 	private Integer equipState;
 	private Integer unitCode;
 
-	// 설비별 가동 시간
-	private Integer timeEquipNo;
-
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date timeStartDate;
-
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date timeEndDate;
-
-	// 실시간 측정
-	private Integer rtcNo;
-	private Integer rtcEquipNo;
-	private Integer rtcVibe;
-	private Integer rtcTemp;
-
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date rtcDate;
 
 }

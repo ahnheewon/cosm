@@ -25,33 +25,30 @@
 	<!-- 설비 등록 -->
 	<insert id="insertEquip" parameterType="equipVO">
 		INSERT INTO EQUIP	( equip_no
-						,equip_name
-						,equip_type
-						,equip_std_vibe
-                        ,equip_std_temp
-						,equip_process
-						,equip_purpose
-						,equip_date
-						)
+							,equip_name
+							,equip_type
+							,equip_std_vibe
+	                        ,equip_std_temp
+							,equip_process
+							,equip_purpose
+							,equip_date
+							)
         values (#{equipNo},#{equipName},#{equipType},#{equipStdVibe},#{equipStdTemp},#{equipProcess},#{equipPurpose},SYSDATE)
 
 	</insert>
 	
 	<!-- 설비 시간 등록 -->
 	<insert id="insertEquipTime" parameterType="equipVO">
-  
-    <selectKey keyProperty="timeEquipNo" resultType="Integer" order="BEFORE">
-      select MAX(equip_no) from equip
-    </selectKey>
+
     INSERT INTO EQUIP_TIME ( 
 						time_equip_no
                        <if test="timeStartDate != null and timeStartDate != ''">,time_start_date</if>
 						<if test="timeEndDate != null and timeEndDate != ''">,time_end_date</if>
 						)
-		        values (#{timeEquipNo}
-		        <if test="timeStartDate != null and timeStartDate != ''">,#{timeStartDate}</if>
-		        <if test="timeEndDate != null and timeEndDate != ''">,#{timeEndDate}</if>
-		        )
+				        values (#{equipNo}
+				        <if test="timeStartDate != null and timeStartDate != ''">,#{timeStartDate}</if>
+				        <if test="timeEndDate != null and timeEndDate != ''">,#{timeEndDate}</if>
+				        )
 	</insert>
 		
 	<!-- 설비 수정 -->
@@ -171,22 +168,22 @@
 	
 	<!-- 공정 삭제 -->
 	<delete id="deleteProcess" parameterType="Integer">
-	DELETE process
-	WHERE process_no = #{processNo}
+		DELETE process
+		WHERE process_no = #{processNo}
 	</delete>
 	
 	<!-- 공정 삭제 시 번호 정렬 update문 -->
 	<update id="updateDeleteProcessNo" parameterType="Integer">
-	UPDATE PROCESS
-	SET PROCESS_NO = PROCESS_NO-1
-	WHERE PROCESS_NO <![CDATA[>]]> #{processNo}
+		UPDATE PROCESS
+		SET PROCESS_NO = PROCESS_NO-1
+		WHERE PROCESS_NO <![CDATA[>]]> #{processNo}
 	</update>
 	
 	<!-- 공정 삭제 시 적용공정 정렬 update문 -->
 	<update id="updateDeleteEquipProcess" parameterType="Integer">
-	update equip
-    set equip_process = equip_process-1
-    where equip_process <![CDATA[>]]> #{equipProcess}
+		update equip
+	    set equip_process = equip_process-1
+	    where equip_process <![CDATA[>]]> #{equipProcess}
     </update>
 	
 <!-- ############################################################################################  -->
@@ -194,15 +191,20 @@
 
 	<!-- 점검 전체 리스트 -->
 	<select id="getTestList" resultType="equipVO">
-	SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
-	FROM equip e, TEST T
-	where e.equip_no = T.TEST_equip_no 
-	ORDER BY test_no DESC
+		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
+				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
+				,(select code_name from code where code_no = t.test_code ) AS test_code
+		FROM equip e, test t
+		where e.equip_no = t.test_equip_no 
+		ORDER BY test_no DESC
 	</select>
 	
 	<!-- 점검 단건 조회-->
 	<select id="getTestInfo" parameterType="Integer" resultType="equipVO">
-	
+		SELECT test_no,(select equip_name from equip where equip_no=#{value}) AS test_equip_name
+			   ,test_reason, test_due_date,test_content
+		FROM test
+		Where test_no= #{value}
 	</select>
 	
 	<!-- 점검일정 등록 -->
@@ -213,6 +215,7 @@
 							,test_reason
 	                        ,test_yn
 	                        ,test_due_date
+	                        ,test_code
 							)
 	        		values ( #{testNo}
 					        ,(SELECT equip_no
@@ -220,8 +223,8 @@
 						      WHERE equip_name = #{testEquipName})
 					        ,#{testReason}
 					        ,'N'
-					        ,#{testDueDate})
-
+					        ,#{testDueDate}
+					        ,'A0101')
 	</insert>
 	
 	<!-- 점검 수정 -->
@@ -241,18 +244,20 @@
 	
 	<!-- 입력될 점검 번호 조회 -->
 	<select id="getTestNo" resultType="equipVO">
-	SELECT NVL(MAX(TEST_no),0) + 1 AS TEST_NO
-	FROM TEST
+		SELECT NVL(MAX(TEST_no),0) + 1 AS TEST_NO
+		FROM TEST
 	</select>
 	
 <!-- ############################################################################################  -->
 																					<!-- 고장  -->
 	<!-- 고장 리스트 -->
 	<select id="getFailList" resultType="equipVO">
-	SELECT f.fail_no, f.fail_equip_no,e.equip_name,f.fail_date,f.fail_content,f.fail_repair_yn
-	FROM equip e, FAIL f
-	where e.equip_no = f.fail_equip_no 
-	ORDER BY fail_no DESC
+		SELECT f.fail_no, f.fail_equip_no, e.equip_name as fail_equip_name
+				,f.fail_date, f.fail_content, f.fail_repair_yn
+				,(select code_name from code where code_no = f.fail_code) as fail_code
+		FROM equip e, FAIL f
+		where e.equip_no = f.fail_equip_no 
+		ORDER BY fail_no DESC
 	</select>
 	
 	<!-- 고장 단건 조회-->
@@ -261,21 +266,22 @@
 	
 	<!-- 고장 등록 -->
 	<insert id="insertFail" parameterType="equipVO">
-	 	  INSERT INTO fail ( fail_no
-							,fail_equip_no
-							,fail_content
-	                        ,fail_date
-	                        ,fail_repair_yn
-							)
-	        		values ( #{failNo}
-					        ,(SELECT equip_no
-						      FROM equip
-						      WHERE equip_name = #{failEquipName}
-					        ,#{failContent}
-					        ,SYSDATE
-					        ,'N'
-					        )
-	</insert>	   	
+		 	  INSERT INTO fail ( fail_no
+								,fail_equip_no
+								,fail_content
+		                        ,fail_date
+		                        ,fail_repair_yn
+		                        ,fail_code
+								)
+		        		values ( #{failNo}
+						        ,(SELECT equip_no
+							      FROM equip
+							      WHERE equip_name = #{failEquipName})
+						        ,#{failContent}
+						        ,SYSDATE
+						        ,'N'
+						        ,'A0101')
+	</insert>
 	
 	<!-- 고장 수정 -->
 	<update id="updateFail" parameterType="equipVO">
@@ -283,18 +289,23 @@
 	
 	<!-- 고장 삭제 -->
 	<delete id="deleteFail" parameterType="Integer">
+		DELETE FAIL
+		WHERE FAIL_NO = #{failNo}
 	</delete>
 	
 	<!-- 고장 삭제 시 번호 정렬 update문-->
 	<update id="updateDeleteFailNo" parameterType="Integer">
+		UPDATE FAIL
+		SET fail_no = fail_no-1
+		WHERE fail_no <![CDATA[>]]> #{failNo}
 	</update>
 	
 	<!-- 입력될 고장 번호 조회 -->
 	<select id="getFailNo" resultType="equipVO">
-	SELECT NVL(MAX(fail_no),0) + 1 AS FAIL_NO
-	FROM FAIL
+		SELECT NVL(MAX(fail_no),0) + 1 AS FAIL_NO
+		FROM FAIL
 	</select>
 	
-	
-	
+<!-- ############################################################################################  -->
+
 </mapper>

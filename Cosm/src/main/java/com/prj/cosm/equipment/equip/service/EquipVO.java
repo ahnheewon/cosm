@@ -67,21 +67,24 @@ public class EquipVO {
 	private String testYn;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date testDueDate;
+	private String testCode;
 	
 	// 고장관련
-	private Integer failRepairYn;
+	private String failRepairYn;
 	private Integer failNo;
 	private Integer failEquipNo;
 	private String failEquipName;
+	private String failContent; // 고장내역
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date failDate;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date failRepairDate;
 	
-	private String failRepairContent;
+	private String failRepairContent; // 수리내역
 	private String failEffect;
 	private String failCode;
+	
 	
 	// 공통코드
 	
