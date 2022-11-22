@@ -13,8 +13,12 @@ public class RegistVO {
 	private int registError;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private int registDate;
-	private int registProductNo;
-	private int registInstructNo;
+	private String registProductNo;
+	private String registInstructNo;
 	private String codeNo;
 	private String inspection;
+	
+	//진행상황,단위코드 리스트
+	public String codeName;
+	
 }

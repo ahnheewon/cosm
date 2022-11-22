@@ -4,13 +4,16 @@
 	layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script
 	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
@@ -29,20 +32,20 @@
     </script>
 </head>
 <body>
-	<div layout:fragment="content" style="margin-left: 30px; margin-right: 30px;">
+	<div layout:fragment="content"
+		style="margin-left: 30px; margin-right: 30px;">
 		<hr style="width: 100%">
 		<h3>생산계획 리스트</h3>
-		<button type="button" class="btn btn-dark btn-sm" onclick="insertData();"
-			data-bs-toggle="modal" data-bs-target="#requestModal"
-			style="float: right">생산지시 작성</button>
+		<button type="button" class="btn btn-dark btn-sm"
+			onclick="insertData();" data-bs-toggle="modal"
+			data-bs-target="#requestModal" style="float: right">생산지시 작성</button>
 		<div id="grid"></div>
 
 		<hr style="width: 100%">
 
 		<h3>생산지시 리스트</h3>
-		<button type="button" 
-			class="btn btn-dark btn-sm" style="float: right" id="delbtn">생산지시
-			삭제</button>
+		<button type="button" class="btn btn-dark btn-sm" style="float: right"
+			id="delbtn">생산지시 삭제</button>
 		<button type="button" onclick="updateData();"
 			class="btn btn-dark btn-sm" data-bs-toggle="modal"
 			data-bs-target="#requestModala" style="float: right">생산지시 수정</button>
@@ -63,81 +66,85 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<form action="insInsert" method="post">
-					<!-- <sec:csrfInput/> -->
+					<form action="insInsert" method="post" id="insertFrm">
+						<!-- <sec:csrfInput/> -->
 						<input type="hidden" th:name="${_csrf.parameterName}"
 							th:value="${_csrf.token}" />
 						<div class="modal-body">
 							<div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">생산지시번호</span> <input type="number"
+									<span class="input-group-text">생산지시번호</span> <input type="text"
 										class="form-control" id="planNoInput" name="instructNo"
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
 								</div>
-								
+
 								<div class="input-group mb-3">
-									<span class="input-group-text">지시될 생산계획번호</span> <input type="number"
-										class="form-control" id="instructPlanNo" name="instructPlanNo"
+									<span class="input-group-text">지시될 생산계획번호</span> <input
+										type="text" class="form-control" id="instructPlanNo"
+										name="instructPlanNo" aria-label="Username"
+										aria-describedby="basic-addon1" readonly="readonly">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">제품 번호</span> <input type="text"
+										class="form-control" id="planProductNo" name="planProductNo"
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">생산계획량</span> <input type="number"
-										class="form-control" placeholder="생산계획량" name="planQuantity"
-										id="planQuantity" readonly="readonly"
+									<span class="input-group-text">생산계획량</span> <input
+										type="number" class="form-control" placeholder="생산계획량"
+										name="planQuantity" id="planQuantity" readonly="readonly"
 										aria-label="Username" aria-describedby="basic-addon2">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">최종생산지시량</span> <input
 										type="number" class="form-control" placeholder="최종생산지시량"
-										name="instructQuantity" id="instructQuantity" aria-label="Username"
-										aria-describedby="basic-addon2">
+										name="instructQuantity" id="instructQuantity"
+										aria-label="Username" aria-describedby="basic-addon2">
 								</div>
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">시작일자</span> <input type="date"
-										class="form-control" placeholder="시작일자" 
-										id="planStart" readonly="readonly" aria-label="Username"
+										class="form-control" placeholder="시작일자" id="planStart"
+										readonly="readonly" aria-label="Username"
 										aria-describedby="basic-addon3">
 								</div>
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">종료일자</span> <input type="date"
-										class="form-control" placeholder="종료일자" 
-										id="planEnd" readonly="readonly"
-										aria-label="Username" aria-describedby="basic-addon4">
+										class="form-control" placeholder="종료일자" id="planEnd"
+										readonly="readonly" aria-label="Username"
+										aria-describedby="basic-addon4">
 								</div>
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">지시일자</span> <input type="date"
 										class="form-control" placeholder="지시일자" name="instructDate"
-										
-										aria-label="Username" aria-describedby="basic-addon4">
+										id="instructDate" aria-label="Username"
+										aria-describedby="basic-addon4">
 								</div>
 
-								
+
 								<div class="input-group mb-3">
-									<span class="input-group-text">자재번호</span> 
-								<select id="instructMNo" name="instructMNo" class="form-select">
-									<option selected>MM1002</option>
-									<option>MM1003</option>
-									<option>MM1004</option>
-								</select>
+									<span class="input-group-text">자재번호</span> <select
+										id="instructMNo" name="instructMNo" class="form-select">
+										<option th:each="mNo : ${mNo}">[[${mNo.mNo}]]</option>
+									</select>
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">투입될 자재량</span> <input type="number"
-										class="form-control" placeholder="자재량" name="instructMaterialNum"
-										aria-label="Username" aria-describedby="basic-addon4">
+									<span class="input-group-text">투입될 자재량</span> <input
+										type="number" class="form-control" placeholder="자재량"
+										name="instructMaterialNum" aria-label="Username"
+										aria-describedby="basic-addon4">
 								</div>
-								
+
 								<div class="input-group mb-3">
-									<span class="input-group-text">진행상황</span> 
-								<select id="instructProgressCode" name="instructProgressCode" class="form-select">
-									<option selected>진행중</option>
-									<option>미실시</option>
-									<option>완료</option>
-								</select>
+									<span class="input-group-text">진행상황</span> <select
+										id="instructProgressCode" name="instructProgressCode"
+										class="form-select">
+										<option th:each="playNo : ${playNo}">[[${playNo.codeName}]]</option>
+									</select>
 								</div>
 								<div class="input-group">
 									<span class="input-group-text">기타사항</span>
@@ -149,7 +156,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">등록</button>
+							<button type="submit" class="btn btn-primary" id="alertStart">등록</button>
 							<button type="button" class="btn btn-secondary"
 								data-bs-dismiss="modal">취소</button>
 						</div>
@@ -157,7 +164,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- 생산지시 수정 모달 -->
 		<div class="modal fade" id="requestModala" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -168,33 +175,38 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<form action="insUpdate" method="post">
-					<!-- <sec:csrfInput/> -->
+					<form action="insUpdate" method="post" id="insertFrm2">
+						<!-- <sec:csrfInput/> -->
 						<input type="hidden" th:name="${_csrf.parameterName}"
 							th:value="${_csrf.token}" />
 						<div class="modal-body">
 							<div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">생산지시번호</span> <input type="text"
-										class="form-control" id="instructNo" name="instructNo" 
+										class="form-control" id="instructNo" name="instructNo"
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
 								</div>
 
 								<div class="input-group mb-3">
-									<span class="input-group-text">생산계획번호</span> <input type="number"
+									<span class="input-group-text">생산계획번호</span> <input type="text"
 										class="form-control" id="planNo" name="planNo"
 										aria-label="Username" aria-describedby="basic-addon2"
 										readonly="readonly">
 								</div>
-								
+								<div class="input-group mb-3">
+									<span class="input-group-text">제품 번호</span> <input type="text"
+										class="form-control" id="planProductNo2" name="planProductNo"
+										aria-label="Username" aria-describedby="basic-addon1"
+										readonly="readonly">
+								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">최종생산지시량</span> <input
 										type="number" class="form-control" id="instructQuantity2"
 										name="instructQuantity" aria-label="Username"
 										aria-describedby="basic-addon2">
 								</div>
-								
+
 								<div class="input-group mb-3">
 									<span class="input-group-text">시작일자</span> <input type="date"
 										class="form-control" placeholder="시작일자" name="planStart"
@@ -208,39 +220,38 @@
 										id="planEnd2" aria-label="Username" readonly="readonly"
 										aria-describedby="basic-addon4">
 								</div>
-								
 								<div class="input-group mb-3">
-									<span class="input-group-text">자재번호</span> <input type="text"
-										class="form-control" name="instructMNo" id="instructMNo2"
-										aria-label="Username" aria-describedby="basic-addon4">
+									<span class="input-group-text">자재번호</span> <select
+										id="instructMNo2" name="instructMNo" class="form-select">
+										<option th:each="mNo : ${mNo}">[[${mNo.mNo}]]</option>
+									</select>
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">투입될 자재량</span> <input type="number"
-										class="form-control" name="instructMaterialNum" id="instructMaterialNum"
-										aria-label="Username" aria-describedby="basic-addon4">
+									<span class="input-group-text">투입될 자재량</span> <input
+										type="number" class="form-control" name="instructMaterialNum"
+										id="instructMaterialNum" aria-label="Username"
+										aria-describedby="basic-addon4">
 								</div>
-								
+
 								<div class="input-group mb-3">
-									<span class="input-group-text">진행상황</span> 
-								<select id="instructProgressCode" name="instructProgressCode" class="form-select">
-									<option selected>진행중</option>
-									<option>미실시</option>
-									<option>진행중</option>
-									<option>완료</option>
-								</select>
+									<span class="input-group-text">진행상황</span> <select
+										id="instructProgressCode2" name="instructProgressCode"
+										class="form-select">
+										<option th:each="playNo : ${playNo}">[[${playNo.codeName}]]</option>
+									</select>
 								</div>
 
 								<div class="input-group">
 									<span class="input-group-text">기타사항</span>
-									<textarea class="form-control" name="instructEx" id="instructEx"
-										aria-label="With textarea"></textarea>
+									<textarea class="form-control" name="instructEx"
+										id="instructEx" aria-label="With textarea"></textarea>
 								</div>
 
 								<div id="requestModalGrid" style="width: 100%;"></div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">수정</button>
+							<button type="button" class="btn btn-primary" id="alertStart2">수정</button>
 							<button type="button" class="btn btn-secondary"
 								data-bs-dismiss="modal">취소</button>
 						</div>
@@ -248,35 +259,10 @@
 				</div>
 			</div>
 		</div>
-		<!-- 삭제 모달-->
-		<div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">생산지시 정보 삭제</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="text-align: center">
-						<h5>해당 생산지시 정보가 삭제됩니다.</h5>
-						<h5>정말로 삭제하시겠습니까?</h5>
-					</div>
-					<div class="modal-footer" style="text-align: center">
-						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-						<button type="button" class="btn btn-primary"
-							data-bs-dismiss="modal" onclick="deleteData()">확인</button>
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
 		<script>	
+		const header = $("meta[name='_csrf_header']").attr('content');
+		const token = $("meta[name='_csrf']").attr('content');
 		window.onload = function () {
-			// 생산지시번호 +1 로 등록
-			var info = '[[${info.instructNo}]]';
-			$('#planNoInput').val(info)	
 			
 			//생산계획리스트 가져오기
 			planList();
@@ -294,6 +280,10 @@
 				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
 					grid2.uncheck(i);
 				}
+				// 생산지시번호 +1 로 등록
+				var info = '[[${info.instructNo}]]';
+				$('#planNoInput').val(info)	
+				
 			});
 
 			grid2.on('check', (ev) => {
@@ -401,6 +391,10 @@
 					name: 'INSTRUCTQUANTITY'
 				},
 				{
+					header: '제품번호',
+					name: 'PLANPRODUCTNO'
+				},
+				{
 					header: '시작일자(desc)',
 					name: 'PLANSTART',
 					sortingType: 'desc',
@@ -440,7 +434,6 @@
 		// 자재재고 현황 그리드
 		var grid3 = new tui.Grid({
 			el: document.getElementById('grid3'),
-			rowHeaders: ['checkbox'],
 			minBodyHeight: 30,
 			pageOptions: {
 				useClient: true, // front에서만 페이징 하는 속성
@@ -459,7 +452,8 @@
 				name : 'mcategory'
 			}, {
 				header : '자재명',
-				name : 'mname'
+				name : 'mname',
+				color : 'yellow'
 			}, {
 				header : '현재 재고',
 				name : 'mstock'
@@ -523,7 +517,7 @@
 				url : "http://localhost:85/ajax/minfo",
 				method : "GET",
 				success : function(result) {
-					
+					grid3.resetData((result.list2));
 					console.log(result);
 				},
 				error : function(reject) {
@@ -535,13 +529,50 @@
 		
 		// 지시 등록
 		function insertData(){
+			const date = new Date();
 			var datas = grid.getCheckedRows();
 			var test = JSON.stringify(datas);
 			$('#planStart').val(datas[0].planStart);
 			$('#planEnd').val(datas[0].planEnd);
 			$('#instructPlanNo').val(datas[0].planNo);
 			$('#planQuantity').val(datas[0].planQuantity);
+			$('#planProductNo').val(datas[0].planProductNo);
 		}
+		//지시등록 확인창
+		$().ready(function () {
+            $("#alertStart").click(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: '생산지시 등록이 완료되었습니다.',
+                    text: 'success~',
+                }).then(function(){
+                	var datas2 = grid.getCheckedRows();
+                    	console.log(datas2);
+                    	for(instruct of datas2){
+                			$.ajax({
+                				url : '/insPlay',
+                				type : 'post',
+                				data : {planNo : instruct.planNo},
+                				beforeSend: function (xhr) {
+            						xhr.setRequestHeader(header, token);
+            					},
+                				success : function(data){
+                					console.log(data);
+                					$('#insertFrm').submit();
+                				},
+                				error : function(reject){
+                					console.log(reject);
+                				}
+                			});
+                			
+                    }
+                
+                });
+                    return false;	                
+            });
+        });
+		
+		
 		// 지시 수정
 		function updateData(){	
 			var datas1 = grid2.getCheckedRows();
@@ -556,37 +587,69 @@
 			$('#instructMNo2').val(datas1[0].INSTRUCTMNO);
 			$('#instructQuantity2').val(datas1[0].INSTRUCTQUANTITY);
 			$('#instructEx').val(datas1[0].INSTRUCTEX);
+			$('#instructProgressCode2').val(datas1[0].INSTRUCT_PROGRESS_CODE);
+			$('#planProductNo2').val(datas1[0].PLANPRODUCTNO);
 		}
 		
-		//삭제모달
-		let delbtn = document.getElementById('delbtn');
-		delbtn.addEventListener('click', function() {
-			let myModalAlternative = new bootstrap.Modal('#delModal')
-			let modalToggle = document.getElementById('delModal');
-			myModalAlternative.show(modalToggle)
-
-		})
+		//생산지시 수정 확인창
+		$().ready(function () {
+            $("#alertStart2").click(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: '생산지시 수정이 완료되었습니다.',
+                    text: 'success~',
+                }).then(function(){
+                	$('#insertFrm2').submit();
+                });
+                    return false;	                
+            });
+        });
+		// 제품정보 삭제
+		$().ready(function () {
+            $("#delbtn").click(function () {
+                Swal.fire({
+                    title: '선택한 제품을 삭제하시겠습니까?',
+                    text: "다시 되돌릴 수 없습니다. 신중하세요.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: 'black',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '승인',
+                    cancelButtonText: '취소'
+                }).then((result) => {
+                	var datas2 = grid2.getCheckedRows();
+                    if (result.isConfirmed) {
+                    	for(instruct of datas2){
+                			$.ajax({
+                				url : 'insDelete',
+                				type : 'get',
+                				data : {instructNo : instruct.INSTRUCTNO},
+                				success : function(data){
+                					Swal.fire(
+                		                    '삭제가 완료되었습니다.',
+                		                    '화끈하시네요~!',
+                		                    'success'
+                		                )
+                					instructList();
+                				},
+                				error : function(reject){
+                					console.log(reject);
+                				}
+                			});
+                			}
+                    }
+                })
+            });
+        });
 		
-		// 삭제 
-		function deleteData() {
-			var datas2 = grid2.getCheckedRows();
-			var test = JSON.stringify(datas2);
-
-			for(instruct of datas2){
-			$.ajax({
-				url : 'insDelete',
-				type : 'get',
-				data : {instructNo : instruct.INSTRUCTNO},
-				success : function(data){
-					console.log(data);
-					instructList();
-				},
-				error : function(reject){
-					console.log(reject);
-				}
+		tui.Grid.applyTheme('default', {
+			  cell: {
+			   
+			    selectedHeader: {
+			      background: 'yellow'
+			    }
+			  }
 			});
-			}
-		}
 		</script>
 	</div>
 </body>

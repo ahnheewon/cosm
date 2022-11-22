@@ -14,5 +14,5 @@ public interface BomMapper {
 	
 	public int updateBom(BomVO bomVO);
 	
-	public int deleteBom(int bomNo);
+	public int deleteBom(String bomNo);
 }

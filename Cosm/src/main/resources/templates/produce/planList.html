@@ -39,19 +39,18 @@
 
 		<!-- tab기능 -->
 		<div class="tabs">
-			<input id="all" type="radio" name="tab_item" checked> <label
-				class="tab_item" for="all">생산계획</label> <input id="programming"
-				type="radio" name="tab_item"> <label class="tab_item"
-				for="programming">BOM 정보</label> <input id="design" type="radio"
-				name="tab_item"> <label class="tab_item" for="design">제품
-				정보</label>
+			<input id="all" type="radio" name="tab_item" checked> 
+			<label class="tab_item" for="all">생산계획</label> 
+			<input id="programming" type="radio" name="tab_item"> 
+			<label class="tab_item" for="programming">BOM 정보</label> 
+			<input id="design" type="radio" name="tab_item"> 
+			<label class="tab_item" for="design">제품 정보</label>
 
 			<div class="tab_content" id="all_content">
 				<h3>미계획 주문서 리스트</h3>
 				<button type="button" class="btn btn-dark btn-sm"
 					onclick="insertData();" data-bs-toggle="modal"
-					data-bs-target="#requestModal" style="float: right">생산계획
-					작성</button>
+					data-bs-target="#requestModal" style="float: right">생산계획 작성</button>
 				<div id="grid"></div>
 
 
@@ -91,7 +90,7 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<form action="planInsert" method="post">
+					<form action="planInsert" method="post" id="insertFrm">
 						<!-- <sec:csrfInput/> -->
 						<input type="hidden" th:name="${_csrf.parameterName}"
 							th:value="${_csrf.token}" />
@@ -99,21 +98,21 @@
 							<div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">생산계획번호</span> <input
-										type="number" class="form-control" id="planNoInput"
+										type="text" class="form-control" id="planNoInput"
 										name="planNo" aria-label="Username"
 										aria-describedby="basic-addon1" readonly="readonly">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">주문번호</span> <input type="number"
+									<span class="input-group-text">주문번호</span> <input type="text"
 										class="form-control" id="orderNo" name="planOrderNo"
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">제품번호</span> <input type="number"
-										class="form-control" id="planProductNo" name="planProductNo"
-										aria-label="Username" aria-describedby="basic-addon1"
-										readonly="readonly">
+									<span class="input-group-text">제품번호</span> <select
+										id="planProductNo" name="planProductNo" class="form-select">
+										<option th:each="goodsNo : ${goodsNo}">[[${goodsNo.goodsNo}]]</option>
+									</select>
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">제품명</span> <input type="text"
@@ -125,9 +124,7 @@
 								<div class="input-group mb-3">
 									<span class="input-group-text">BOM번호</span> <select
 										id="planBomNo" name="planBomNo" class="form-select">
-										<option selected>1</option>
-										<option>2</option>
-										<option>3</option>
+										<option th:each="bomNo : ${bomNo}">[[${bomNo.bomNo}]]</option>
 									</select>
 								</div>
 								<div class="input-group mb-3">
@@ -157,13 +154,13 @@
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">시작일자</span> <input type="date"
-										class="form-control" placeholder="시작일자" name="planStart"
+										class="form-control" name="planStart" id="planStart"
 										aria-label="Username" aria-describedby="basic-addon3">
 								</div>
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">종료일자</span> <input type="date"
-										class="form-control" placeholder="종료일자" name="planEnd"
+										class="form-control"  name="planEnd" id="planEnd"
 										aria-label="Username" aria-describedby="basic-addon4">
 								</div>
 
@@ -178,7 +175,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary" >등록</button>
+							<button type="button" class="btn btn-primary" id="alertStart">등록</button>
 							<button type="button" class="btn btn-secondary"
 								data-bs-dismiss="modal">취소</button>
 						</div>
@@ -196,7 +193,7 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<form action="planUpdate" method="post">
+					<form action="planUpdate" method="post" id="insertFrm2">
 						<!-- <sec:csrfInput/> -->
 						<input type="hidden" th:name="${_csrf.parameterName}"
 							th:value="${_csrf.token}" />
@@ -209,13 +206,13 @@
 										readonly="readonly">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">주문번호</span> <input type="number"
+									<span class="input-group-text">주문번호</span> <input type="text"
 										class="form-control" id="planOrderNo2" name="planOrderNo"
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">제품번호</span> <input type="number"
+									<span class="input-group-text">제품번호</span> <input type="text"
 										class="form-control" id="planProductNo2" name="planProductNo"
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
@@ -224,9 +221,7 @@
 								<div class="input-group mb-3">
 									<span class="input-group-text">BOM번호</span> <select
 										id="planBomNo2" name="planBomNo" class="form-select">
-										<option selected>1</option>
-										<option>2</option>
-										<option>3</option>
+										<option th:each="bomNo : ${bomNo}">[[${bomNo.bomNo}]]</option>
 									</select>
 								</div>
 								<div class="input-group mb-3">
@@ -260,7 +255,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">수정</button>
+							<button type="button" class="btn btn-primary" id="alertStart2">수정</button>
 							<button type="button" class="btn btn-secondary"
 								data-bs-dismiss="modal">취소</button>
 						</div>
@@ -291,13 +286,13 @@
 										readonly="readonly">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">주문번호</span> <input type="number"
+									<span class="input-group-text">주문번호</span> <input type="text"
 										class="form-control" id="planOrderNo3" name="planOrderNo"
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">제품번호</span> <input type="number"
+									<span class="input-group-text">제품번호</span> <input type="text"
 										class="form-control" id="planProductNo3" name="planProductNo"
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
@@ -334,7 +329,7 @@
 								</div>
 								
 								<div class="input-group mb-3">
-									<span class="input-group-text">BOM번호</span> <input type="number"
+									<span class="input-group-text">BOM번호</span> <input type="text"
 										class="form-control" id="planBomNo3" name="planBomNo"
 										aria-label="Username" aria-describedby="basic-addon2"
 										readonly="readonly">
@@ -383,35 +378,10 @@
 				</div>
 			</div>
 		</div>
-		<!-- 삭제 모달-->
-		<div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">생산계획 정보 삭제</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="text-align: center">
-						<h5>해당 생산계획 정보가 삭제됩니다.</h5>
-						<h5>정말로 삭제하시겠습니까?</h5>
-					</div>
-					<div class="modal-footer" style="text-align: center">
-						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-						<button type="button" class="btn btn-primary"
-							data-bs-dismiss="modal" onclick="deleteData()">확인</button>
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-		</div>
 
 		<script>
 		window.onload = function () {
-			// 생산계획번호 +1 로 등록
-			var info = '[[${info.planNo}]]';
-			$('#planNoInput').val(info)	
+			
 			
 			//생산계획리스트 불러오기
 			planList();
@@ -430,6 +400,10 @@
 				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
 					grid2.uncheck(i);
 				}
+				// 생산계획번호 +1 로 등록
+				var info = '[[${info.planNo}]]';
+				$('#planNoInput').val(info)	
+			
 			});
 
 			grid2.on('check', (ev) => {
@@ -522,7 +496,6 @@
 			columns: [{
 				header: '주문번호',
 				name: 'orderNo',
-				width: 'auto'
 			}, {
 				header: '거래처번호',
 				name: 'clientNo',
@@ -742,6 +715,7 @@
 					}
 				});
 			}
+			//생산계획 상세정보
 			function getPlanInfo(){
 				var datas = grid2.getCheckedRows();
 				var test = JSON.stringify(datas);
@@ -802,8 +776,23 @@
 			$('#productName').val(datas[0].productName);
 			$('#deliveryDate').val(datas[0].deliveryDate);
 			$('#totalNum').val(datas[0].totalNum);
+			$('#planStart').val(datas[0].orderDate);
+			$('#planEnd').val(datas[0].deliveryDate);
 			
 		}
+		//생산계획 등록 확인창
+		$().ready(function () {
+	           $("#alertStart").click(function () {
+	               Swal.fire({
+	                   icon: 'success',
+	                   title: '제품등록이 완료되었습니다.',
+	                   text: 'success~',
+	               }).then(function(){
+	               	$('#insertFrm').submit();
+	               });
+	                   return false;	                
+	           });
+	     });
 		
 		
 		//수정
@@ -822,34 +811,59 @@
 			$('#planBomNo2').val(datas[0].planBomNo);
 		}
 		
-		//삭제모달
-		let delbtn = document.getElementById('delbtn');
-		delbtn.addEventListener('click', function() {
-			let myModalAlternative = new bootstrap.Modal('#delModal')
-			let modalToggle = document.getElementById('delModal');
-			myModalAlternative.show(modalToggle)
-
-		})
+		//생산계획 수정 확인창
+		$().ready(function () {
+            $("#alertStart2").click(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: '생산계획 수정이 완료되었습니다.',
+                    text: 'success~',
+                }).then(function(){
+                	$('#insertFrm2').submit();
+                });
+                    return false;	                
+            });
+        });
 		
-		// 삭제 
-		function deleteData() {
-			var planData=[];
-			var datas = grid2.getCheckedRows();
-			var test = JSON.stringify(datas);
-			for(plan of datas){
-				$.ajax({
-					url : 'planDelete',
-					type : 'get',
-					data : {planNo : plan.planNo},
-					success : function(data){
-						planList();
-					},
-					error : function(reject){
-						console.log(reject);
-					}
-				});
-			}
-		}
+		// 생산계획 정보 삭제
+		$().ready(function () {
+            $("#delbtn").click(function () {
+                Swal.fire({
+                    title: '선택한 생산계획을 삭제하시겠습니까?',
+                    text: "다시 되돌릴 수 없습니다. 신중하세요.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: 'black',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '승인',
+                    cancelButtonText: '취소'
+                }).then((result) => {
+                	var datas = grid2.getCheckedRows();
+                    if (result.isConfirmed) {
+                    	for(plan of datas){
+            				$.ajax({
+            					url : 'planDelete',
+            					type : 'get',
+            					data : {planNo : plan.planNo},
+            					success : function(data){
+            						Swal.fire(
+            			                    '삭제가 완료되었습니다.',
+            			                    '화끈하시네요~!',
+            			                    'success'
+            			                )
+            						planList();
+            					},
+            					error : function(reject){
+            						console.log(reject);
+            					}
+            				});
+            			}
+                    }
+                })
+            });
+        });
+		
+		
 		</script>
 	</div>
 </body>

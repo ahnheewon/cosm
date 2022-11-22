@@ -37,7 +37,7 @@
 		<div id="grid2"></div>
 		<hr style="width: 100%">
 		<form action="registInsert" method="post" class="row g-3"
-			style="margin-left: 30px; margin-right: 30px;">
+			style="margin-left: 30px; margin-right: 30px;" id="insertFrm">
 			<!-- <sec:csrfInput/> -->
 			<input type="hidden" th:name="${_csrf.parameterName}"
 				th:value="${_csrf.token}" />
@@ -72,67 +72,40 @@
 					id="registError">
 			</div>
 			<div class="col-md-4">
-				<label for="inputState" class="form-label">제품번호</label> <select
-					id="inputState" name="registProductNo" class="form-select">
-					<option selected>101</option>
-					<option>202</option>
-					<option>333</option>
-				</select>
+				<label for="inputAddress2" class="form-label">제품번호</label> <input
+					type="text" name="registProductNo" class="form-control"
+					id="planProductNo" readonly="readonly">
 			</div>
+			
 			<div class="col-md-4">
 				<label for="inputState" class="form-label">단위코드</label> <select
 					id="inputState" name="codeNo" class="form-select">
-					<option selected>101</option>
-					<option>202</option>
-					<option>333</option>
+					<option th:each="unit : ${unit}">[[${unit.codeName}]]</option>
 				</select>
 			</div>
 			<div class="col-md-4">
 				<label for="inputState" class="form-label">검수여부</label> <select
 					id="inputState" name="inspection" class="form-select">
-					<option selected>미완료</option>
-					<option>완료</option>
+					<option selected>완료</option>
+					<option>미완료</option>
 					<option>보류</option>
 				</select>
 			</div>
 
 
 			<div class="col-12">
-				<button type="submit" class="btn btn-dark btn-sm"
-					style="float: right">완제품 등록</button>
+				<button type="button" class="btn btn-dark btn-sm"
+					style="float: right" id="alertStart">완제품 등록</button>
 			</div>
 		</form>
 
 		<hr style="width: 100%">
 		<h3>완제품 등록 리스트</h3>
-				<button type="button" class="btn btn-dark btn-sm"
-					 style="float: right" id="delbtn">완제품 삭제</button>
+		<button type="button" class="btn btn-dark btn-sm" style="float: right"
+			id="delbtn">완제품 삭제</button>
 		<div id="grid"></div>
 
-		<!-- 삭제 모달-->
-		<div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">완제품 등록 정보 삭제</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="text-align: center">
-						<h5>해당 완제품 정보가 삭제됩니다.</h5>
-						<h5>출고완료된 제품인지 확인하시길 바랍니다.</h5>
-						<h5>정말로 삭제하시겠습니까?</h5>
-					</div>
-					<div class="modal-footer" style="text-align: center">
-						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-						<button type="button" class="btn btn-primary"
-							data-bs-dismiss="modal" onclick="deleteData()">확인</button>
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-		</div>
+
 		<script>
 	window.onload = function () {
 		
@@ -166,6 +139,7 @@
 			$('#instructNo').val($(grid2.getCheckedRows())[0].INSTRUCTNO);
 			$('#instructMNo').val($(grid2.getCheckedRows())[0].INSTRUCTMNO);
 			$('#instructQuantity').val($(grid2.getCheckedRows())[0].INSTRUCTQUANTITY);
+			$('#planProductNo').val($(grid2.getCheckedRows())[0].PLANPRODUCTNO);
 			var info = '[[${info.registLOT}]]';
 			$('#inputCity').val(info)
 			var label = '[[${label.registLabel}]]';
@@ -207,6 +181,10 @@
 				name: 'PLANNO'
 			},
 			{
+				header: '제품번호',
+				name: 'PLANPRODUCTNO'
+			},
+			{
 				header: '생산최종지시량',
 				name: 'INSTRUCTQUANTITY'
 			},
@@ -234,7 +212,7 @@
 			},
 			{
 				header: '진행상황',
-				name: 'INSTRUCTPROGRESSCODE'
+				name: 'INSTRUCT_PROGRESS_CODE'
 			},	
 			{
 				header: '기타사항',
@@ -265,6 +243,11 @@
 					align : 'center'
 				},
 				{
+					header: '제품번호',
+					name: 'REGIST_PRODUCT_NO',
+					align : 'center'
+				},	
+				{
 					header: '바코드 라벨',
 					name: 'REGIST_LABEL',
 					align : 'center'
@@ -287,11 +270,6 @@
 					align : 'center'
 				},
 				{
-					header: '제품번호',
-					name: 'REGIST_PRODUCT_NO',
-					align : 'center'
-				},	
-				{
 					header: '지시번호',
 					name: 'REGIST_INSTRUCT_NO',
 					align : 'center'
@@ -313,7 +291,7 @@
 	// 생산지시 리스트 가져오기
 	function instructList(){
 		$.ajax({
-			url: "/instruct",
+			url: "/complete",
 			method: "GET",
 			dataType: "JSON",
 			success: function (result) {
@@ -348,14 +326,21 @@
 			}
 		});
 	}
-	//삭제모달
-	let delbtn = document.getElementById('delbtn');
-	delbtn.addEventListener('click', function() {
-		let myModalAlternative = new bootstrap.Modal('#delModal')
-		let modalToggle = document.getElementById('delModal');
-		myModalAlternative.show(modalToggle)
-
-	})
+	//완제품 등록 확인창
+	$().ready(function () {
+        $("#alertStart").click(function () {
+            Swal.fire({
+                icon: 'success',
+                title: '제품등록이 완료되었습니다.',
+                text: 'success~',
+            }).then(function(){
+            	$('#insertFrm').submit();
+            });
+                return false;	                
+        });
+    });
+	
+	
 	//삭제
 	function deleteData() {
 		var datas2 = grid.getCheckedRows();
@@ -368,7 +353,6 @@
 			type : 'get',
 			data : {registLOT : data1},
 			success : function(data){
-				console.log(data);
 				registList();
 			},
 			error : function(reject){
@@ -377,6 +361,37 @@
 		});
 		}
 	
+	// 제품정보 삭제
+	$().ready(function () {
+        $("#delbtn").click(function () {
+            Swal.fire({
+                title: '선택한 제품을 삭제하시겠습니까?',
+                text: "다시 되돌릴 수 없습니다. 신중하세요.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: 'black',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '승인',
+                cancelButtonText: '취소'
+            }).then((result) => {
+            	var datas2 = grid.getCheckedRows();
+            	var data1 = datas2[0].REGIST_LOT;
+                if (result.isConfirmed) {
+                	$.ajax({
+            			url : 'produce/registDelete',
+            			type : 'get',
+            			data : {registLOT : data1},
+            			success : function(data){
+            				registList();
+            			},
+            			error : function(reject){
+            				console.log(reject);
+            			}
+            		});
+                }
+            })
+        });
+    });
 	
 	</script>
 	</div>

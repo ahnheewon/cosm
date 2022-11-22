@@ -7,7 +7,7 @@
 	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, r.code_no, r.inspection
 	FROM produce_instruct i JOIN produce_regist r
 	ON i.instruct_no = r.regist_instruct_no
-	ORDER BY i.instruct_no DESC
+	ORDER BY r.regist_LOT DESC
 </select>
 
 <!-- LOT번호 -->
@@ -51,4 +51,17 @@
 <delete id="deleteRegist">
 	DELETE FROM produce_regist WHERE regist_LOT = #{registLOT}
 </delete>
+
+<!-- 진행코드 조회 -->
+<select id="getPlayList" resultType="RegistVO">
+	SELECT code_name FROM code
+	WHERE code_adno = 'A01'
+	ORDER BY code_no
+</select>
+<!-- 단위코드 조회 -->
+<select id="getUnitList" resultType="RegistVO">
+	SELECT code_name FROM code
+	WHERE code_adno = 'F01'
+	ORDER BY code_no
+</select>
 </mapper>

@@ -40,7 +40,7 @@ public class BomServiceImpl implements BomService {
 	}
 
 	@Override
-	public int deleteBomInfo(int bomNo) {
+	public int deleteBomInfo(String bomNo) {
 		// TODO Auto-generated method stub
 		return mapper.deleteBom(bomNo);
 	}

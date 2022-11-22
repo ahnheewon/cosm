@@ -9,12 +9,12 @@
 
 <!-- 생산계획번호 +1 -->
 <select id="getPlanNo" resultType="PlanVO">
-	SELECT NVL(MAX(plan_no), 0) + 1 as plan_no
-	FROM produce_plan
+	SELECT 'PLAN_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(plan_no,-4)),0)+1,4,0) as plan_no
+	FROM produce_plan WHERE plan_no LIKE 'PLAN_'||TO_CHAR(SYSDATE,'rrrr')||'%'
 </select>
 
 <!-- 생산계획 단건조회 -->
-<select id="getPlanInfo" parameterType="Integer" resultType="planVO">
+<select id="getPlanInfo" resultType="planVO">
 	SELECT p.plan_no, p.plan_quantity, p.plan_start, p.plan_end, p.plan_ex, 
 		   p.plan_product_no, p.plan_bom_no, p.plan_order_no, b.bom_quantity, 
 		   g.goods_name, g.goods_standard, g.goods_contents, g.goods_check, g.goods_date
@@ -56,19 +56,19 @@
 	UPDATE produce_plan
 		<set>
 			<if test="planQuantity != null and !planQuantity.equals('')">
-				plan_quantity = #{planQuantity},
+				plan_quantity = #{planQuantity}
 			</if>
 			<if test="planStart != null and !planStart.equals('')">
-				plan_start = #{planStart},
+				,plan_start = #{planStart}
 			</if>
 			<if test="planEnd != null and !planEnd.equals('')">
-				plan_end = #{planEnd},
+				,plan_end = #{planEnd}
 			</if>
 			<if test="planEx != null and !planEx.equals('')">
-				plan_ex = #{planEx},
+				,plan_ex = #{planEx}
 			</if>
 			<if test="planBomNo != null and !planBomNo.equals('')">
-				plan_bom_no = #{planBomNo}
+				,plan_bom_no = #{planBomNo}
 			</if>
 			
 		</set>
@@ -76,7 +76,28 @@
 </update>
 
 <!-- 생산계획 삭제 -->
-<delete id="deletePlan" parameterType="Integer">
+<delete id="deletePlan">
 	DELETE FROM produce_plan WHERE plan_no = #{planNo}
 </delete>
+
+<!-- 제품번호 리스트 -->
+<select id="getGoodsNoList" resultType="PlanVO">
+	SELECT DISTINCT(goods_no)
+	FROM produce_goods
+	ORDER BY goods_no
+</select>
+
+<!-- BOM번호 리스트 -->
+<select id="getBomNoList" resultType="PlanVO">
+	SELECT DISTINCT(bom_no)
+	FROM produce_bom
+	ORDER BY bom_no
+</select>
+
+<!-- 생산계획 생산지시시 리스트에서 빠지기 -->
+<update id="updatePlay" parameterType="PlanVO">
+	UPDATE produce_plan 
+	SET plan_play_code = '완료' 
+	WHERE plan_no = #{planNo}
+</update>
 </mapper>

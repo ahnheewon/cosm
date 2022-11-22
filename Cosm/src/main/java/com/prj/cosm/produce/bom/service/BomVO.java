@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class BomVO {
-	private int bomNo;
+	private String bomNo;
 	private int bomQuantity;
-	private int bomProductNo;
+	private String bomProductNo;
 	private String bomMaterialNo;
 	
 	private String mNo;
@@ -15,7 +15,7 @@ public class BomVO {
 	private String mStock;
 	private String mUnitCode;
 	
-	private int goodsNo;
+	private String goodsNo;
 	private String goodsName;
 	private int goodsStandard;
 	private String goodsContents;

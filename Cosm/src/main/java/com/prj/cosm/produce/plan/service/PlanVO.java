@@ -8,23 +8,24 @@ import lombok.Data;
 
 @Data
 public class PlanVO {
-	private int planNo;
+	private String planNo;
 	private int planQuantity;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date planStart;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date planEnd;
 	private String planEx;
-	private int planProductNo;
-	private int planBomNo;
-	private int planOrderNo;
+	private String planProductNo;
+	private String planBomNo;
+	private String planOrderNo;
+	private String planPlayCode;
 	
 	//bom
-	private int bomNo;
+	private String bomNo;
 	private int bomQuantity;
 	
 	//제품
-	private int goodsNo;
+	private String goodsNo;
 	private String goodsName;
 	private int goodsStandard;
 	private String goodsContents;

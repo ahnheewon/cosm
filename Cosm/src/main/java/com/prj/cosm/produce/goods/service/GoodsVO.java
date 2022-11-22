@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class GoodsVO {
-	private int goodsNo;
+	private String goodsNo;
 	private String goodsName;
 	private int goodsStandard;
 	private String goodsContents;
@@ -12,6 +12,7 @@ public class GoodsVO {
 	private String goodsDate;
 	private String unitCode;
 	
+	//code
 	private String codeNo;
 	private String codeName;
 }
