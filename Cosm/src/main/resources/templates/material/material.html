@@ -120,24 +120,24 @@ img {
 								</div>
 							</div>
 
-							<div id="regdate" style="z-index: 1100">
+							<div id="regdate" style="z-index: 1005">
 								<span>등록일자</span>
 								<div
 									class="tui-datepicker-input tui-datetime-input tui-has-focus"
-									style="z-index: 1100">
+									style="z-index: 1005">
 									<input id="startpicker-input" type="text" aria-label="Date"
-										style="z-index: 1100"> <span class="tui-ico-date"></span>
+										style="z-index: 1005"> <span class="tui-ico-date"></span>
 									<div id="startpicker-container" class="datePicker"
-										style="z-index: 1100"></div>
+										style="z-index: 1005"></div>
 								</div>
 								<span>~</span>
 								<div
 									class="tui-datepicker-input tui-datetime-input tui-has-focus"
-									style="z-index: 1100">
+									style="z-index: 1001">
 									<input id="endpicker-input" type="text" aria-label="Date"
-										style="z-index: 1100"> <span class="tui-ico-date"></span>
+										style="z-index: 1001"> <span class="tui-ico-date"></span>
 									<div id="endpicker-container" class="datePicker"
-										style="z-index: 1100"></div>
+										style="z-index: 1001"></div>
 								</div>
 								<div id="btn">
 									<button type="button" class="btn btn-secondary btn-sm"
@@ -147,7 +147,7 @@ img {
 									<button type="button" class="btn btn-secondary btn-sm"
 										id="insertbtn" onclick="mInfoInsert()">정보 등록</button>
 									<button type="button" class="btn btn-secondary btn-sm"
-										id="regbtn">자재 발주</button>
+										id="regbtn" onclick="mCartInsert()">자재 발주</button>
 								</div>
 							</div>
 						</form>
@@ -210,6 +210,30 @@ img {
 				</div>
 			</div>
 		</div>
+		
+		<!-- 발주 확인 모달-->
+		<div class="modal" tabindex="-1" id="regModal" style="z-index: 1500">
+			<div class="modal-dialog" >
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">발주대기등록</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body" style="text-align: center">
+						<h5>발주 대기 페이지로 이동하여,</h5>
+						<h5>발주를 진행하시겠습니까?</h5>
+					</div>
+					<div class="modal-footer" style="text-align: center">
+						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+						<button type="button" class="btn btn-primary"
+							data-bs-dismiss="modal" onclick="">확인</button>
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<!-- 자재 정보 상세내역 모달-->
 		<div class="modal" tabindex="-1" id="mInfoModal" style="z-index: 1300">
@@ -263,10 +287,10 @@ img {
 				container : '#endpicker-container',
 				
 			},
-			selectableRanges : [ [
-					today,
-					new Date(today.getFullYear() + 1, today.getMonth(),
-							today.getDate()) ] ],
+			selectableRanges : [
+				[today, new Date(today.getFullYear() + 1, today.getMonth(), today.getDate())]
+				
+				]
 							
 		});	
 		
@@ -291,10 +315,9 @@ img {
 				container : '#endpicker-container2',
 			
 			},
-			selectableRanges : [ [
-					today,
-					new Date(today.getFullYear() + 1, today.getMonth(),
-							today.getDate()) ] ]
+			selectableRanges : [
+				[today,	new Date(today.getFullYear() + 1, today.getMonth(),today.getDate())]
+				],
 		});
 		
 	
@@ -415,6 +438,8 @@ img {
 					infoGrid.resetData((result.list1)); 
 					mioGrid.resetData((result.list2));
 					console.log(result);
+					
+					
 				},
 				error : function(reject) {
 					console.log(reject);
@@ -526,6 +551,59 @@ img {
 					}
 				})
 			}
+	
+			
+			
+			// 발주 등록 
+			// check -> insert
+			infoGrid.on('click', ev=>{
+				let obj = infoGrid.getCheckedRows(ev.rowKey)
+				for (key in obj) {
+					console.log(obj[key])
+					console.log(obj[key].mno) // 자재번호
+					}				
+				
+				})
+				
+			// 자재 발주 버튼 click
+			function mCartInsert(){
+				$.ajax({
+					url : "http://localhost:85/ajax/mCart",
+					method : "Post",
+					contentType : "application/json",
+					data : JSON.stringify(  { "odMno" : odMno} ),
+					beforeSend : function(xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success : function(result) {
+						console.log(result);						
+
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				})
+			}
+					
+					function modal(){
+					
+					let myModalAlternative = new bootstrap.Modal('#regModal')
+					let modalToggle = document.getElementById('regModal');
+					myModalAlternative.show(modalToggle)
+					//infoGrid.refreshLayout()	
+					
+			
+					}
+					
+
+			
+				
+				
+				
+		
+	
+			
+			
 		</script>
 	</div>
 	<!-- end of layout -->

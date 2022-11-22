@@ -6,13 +6,12 @@ import com.prj.cosm.material.material.service.MaterialVO;
 
 public interface MaterialMapper {
 
-	
 	// 자재정보 전체조회
 	public List<MaterialVO> mList();
 
 	// 자재정보 단건조회 (상세조회)
 	public MaterialVO selectInfo(MaterialVO mVO);
-	
+
 	// 자재 정보 상세 조회 (업데이트용)
 	public MaterialVO selectInfoMat(MaterialVO mVO);
 
@@ -42,16 +41,20 @@ public interface MaterialMapper {
 
 	// 거래처번호 조회
 	public MaterialVO getComId();
-	
+
 	// 단위 코드 조회
 	public List<MaterialVO> getUnitList();
-	
+
 	// 자재분류 코드 조회
 	public List<MaterialVO> getCategoryList();
-	
-	// 자재 번호 조회
-	//public MaterialVO getMno();
-			
 
+	// 발주 현황 리스트 전체조회
+	public List<MaterialVO> mOrderList();
+
+	// 발주 대기 리스트 전체조회
+	public List<MaterialVO> mCartList();
+
+	// 발주 대기 등록 (카트)
+	public int insertMcart(String mNo);
 
 }

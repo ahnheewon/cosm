@@ -28,7 +28,7 @@
 		users_no,users_name,users_id, code_name as
 		users_author,users_tel,users_address
 		FROM users JOIN code
-		ON
+		ON	
 		users.users_author = code.code_no
 		WHERE users_no=#{usersNo}
 	</select>
