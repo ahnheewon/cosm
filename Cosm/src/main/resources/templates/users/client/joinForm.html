@@ -1,37 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout.html}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout.html}">
+
 <head>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<meta charset="UTF-8">
-<meta name="_csrf" th:content="${_csrf.token}">
-<meta name="_csrf_header" th:content="${_csrf.headerName}">
-<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="_csrf" th:content="${_csrf.token}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+	<title>회원가입</title>
 </head>
+
 <body layout:fragment="content">
 	<div align="center">
 		<div style="width: 40%; position: relative; top: 50px;">
 			<h2>회원가입</h2>
 			<form action="clientInsert" method="post" id="empInsertForm">
 				<!-- <sec:csrfInput/> -->
-				<input type="hidden" th:name="${_csrf.parameterName}"
-					th:value="${_csrf.token}" /> <input type="hidden"
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> <input type="hidden"
 					name="usersAuthor" value="고객">
 				<table>
 					<tbody>
 						<tr>
 							<th>아이디</th>
 							<td><input type="text" id="usersId" name="usersId"></td>
-							<td><button id="checkBtn" type="button" onclick="checkId()"
-									value="no">중복확인</button></td>
+							<td><button id="checkBtn" type="button" onclick="checkId()" value="no">중복확인</button></td>
 						</tr>
 						<tr>
 							<th>비밀번호</th>
-							<td><input type="password" id="usersPassword"
-								name="usersPassword"></td>
+							<td><input type="password" id="usersPassword" name="usersPassword"></td>
 						</tr>
 						<tr>
 							<th>이름</th>
@@ -49,30 +45,57 @@
 						<tr>
 							<th>사업자번호</th>
 							<td><input type="text" id="businessNo" name="businessNo"></td>
+							<td><button id="checkBtn2" type="button" onclick="checkBusinessNo()"
+									value="no">진위확인</button></td>
 						</tr>
 						<tr>
 							<th>사업자등록증</th>
 							<td><input type="text" id="licenseImg" name="licenseImg"></td>
 						</tr>
+						<tr>
+							<th>개업일자</th>
+							<td><input type="Date" id="openDate" name="openDate"></td>
+						</tr>
 					</tbody>
 				</table>
 				<hr>
 				<button type="button" onclick="checkForm()" class="btn btn-primary">회원추가</button>
-				<button type="button" class="btn btn-secondary"
-					onclick="location.href='/top'">취소</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='/top'">취소</button>
 			</form>
 		</div>
 	</div>
 	<script type="text/javascript">
 		const header = $("meta[name='_csrf_header']").attr('content');
 		const token = $("meta[name='_csrf']").attr('content');
-		$('#back').click(function() {
+		$('#back').click(function () {
 			location.href = "/login"
 			return false;
 		})
-		$('#usersId').on('change', function() {
+		$('#usersId').on('change', function () {
 			$('#checkBtn').val("no");
 		})
+		/*-----------------
+		사업자번호 진위확인
+		*-----------------*/
+		$('#businessNo').on('change', function () {
+			$('#checkBtn2').val("no");
+		})
+		/*-----------------
+		사업자번호 체크여부
+		- 최종테스트시 not null 걸어서 처음부터 받을지, 마이페이지 수정에서 추가로 받을지 결정 
+		-----------------*/
+		function checkBNo() {
+			console.log($('#businessNo').val())
+			if ($('#businessNo').val() == "" || $('#businessNo').val() == null) {
+				alert('사업자번호를 입력해주세요!');
+				return false;
+			}
+			if ($('#checkBtn2').val() != "Yes") {
+				alert('사업자번호 진위확인을 해주세요!');
+			}
+			$('#empInsertForm').submit();
+		}
+
 		function checkForm() {
 			console.log($('#usersId').val())
 			if ($('#usersId').val() == "" || $('#usersId').val() == null) {
@@ -90,16 +113,16 @@
 			var usersId = $('#usersId').val();
 			console.log(usersId);
 			$.ajax({
-				url : "/userCheckId",
-				type : "get",
-				data : {
-					usersId : usersId
+				url: "/userCheckId",
+				type: "get",
+				data: {
+					usersId: usersId
 				},
-				async : false,
-				beforeSend : function(xhr) {
+				async: false,
+				beforeSend: function (xhr) {
 					xhr.setRequestHeader(header, token);
 				},
-				success : function(data) {
+				success: function (data) {
 					if (data == 0 && usersId != "") {
 						alert("사용 할 수 있는 아이디 입니다");
 						$('#checkBtn').val("Yes");
@@ -111,11 +134,39 @@
 					}
 					console.log(data);
 				},
-				error : function(reject) {
+				error: function (reject) {
 					console.log(reject);
 				}
 			})
 		}
+
+		/*-----------------
+		사업자번호 중복체크
+		json - 요청방식
+		*-----------------*/
+		function checkBusinessNo() {
+
+			var data = {
+				"b_no": ["xxxxxxx"] // 사업자번호 "xxxxxxx" 로 조회 시,
+			};
+
+			$.ajax({
+				url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=xxxxxx", // serviceKey 값을 xxxxxx에 입력
+				type: "POST",
+				data: JSON.stringify(data), // json 을 string으로 변환하여 전송
+				dataType: "JSON",
+				contentType: "application/json",
+				accept: "application/json",
+				success: function (result) {
+					console.log(result);
+				},
+				error: function (result) {
+					console.log(result.responseText); //responseText의 에러메세지 확인
+				}
+			});
+
+		}
 	</script>
 </body>
+
 </html>

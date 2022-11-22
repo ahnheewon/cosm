@@ -7,37 +7,45 @@
 	<!-- 회원 등록 -->
 	<insert id="clientIn" parameterType="ClientVO">
 		INSERT INTO client(
-				<if test="name!=null or !name.equals('')">
-				NAME
-				</if>
-				<if test="businessNo!=null or !businessNo.equals('')">
-				,BUSINESS_NO
-				</if>
-				<if test="licenseImg!=null or !licenseImg.equals('')">
-				,LICENSE_IMG
-				</if>
-				<if test="userNo!=null or !userNo.equals('')">
-				,USER_NO
-				</if>
-				
+		<if test="name!=null or !name.equals('')">
+			NAME
+		</if>
+		<if test="businessNo!=null or !businessNo.equals('')">
+			,BUSINESS_NO
+		</if>
+		<if test="licenseImg!=null or !licenseImg.equals('')">
+			,LICENSE_IMG
+		</if>
+		<if test="userNo!=null or !userNo.equals('')">
+			,USERS_NO
+		</if>
+		<if test="openDate!=null">
+			,OPEN_DATE
+		</if>
 		) VALUES(
-				<if test="name!=null or !name.equals('')">
-				#{name}
-				</if>
-				<if test="businessNo!=null or !businessNo.equals('')">
-				,#{businessNo}
-				</if>
-				<if test="licenseImg!=null or !licenseImg.equals('')">
-				,#{licenseImg}
-				</if>
-				<if test="userNo!=null or !userNo.equals('')">
-				,#{userNo}
-				</if>
+		<if test="name!=null or !name.equals('')">
+			#{name}
+		</if>
+		<if test="businessNo!=null or !businessNo.equals('')">
+			,#{businessNo}
+		</if>
+		<if test="licenseImg!=null or !licenseImg.equals('')">
+			,#{licenseImg}
+		</if>
+		<if test="userNo!=null or !userNo.equals('')">
+			,#{userNo}
+		</if>
+		<if test="openDate!=null">
+			,#{openDate}
+		</if>
 		)
 	</insert>
+
+
 	<!-- 조회 -->
 	<select id="myInfo" resultType="ClientVO">
-		select * from client order by client_no
+		select * from client order by
+		client_no
 	</select>
 	<!-- 수정 -->
 	<update id="updateMy">
