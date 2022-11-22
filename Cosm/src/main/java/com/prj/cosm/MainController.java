@@ -50,11 +50,5 @@ public class MainController {
 	@Autowired
 	GoodsService goodsService;
 
-	// 영업팀 -----------------------------------
-	// 영업 - 주문조회 리스트
-
-	/* main - 주문목록조회 = ajax, get */
-
-	// 영업 end =======================================================
-
+	
 }

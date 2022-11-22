@@ -14,5 +14,14 @@ public interface InsService {
 	//수정
 	public int updateInsInfo(InsVO insVO);
 	//삭제
-	public int deleteInsInfo(int instructNo);
+	public int deleteInsInfo(String instructNo);
+	
+	//자재번호 리스트
+	public List<InsVO> getMaterialNoList();
+	
+	//진행상황 리스트
+	public List<InsVO> getPlayList();
+	
+	//생산완료된 생산지시 리스트
+	public List<Map<String, Object>> completeList();
 }

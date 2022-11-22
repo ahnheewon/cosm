@@ -38,15 +38,33 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public int deletePlanInfo(int planNo) {
+	public int deletePlanInfo(String planNo) {
 		return mapper.deletePlan(planNo);
 		
 	}
 
 	@Override
-	public PlanVO getPlanInfo(int planNo) {
+	public PlanVO getPlanInfo(String planNo) {
 
 		return mapper.getPlanInfo(planNo);
+	}
+
+	@Override
+	public List<PlanVO> getGoodsNoList() {
+		// 제품번호 리스트
+		return mapper.getGoodsNoList();
+	}
+
+	@Override
+	public List<PlanVO> getBomNoList() {
+		// BOM 리스트
+		return mapper.getBomNoList();
+	}
+
+	@Override
+	public int updatePlay(PlanVO planVO) {
+		//생산지시 시 페이지 빠지기
+		return mapper.updatePlay(planVO);
 	}
 
 	

@@ -4,23 +4,34 @@
 	namespace="com.prj.cosm.material.morder.mapper.MorderMapper">
 	<!-- 입고 리스트 전체 조회 -->
 	<select id="mioInputList" resultType="MorderVO">
-		SELECT mio.mio_input_id, 
-      		   m.m_no as mio_no, 
-       		   m.m_name as mio_name, 
-       		   mio.mio_input_Quantity, 
-       		   mio.mio_input_date 
+		SELECT mio.mio_input_id AS input_id, 
+      		   m.m_no AS mio_no, 
+       		   m.m_name AS mio_name, 
+       		   mio.mio_input_Quantity AS mio_in_qntt, 
+       		   mio.mio_input_date AS mio_in_date,
+       		   (SELECT code_name 
+       		   FROM code
+       		   WHERE code_no = mio_in_mrg ) AS mio_in_mrg       		
 		FROM material_io mio, material m
-	    WHERE m.m_no = mio.mio_no
+		WHERE m.m_no = mio.mio_no
+		ORDER BY mio_in_date
 	</select>
 
 	<!-- 출고 리스트 전체 조회 -->
 	<select id="mioOutputList" resultType="MorderVO">
-		SELECT mio.mio_output_id,
-      		    m.m_no as mio_no, 
-     		   m.m_name as mio_name, 
-       		   mio.mio_output_Quantity, 
-      		   mio.mio_output_date 
-		FROM material_io mio, material m
-		WHERE m.m_no = mio.mio_no
+		SELECT mio.mio_output_id AS output_id, 
+      		   m.m_no as mio_no, 
+       		   m.m_name as mio_name, 
+       		   mio.mio_output_Quantity AS mio_out_qntt, 
+       		   mio.mio_output_date AS mio_out_date,
+       		   (SELECT code_name 
+       		   FROM code
+       		   WHERE code_no = mio_out_mrg)AS mio_out_mrg
+		FROM material_io mio JOIN material m
+	     	ON m.m_no = mio.mio_no
+        WHERE  mio.mio_output_id IS NOT NULL
+        		AND mio.mio_output_Quantity != 0
+       			AND  mio.mio_output_date IS NOT NULL
+       	ORDER BY mio_out_date		
 	</select>
 </mapper>

@@ -39,9 +39,15 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public int deleteGoodInfo(int goodsNo) {
+	public int deleteGoodInfo(String goodsNo) {
 		// TODO Auto-generated method stub
 		return mapper.deleteGood(goodsNo);
+	}
+
+	@Override
+	public List<GoodsVO> getUnitList() {
+		// 단위코드 조회
+		return mapper.getUnitList();
 	}
 
 }

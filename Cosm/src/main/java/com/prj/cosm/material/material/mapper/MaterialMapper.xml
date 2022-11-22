@@ -46,9 +46,7 @@
            m.m_price, 
   		   m.m_company_id, 
            mc.mc_company_name AS m_company_nm, 
-           (select code_name 
-           from code
-           where code_no = m_unit_code)As m_unit_code,
+           find_code_name(#{mUnitCode})As m_unit_code,
            m.m_info,
            m.m_date,
            m.m_reg_date  		    
@@ -83,13 +81,12 @@
   						#{mCategory},
   						#{mPrice},
   						#{mCompanyId},
-  						(SELECT code_no FROM code WHERE code_name
-						= #{mUnitCode}),  						
+  						find_code_name(#{mUnitCode}),  						
   						#{mInfo}
   						) 
   </insert>
-  
-  
+
+
   
   <!-- 자재 정보 수정  -->
   <update id="updateMatrailInfo" parameterType="MaterialVO"> 
@@ -98,13 +95,12 @@
     	m_category = #{mCategory},
    		m_price = #{mPrice},
    		m_company_id = #{mCompanyId},
-    	m_unit_code = (SELECT code_no 
-    					FROM code 
-    					WHERE code_name = #{mUnitCode}),
+    	m_unit_code = find_code_name(#{mUnitCode}),
     	m_date = TO_DATE(sysdate, 'yyyy-MM-dd'),
     	m_info = #{mInfo}
  	WHERE m_no = #{mNo} 
   </update>
+  
   <!-- 자재 정보 삭제 - 재고 수량도 삭제됨 -->
   <delete id="deleteMatrailInfo" parameterType="MaterialVO">
   	DELETE 
@@ -125,9 +121,6 @@
 	
 	<!-- 거래처 명 찾기 -->
 	<select id="findComNm" resultType="MaterialVO">
-	<!-- SELECT m_company_id, mc_company_name as m_company_nm, m_no, m_name
-	FROM material m JOIN material_company mc 
-    		ON m.m_company_id = mc.mc_company_id -->
     	SELECT mc_company_id as m_company_id , 
     		   mc_company_name as m_company_nm,    		    
     		   mc_manager_name as m_mng_nm
@@ -162,11 +155,67 @@
 		ORDER BY code_no
 	</select>
   
-  <!-- 자재 분류 조회 -->
+  	<!-- 자재 분류 조회 -->
 	<select id="getCategoryList" resultType="MaterialVO">
 		SELECT DISTINCT(m_category) 
 		FROM material
 	</select>
+	
+	<!-- 발주 실행 -->
+	<insert id="insertMcart" parameterType="String">
+	<selectKey keyProperty="mOrderId" resultType="String"
+			order="BEFORE">
+			
+		SELECT TO_CHAR(SYSDATE, 'yyMMdd')|| SUBSTR(#{mNo},1,2)||  
+					(SELECT LPAD((NVL(MAX(SUBSTR(mo_order_id, -2,2)),0)+1),2,0)
+        			 FROM material_order
+        			WHERE mo_order_id like to_char(sysdate, 'yyMMdd')||'%') as m_order_id
+		FROM dual	
+	</selectKey>	
+		INSERT INTO material_order (mo_order_id, 
+                            		mo_material_id, 
+                             		mo_company_id,                       
+                             		mo_name, 
+                             		mo_unit_price, 
+                             		mo_num,                          
+                             		mo_total_price)                       
+ 		SELECT  #{mOrderId}, m_no, m_company_id, m_name, m_price, #{moNum}, m_price * #{moNum}
+ 		FROM material
+ 		WHERE m_no = #{mNO}	
+	</insert>	
+	
+	<!--발주 대기 리스트 조회 -->
+	<select id="mCartList" resultType="MaterialVO">
+	SELECT mo.mo_order_id as m_order_id, 
+      	   mo.mo_material_id as m_no, 
+      	   mo.mo_company_id as m_company_id,
+       	   mo.mo_name as m_name, 
+           mc.mc_company_name as m_company_nm, 
+           mo.mo_unit_price,
+           find_code_name(m.m_unit_code) AS m_unit_code,
+           mo.mo_num,
+       	  (mo.mo_unit_price * mo.mo_num) as mo_tt_price    
+	FROM material_order mo JOIN material_company mc
+    		ON mo.mo_company_id = mc.mc_company_id 
+	JOIN material m 
+    		ON m.m_no = mo.mo_material_id	
+	</select>	
+	
+	<!--발주 현황 리스트  -->
+	<select id="mOrderList" resultType="MaterialVO">
+	SELECT mo_date, 
+		mo.mo_order_id as m_order_id, 
+        mo.mo_name as m_name, 
+        mo.mo_num,
+        find_code_name(m.m_unit_code) AS m_unit_code,
+        (mo.mo_unit_price * mo.mo_num) as mo_tt_price,          
+        find_code_name(mo.mo_progress_code)AS mo_prog_code
+	FROM material m JOIN material_order mo
+        ON mo.mo_material_id = m.m_no
+	
+	
+	</select>
+
 
   
   </mapper>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.prj.cosm.sales.client.service.ClientService;
 import com.prj.cosm.sales.orders.service.OrdersService;
 import com.prj.cosm.sales.orders.service.OrdersVO;
 
@@ -22,7 +23,19 @@ public class OrderClientController {
 	@Autowired
 	OrdersService oService;
 	
-	// 고객 주문목록 페이지
+	@Autowired
+	ClientService cService;
+	
+	// 주문하기 화면
+	@RequestMapping("/order")
+	public String clientOrder(Model model) {
+		return "client/order";
+	}
+	// 주문조회 화면
+	
+	// 마이페이지 화면
+	
+	// 제품리스트 화면
 	@RequestMapping("/coder")
 	public List<OrdersVO> client(Model model) {
 		return oService.salesOrderList();
@@ -49,11 +62,7 @@ public class OrderClientController {
 		return oService.salesOrderList();
 	}
 
-	// 고객 주문관리 메인
-	@RequestMapping("/insert")
-	public String clientOrder(Model model) {
-		return "client/insert";
-	}
+	
 
 	// 마이페이지
 	@RequestMapping("/my")

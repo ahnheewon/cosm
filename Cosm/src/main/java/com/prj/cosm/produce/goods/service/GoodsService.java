@@ -17,5 +17,8 @@ public interface GoodsService {
 	public int updateGoodInfo(GoodsVO goodsVO);
 	
 	//삭제
-	public int deleteGoodInfo(int goodsNo);
+	public int deleteGoodInfo(String goodsNo);
+	
+	//단위 코드 조회
+	public List<GoodsVO> getUnitList();
 }

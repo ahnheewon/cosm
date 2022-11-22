@@ -6,14 +6,19 @@ import java.util.Map;
 import com.prj.cosm.produce.regist.service.RegistVO;
 
 public interface RegistMapper {
-	
+
 	public List<Map<String, Object>> getRegistList();
-	
+
 	public RegistVO getRegistLOT();
-	
+
 	public RegistVO getRegistLabel();
-	
+
 	public int insertRegist(RegistVO registVO);
-	
+
 	public int deleteRegist(String registLOT);
+
+	// 진행, 단위코드 리스트
+	public List<RegistVO> getPlayList();
+
+	public List<RegistVO> getUnitList();
 }

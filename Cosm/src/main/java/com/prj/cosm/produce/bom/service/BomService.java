@@ -17,5 +17,5 @@ public interface BomService {
 	public int updateBomInfo(BomVO bomVO);
 	
 	//삭제
-	public int deleteBomInfo(int bomNo);
+	public int deleteBomInfo(String bomNo);
 }

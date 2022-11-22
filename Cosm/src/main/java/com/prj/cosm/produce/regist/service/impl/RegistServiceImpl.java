@@ -46,4 +46,16 @@ public class RegistServiceImpl implements RegistService {
 		return mapper.getRegistLabel();
 	}
 
+	@Override
+	public List<RegistVO> getPlayList() {
+		// TODO Auto-generated method stub
+		return mapper.getPlayList();
+	}
+
+	@Override
+	public List<RegistVO> getUnitList() {
+		// TODO Auto-generated method stub
+		return mapper.getUnitList();
+	}
+
 }

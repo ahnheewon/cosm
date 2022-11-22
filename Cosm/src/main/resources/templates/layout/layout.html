@@ -21,8 +21,7 @@
 	<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
 	<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-
-
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
 <body class="sb-nav-fixed">
@@ -240,6 +239,7 @@
 											href="/goods">제품 관리</a> <a class="nav-link" href="/proError">불량정보 관리</a>
 									</nav>
 								</div>
+								
 								<!-- Gin start -->
 								<div class="sb-sidenav-menu-heading">영업관리</div>
 								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -257,15 +257,13 @@
 									data-bs-parent="#sidenavAccordion">
 									<nav class="sb-sidenav-menu-nested nav">
 										<a class="nav-link" href="/orders">주문관리</a> <a class="nav-link"
-											href="/equipment/main">생산관리</a> <a class="nav-link"
-											href="/equipment/main">완제품 검수</a> <a class="nav-link"
-											href="/equipment/main">완제품 출납</a> <a class="nav-link"
-											href="/equipment/main">완제품 재고</a>
+											href="/orders">완제품관리</a> <!-- 나중에 탭위치로 보내주고싶음 -->
+											<a class="nav-link" href="/orders">임시 탭</a> 
 									</nav>
 								</div>
 
 								<!-- 고객 -->
-								<div class="sb-sidenav-menu-heading">고객관리</div>
+								<div class="sb-sidenav-menu-heading">로그인 한 고객님이 보시는 곳</div>
 								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
 									data-bs-target="#collapseLayouts" aria-expanded="false"
 									aria-controls="collapseLayouts">
@@ -280,11 +278,15 @@
 								<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
 									data-bs-parent="#sidenavAccordion">
 									<nav class="sb-sidenav-menu-nested nav">
-										<a class="nav-link" href="/insert">주문조회</a> <a class="nav-link"
-											href="/orders">제품리스트</a> <a class="nav-link" href="/orders">마이페이지</a>
+										<a class="nav-link" href="/order">주문하기</a>
+										<a class="nav-link" href="/myOrderList">주문조회</a>
+										<a class="nav-link" href="/myPage">마이페이지</a>
+										<!-- 레이아웃 정리 시 따로 빼내야함 : 로그인,아웃 상관없이 보여줄거라서  -->
+										<a class="nav-link" href="/proList">제품리스트</a><!-- 등록된 제품들 땡겨와서 뿌려줄예정 -->
 									</nav>
 								</div>
 								<!-- Gin end -->
+								
 								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
 									data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
 									<div class="sb-nav-link-icon">

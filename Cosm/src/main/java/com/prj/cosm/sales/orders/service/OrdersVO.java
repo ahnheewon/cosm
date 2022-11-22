@@ -12,25 +12,25 @@ import lombok.Data;
 @Data
 public class OrdersVO {
 //고객 주문정보
-	/*ORDER_NO,
-		CLIENT_NO,
-		PRODUCT_NO,
-		ORDER_DATE,
-		DELIVERY_DATE,
-		PRODUCT_NAME,
-		TOTAL_NUM,
-		TOTAL_PRICE,
-		SURTAX,
-		NOTE,
-		ORDER_CODE,
-		ORDER_PROGRESS_CODE,
-		DELIVERY_INFO,
+	/*	ORDER_NO
+		CLIENT_NO
+		PRODUCT_NO
+		ORDER_DATE
+		DELIVERY_DATE
+		PRODUCT_NAME
+		TOTAL_NUM
+		PRO_PRICE
+		SURTAX
+		NOTE
+		ORDER_CODE
+		ORDER_PROGRESS_CODE
+		DELIVERY_INFO
 		IO_CODE
-		*/
+	*/
 
 		private String orderNo; 		//주문번호
-		private int clientNo; 			//거래처번호
-		private int productNo; 			//제품번호
+		private String clientNo; 			//거래처번호
+		private String productNo; 			//제품번호
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		private Date orderDate; 		//주문일자  

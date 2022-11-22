@@ -40,9 +40,27 @@ public class InsServiceImpl implements InsService {
 	}
 
 	@Override
-	public int deleteInsInfo(int instructNo) {
+	public int deleteInsInfo(String instructNo) {
 
 		return mapper.deleteIns(instructNo);
+	}
+
+	@Override
+	public List<InsVO> getMaterialNoList() {
+		// 자재번호 리스트
+		return mapper.getMaterialNoList();
+	}
+
+	@Override
+	public List<InsVO> getPlayList() {
+		// 진행상황 리스트
+		return mapper.getPlayList();
+	}
+
+	@Override
+	public List<Map<String, Object>> completeList() {
+		// 생산완료된 생산지시리스트
+		return mapper.completeList();
 	}
 
 

@@ -19,4 +19,9 @@ public interface RegistService {
 	
 	//삭제
 	public int deleteRegistInfo(String registLOT);
+	
+	//진행, 단위코드 리스트
+	public List<RegistVO> getPlayList();
+	
+	public List<RegistVO> getUnitList();
 }
