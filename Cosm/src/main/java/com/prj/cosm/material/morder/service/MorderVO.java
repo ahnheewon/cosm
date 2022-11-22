@@ -27,7 +27,10 @@ public class MorderVO {
 	
 	private String mioComId;// 거래처번호
 	private String mioComNm;// 거래처이름
-	private String mioComMrg;// 관리 담당자이름
+	
+	private String mioInMrg;// 입고 담당자이름
+	private String mioOutMrg;// 입고 담당자이름
+	
 	
 	private int mioInQntt; // 입고수량
 	private int mioOutQntt; // 출고수량
@@ -38,7 +41,7 @@ public class MorderVO {
 	// 2. 발주관리
 	private String mioName; // 자재명
 	private String mioNo; // 자재번호
-	private String mOrderid; // 발주번호
+	private String mOrderId; // 발주번호
 	
 	private Integer moTtPrice;// 총금액
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

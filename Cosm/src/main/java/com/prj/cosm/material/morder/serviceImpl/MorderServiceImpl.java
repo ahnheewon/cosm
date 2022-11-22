@@ -14,12 +14,7 @@ public class MorderServiceImpl implements MorderService {
 
 	@Autowired
 	MorderMapper moMapper;
-	
-	@Override
-	public List<MorderVO> mOrderList() {
-		// 발주 대기 리스트 전체조회
-		return moMapper.mOrderList();
-	}
+
 
 	@Override
 	public List<MorderVO> mioInputList() {

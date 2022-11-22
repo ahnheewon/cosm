@@ -61,12 +61,6 @@ public class MaterialServiceImpl implements MaterialService {
 		return mMapper.mioList();
 	}
 
-	/*@Override
-	public MaterialVO getMno() {
-		// 자재번호 조회하기
-		return mMapper.getMno();
-	}
-*/
 	@Override
 	public List<MaterialVO> findComNm() {
 		// 거래처 명 찾기
@@ -100,14 +94,27 @@ public class MaterialServiceImpl implements MaterialService {
 		return mMapper.getCategoryList();
 	}
 
-//	@Override
-//	public MaterialVO getMno() {
-//		// 자재 번호 조회
-//		return mMapper.getMno();
-//	}
+	@Override
+	public List<MaterialVO> mOrderList() {
+		// 발주 현황 리스트
+		return mMapper.mOrderList();
+	}
 
+	@Override
+	public List<MaterialVO> mCartList() {
+		// 발주 대기 리스트
+		return mMapper.mCartList();
+	}
 
-
+	@Override
+	public int insertMCart(List<String> mNo) {
+		// 발주 대기 등록(카트)
+		int result = 0;
+		for (String no : mNo) {
+			result += mMapper.insertMcart(no);
+		}
+		return result;		
+	}
 
 
 	
