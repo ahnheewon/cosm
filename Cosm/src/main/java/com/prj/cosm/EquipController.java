@@ -125,7 +125,7 @@ public class EquipController {
 		public EquipVO getProcessInfo(Model model, int processNo) {
 		return eService.getProcessInfo(processNo);
 					
-				}
+		}
 				
 		// 공정 수정
 		@PostMapping("/equipment/updateProcess")
@@ -162,6 +162,8 @@ public class EquipController {
 			model.addAttribute("equipFirst",eService.getEquipList().get(0));
 			model.addAttribute("tno",eService.getTestNo().getTestNo());
 			model.addAttribute("fno",eService.getFailNo().getFailNo());
+			model.addAttribute("wno",wService.getWorkNo().getWorkNo());
+			//model.addAttribute("wno",eService.getWorkNo().getWorkNo());
 			return "/equipment/maintenance";
 		}
 		
@@ -264,15 +266,15 @@ public class EquipController {
 		@ResponseBody
 		public WorkVO getWorkInfo(Model model, int workNo) {
 			return wService.getWorkInfo(workNo);
-
 		}
 		
 		// 공사 등록
 		@PostMapping("/equipment/insertWork")
-		public String insertWork(EquipVO vo, RedirectAttributes ratt) {
-			eService.insertFail(vo);
-		return "redirect:/equipment/maintenance"; 
-				}
+		public String insertWork(WorkVO vo, RedirectAttributes ratt) {
+			wService.insertWork(vo);
+			wService.insertWorkSign(vo);
+			ratt.addFlashAttribute("msg","정상적으로 등록되었습니다."); // 휘발성
+		return "redirect:/equipment/maintenance";}
 		
 		//공사 결재안건 수정
 	

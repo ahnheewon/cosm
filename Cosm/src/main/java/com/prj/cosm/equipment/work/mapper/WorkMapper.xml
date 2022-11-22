@@ -9,52 +9,78 @@
 	
 	<!-- 공사 전체 리스트 -->
 	<select id="getWorkList" resultType="workVO">
-		SELECT *
-		FROM work
-		ORDER BY WORK_NO
+		SELECT w.work_no, w.work_equip_no, e.equip_name AS work_equip_name, 
+			   w.work_name, w.work_content, w.work_company, w.work_pay,
+			    w.work_date, w.work_end_date, w.work_ps
+			  ,(select code_name from code where code_no = w.work_code) AS work_code
+			  ,s.sign_emp_no, s.sign_seq, s.sign_date
+			  ,(select code_name from code where code_no = s.sign_code) AS sign_code 
+		FROM equip e, work w, work_sign s
+		where e.equip_no = w.work_equip_no
+		and w.work_no = s.sign_work_no
+		ORDER BY work_no DESC
 	</select>
 	
-	<!-- 공사 단건조회 -->
+
+	<!-- 공사 등록 -->
+	<insert id="insertWork" parameterType="workVO">
+		  INSERT INTO WORK ( work_no
+							,work_equip_no
+							,work_name
+							,work_content
+							,work_company
+	                        ,work_pay
+							,work_date
+							,work_end_date
+							,work_ps
+							,work_code
+							)
+			         values ( #{workNo}
+					        ,(SELECT equip_no
+						      FROM equip
+						      WHERE equip_name = #{workEquipName})
+						    ,#{workName}
+					        ,#{workContent}
+					        ,#{workCompany}
+					        ,#{workPay}
+					        ,#{workDate}
+					        ,#{workEndDate}
+					        ,#{workPs}
+					        ,'A0102')
+	</insert>
+	<!-- 공사 결재 정보 등록 -->
+	<insert id="insertWorkSign" parameterType="workVO">
+  
+	    INSERT INTO WORK_SIGN ( 
+								 SIGN_WORK_NO
+		                        ,SIGN_EMP_NO
+								,SIGN_SEQ 
+								,SIGN_DATE
+								,SIGN_CODE
+								)
+						 values (#{workNo}
+							   ,(select users_no from users where users_id = #{usersId})
+							   ,2 <!-- 결재 되는 순서대로 (사원)1,2,3,4 -->
+							   ,SYSDATE
+							   ,'C0101'
+							   )
+	</insert>
+
+	<!-- 입력될 공사 번호 조회 -->
+	<select id="getWorkNo" resultType="workVO">
+		SELECT NVL(MAX(work_no),0) + 1 AS work_no
+		FROM WORK
+	</select>
+
+	<!-- 공사 단건조회 미완료 -->
 	<select id="getWorkInfo" parameterType="Integer" resultType="workVO">
-		SELECT e.equip_no, e.equip_name, e.equip_type, e.equip_std_vibe, e.equip_std_temp, e.equip_date,e.equip_purpose, t.time_start_date, t.time_end_date
-		FROM equip e, equip_time t
-		Where e.equip_no = t.time_equip_no
+		SELECT e.equip_no, e.equip_name
+		FROM equip e, work w
+		Where e.equip_no = w.work_equip_no
 		and e.equip_no= #{value}
 	</select>
 	
-	<!-- 공사 등록 -->
-	<insert id="insertWork" parameterType="workVO">
-		INSERT INTO EQUIP	( equip_no
-						,equip_name
-						,equip_type
-						,equip_std_vibe
-                        ,equip_std_temp
-						,equip_process
-						,equip_purpose
-						,equip_date
-						)
-        values (#{equipNo},#{equipName},#{equipType},#{equipStdVibe},#{equipStdTemp},#{equipProcess},#{equipPurpose},SYSDATE)
-
-	</insert>
-	
-	<!-- 공사 시간 등록 -->
-	<insert id="insertWorkTime" parameterType="workVO">
-  
-    <selectKey keyProperty="timeEquipNo" resultType="Integer" order="BEFORE">
-      select MAX(equip_no) from equip
-    </selectKey>
-    INSERT INTO EQUIP_TIME ( 
-						time_equip_no
-                       <if test="timeStartDate != null and timeStartDate != ''">,time_start_date</if>
-						<if test="timeEndDate != null and timeEndDate != ''">,time_end_date</if>
-						)
-		        values (#{timeEquipNo}
-		        <if test="timeStartDate != null and timeStartDate != ''">,#{timeStartDate}</if>
-		        <if test="timeEndDate != null and timeEndDate != ''">,#{timeEndDate}</if>
-		        )
-	</insert>
-		
-	<!-- 공사 수정 -->
+	<!-- 공사 수정 미완료 -->
 	<update id="updateWork" parameterType="workVO">
 	UPDATE work
 	<set>
@@ -80,35 +106,31 @@
 	
 	<!-- 공사 삭제 -->
 	<delete id="deleteWork" parameterType="Integer">
-	DELETE EQUIP
-	WHERE EQUIP_NO = #{equipNo}
-	</delete>
-	
-	<!-- 공사 삭제 시 공사별 가동 시간 데이터 삭제 -->
-	<delete id="deleteWorkTime" parameterType="Integer">
-	DELETE EQUIP_TIME
-	WHERE TIME_EQUIP_NO = #{equipNo}
+	DELETE work
+	WHERE work_no = #{workNo}
 	</delete>
 	
 	<!-- 공사 삭제 시 번호 정렬 update문 -->
-	<update id="updatedeleteWorkNo" parameterType="Integer">
-	UPDATE EQUIP
-	SET EQUIP_NO = EQUIP_NO-1
-	WHERE EQUIP_NO <![CDATA[>]]> #{equipNo}
+	<update id="updateDeleteWorkNo" parameterType="Integer">
+	UPDATE work
+	SET work_no = work_no-1
+	WHERE work_no <![CDATA[>]]> #{workNo}
 	</update>
 	
-	<!-- 공사 삭제 시 번호 정렬 update문 -->
-	<update id="updateDeleteTimeEquipNo" parameterType="Integer">
-	UPDATE EQUIP_TIME
-	SET TIME_EQUIP_NO = TIME_EQUIP_NO-1
-	WHERE TIME_EQUIP_NO <![CDATA[>]]> #{equipNo}
+	<!-- 공사 삭제 시 결재 정보 데이터 삭제 -->
+	<delete id="deleteSign" parameterType="Integer">
+	DELETE work_sign
+	WHERE sign_work_no = #{workNo}
+	</delete>
+	
+	<!-- 공사 삭제 시 결재 정보 번호 정렬 update문 -->
+	<update id="updateDeleteSignNo" parameterType="Integer">
+	UPDATE work_sign
+	SET sign_work_no = sign_work_no-1
+	WHERE sign_work_no <![CDATA[>]]> #{workNo}
 	</update>
 	
-	<!-- 입력될 공사 번호 조회 -->
-	<select id="getWorkNo" resultType="workVO">
-		SELECT NVL(MAX(equip_no),0) + 1 AS equip_no
-		FROM EQUIP
-	</select>
+
 	
 	
 <!-- ############################################################################################  -->

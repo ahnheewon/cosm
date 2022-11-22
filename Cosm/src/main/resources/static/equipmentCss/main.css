@@ -19,3 +19,7 @@
   .container {
     margin: 0 auto;
   }
+  
+.emp>td, .emp {
+ 	border:1px solid black;
+ }

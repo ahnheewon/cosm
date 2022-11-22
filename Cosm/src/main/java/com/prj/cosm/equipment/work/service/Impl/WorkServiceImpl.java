@@ -20,53 +20,58 @@ public class WorkServiceImpl implements WorkService {
 	public List<WorkVO> getWorkList() {
 		return mapper.getWorkList();
 	}
-
+	
 	@Override
-	public WorkVO getWorkInfo(int equipNo) {
-		return null;
-	}
-
-	@Override
-	public int insertWork(WorkVO vo) {
-		return 0;
-	}
-
-	@Override
-	public int insertWorkTime(WorkVO vo) {
-		return 0;
-	}
-
-	@Override
-	public int updateWork(WorkVO vo) {
-		return 0;
-	}
-
-	@Override
-	public int deleteWork(int equipNo) {
-		return 0;
-	}
-
-	@Override
-	public int deleteWorkTime(int equipNo) {
-		return 0;
-	}
-
-	@Override
-	public int updateDeleteWorkNo(int equipNo) {
-		return 0;
-	}
-
-	@Override
-	public int updateDeleteTimeWorkNo(int equipNo) {
-		return 0;
-	}
-
-	@Override
-	public WorkVO getWorkNo() {
-		return null;
+	public WorkVO getWorkInfo(int workNo) {
+		return mapper.getWorkInfo(workNo);
 	}
 	
-																	
+	@Override
+	public int insertWork(WorkVO vo) {
+		return mapper.insertWork(vo);
+	}
+	
+	@Override
+	public int insertWorkSign(WorkVO vo) {
+		return mapper.insertWorkSign(vo);
+	}
+	
+	@Override
+	public int updateWork(WorkVO vo) {
+		return mapper.updateWork(vo);
+	}
+	
+	@Override
+	public int updateWorkSign(WorkVO vo) {
+		return mapper.updateWorkSign(vo);
+	}
+	
+	@Override
+	public int deleteWork(int workNo) {
+		return mapper.deleteWork(workNo);				
+	}
+	
+	@Override
+	public int deleteSign(int workNo) {
+		return mapper.deleteSign(workNo);
+	}
+	
+	@Override
+	public int updateDeleteWorkNo(int workNo) {
+		return mapper.updateDeleteWorkNo(workNo);
+	}
+	
+	@Override
+	public int updateDeleteSignNo(int workNo) {
+		return mapper.updateDeleteSignNo(workNo);
+	}
+	
+	@Override
+	public WorkVO getWorkNo() {
+		return mapper.getWorkNo();
+	}
+
+													
 
 //============================================================================================================================
 	
