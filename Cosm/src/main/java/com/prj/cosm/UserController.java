@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,7 @@ public class UserController {
 		return "/login";
 	}
 
+	//고객가입 폼
 	@GetMapping("/joinForm")
 	public String joinForm() {
 		return "/users/client/joinForm";
@@ -78,6 +80,8 @@ public class UserController {
 		return "redirect:userList";
 	}
 
+	//고객가입 데이터
+	@Transactional
 	@RequestMapping("/clientInsert")
 	public String clientInsert(EmpVO empVO, ClientVO cVO) {
 		System.out.println(empVO);
