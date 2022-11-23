@@ -9,15 +9,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+	
 <!-- style and js -->
 <link rel="stylesheet" href="/equipmentCss/main.css"/>
-
-<style type="text/css">
-.textWidth {
-	width:250%;
-}
-
-</style>
 
 </head>
 <body>
@@ -78,19 +74,19 @@
 				<table class="table">
                     <tr>
 						<td>공정번호</td>
-                        <td><input class="form-control" id="processNo" name="processNo" th:value="${pno }" type="text" readonly></td>
+                        <td><input class="form-control" id="processNo" name="processNo" th:value="${pno }" type="text"  readonly></td>
                     </tr>
                     <tr>
                         <td>공정명</td>
-                        <td><input class="form-control" id="processName" name=processName type="text" required></td>
+                        <td><input class="form-control" id="processName" name=processName type="text" autocomplete="off" required></td>
                    </tr>
                     <tr>
                         <td>공정내용</td>
-                        <td><textarea class="form-control" id="processContent" name="processContent" rows="5" required></textarea></td>
+                        <td><textarea class="form-control" id="processContent" name="processContent" rows="5"autocomplete="off"  required></textarea></td>
                     </tr> 
  					<tr>
                         <td>공정순서</td>
-                        <td><input class="form-control" id="processSeq" name="processSeq" type="number" required></td>
+                        <td><input class="form-control" id="processSeq" name="processSeq" type="number" autocomplete="off" required></td>
                     </tr>
                	 	</table>
 			</div>
@@ -106,7 +102,7 @@
 		</div>
 	</div>
 	
-	<!-- The Modal 2 설비모달 -->
+	<!-- The Modal 2 설비 등록 모달 -->
 	<div class="modal fade" id="myModal2">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
@@ -126,27 +122,37 @@
 	                    <tr>
 							<td>설비번호</td>
 	                        <td><input class="form-control" id="equipNo" name="equipNo" th:value="${eno }" type="text" readonly></td>
-	                        <td>설비명</td>
-	                        <td><input class="form-control" id="equipName" name="equipName" type="text" required></td>
+	                        
+	                    </tr>
+	                    <tr>
+	                    	<td>설비명</td>
+	                        <td><input class="form-control" id="equipName" name="equipName" type="text" autocomplete="off" required></td>
 	                    </tr>
 	                    <tr>
 	                        <td>설비타입</td>
-	                        <td><input class="form-control" id="equipType" name="equipType" type="text" required></td>
-							<td>적용공정</td>
+	                        <td><input class="form-control" id="equipType" name="equipType" type="text" autocomplete="off" required></td>
+							       
+	                    </tr>
+	                    <tr>
+	                    	<td>적용공정</td>
 	                        <td><input class="form-control" id="equipProcess" name="equipProcess" type="hidden" th:value="1"> 
 								        <select class="form-control" id="equipProcessSelect" onchange="changeSelect(this.value);" >            
 								           <option th:each="epl : ${epl}" >[[${epl.processNo}]]</option>
-						  				</select></td>          
+						  				</select></td>   
 	                    </tr>
 	                     <tr>
 	                        <td>정상진동</td>
-	                        <td><input class="form-control" id="equipStdVibe" name="equipStdVibe" type="number" required>Hz</td>
-	                        <td>정상온도</td>
-	                        <td><input class="form-control" id="equipStdTemp" name="equipStdTemp" type="number" required>K</td>
+	                        <td><input class="form-control" id="equipStdVibe" name="equipStdVibe" type="number" autocomplete="off" required></td>
+	                    </tr>
+	                    
+	                    <tr>
+	                    	<td>정상온도</td>
+	                        <td><input class="form-control" id="equipStdTemp" name="equipStdTemp" type="number" autocomplete="off" required></td>
+	                    
 	                    </tr>
 	                    <tr>
 	                        <td>설비설명</td>
-	                        <td><textarea class="form-control textWidth" id="equipPurpose" name="equipPurpose" rows="5"></textarea></td>
+	                        <td><textarea class="form-control" id="equipPurpose" name="equipPurpose" rows="5"></textarea></td>
 	                    </tr>                  
 	                </table>
 				</div>
@@ -186,29 +192,50 @@
 		                    <tr>
 								<td>설비명</td>
 		                        <td><input class="form-control wantUpdate" 
-		                        	id="selectEquipName" name="equipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->
-		                        <td>설비타입</td>
-		                        <td><input class="form-control wantUpdate" 
-		                        	id="selectEquipType" name="equipType" type="text" readonly></td>		              
+		                        	id="selectEquipName" name="equipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->		              
 		                    </tr>
-		                     <tr>
+		                    <tr>
+		                    	<td>설비타입</td>
+		                        <td><input class="form-control wantUpdate" 
+		                        	id="selectEquipType" name="equipType" type="text" readonly></td>
+		                    </tr>
+		                    <tr>
 		                        <td>정상진동</td>
 		                        <td><input class="form-control wantUpdate" 
-		                        	id="selectEquipStdVibe" name="equipStdVibe" type="text" readonly></td>
-		                        <td>정상온도</td>
+		                        	id="selectEquipStdVibe" name="equipStdVibe" type="text" readonly></td>		                        
+		                    </tr>
+		                    <tr>
+		                    	<td>정상온도</td>
 		                        <td><input class="form-control wantUpdate" 
 		                        	id="selectEquipStdTemp" name="equipStdTemp" type="text" readonly></td>
 		                    </tr>
-		                     <tr>
-		                        <td>설치시기</td>
-		                        <td><input class="form-control" 
-		                        	id="selectEquipDate" name="equipDate" type="text" readonly></td>
+		                    <tr>
+		                        <td>설치시기</td>                      
+		                        <td>
+								 	  <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+					                  <input id="wv-input" name="equipDate" autocomplete="off" type="text" aria-label="Date" style="background-color :#E9ECEF;" readonly>
+					                  <span class="tui-ico-date" ></span>
+					                  <div id="wv-container" style="margin-left: -1px;"></div>
+					               	  </div>            
+								</td>
+							<tr>
 		                        <td>가동시간</td>
-		                        <td><input class="form-control" 
-		                        	id="selectEquipStartDate" name="equipStartDate" type="text" readonly></td>
-		                        <td>정지시간</td>
-		                        <td><input class="form-control" 
-		                        	id="selectEquipEndDate" name="equipEndDate" type="text" readonly></td>
+		                        <td>
+		                        	  <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+					                  <input id="ev-start-input" name="equipStartDate" autocomplete="off" type="text" aria-label="Date" style="background-color :#E9ECEF;" readonly>
+					                  <span class="tui-ico-date" ></span>
+					                  <div id="ev-start-container" style="margin-left: -1px;"></div>
+					               	  </div>	
+		                        </td>		                     
+		                    </tr>
+		                    <tr>
+		                     	<td>정지시간</td>
+		                        <td> <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+					                  <input id="ev-end-input" name="equipEndDate" autocomplete="off" type="text" aria-label="Date" style="background-color :#E9ECEF;" readonly>
+					                  <span class="tui-ico-date"></span>
+					                  <div id="ev-end-container" style="margin-left: -1px;"></div>
+					               </div> 
+					            </td>
 		                    </tr>
 		                    <tr>
 		                        <td>설비설명</td>
@@ -253,15 +280,15 @@
 					
                     <tr>
 						<td>공정명</td>
-                        <td><input class="form-control wantUpdate2" id="selectProcessName" name="processName" type="text"  readonly></td>              
+                        <td><input class="form-control wantUpdate2" id="selectProcessName" name="processName" type="text" autocomplete="off"  readonly></td>              
                     </tr>
                     <tr>
                         <td>공정설명</td>
-                        <td><textarea class="form-control wantUpdate2" id="selectProcessContent" name="processContent" rows="5" readonly></textarea></td>
+                        <td><textarea class="form-control wantUpdate2" id="selectProcessContent" name="processContent" rows="5" autocomplete="off" readonly></textarea></td>
                     </tr> 
                      <tr>
                         <td>공정순서</td>
-                        <td><input class="form-control wantUpdate2" id="selectProcessSeq" name="processSeq" type="text" readonly></td>     
+                        <td><input class="form-control wantUpdate2" id="selectProcessSeq" name="processSeq" type="text" autocomplete="off" readonly></td>     
                     </tr>
                                    
                 </table>
@@ -355,9 +382,9 @@ function filter(){
         document.querySelector('#selectEquipStdVibe').value=obj.equipStdVibe;
         document.querySelector('#selectEquipStdTemp').value=obj.equipStdTemp;
         
-        document.querySelector('#selectEquipDate').value=obj.equipDate;
-        const a = document.querySelector('#selectEquipStartDate').value
-        const b = document.querySelector('#selectEquipEndDate').value
+        document.querySelector('#wv-input').value=obj.equipDate;
+        const a = document.querySelector('#ev-start-input').value
+        const b = document.querySelector('#ev-end-input').value
 		if(a == undefined){
 			a.value=''
 			b.value=''
@@ -375,6 +402,7 @@ function filter(){
 		for (var i = 0; i< wantUpdate.length; i++) {
             wantUpdate[i].readOnly = false;
             wantUpdate[i].required = true;
+            wantUpdate[i].style.backgroundColor="white";
         }
 		
 		const btn = document.querySelector('.updateBtn')
@@ -628,18 +656,22 @@ function filter(){
 		    {
 				header: '공정번호',
 				name: 'processNo'
-				    },
+				,align : 'center'
+			},
 		    {
 		        header: '공정명',
 		        name: 'processName'
+		        ,align : 'center'
 		    },
 		    {
 		        header: '공정내용',
 		        name: 'processContent'
+		       ,align : 'center'
 		    },
 		    {
 		        header: '공정순서',
 		        name: 'processSeq'
+		        ,align : 'center'
 		    }
 		    ]
 		});
@@ -669,22 +701,27 @@ function filter(){
 		    {
 				header: '설비번호',
 				name: 'equipNo'
+				,align : 'center'
 			}, 
 			{
 				header: '설비명',
 				name: 'equipName'
+				,align : 'center'
 			},
 		    {
 		        header: '설비타입',
 		        name: 'equipType'
+		       ,align : 'center'
 		    },
 		    {
 		        header: '설비용도',
 		        name: 'equipPurpose'
+		        ,align : 'center'
 		    },
 		    {
 		        header: '적용공정',
 		        name: 'equipProcess'
+		        ,align : 'center'
 		    }
 		    ]
 		});

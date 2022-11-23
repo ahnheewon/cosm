@@ -15,17 +15,17 @@ public class WorkVO {
 	// 공사 내역
 
 	// 공사
-
+	
 	private Integer workNo;
 	private Integer workEquipNo;
 	private String workName;
 	private String workContent;
 	private String workCompany;
 	private Integer workPay;
-	@JsonFormat(pattern = "yyyy-MM-dd") // date picker
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul") // date picker
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date workDate;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date workEndDate;
 	private String workPs;
@@ -38,7 +38,7 @@ public class WorkVO {
 	private Integer signWorkNo;
 	private String signEmpNo;
 	private Integer signSeq;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date signDate;
 	private String signCode;
@@ -65,7 +65,8 @@ public class WorkVO {
 	private String equipType;
 	private String equipPurpose;
 	private Integer equipCheckCycle;
-
+	
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date equipDate;
 

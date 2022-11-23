@@ -46,7 +46,7 @@
 					        ,#{workDate}
 					        ,#{workEndDate}
 					        ,#{workPs}
-					        ,'A0102')
+					        ,'C0101')
 	</insert>
 	<!-- 공사 결재 정보 등록 -->
 	<insert id="insertWorkSign" parameterType="workVO">
@@ -74,10 +74,10 @@
 
 	<!-- 공사 단건조회 미완료 -->
 	<select id="getWorkInfo" parameterType="Integer" resultType="workVO">
-		SELECT e.equip_no, e.equip_name
-		FROM equip e, work w
-		Where e.equip_no = w.work_equip_no
-		and e.equip_no= #{value}
+		SELECT work_no,work_name,(select equip_name from equip where equip_no=#{workEquipNo}) AS work_equip_name
+			   ,work_content, work_pay,work_ps, work_company, work_date, work_end_date
+		FROM work
+		Where work_no= #{workNo}
 	</select>
 	
 	<!-- 공사 수정 미완료 -->

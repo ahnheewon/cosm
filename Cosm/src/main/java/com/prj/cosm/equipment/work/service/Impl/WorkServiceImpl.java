@@ -22,8 +22,8 @@ public class WorkServiceImpl implements WorkService {
 	}
 	
 	@Override
-	public WorkVO getWorkInfo(int workNo) {
-		return mapper.getWorkInfo(workNo);
+	public WorkVO getWorkInfo(int workNo, int workEquipNo) {
+		return mapper.getWorkInfo(workNo,workEquipNo);
 	}
 	
 	@Override

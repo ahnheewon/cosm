@@ -16,7 +16,9 @@
 	
 	<!-- 설비 단건조회 -->
 	<select id="getEquipInfo" parameterType="Integer" resultType="equipVO">
-		SELECT e.equip_no, e.equip_name, e.equip_type, e.equip_std_vibe, e.equip_std_temp, e.equip_date,e.equip_purpose, t.time_start_date, t.time_end_date
+		SELECT e.equip_no, e.equip_name, e.equip_type
+			 	, e.equip_std_vibe, e.equip_std_temp, e.equip_date,e.equip_purpose
+			 	, t.time_start_date, t.time_end_date
 		FROM equip e, equip_time t
 		Where e.equip_no = t.time_equip_no
 		and e.equip_no= #{value}
@@ -201,10 +203,10 @@
 	
 	<!-- 점검 단건 조회-->
 	<select id="getTestInfo" parameterType="Integer" resultType="equipVO">
-		SELECT test_no,(select equip_name from equip where equip_no=#{value}) AS test_equip_name
+		SELECT test_no,(select equip_name from equip where equip_no=#{testEquipNo}) AS test_equip_name
 			   ,test_reason, test_due_date,test_content
 		FROM test
-		Where test_no= #{value}
+		Where test_no= #{testNo}
 	</select>
 	
 	<!-- 점검일정 등록 -->
@@ -262,6 +264,11 @@
 	
 	<!-- 고장 단건 조회-->
 	<select id="getFailInfo" parameterType="Integer" resultType="equipVO">
+		 SELECT fail_no, fail_content, fail_date, fail_repair_date
+		 		,(select equip_name from equip where equip_no = #{failEquipNo}) AS fail_equip_name
+			    , fail_repair_yn, find_code_name(fail_code) AS fail_code
+		   FROM fail
+		  Where fail_no= #{failNo}
 	</select>
 	
 	<!-- 고장 등록 -->
@@ -278,7 +285,7 @@
 							      FROM equip
 							      WHERE equip_name = #{failEquipName})
 						        ,#{failContent}
-						        ,SYSDATE
+						        ,#{failDate}
 						        ,'N'
 						        ,'A0101')
 	</insert>

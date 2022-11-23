@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,21 +24,24 @@ public class EquipVO {
 	private String equipPurpose;
 	private Integer equipCheckCycle;
 	
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date equipDate;
 	
 	private Integer equipRate;
 	private Integer equipStdVibe;
 	private Integer equipStdTemp;
-	private Integer equipState;
+	private String equipState; // ON/OFF 유무 CODE
 	private Integer unitCode;
 	
 	// 설비별 가동 시간
 	private Integer timeEquipNo;
 	
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date timeStartDate;
 	
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date timeEndDate;
 	
@@ -46,6 +51,7 @@ public class EquipVO {
 	private Integer rtcVibe;
 	private Integer rtcTemp;
 	
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date rtcDate;
 	
@@ -60,12 +66,14 @@ public class EquipVO {
 	private Integer testNo;
 	private Integer testEquipNo;
 	private String testEquipName;
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date testDate;
 	private String testReason;
 	private String testContent;
 	private String testYn;
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date testDueDate;
 	private String testCode;
 	
@@ -75,14 +83,16 @@ public class EquipVO {
 	private Integer failEquipNo;
 	private String failEquipName;
 	private String failContent; // 고장내역
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date failDate;
 	
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date failRepairDate;
 	
 	private String failRepairContent; // 수리내역
-	private String failEffect;
+	private String failEffect; //안쓸예정
 	private String failCode;
 	
 	
