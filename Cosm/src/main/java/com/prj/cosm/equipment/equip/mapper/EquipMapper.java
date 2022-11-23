@@ -127,5 +127,11 @@ public interface EquipMapper {
 			
 //=====================================================================================	
 			
-
+			public int updateEquipState(int equipNo);
+			
+			public int insertEquipTime(int equipNo);
+			
+			public int updateEquipTime(int equipNo);
+			
+			public int getEquipTime(int equipNo);
 }

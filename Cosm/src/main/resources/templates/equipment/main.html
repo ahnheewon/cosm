@@ -1,139 +1,517 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{/layout/layout.html}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/layout.html}">
+
 <head>
-<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
-<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
 
-<!-- toast grid-->
+    <!-- toast grid-->
 
-<!-- style and js -->
-<link rel="stylesheet" href="/equipmentCss/main.css">
+    <!-- style and js -->
+    <link rel="stylesheet" href="/equipmentCss/main.css">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
+
 <body>
 
- 	<div layout:fragment="content" style="height: 900px; overflow: scroll">
-		  <h2>설비 관리</h2>
-		
-		  <div class="row">
-		        <div class="column">
-			        <h5> 실시간 설비 현황</h5>
-			        <div>
-		                <div  class="container">
-		                <img src="/equipmentCss/real_time_equip.jpg" alt="실시간_공정_사진">
-		                </div>
-	              	</div>
-              
-		        </div>
-		        
-		        <div class="column">
-		          <h5> 점검 관리(점검 안된애들만 보여주세요)</h5>
-				  <div id="testGrid">
-				  </div>
-		        </div>
-		
-		        <div class="column">
-		          <h5> 공사 관리(공사 결재안된애들만 보여주세요)</h5>
-		          <div id="workGrid">
-		          </div>
-		        </div>
-		
-		  </div>
+    <div layout:fragment="content" style="height: 1300px; overflow: scroll" align="center">
+        <h2>설비 관리</h2>
 
- 
-<script>
+        <div class="row">
+            <div class="column" id="mySvg"></div>
+
+            <div class="column">
+                <h5>점검 관리(점검 안된애들만 보여주세요)</h5>
+                <div id="testGrid"></div>
+            </div>
+
+            <div class="column">
+                <h5>공사 관리(공사 결재안된애들만 보여주세요)</h5>
+                <div id="workGrid"></div>
+            </div>
+
+        </div>
+        <div class="modal fade" id="myModal3" data-backdrop="static" data-keyboard="false">
+
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            <span id="whatEno"></span>설비 정보
+                        </h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
 
 
-/*  점검 그리드  */	
-const testGrid = new tui.Grid({
-		    el: document.querySelector('#testGrid'),
-		    pagination:true,
-			pageOptions: {
-				perPage: 4
-			},
-		    columns: [
-		    {
-				header:'점검번호',
-				name:'testNo'
-			},
-		    {
-		        header: '설비명',
-		        name: 'equipName'
-		    },
-		    {
-		        header: '점검예정일',
-		        name: 'testDueDate'
-		    },
-		    {
-		        header: '점검이유',
-		        name: 'testReason'
-		    },
-		    {
-		        header: '특이사항',
-		        name: 'testPs'
-		    }
-		    ]
-		});
+                    <!-- <sec:csrfInput/> -->
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-/* 점검 리스트 불러오는 아작스 */
+                    <!-- Modal body -->
+                    <div id="equipInfo" class="modal-body">
 
-url="/equipment/testList"
-fetch(url) 
-.then(res=>res.json())
-.then(obj=>{
-    console.log(obj);
-    testGrid.resetData(obj);
+                        <input type="hidden" id="equipNo">
+                        <input type="hidden" id="equipProcess">
+                        <table class="table" style="text-align: center">
+                            <tr>
+                                <td width="100px">설비명</td>
+                                <td><input class="form-control wantUpdate" id="equipName" name="equipName" type="text"
+                                        readonly></td>
+                                <!-- th:value="${equip.equipName}" -->
+                                <td>설비타입</td>
+                                <td><input class="form-control wantUpdate" id="equipType" name="equipType" type="text"
+                                        readonly></td>
+                                <td rowspan="2" style="overflow: hidden; width: 100px;"></td>
+                            </tr>
+                            <tr>
+                                <td width="100px">정상진동</td>
+                                <td><input class="form-control wantUpdate" id="equipStdVibe" name="equipStdVibe"
+                                        type="text" readonly></td>
+                                <td width="100px">정상온도</td>
+                                <td><input class="form-control wantUpdate" id="equipStdTemp" name="equipStdTemp"
+                                        type="text" readonly></td>
+                            </tr>
+                            <tr>
+                                <td width="100px">설치시기</td>
+                                <td><input class="form-control" id="equipDate" name="equipDate" type="text" readonly>
+                                </td>
+                                <td width="100px">가동시간</td>
+                                <td><input class="form-control" id="equipTime" name="equipTime" type="text" readonly
+                                        style="width: 86%; display: inline-block;">시간</td>
 
-})
+                            </tr>
+                            <tr>
+                                <td width="100px">설비설명</td>
+                                <td colspan="5"><textarea class="form-control wantUpdate textWidth" id="equipPurpose"
+                                        name="equipPurpose" rows="5" cols="70" readonly></textarea></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <input id="update" type="hidden">
+                        <button type="button" class="btn btn-primary updateBtn" id="doBtn">가동</button>
+                        <input type="hidden" id="thisNoUD" name="equipNo">
+                        <!-- 업데이트, 삭제 때문에 가져온 설비번호 값. -->
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+                    </div>
 
-/*  공사 그리드  */	
-		const workGrid = new tui.Grid({
-		    el: document.querySelector('#workGrid'),
-		    pagination:true,
-			pageOptions: {
-				perPage: 4
-			},
-		    columns: [
-		    {
-			   	header:'공사번호',
-			    name:'workNo'
-			},
-		    {
-		        header: '공사명',
-		        name: 'workName'
-		    },
-		    {
-		        header: '공사예정일',
-		        name: 'workDate'
-		    },
-		    {
-		        header: '공사내역',
-		        name: 'workContent'
-		    },
-		    {
-		        header: '특이사항',
-		        name: 'workPs'
-		    }
-		    ]
-		});
-		
-		/* 공사 리스트 불러오는 아작스 */
-	    
-	    url="/equipment/workList"
-	    fetch(url) 
-	    .then(res=>res.json())
-	    .then(obj=>{
-	        console.log(obj);
-	        workGrid.resetData(obj);
-	        
-	    })
-		
-</script>
+                </div>
+            </div>
+        </div>
 
-</div>
+        <script>
+            /*  점검 그리드  */
+            const testGrid = new tui.Grid({
+                el: document.querySelector('#testGrid'),
+                pagination: true,
+                pageOptions: {
+                    perPage: 4
+                },
+                columns: [{
+                        header: '점검번호',
+                        name: 'testNo'
+                    },
+                    {
+                        header: '설비명',
+                        name: 'equipName'
+                    },
+                    {
+                        header: '점검예정일',
+                        name: 'testDueDate'
+                    },
+                    {
+                        header: '점검이유',
+                        name: 'testReason'
+                    },
+                    {
+                        header: '특이사항',
+                        name: 'testPs'
+                    }
+                ]
+            });
+
+            /* 점검 리스트 불러오는 아작스 */
+
+            url = "/equipment/testList"
+            fetch(url)
+                .then(res => res.json())
+                .then(obj => {
+                    testGrid.resetData(obj);
+
+                })
+
+            /*  공사 그리드  */
+            const workGrid = new tui.Grid({
+                el: document.querySelector('#workGrid'),
+                pagination: true,
+                pageOptions: {
+                    perPage: 4
+                },
+                columns: [{
+                        header: '공사번호',
+                        name: 'workNo'
+                    },
+                    {
+                        header: '공사명',
+                        name: 'workName'
+                    },
+                    {
+                        header: '공사예정일',
+                        name: 'workDate'
+                    },
+                    {
+                        header: '공사내역',
+                        name: 'workContent'
+                    },
+                    {
+                        header: '특이사항',
+                        name: 'workPs'
+                    }
+                ]
+            });
+
+            /* 공사 리스트 불러오는 아작스 */
+
+            url = "/equipment/workList"
+            fetch(url)
+                .then(res => res.json())
+                .then(obj => {
+                    workGrid.resetData(obj);
+
+                })
+        </script>
+
+        <!-- svg script -->
+        <script>
+            const header = $("meta[name='_csrf_header']").attr('content');
+            const token = $("meta[name='_csrf']").attr('content');
+            getEquipList();
+
+            const width = 1000;
+            const height = 500;
+            const svg = d3.select('#mySvg').append("svg").attr('width', width).attr('height', height).attr('id',
+                'equipSvg');
+            svg.append("text").text('실시간 설비 현황').attr('x', 0).attr('y', 25).attr('dominant-baseline', 'hanging').attr(
+                'font-size', '30px')
+
+
+            const runningProcess = {}
+            	
+
+            function getEquipList() {
+                $.ajax({
+                    url: "/equipment/equipList",
+                    type: "get",
+                    success: function (data) {
+                        var max = 0;
+                        runningProcess.equipProcess=[];
+                        runningProcess.count=[];
+                        const equips = []
+                        for (let i = 0; i < data.length; i++) {
+                            if (max < data[i].equipProcess) {
+                                max = data[i].equipProcess;
+                            }
+                        }
+                        for (let i = 1; i <= max; i++) {
+                        	runningProcess.equipProcess.push(i);
+                        	runningProcess.count.push(0);
+                        }
+                        for (let i = 1; i <= max; i++) {
+                            var equip = {};
+                            var names = [];
+                            var onOff = [];
+                            var nos = [];
+                            for (let obj of data) {
+                                if (obj['equipProcess'] == i) {
+                                    nos.push(obj['equipNo']);
+                                    names.push(obj['equipName']);
+                                    if (obj['equipState'] == 'I0103') {
+                                        onOff.push('off')
+                                    } else {
+                                	runningProcess.count[i-1]++;
+                                        onOff.push('on')
+                                    }
+                                }
+                            }
+                            equip.nos = nos;
+                            equip.names = names;
+                            equip.onOff = onOff;
+                            equip.count = names.length;
+                            equips.push(equip);
+                        }
+                        console.log(equips);
+						console.log(runningProcess);
+                        makeProcess(equips[0], equips[1], equips[2], equips[3], equips[4]);
+
+                    },
+                    error: function (reject) {
+                        console.log(reject);
+                    }
+                })
+            }
+
+
+
+            // 설비 스페어 간의 거리는 10%, 길이는 설비 타입별로 고정
+            function makeProcess(one, two, three, four, five) {
+                $('#mySvg>svg').empty();
+                let on = 0;
+                for (let i = 0; i < one.count; i++) {
+                    let y = 38 - (one.count - 1) * 13 + 26 * i
+                    let ly = y + 12;
+                    let yPos = y + '%';
+                    let lyPos = ly + '%';
+                    let onoff = '';
+
+
+                    if (one.onOff[i] == 'on') {
+                        onoff = 'pipeOn';
+                        on = 1;
+                    } else {
+                        onoff = 'pipeOff';
+                    }
+                    svg.append("rect").attr('x', '0.5%').attr('y', yPos).attr('height', '24%').attr('width', '8.5%')
+                        .attr(
+                            'fill',
+                            'white').attr('rx', '4%').attr('stroke', 'gray').attr('stroke-width', '0.2%');
+                    svg.append("line").attr('x1', '9%').attr('y1', lyPos).attr('x2', '12%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("line").attr('x1', '12%').attr('y1', lyPos).attr('x2', '12%').attr('y2', '50%').attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("circle").attr('cx', '2.2%').attr('cy', lyPos).attr('r', '1%').attr(
+                        'class', one.onOff[i] == 'on' ? 'onBtn' : 'offBtn')
+                    svg.append("text").attr('x', '6%').attr('y', lyPos).text(one.names[i])
+                        .attr('text-anchor',
+                            'middle').attr('class', "texts").attr('dominant-baseline', 'middle').attr('id', one.nos[i]);
+                }
+                svg.append("line").attr('x1', '12%').attr('y1', '50%').attr('x2', '15%').attr('y2', '50%').attr(
+                    'stroke-width', 3).attr('class', on > 0 ? 'pipeOn' : 'pipeOff');
+                on = 0;
+
+                for (let i = 0; i < two.count; i++) {
+                    let y = 50 - (two.count - 1) * 13 + 26 * i
+                    let ly = y;
+                    let pol = (y + 10) * height / 100;
+                    let polPos = width * 0.18 + ',' + pol + ' ' + width * 0.23 + ',' + y * height / 100 + ' ' + width *
+                        0.28 + ',' +
+                        pol;
+                    let yPos = y + '%';
+                    let lyPos = ly + '%';
+                    let onoff = '';
+                    if (two.onOff[i] == 'on') {
+                        onoff = 'pipeOn';
+                        on = 1;
+                    } else {
+                        onoff = 'pipeOff';
+                    }
+                    svg.append("line").attr('x1', '15%').attr('y1', '50%').attr('x2', '15%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("line").attr('x1', '15%').attr('y1', lyPos).attr('x2', '19%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("polygon").attr('points', polPos).attr('fill', 'white').attr('stroke', 'gray').attr(
+                        'stroke-width', '0.2%');
+                    svg.append("circle").attr('cx', '23%').attr('cy', yPos).attr('r', '5%').attr('fill',
+                        'white').attr('rx', '4%').attr('stroke', 'gray').attr('stroke-width', '0.2%');
+                    svg.append("line").attr('x1', '27%').attr('y1', lyPos).attr('x2', '31%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("line").attr('x1', '31%').attr('y1', lyPos).attr('x2', '31%').attr('y2', '50%').attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("circle").attr('cx', '20.5%').attr('cy', yPos).attr('r', '1%').attr(
+                        'class', two.onOff[i] == 'on' ? 'onBtn' : 'offBtn')
+                    svg.append("text").attr('x', '24%').attr('y', yPos).text(two.names[i])
+                        .attr('text-anchor',
+                            'middle').attr('class', "texts").attr('dominant-baseline', 'middle').attr('id', two.nos[i]);
+                }
+                svg.append("line").attr('x1', '31%').attr('y1', '50%').attr('x2', '34%').attr('y2', '50%').attr(
+                    'stroke-width', 3).attr('class', on > 0 ? 'pipeOn' : 'pipeOff');
+                on = 0;
+
+                for (let i = 0; i < three.count; i++) {
+                    let y = 42 - (three.count - 1) * 13 + 26 * i
+                    let ly = y + 8;
+                    let yPos = y + '%';
+                    let lyPos = ly + '%';
+                    let onoff = '';
+                    if (three.onOff[i] == 'on') {
+                        onoff = 'pipeOn';
+                        on = 1;
+                    } else {
+                        onoff = 'pipeOff';
+                    }
+                    svg.append("line").attr('x1', '34%').attr('y1', '50%').attr('x2', '34%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("line").attr('x1', '34%').attr('y1', lyPos).attr('x2', '37%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("rect").attr('x', '37%').attr('y', yPos).attr('height', '16%').attr('width', '18%')
+                        .attr(
+                            'fill',
+                            'white').attr('rx', '1%').attr('stroke', 'gray').attr('stroke-width', '0.2%');
+                    svg.append("line").attr('x1', '55%').attr('y1', lyPos).attr('x2', '58%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("line").attr('x1', '58%').attr('y1', lyPos).attr('x2', '58%').attr('y2', '50%').attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("circle").attr('cx', '42%').attr('cy', lyPos).attr('r', '1%').attr(
+                        'class', three.onOff[i] == 'on' ? 'onBtn' : 'offBtn')
+                    svg.append("text").attr('x', '47%').attr('y', lyPos).text(three.names[i])
+                        .attr('text-anchor',
+                            'middle').attr('class', "texts").attr('dominant-baseline', 'middle').attr('id', three.nos[
+                            i]);
+                }
+                svg.append("line").attr('x1', '58%').attr('y1', '50%').attr('x2', '61%').attr('y2', '50%').attr(
+                    'stroke-width', 3).attr('class', on > 0 ? 'pipeOn' : 'pipeOff');
+                on = 0;
+
+                for (let i = 0; i < four.count; i++) {
+                    let y = 45 - (four.count - 1) * 13 + 26 * i
+                    let ly = y + 5;
+                    let yPos = (y - 3) + '%';
+                    let lyPos = ly + '%';
+                    let onoff = '';
+                    if (four.onOff[i] == 'on') {
+                        onoff = 'pipeOn';
+                        on = 1;
+                    } else {
+                        onoff = 'pipeOff';
+                    }
+                    svg.append("line").attr('x1', '61%').attr('y1', '50%').attr('x2', '61%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("line").attr('x1', '61%').attr('y1', lyPos).attr('x2', '65%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("circle").attr('cx', '69%').attr('cy', lyPos).attr('r', '5%').attr('fill',
+                        'white').attr('rx', '4%').attr('stroke', 'gray').attr('stroke-width', '0.2%');
+                    svg.append("rect").attr('x', '69%').attr('y', yPos).attr('height', '8%').attr('width', '6%')
+                        .attr(
+                            'fill',
+                            'white').attr('stroke', 'gray').attr('stroke-width', '0.2%');
+                    svg.append("circle").attr('cx', '69%').attr('cy', lyPos).attr('r', '4.9%').attr('fill',
+                        'white').attr('rx', '4%').attr('stroke', 'none');
+                    svg.append("line").attr('x1', '75%').attr('y1', lyPos).attr('x2', '80%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("line").attr('x1', '80%').attr('y1', lyPos).attr('x2', '80%').attr('y2', '50%').attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("circle").attr('cx', '66.5%').attr('cy', lyPos).attr('r', '1%').attr(
+                        'class', four.onOff[i] == 'on' ? 'onBtn' : 'offBtn')
+                    svg.append("text").attr('x', '70%').attr('y', lyPos).text(four.names[i])
+                        .attr('text-anchor',
+                            'middle').attr('class', "texts").attr('dominant-baseline', 'middle').attr('id', four.nos[
+                            i]);
+                }
+                svg.append("line").attr('x1', '80%').attr('y1', '50%').attr('x2', '83%').attr('y2', '50%').attr(
+                    'stroke-width', 3).attr('class', on > 0 ? 'pipeOn' : 'pipeOff');
+                on = 0;
+
+                for (let i = 0; i < five.count; i++) {
+                    let y = 50 - (five.count - 1) * 10 + 20 * i
+                    let ly = y;
+                    let pol = (y - 5) * 10;
+                    let polPos = width * 0.86 + ',' + (y - 6) * height / 100 + ' ' + width * 0.97 + ',' + (y - 8) *
+                        height /
+                        100 + ' ' + width * 0.97 + ',' + (y + 8) * height / 100 + ' ' + width * 0.86 + ',' + (y +
+                            6) * height / 100;
+                    let yPos = y + '%';
+                    let lyPos = ly + '%';
+                    let onoff = '';
+                    if (five.onOff[i] == 'on') {
+                        onoff = 'pipeOn';
+                        on = 1;
+                    } else {
+                        onoff = 'pipeOff';
+                    }
+                    svg.append("line").attr('x1', '83%').attr('y1', '50%').attr('x2', '83%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append("line").attr('x1', '83%').attr('y1', lyPos).attr('x2', '86%').attr('y2', lyPos).attr(
+                        'stroke-width', 3).attr('class', onoff);
+                    svg.append('polygon').attr('points', polPos).attr('fill', 'white').attr('stroke', 'gray').attr(
+                        'stroke-width', '0.2%');
+                    svg.append("circle").attr('cx', '89%').attr('cy', lyPos).attr('r', '1%').attr(
+                        'class', five.onOff[i] == 'on' ? 'onBtn' : 'offBtn')
+                    svg.append("text").attr('x', '93%').attr('y', lyPos).text(five.names[i])
+                        .attr('text-anchor',
+                            'middle').attr('class', "texts").attr('dominant-baseline', 'middle').attr('id', five.nos[
+                            i]);
+                }
+                $('.texts').on('click', function (ev) {
+                    const myModal3 = new bootstrap.Modal('#myModal3', {
+                        backdrop: 'static',
+                        keyboard: false
+                    })
+                    // 생성 시 모달 속성을 넣어줍니다.
+                    const modalToggle1 = document.getElementById('myModal3');
+                    myModal3.show(modalToggle1);
+                    let equipNo = $(this).attr('id');
+                    console.log(equipNo);
+                    $.ajax({
+                        url: "/equipment/getEquipInfo",
+                        data: {
+                            equipNo: equipNo
+                        },
+                        success: function (data) {
+                            console.log(data.equipState)
+                            for (let val in data) {
+                                $('#' + val).val(data[val]);
+                            }
+                            $('#doBtn').off();
+                            if (data.equipState == 'I0101') {
+                                $('#doBtn').text('중단').click(stopOrStart);
+                                console.log(runningProcess);
+                            } else {
+                                $('#doBtn').text('가동').click(stopOrStart);
+                                console.log(runningProcess);
+                            }
+                        },
+                        error: function (reject) {
+                            console.log(reject);
+                        }
+                    })
+                })
+            }
+
+            function stopOrStart() {
+                let equipProcess = $('#equipProcess').val();
+                console.log(equipProcess);
+                let equipNo = $('#equipNo').val();
+                let type = $('#doBtn').text();
+                console.log(type);
+                if(type=='가동'){
+                console.log(runningProcess);
+                	
+                } else if (type=='중단'){
+                	if(equipProcess>1){
+                		if(runningProcess.count[equipProcess-1]==1){
+                		if(runningProcess.count[equipProcess-2]>0){
+                			alert('이전 공정이 작동중입니다!');
+                			return false;
+                		}}
+                	} 
+                }
+                $.ajax({
+                    url: "/equipment/equipControl",
+                    type: "post",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    data: {
+                        equipNo: equipNo,
+                        type: type
+                    },
+                    success: function (data) {
+                        getEquipList();
+                        $('#myModal3').modal("hide");
+                        
+                    },
+                    error: function (reject) {
+                        console.log(reject);
+                    }
+                })
+            }
+        </script>
+
+    </div>
 </body>
+
 </html>

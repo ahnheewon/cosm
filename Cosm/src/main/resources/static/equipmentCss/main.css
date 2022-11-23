@@ -1,25 +1,49 @@
-
 .column {
-    float : none;
-    padding: 30px;
-    height: 300px; /* Should be removed. Only for demonstration */
-    
-  }
-.margin5 {
-	margin : 5px;
+	float: none;
+	padding-left: 30px;
 }
-  
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-    margin: 15px;
-  }
-  
-  .container {
-    margin: 0 auto;
-  }
-  
+
+.margin5 {
+	margin: 5px;
+}
+
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+	margin: 15px;
+}
+
+.container {
+	margin: 0 auto;
+}
+
 .emp>td, .emp {
- 	border:1px solid black;
- }
+	border: 1px solid black;
+}
+
+#mySvg {
+	background-color: #d0d0d0;
+	user-select: none;
+
+}
+
+.onBtn {
+	fill: green;
+}
+
+.offBtn {
+	fill: red;
+}
+
+.pipeOn {
+	stroke: red;
+}
+
+.pipeOff {
+	stroke: black;
+}
+
+.texts:hover {
+	cursor: pointer;
+}

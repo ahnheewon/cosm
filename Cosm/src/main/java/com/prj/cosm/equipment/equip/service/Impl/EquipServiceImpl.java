@@ -17,25 +17,25 @@ public class EquipServiceImpl implements EquipService {
 	@Autowired
 	EquipMapper mapper;
 //============================================================================================================================
-	
-																			//설비
+
+	// 설비
 
 	@Override
 	public List<EquipVO> getEquipList() {
-		
+
 		return mapper.getEquipList();
 	}
 
 	@Override
 	public EquipVO getEquipInfo(int equipNo) {
-		return mapper.getEquipInfo(equipNo);
+		EquipVO eVO = mapper.getEquipInfo(equipNo);
+		eVO.setEquipTime(mapper.getEquipTime(equipNo));
+		return eVO;
 	}
 
 	@Override
 	public void insertEquip(EquipVO vo) {
 		mapper.insertEquip(vo); // 설비등록
-		mapper.insertEquipTime(vo); // 설비시간등록
-		
 	}
 
 	@Override
@@ -52,8 +52,7 @@ public class EquipServiceImpl implements EquipService {
 	public int deleteEquipTime(int equipNo) {
 		return mapper.deleteEquipTime(equipNo);
 	}
-	
-	
+
 	@Override
 	public int updateDeleteEquipNo(int equipNo) {
 		return mapper.updateDeleteEquipNo(equipNo);
@@ -61,32 +60,30 @@ public class EquipServiceImpl implements EquipService {
 
 	@Override
 	public int updateDeleteTimeEquipNo(int equipNo) {
-		
+
 		return mapper.updateDeleteTimeEquipNo(equipNo);
 	}
 
-	
 	@Override
 	public EquipVO getEquipNo() {
 		return mapper.getEquipNo();
 	}
-	
+
 	@Override
 	public List<EquipVO> getEquipProcess() {
-		
+
 		return mapper.getEquipProcess();
 	}
-	
+
 //============================================================================================================================
-	
-																			//공정 
-	
+
+	// 공정
+
 	@Override
 	public EquipVO getProcessNo() {
-	
-	return mapper.getProcessNo(); 
+
+		return mapper.getProcessNo();
 	}
-	
 
 	@Override
 	public List<EquipVO> getProcessList() {
@@ -101,7 +98,7 @@ public class EquipServiceImpl implements EquipService {
 	@Override
 	public Map insertProcess(EquipVO vo) {
 		int count = mapper.insertProcess(vo);
-		return getResult(count,vo);
+		return getResult(count, vo);
 	}
 
 	@Override
@@ -113,9 +110,9 @@ public class EquipServiceImpl implements EquipService {
 	public int deleteProcess(int processNo) {
 		return mapper.deleteProcess(processNo);
 	}
-	
-	public Map getResult(int count,EquipVO vo) {
-		Map<String, Object> result = new HashMap<String,Object>();
+
+	public Map getResult(int count, EquipVO vo) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("result", count);
 		result.put("data", vo);
 		return result;
@@ -126,18 +123,17 @@ public class EquipServiceImpl implements EquipService {
 	public int updateDeleteProcessNo(int processNo) {
 		return mapper.updateDeleteProcessNo(processNo);
 	}
-	
+
 	@Override
 	public int updateDeleteEquipProcess(int equipProcess) {
 
 		return mapper.updateDeleteEquipProcess(equipProcess);
 	}
 
-
 //===================================================================================================
-	
-																			//점검
-	
+
+	// 점검
+
 	@Override
 	public List<EquipVO> getTestList() {
 		return mapper.getTestList();
@@ -174,9 +170,9 @@ public class EquipServiceImpl implements EquipService {
 	}
 
 //===================================================================================================
-	
-																			//고장
-	
+
+	// 고장
+
 	@Override
 	public List<EquipVO> getFailList() {
 		return mapper.getFailList();
@@ -212,10 +208,20 @@ public class EquipServiceImpl implements EquipService {
 		return mapper.getFailNo();
 	}
 
+	@Override
+	public int updateEquipState(int equipNo) {
+		return mapper.updateEquipState(equipNo);
+	}
 
+	@Override
+	public int controlEquipTime(int equipNo, String type) {
+		int result = 0;
+		if (type.equals("중단")) {
+			result = mapper.updateEquipTime(equipNo);
+		} else if (type.equals("가동")) {
+			result = mapper.insertEquipTime(equipNo);
+		}
+		return result;
+	}
 
-
-
-
-	
 }

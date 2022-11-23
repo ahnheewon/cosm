@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +25,13 @@ public class EquipVO {
 	private Integer equipCheckCycle;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date equipDate;
 	
 	private Integer equipRate;
 	private Integer equipStdVibe;
 	private Integer equipStdTemp;
-	private Integer equipState;
+	private String equipState;
 	private Integer unitCode;
 	
 	// 설비별 가동 시간
@@ -40,6 +43,7 @@ public class EquipVO {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date timeEndDate;
 	
+	private Integer equipTime;
 	// 실시간 측정
 	private Integer rtcNo;
 	private Integer rtcEquipNo;

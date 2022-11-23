@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -317,5 +318,15 @@ public class EquipController {
 		// 부품변동 등록은 부품 수정할때 처리됩니다.
 	
 //================================================================================================================================	
-
+		@PostMapping("/equipment/equipControl")
+		@ResponseBody
+		@Transactional
+		public int updateEquipState(int equipNo, String type) {
+			System.out.println(equipNo+"         "+type);
+			int result = eService.updateEquipState(equipNo);
+			if(result ==1) {
+				result = eService.controlEquipTime(equipNo,type);
+			}
+			return result;
+		}
 }

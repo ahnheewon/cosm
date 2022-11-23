@@ -16,10 +16,9 @@
 	
 	<!-- 설비 단건조회 -->
 	<select id="getEquipInfo" parameterType="Integer" resultType="equipVO">
-		SELECT e.equip_no, e.equip_name, e.equip_type, e.equip_std_vibe, e.equip_std_temp, e.equip_date,e.equip_purpose, t.time_start_date, t.time_end_date
-		FROM equip e, equip_time t
-		Where e.equip_no = t.time_equip_no
-		and e.equip_no= #{value}
+		SELECT *
+		FROM equip 
+		Where equip_no= #{value}
 	</select>
 	
 	<!-- 설비 등록 -->
@@ -37,19 +36,6 @@
 
 	</insert>
 	
-	<!-- 설비 시간 등록 -->
-	<insert id="insertEquipTime" parameterType="equipVO">
-
-    INSERT INTO EQUIP_TIME ( 
-						time_equip_no
-                       <if test="timeStartDate != null and timeStartDate != ''">,time_start_date</if>
-						<if test="timeEndDate != null and timeEndDate != ''">,time_end_date</if>
-						)
-				        values (#{equipNo}
-				        <if test="timeStartDate != null and timeStartDate != ''">,#{timeStartDate}</if>
-				        <if test="timeEndDate != null and timeEndDate != ''">,#{timeEndDate}</if>
-				        )
-	</insert>
 		
 	<!-- 설비 수정 -->
 	<update id="updateEquip" parameterType="equipVO">
@@ -308,4 +294,21 @@
 	
 <!-- ############################################################################################  -->
 
+	<update id="updateEquipState">
+	UPDATE equip SET equip_state = (SELECT CASE WHEN equip_state = 'I0101' THEN 'I0103' ELSE 'I0101' END FROM equip WHERE equip_no = #{equipNo}) WHERE equip_no = #{equipNo}
+	</update>
+	
+		<!-- 설비 시간 등록 -->
+	<insert id="insertEquipTime">
+	INSERT INTO equip_time(time_equip_no) VALUES(#{equipNo})
+	</insert>
+	
+	<update id="updateEquipTime">
+	UPDATE equip_time SET time_end_date = sysdate WHERE time_end_date IS NULL AND time_equip_no = #{equipNo} AND time_start_date IS NOT NULL
+	</update>
+	
+	<select id="getEquipTime" resultType="Integer">
+SELECT NVL(SUM(NVL(ROUND((TO_DATE(time_end_date, 'YYYY-MM-DD HH24:MI:SS') 
+            - TO_DATE(time_start_date, 'YYYY-MM-DD HH24:MI:SS'))*24+(TO_CHAR(time_end_date, 'HH24')-TO_CHAR(time_start_date, 'HH24')), 2),0)),0) AS equip_time FROM equip_time WHERE time_equip_no = #{equipNo} AND time_end_date IS NOT NULL AND time_start_date IS NOT NULL
+	</select>
 </mapper>
