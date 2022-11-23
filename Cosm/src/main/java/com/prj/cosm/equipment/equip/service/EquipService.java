@@ -117,4 +117,7 @@ public interface EquipService {
 				// 입력될 번호를 조회
 				public EquipVO getFailNo();
 	
+				public int updateEquipState(int equipNo);
+				
+				public int controlEquipTime(int equipNo, String type);
 }

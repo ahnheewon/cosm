@@ -26,6 +26,7 @@ public class EquipVO {
 	
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date equipDate;
 	
 	private Integer equipRate;
@@ -45,6 +46,7 @@ public class EquipVO {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date timeEndDate;
 	
+	private Integer equipTime;
 	// 실시간 측정
 	private Integer rtcNo;
 	private Integer rtcEquipNo;
