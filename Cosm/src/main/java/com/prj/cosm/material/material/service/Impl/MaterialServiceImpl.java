@@ -26,10 +26,10 @@ public class MaterialServiceImpl implements MaterialService {
 		// 자재정보 단건조회 (상세조회)
 		return mMapper.selectInfo(mVO);
 	}
-	
+
 	@Override
 	public MaterialVO selectInfoMat(MaterialVO mVO) {
-		//  자재정보 단건조회 (상세조회)_업데이트용
+		// 자재정보 단건조회 (상세조회)_업데이트용
 		return mMapper.selectInfoMat(mVO);
 	}
 
@@ -67,8 +67,6 @@ public class MaterialServiceImpl implements MaterialService {
 		return mMapper.findComNm();
 	}
 
-
-
 	@Override
 	public int registerMCompany(MaterialVO mVO) {
 		// 신규거래처 등록
@@ -80,7 +78,6 @@ public class MaterialServiceImpl implements MaterialService {
 		// 거래처 번호 조회
 		return mMapper.getComId();
 	}
-
 
 	@Override
 	public List<MaterialVO> getUnitList() {
@@ -107,15 +104,24 @@ public class MaterialServiceImpl implements MaterialService {
 	}
 
 	@Override
-	public int insertMCart(List<String> mNo) {
+	public int insertMCart(List<MaterialVO> mNo) {
 		// 발주 대기 등록(카트)
 		int result = 0;
-		for (String no : mNo) {
+		for (MaterialVO no : mNo) {
+			no.setMoNum(1);
 			result += mMapper.insertMcart(no);
 		}
-		return result;		
+		return result;
 	}
 
+	@Override
+	public int updateOrderNum(List<MaterialVO> mVO) {
+		// 발주 수량 수정
+		int result = 0;
+		for(MaterialVO vo : mVO) {
+			result += mMapper.updateOrderNum(vo);
+		}
+		return result;
+	}	
 
-	
 }

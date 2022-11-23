@@ -51,10 +51,11 @@ public interface MaterialService {
 
 	// 발주 대기 리스트 전체조회
 	public List<MaterialVO> mCartList();
-	
+
 	// 발주 대기 등록 (카트)
-	public int insertMCart(List<String> mNo);
-	
-	//
+	public int insertMCart(List<MaterialVO> mNo);
+
+	// 발주 수량 수정
+	public int updateOrderNum(List<MaterialVO> mVO);
 
 }
