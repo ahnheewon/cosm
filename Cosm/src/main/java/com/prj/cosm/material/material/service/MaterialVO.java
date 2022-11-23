@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 @Data
-
 public class MaterialVO {
 	// 1. 자재 정보, 재고 관리
 	private String mNo; // 자재번호

@@ -2,220 +2,238 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.prj.cosm.material.material.mapper.MaterialMapper">
 
-  <!-- 거래처 번호 -->
-  <select id="getComId" resultType="MaterialVO">
- 	SELECT CONCAT('COSMMC', TO_CHAR(NVL(MAX(SUBSTR(m_company_id, -4)), 0)+1))as m_company_id
-	FROM MATERIAL
- </select> 
+<mapper
+	namespace="com.prj.cosm.material.material.mapper.MaterialMapper">
 
-  
-  <!-- 자재정보 전체조회  -->
- 	<select id="mList" resultType="MaterialVO" >
- 	  SELECT m. m_no, 
-       		 m. m_company_id, 
-       		mc.mc_company_name As m_company_nm, 
-      		m.m_name m_name, 
-        	m.m_price, 
-        	c.code_name As m_unit_code,       
-        	m.m_category       
-	FROM Material m JOIN CODE c 
+	<!-- 거래처 번호 -->
+	<select id="getComId" resultType="MaterialVO">
+		SELECT CONCAT('COSMMC', TO_CHAR(NVL(MAX(SUBSTR(m_company_id, -4)), 0)+1))as
+		m_company_id
+		FROM MATERIAL
+	</select>
+
+
+	<!-- 자재정보 전체조회 -->
+	<select id="mList" resultType="MaterialVO">
+		SELECT m. m_no,
+		m. m_company_id,
+		mc.mc_company_name As m_company_nm,
+		m.m_name m_name,
+		m.m_price,
+		c.code_name As m_unit_code,
+		m.m_category
+		FROM Material m JOIN CODE c
 		ON m.m_unit_code = c.code_no
-      JOIN MATERIAL_COMPANY mc 
-        ON m.m_company_id = mc.mc_company_id
-    ORDER BY m.m_no
-    
- 	</select>
-  
- 
-  <!-- 자재정보 단건조회 (상세조회)  -->
- 	<select id="selectInfo" resultType="MaterialVO">
- 	SELECT m_no, m_name, m_info
- 	FROM material
- 	WHERE m_no = #{mNo}
- 	</select>
-  
-  <!-- 자재정보 단건조회 (업데이트용)  -->
-  
-  	<select id="selectInfoMat" resultType="MaterialVO">
- 	  SELECT m.m_no, 
-           m.m_name, 
-  		   m.m_category, 
-           m.m_price, 
-  		   m.m_company_id, 
-           mc.mc_company_name AS m_company_nm, 
-           find_code_name(#{mUnitCode})As m_unit_code,
-           m.m_info,
-           m.m_date,
-           m.m_reg_date  		    
- 	FROM material m JOIN material_company mc 
-        ON mc.mc_company_id = m.m_company_id
- 	WHERE m_no = #{mNo}
- 	</select>
- 	
- 	
-  <!-- 신규 자재 정보 등록  -->
-  <insert id="insertMatarialInfo" parameterType="MaterialVO">  	
-  <selectKey keyProperty="mNo" resultType="String"
+		JOIN MATERIAL_COMPANY mc
+		ON m.m_company_id = mc.mc_company_id
+		ORDER BY m.m_no
+
+	</select>
+
+
+	<!-- 자재정보 단건조회 (상세조회) -->
+	<select id="selectInfo" resultType="MaterialVO">
+		SELECT m_no, m_name, m_info
+		FROM material
+		WHERE m_no = #{mNo}
+	</select>
+
+	<!-- 자재정보 단건조회 (업데이트용) -->
+
+	<select id="selectInfoMat" resultType="MaterialVO">
+		SELECT m.m_no,
+		m.m_name,
+		m.m_category,
+		m.m_price,
+		m.m_company_id,
+		mc.mc_company_name AS m_company_nm,
+		find_code_name(#{mUnitCode})As m_unit_code,
+		m.m_info,
+		m.m_date,
+		m.m_reg_date
+		FROM material m JOIN material_company mc
+		ON mc.mc_company_id = m.m_company_id
+		WHERE m_no = #{mNo}
+	</select>
+
+
+	<!-- 신규 자재 정보 등록 -->
+	<insert id="insertMatarialInfo" parameterType="MaterialVO">
+		<selectKey keyProperty="mNo" resultType="String"
 			order="BEFORE">
-  <if test="mCategory =='원자재'">
-		SELECT CONCAT('MM', TO_CHAR(NVL(MAX(SUBSTR(m_no, -4)), 0)+1))as m_no
-		FROM MATERIAL
-	</if>
-	<if test="mCategory =='부품'">
-		SELECT CONCAT('MP', TO_CHAR(NVL(MAX(SUBSTR(m_no, -4)), 0)+1))as m_no
-		FROM MATERIAL
-	</if>	
-  </selectKey>
-  	INSERT INTO MATERIAL (m_no, 
-  						  m_name, 
-  						  m_category, 
-  						  m_price, 
-  						  m_company_id, 
-  						  m_unit_code,
-  						  m_info )
-  				VALUES (#{mNo},
-  						#{mName},
-  						#{mCategory},
-  						#{mPrice},
-  						#{mCompanyId},
-  						find_code_name(#{mUnitCode}),  						
-  						#{mInfo}
-  						) 
-  </insert>
+			<if test="mCategory =='원자재'">
+				SELECT CONCAT('MM', TO_CHAR(NVL(MAX(SUBSTR(m_no, -4)), 0)+1))as m_no
+				FROM MATERIAL
+			</if>
+			<if test="mCategory =='부품'">
+				SELECT CONCAT('MP', TO_CHAR(NVL(MAX(SUBSTR(m_no, -4)), 0)+1))as m_no
+				FROM MATERIAL
+			</if>
+		</selectKey>
+		INSERT INTO MATERIAL (m_no,
+		m_name,
+		m_category,
+		m_price,
+		m_company_id,
+		m_unit_code,
+		m_info )
+		VALUES (#{mNo},
+		#{mName},
+		#{mCategory},
+		#{mPrice},
+		#{mCompanyId},
+		find_code_name(#{mUnitCode}),
+		#{mInfo}
+		)
+	</insert>
 
 
-  
-  <!-- 자재 정보 수정  -->
-  <update id="updateMatrailInfo" parameterType="MaterialVO"> 
-  	UPDATE material 
-	SET m_name = #{mName}, 
-    	m_category = #{mCategory},
-   		m_price = #{mPrice},
-   		m_company_id = #{mCompanyId},
-    	m_unit_code = find_code_name(#{mUnitCode}),
-    	m_date = TO_DATE(sysdate, 'yyyy-MM-dd'),
-    	m_info = #{mInfo}
- 	WHERE m_no = #{mNo} 
-  </update>
-  
-  <!-- 자재 정보 삭제 - 재고 수량도 삭제됨 -->
-  <delete id="deleteMatrailInfo" parameterType="MaterialVO">
-  	DELETE 
-  	FROM material  	
-	WHERE m_no = #{mNo}
-  </delete>
-  
-  <!-- 자재 변동 내역 리스트  -->
-  <select id="mioList" resultType="MaterialVO">
-  	SELECT m.m_no, m.m_company_id, m.m_category, m.m_name, 
-       (mio.mio_input_quantity - mio.mio_output_quantity) AS m_stock,       
-        mio.mio_output_quantity AS increase,          
- 	 	m.m_date, mio.mio_input_date, mio.mio_output_date           
-	FROM Material m JOIN Material_io mio 
-			ON m.m_no = mio.mio_no
-	 ORDER BY m.m_no
-	</select> 
-	
+
+	<!-- 자재 정보 수정 -->
+	<update id="updateMatrailInfo" parameterType="MaterialVO">
+		UPDATE material
+		SET m_name = #{mName},
+		m_category = #{mCategory},
+		m_price = #{mPrice},
+		m_company_id = #{mCompanyId},
+		m_unit_code = find_code_name(#{mUnitCode}),
+		m_date = TO_DATE(sysdate, 'yyyy-MM-dd'),
+		m_info = #{mInfo}
+		WHERE m_no = #{mNo}
+	</update>
+
+	<!-- 자재 정보 삭제 - 재고 수량도 삭제됨 -->
+	<delete id="deleteMatrailInfo" parameterType="MaterialVO">
+		DELETE
+		FROM material
+		WHERE m_no = #{mNo}
+	</delete>
+
+	<!-- 자재 변동 내역 리스트 -->
+	<select id="mioList" resultType="MaterialVO">
+		SELECT m.m_no, m.m_company_id, m.m_category, m.m_name,
+		(mio.mio_input_quantity - mio.mio_output_quantity) AS m_stock,
+		mio.mio_output_quantity AS increase,
+		m.m_date, mio.mio_input_date, 		
+		mio.mio_output_date		
+		FROM Material m JOIN Material_io mio
+		ON m.m_no = mio.mio_no
+		WHERE mio.mio_output_date is not null
+		ORDER BY m.m_no
+	</select>
+
 	<!-- 거래처 명 찾기 -->
 	<select id="findComNm" resultType="MaterialVO">
-    	SELECT mc_company_id as m_company_id , 
-    		   mc_company_name as m_company_nm,    		    
-    		   mc_manager_name as m_mng_nm
-    	FROM material_company    	
-	    ORDER BY mc_company_id
-	</select>  
+		SELECT mc_company_id as m_company_id ,
+		mc_company_name as m_company_nm,
+		mc_manager_name as m_mng_nm
+		FROM material_company
+		ORDER BY mc_company_id
+	</select>
 
-	<!-- 거래처 등록  -->
+	<!-- 거래처 등록 -->
 	<insert id="registerMCompany" parameterType="MaterialVO">
-	INSERT INTO material_company 
-					(mc_company_id, 
-                   	 mc_company_name, 
-                     mc_company_tel, 
-                     mc_manager_name, 
-                     mc_zipcode,
-                     mc_company_address,
-                     mc_addr_detail)
-			VALUES (#{mCompanyId},
-					#{mCompanyNm},
-					#{mCompanyTel},
-					#{mMngNm},
-					#{mZipCode},
-					#{mCompanyAdd},
-					#{mAddrDetail}) 			
+		INSERT INTO material_company
+		(mc_company_id,
+		mc_company_name,
+		mc_company_tel,
+		mc_manager_name,
+		mc_zipcode,
+		mc_company_address,
+		mc_addr_detail)
+		VALUES (#{mCompanyId},
+		#{mCompanyNm},
+		#{mCompanyTel},
+		#{mMngNm},
+		#{mZipCode},
+		#{mCompanyAdd},
+		#{mAddrDetail})
 	</insert>
-	
-	
+
+
 	<!-- 단위코드 조회 -->
 	<select id="getUnitList" resultType="MaterialVO">
 		SELECT code_name FROM code
 		WHERE code_adno = 'F01'
 		ORDER BY code_no
 	</select>
-  
-  	<!-- 자재 분류 조회 -->
+
+	<!-- 자재 분류 조회 -->
 	<select id="getCategoryList" resultType="MaterialVO">
-		SELECT DISTINCT(m_category) 
+		SELECT
+		DISTINCT(m_category)
 		FROM material
 	</select>
 	
 	<!-- 발주 실행 -->
-	<insert id="insertMcart" parameterType="String">
-	<selectKey keyProperty="mOrderId" resultType="String"
+	<insert id="insertMcart" parameterType="MaterialVO">
+		<selectKey keyProperty="mOrderId" resultType="String"
 			order="BEFORE">
-			
-		SELECT TO_CHAR(SYSDATE, 'yyMMdd')|| SUBSTR(#{mNo},1,2)||  
-					(SELECT LPAD((NVL(MAX(SUBSTR(mo_order_id, -2,2)),0)+1),2,0)
-        			 FROM material_order
-        			WHERE mo_order_id like to_char(sysdate, 'yyMMdd')||'%') as m_order_id
-		FROM dual	
-	</selectKey>	
-		INSERT INTO material_order (mo_order_id, 
-                            		mo_material_id, 
-                             		mo_company_id,                       
-                             		mo_name, 
-                             		mo_unit_price, 
-                             		mo_num,                          
-                             		mo_total_price)                       
- 		SELECT  #{mOrderId}, m_no, m_company_id, m_name, m_price, #{moNum}, m_price * #{moNum}
- 		FROM material
- 		WHERE m_no = #{mNO}	
-	</insert>	
-	
+			SELECT TO_CHAR(SYSDATE, 'yyMMdd')|| SUBSTR(#{mNo},1,1)||
+			(SELECT LPAD((NVL(MAX(SUBSTR(mo_order_id, -2,2)),0)+1),2,0)
+			FROM material_order
+			WHERE mo_order_id LIKE to_char(sysdate, 'yyMMdd')||'%') AS m_order_id
+			FROM dual
+		</selectKey>
+		INSERT INTO material_order (mo_order_id,
+									mo_material_id,
+									mo_company_id,
+									mo_name,
+									mo_unit_price,
+									mo_num,
+									mo_total_price)
+		SELECT #{mOrderId}, m_no, m_company_id, m_name, m_price,
+				#{moNum}, m_price * #{moNum}
+		FROM material
+		WHERE m_no = #{mNo}
+	</insert>
+
 	<!--발주 대기 리스트 조회 -->
 	<select id="mCartList" resultType="MaterialVO">
-	SELECT mo.mo_order_id as m_order_id, 
-      	   mo.mo_material_id as m_no, 
-      	   mo.mo_company_id as m_company_id,
-       	   mo.mo_name as m_name, 
-           mc.mc_company_name as m_company_nm, 
-           mo.mo_unit_price,
-           find_code_name(m.m_unit_code) AS m_unit_code,
-           mo.mo_num,
-       	  (mo.mo_unit_price * mo.mo_num) as mo_tt_price    
-	FROM material_order mo JOIN material_company mc
-    		ON mo.mo_company_id = mc.mc_company_id 
-	JOIN material m 
-    		ON m.m_no = mo.mo_material_id	
-	</select>	
-	
-	<!--발주 현황 리스트  -->
-	<select id="mOrderList" resultType="MaterialVO">
-	SELECT mo_date, 
-		mo.mo_order_id as m_order_id, 
-        mo.mo_name as m_name, 
-        mo.mo_num,
-        find_code_name(m.m_unit_code) AS m_unit_code,
-        (mo.mo_unit_price * mo.mo_num) as mo_tt_price,          
-        find_code_name(mo.mo_progress_code)AS mo_prog_code
-	FROM material m JOIN material_order mo
-        ON mo.mo_material_id = m.m_no
-	
-	
+		SELECT mo.mo_order_id as m_order_id,
+		mo.mo_material_id as m_no,
+		mo.mo_company_id as m_company_id,
+		mo.mo_name as m_name,
+		mc.mc_company_name as m_company_nm,
+		mo.mo_unit_price,
+		find_code_name(m.m_unit_code) AS m_unit_code,
+		mo.mo_num,
+		(mo.mo_unit_price * mo.mo_num) as mo_tt_price
+		FROM material_order mo JOIN material_company mc
+		ON mo.mo_company_id = mc.mc_company_id
+		JOIN material m
+		ON m.m_no = mo.mo_material_id
 	</select>
 
+	<!--발주 진행 리스트 -->
+	<select id="mOrderList" resultType="MaterialVO">
+		SELECT mo_date,
+			   mo.mo_order_id as m_order_id,
+			   mo.mo_name as m_name,
+		  	   mo.mo_num,
+			   find_code_name(m.m_unit_code) AS m_unit_code,
+			   (mo.mo_unit_price * mo.mo_num) as mo_tt_price,
+			   find_code_name(mo.mo_progress_code)AS mo_prog_code
+		FROM material m JOIN material_order mo
+				ON mo.mo_material_id = m.m_no
+		WHERE mo_date is not null				
 
-  
-  </mapper>
+	</select>
+	
+	<!-- 발주 수량 업데이트(발주 대기) -->
+	<update id="updateOrderNum" parameterType="MaterialVO">
+	UPDATE material_order 
+	SET mo_num = #{moNum}
+	WHERE MO_ORDER_ID = #{mOrderId} 
+	</update>
+
+	<!-- 발주 수량 업데이트 (발주 현황) -->
+	<update id="updateOrderGo" parameterType="MaterialVO">
+	UPDATE material_order 
+	SET mo_date = #{moNum}
+	WHERE MO_ORDER_ID = #{mOrderId} 
+	</update>
+
+
+</mapper>
