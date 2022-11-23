@@ -24,7 +24,6 @@ public class EquipVO {
 	private String equipPurpose;
 	private Integer equipCheckCycle;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date equipDate;
