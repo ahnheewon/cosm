@@ -55,11 +55,12 @@
 
 		<h3>자재재고 현황</h3>
 		<div id="grid3"></div>
-
+		<button type="button" onclick="location.href='/proError'"
+					class="btn btn-primary btn-m" style="float: right; margin-right: 36px">생산 페이지 이동</button>
 		<!-- 생산지시 작성 모달 -->
 		<div class="modal fade" id="requestModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-l">
+			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">생산지시 작성</h5>
@@ -135,17 +136,11 @@
 								<div class="input-group mb-3">
 									<span class="input-group-text">투입될 자재량</span> <input
 										type="number" class="form-control" placeholder="자재량"
+										id="instructMaterialNum"
 										name="instructMaterialNum" aria-label="Username"
 										aria-describedby="basic-addon4">
 								</div>
 
-								<div class="input-group mb-3">
-									<span class="input-group-text">진행상황</span> <select
-										id="instructProgressCode" name="instructProgressCode"
-										class="form-select">
-										<option th:each="playNo : ${playNo}">[[${playNo.codeName}]]</option>
-									</select>
-								</div>
 								<div class="input-group">
 									<span class="input-group-text">기타사항</span>
 									<textarea class="form-control" name="instructEx"
@@ -229,7 +224,7 @@
 								<div class="input-group mb-3">
 									<span class="input-group-text">투입될 자재량</span> <input
 										type="number" class="form-control" name="instructMaterialNum"
-										id="instructMaterialNum" aria-label="Username"
+										id="instructMaterialNum2" aria-label="Username"
 										aria-describedby="basic-addon4">
 								</div>
 
@@ -395,6 +390,10 @@
 					name: 'PLANPRODUCTNO'
 				},
 				{
+					header: '제품명',
+					name: 'GOODSNAME'
+				},
+				{
 					header: '시작일자(desc)',
 					name: 'PLANSTART',
 					sortingType: 'desc',
@@ -475,7 +474,7 @@
 		//생산계획리스트 가져오기
 		function planList(){
 			$.ajax({
-				url: "/plan",
+				url: "/completePlan",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -541,7 +540,28 @@
 		//지시등록 확인창
 		$().ready(function () {
             $("#alertStart").click(function () {
-                Swal.fire({
+            	if ($('#instructQuantity').val() == "" || $('#instructQuantity').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '최종생산 지시량을 입력하세요!',
+                    })
+					return false;
+				}
+            	if ($('#instructDate').val() == "" || $('#instructDate').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '지시일자를 입력하세요!',
+                    })
+					return false;
+				}
+            	if ($('#instructMaterialNum').val() == "" || $('#instructMaterialNum').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '투입될 자재량을 입력하세요!',
+                    })
+					return false;
+				}
+            	Swal.fire({
                     icon: 'success',
                     title: '생산지시 등록이 완료되었습니다.',
                     text: 'success~',
@@ -589,12 +609,27 @@
 			$('#instructEx').val(datas1[0].INSTRUCTEX);
 			$('#instructProgressCode2').val(datas1[0].INSTRUCT_PROGRESS_CODE);
 			$('#planProductNo2').val(datas1[0].PLANPRODUCTNO);
+			$('#instructMaterialNum2').val(datas1[0].INSTRUCTMATERIALNUM);
 		}
 		
 		//생산지시 수정 확인창
 		$().ready(function () {
             $("#alertStart2").click(function () {
-                Swal.fire({
+            	if ($('#instructQuantity2').val() == "" || $('#instructQuantity2').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '최종생산 지시량을 입력하세요!',
+                    })
+					return false;
+				}
+            	if ($('#instructMaterialNum2').val() == "" || $('#instructMaterialNum2').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '투입될 자재량을 입력하세요!',
+                    })
+					return false;
+				}
+            	Swal.fire({
                     icon: 'success',
                     title: '생산지시 수정이 완료되었습니다.',
                     text: 'success~',
@@ -604,11 +639,11 @@
                     return false;	                
             });
         });
-		// 제품정보 삭제
+		// 생산지시 삭제
 		$().ready(function () {
             $("#delbtn").click(function () {
                 Swal.fire({
-                    title: '선택한 제품을 삭제하시겠습니까?',
+                    title: '선택한 생산지시를 삭제하시겠습니까?',
                     text: "다시 되돌릴 수 없습니다. 신중하세요.",
                     icon: 'question',
                     showCancelButton: true,

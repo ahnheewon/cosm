@@ -45,7 +45,7 @@
 			data-bs-toggle="modal" data-bs-target="#requestModal"
 			style="float: right">제품 등록</button>
 		<div id="grid"></div>
-
+		
 		<!-- 제품 등록 모달 -->
 		<div class="modal fade" id="requestModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -293,6 +293,34 @@
 			//제풍등록 확인창
 			$().ready(function () {
 	            $("#alertStart").click(function () {
+	            	if ($('#goodsName').val() == "" || $('#goodsName').val() == null) {
+	            		Swal.fire({
+	                        icon: 'warning',
+	                        title: '제품명을 입력해주세요!',
+	                    })
+						return false;
+					}
+	            	if ($('#goodsStandard').val() == "" || $('#goodsStandard').val() == null) {
+	            		Swal.fire({
+	                        icon: 'warning',
+	                        title: '제품 기준수량을 입력하세요!',
+	                    })
+						return false;
+					}
+	            	if ($('#goodsDate').val() == "" || $('#goodsDate').val() == null) {
+	            		Swal.fire({
+	                        icon: 'warning',
+	                        title: '제품 제작기간을 입력하세요!',
+	                    })
+						return false;
+					}
+					if ($('#goodsContents').val() == "" || $('#goodsContents').val() == null) {
+						Swal.fire({
+	                        icon: 'warning',
+	                        title: '제품 설명을 입력하세요!',
+	                    })
+						return false;
+					}
 	                Swal.fire({
 	                    icon: 'success',
 	                    title: '제품등록이 완료되었습니다.',
@@ -306,6 +334,34 @@
 			//제품수정 확인창
 			$().ready(function () {
 	            $("#alertStart2").click(function () {
+	            	if ($('#goodsName2').val() == "" || $('#goodsName2').val() == null) {
+	            		Swal.fire({
+	                        icon: 'warning',
+	                        title: '제품명을 입력해주세요!',
+	                    })
+						return false;
+					}
+	            	if ($('#goodsStandard2').val() == "" || $('#goodsStandard2').val() == null) {
+						Swal.fire({
+	                        icon: 'warning',
+	                        title: '제품 기준수량을 입력하세요!',
+	                    })
+						return false;
+					}
+	            	if ($('#goodsDate2').val() == "" || $('#goodsDate2').val() == null) {
+						Swal.fire({
+	                        icon: 'warning',
+	                        title: '제품 제작기간을 입력하세요!',
+	                    })
+						return false;
+					}
+					if ($('#goodsContents2').val() == "" || $('#goodsContents2').val() == null) {
+						Swal.fire({
+	                        icon: 'warning',
+	                        title: '제품 설명을 입력하세요!',
+	                    })
+						return false;
+					}
 	                Swal.fire({
 	                    icon: 'success',
 	                    title: '제품수정이 완료되었습니다.',

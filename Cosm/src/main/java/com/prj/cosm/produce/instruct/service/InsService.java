@@ -24,4 +24,7 @@ public interface InsService {
 	
 	//생산완료된 생산지시 리스트
 	public List<Map<String, Object>> completeList();
+	
+	//생산지시 완료되게 업데이트
+	public int updateInsPlay(InsVO InsVO);
 }

@@ -18,4 +18,10 @@ public interface BomService {
 	
 	//삭제
 	public int deleteBomInfo(String bomNo);
+	
+	//자재번호 리스트
+	public List<BomVO> getMaterialNoList();
+	
+	//제품번호 리스트
+	public List<BomVO> getGoodsNoList();
 }

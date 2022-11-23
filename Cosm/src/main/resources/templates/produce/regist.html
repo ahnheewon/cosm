@@ -254,7 +254,7 @@
 				},
 				{
 					header: '등록수량',
-					name: 'INSTRUCT_QUANTITY',
+					name: 'REGIST_QUANTITY',
 					align : 'center'
 				},
 				{
@@ -329,6 +329,20 @@
 	//완제품 등록 확인창
 	$().ready(function () {
         $("#alertStart").click(function () {
+        	if ($('#instructQuantity').val() == "" || $('#instructQuantity').val() == null) {
+				Swal.fire({
+                    icon: 'warning',
+                    title: '등록수량을 입력하세요!',
+                })
+				return false;
+			}
+        	if ($('#registError').val() == "" || $('#registError').val() == null) {
+				Swal.fire({
+                    icon: 'warning',
+                    title: '불량수량을 입력하세요!',
+                })
+				return false;
+			}
             Swal.fire({
                 icon: 'success',
                 title: '제품등록이 완료되었습니다.',
@@ -361,11 +375,11 @@
 		});
 		}
 	
-	// 제품정보 삭제
+	// 완제품정보 삭제
 	$().ready(function () {
         $("#delbtn").click(function () {
             Swal.fire({
-                title: '선택한 제품을 삭제하시겠습니까?',
+                title: '선택한 완제품정보를 삭제하시겠습니까?',
                 text: "다시 되돌릴 수 없습니다. 신중하세요.",
                 icon: 'question',
                 showCancelButton: true,
@@ -382,6 +396,11 @@
             			type : 'get',
             			data : {registLOT : data1},
             			success : function(data){
+            				Swal.fire(
+        		                    '삭제가 완료되었습니다.',
+        		                    '화끈하시네요~!',
+        		                    'success'
+        		                )
             				registList();
             			},
             			error : function(reject){

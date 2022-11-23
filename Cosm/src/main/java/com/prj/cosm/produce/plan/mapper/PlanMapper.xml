@@ -7,6 +7,11 @@
 	SELECT * FROM produce_plan ORDER BY plan_no DESC
 </select>
 
+<!-- 미완료된것만 보이게 -->
+<select id="completePlanList" resultType="PlanVO">
+	SELECT * FROM produce_plan WHERE plan_play_code = '미완료'
+</select>
+
 <!-- 생산계획번호 +1 -->
 <select id="getPlanNo" resultType="PlanVO">
 	SELECT 'PLAN_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(plan_no,-4)),0)+1,4,0) as plan_no

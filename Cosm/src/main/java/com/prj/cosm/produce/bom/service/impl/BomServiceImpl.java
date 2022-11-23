@@ -45,4 +45,16 @@ public class BomServiceImpl implements BomService {
 		return mapper.deleteBom(bomNo);
 	}
 
+	@Override
+	public List<BomVO> getMaterialNoList() {
+		// TODO Auto-generated method stub
+		return mapper.getMaterialNoList();
+	}
+
+	@Override
+	public List<BomVO> getGoodsNoList() {
+		// TODO Auto-generated method stub
+		return mapper.getGoodsNoList();
+	}
+
 }
