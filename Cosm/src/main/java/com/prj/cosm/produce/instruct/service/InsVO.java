@@ -24,6 +24,5 @@ public class InsVO {
 	//진행상황 리스트
 	public String codeName;
 	
-	public Date planStart;
-	public Date planEnd;
+	
 }

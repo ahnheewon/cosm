@@ -4,13 +4,16 @@
 	layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script
 	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
@@ -26,11 +29,286 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
 	crossorigin="anonymous">
-    </script>
+	
+</script>
+
 </head>
 <body>
-	<div layout:fragment="content">
-	<h3>불량 상세정보 리스트</h3>
+	<div layout:fragment="content"
+		style="margin-left: 30px; margin-right: 30px;">
+		<hr style="width: 100%">
+		<h3 style="text-align: center">생산 가동 페이지</h3>
+		<hr style="width: 100%">
+ 		<h3>진행중 생산지시 리스트</h3>
+ 		<button type="button" class="btn btn-dark btn-sm" style="float: right"
+			id="updatebtn">생산 완료</button>
+ 		<div id="grid"></div>
+		<hr style="width: 100%">
+		<h3>완료 생산지시 리스트</h3>
+		<div id="grid2"></div>
+		<button type="button" onclick="location.href='/regist'"
+					class="btn btn-primary btn-m" style="float: right; margin-right: 36px">완제품등록 페이지 이동</button>
+		<script>
+		const header = $("meta[name='_csrf_header']").attr('content');
+		const token = $("meta[name='_csrf']").attr('content');
+		window.onload = function () {
+			
+			instructList();
+			instructList2();
+			
+			//체크박스 하나만 선택
+			grid.on('check', (ev) => {
+				for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
+					if(i!=`${ev.rowKey}`){
+						grid.uncheck(i);
+					}
+				}
+				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
+					grid2.uncheck(i);
+				}
+				
+			});
+
+			grid2.on('check', (ev) => {
+				for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
+					grid.uncheck(i);
+				}
+				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
+					if(i!=`${ev.rowKey}`){
+						grid2.uncheck(i);
+					}
+				}
+			});
+				
+			grid.on('uncheck', (ev) => {
+				$('input:text').val('');
+			});
+				
+			grid2.on('uncheck', (ev) => {
+				$('input:text').val('');
+			});
+				
+			$('#grid span').remove();
+			$('#grid2 span').remove();
+		};
+		
+		
+	
+		// 생산지시 리스트 그리드
+		var grid = new tui.Grid({
+			el: document.getElementById('grid'),
+			rowHeaders: ['checkbox'],
+			minBodyHeight: 30,
+			pageOptions: {
+				useClient: true, // front에서만 페이징 하는 속성
+				perPage: 5
+			},
+			
+			scrollX: false,
+			scrollY: false,
+			columns: [
+				{
+					header: '생산지시번호',
+					name: 'INSTRUCTNO'
+				},
+				{
+					header: '생산계획번호',
+					name: 'PLANNO'
+				},
+				{
+					header: '생산최종지시량',
+					name: 'INSTRUCTQUANTITY'
+				},
+				{
+					header: '제품번호',
+					name: 'PLANPRODUCTNO'
+				},
+				{
+					header: '제품명',
+					name: 'GOODSNAME'
+				},
+				{
+					header: '시작일자(desc)',
+					name: 'PLANSTART',
+					sortingType: 'desc',
+					sortable: true
+				},
+				{
+					header: '종료일자(desc)',
+					name: 'PLANEND',
+					sortingType: 'desc',
+					sortable: true
+				},
+				{
+					header: '자재번호',
+					name: 'INSTRUCTMNO'
+				},
+				{
+					header: '투입될 자재량',
+					name: 'INSTRUCTMATERIALNUM'
+				},	
+				{
+					header: '지시일자(desc)',
+					name: 'INSTRUCTDATE',
+					sortingType: 'desc',
+					sortable: true
+				},
+				{
+					header: '진행상황',
+					name: 'INSTRUCT_PROGRESS_CODE'
+				},	
+				{
+					header: '기타사항',
+					name: 'INSTRUCTEX'
+				},	
+				]
+			});
+		// 생산지시 리스트 그리드
+		var grid2 = new tui.Grid({
+			el: document.getElementById('grid2'),
+			rowHeaders: ['checkbox'],
+			minBodyHeight: 30,
+			pageOptions: {
+				useClient: true, // front에서만 페이징 하는 속성
+				perPage: 5
+			},
+			scrollX: false,
+			scrollY: false,
+			columns: [
+				{
+					header: '생산지시번호',
+					name: 'INSTRUCTNO'
+				},
+				{
+					header: '생산계획번호',
+					name: 'PLANNO'
+				},
+				{
+					header: '제품번호',
+					name: 'PLANPRODUCTNO'
+				},
+				{
+					header: '생산최종지시량',
+					name: 'INSTRUCTQUANTITY'
+				},
+				{
+					header: '시작일자(desc)',
+					name: 'PLANSTART',
+					sortingType: 'desc',
+					sortable: true
+				},
+				{
+					header: '종료일자(desc)',
+					name: 'PLANEND',
+					sortingType: 'desc',
+					sortable: true
+				},
+				{
+					header: '자재번호',
+					name: 'INSTRUCTMNO'
+				},	
+				{
+					header: '지시일자(desc)',
+					name: 'INSTRUCTDATE',
+					sortingType: 'desc',
+					sortable: true
+				},
+				{
+					header: '진행상황',
+					name: 'INSTRUCT_PROGRESS_CODE'
+				},	
+				{
+					header: '기타사항',
+					name: 'INSTRUCTEX'
+				},	
+				]
+			});
+		//생산지시리스트 가져오기
+		function instructList(){
+			$.ajax({
+				url: "/instruct",
+				method: "GET",
+				dataType: "JSON",
+				success: function (result) {
+					console.log(result);
+					for (let plan of result) {
+						plan.PLANSTART = String(plan.PLANSTART).substr(0, 10);
+						plan.PLANEND = String(plan.PLANEND).substr(0, 10);
+						plan.INSTRUCTDATE = String(plan.INSTRUCTDATE).substr(0, 10);
+					}	
+						grid.resetData(result);
+				},
+				error: function (reject) {
+					console.log(reject);
+				}
+			});
+		}
+		// 생산지시 리스트 가져오기
+		function instructList2(){
+			$.ajax({
+				url: "/complete",
+				method: "GET",
+				dataType: "JSON",
+				success: function (result) {
+					console.log(result);
+					for (let plan of result) {
+						plan.PLANSTART = String(plan.PLANSTART).substr(0, 10);
+						plan.PLANEND = String(plan.PLANEND).substr(0, 10);
+						plan.INSTRUCTDATE = String(plan.INSTRUCTDATE).substr(0, 10);
+					}
+					grid2.resetData(result);
+				},
+				error: function (reject) {
+					console.log(reject);
+				}
+			});
+		}
+		
+		// 생산지시 완료로 변경
+		$().ready(function () {
+            $("#updatebtn").click(function () {
+                Swal.fire({
+                    title: '선택한 생산지시가 생산 완료되었습니까?',
+                    text: "다시 되돌릴 수 없습니다. 신중하세요.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: 'black',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '승인',
+                    cancelButtonText: '취소'
+                }).then((result) => {
+                	var datas = grid.getCheckedRows();
+                    if (result.isConfirmed) {
+                    	for(instruct of datas){
+                			$.ajax({
+                				url : '/updateInsPlay',
+                				type : 'post',
+                				data : {instructNo : instruct.INSTRUCTNO},
+                				beforeSend: function (xhr) {
+            						xhr.setRequestHeader(header, token);
+            					},
+                				success : function(data){
+                					Swal.fire(
+                		                    '생산이 완료되었습니다.',
+                		                    '화끈하시네요~!',
+                		                    'success'
+                		                )
+         							instructList();
+                					instructList2();
+                				},
+                				error : function(reject){
+                					console.log(reject);
+                				}
+                			});
+                			}
+                    }
+                })
+            });
+        });
+		
+		
+		</script>
+
 	</div>
 </body>
 </html>

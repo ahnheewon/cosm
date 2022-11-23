@@ -56,4 +56,19 @@
 <delete id="deleteBom">
 	DELETE FROM produce_bom WHERE bom_no = #{bomNo}
 </delete>
+
+<!-- 자재번호 리스트 -->
+<select id="getMaterialNoList" resultType="BomVO">
+	SELECT DISTINCT(m_no)
+	FROM material
+	ORDER BY m_no
+</select>
+
+<!-- 제품번호 리스트 -->
+<select id="getGoodsNoList" resultType="BomVO">
+	SELECT DISTINCT(goods_no)
+	FROM produce_goods
+	ORDER BY goods_no
+</select>
+
 </mapper>
