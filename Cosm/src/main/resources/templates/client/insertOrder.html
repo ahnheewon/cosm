@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sales main</title>
+
+<!-- chart grid : 안되면 레이아웃에 넣기 -->
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
+<script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
+
+</head>
+
+
+<body>
+<!-- 
+	☆고객등록 후 추가할 기능
+	고객가입후 조회시 사업자 번호 -> 엑셀파일(어떤시스템 및 DB에도 적용가능)가져와서 -> 모달창 -> 조회누르면 -> 업장상태확인가능하게 
+-->
+	<div layout:fragment="content">
+
+
+		<div align="center">
+			<h3>영업 관리</h3>
+		</div>
+
+
+		<!-- tab btn start  -->
+		<div>
+			<ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
+
+				<!--주문관리 tab btn-->
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="manage-tab"
+						data-bs-toggle="tab" data-bs-target="#manage" type="button"
+						role="tab" aria-controls="manage" aria-selected="true">주문관리</button>
+
+				</li>
+				<!--주문관리 tab btn-->
+
+				<!--완제품 검수, 재고, 출고관리 tab 
+				aria-selected - 탭활성화 -->
+				<li class="nav-item" role="presentation">
+
+					<button class="nav-link" id="fManage-tab" data-bs-toggle="tab"
+						data-bs-target="#fManage" type="button" role="tab"
+						aria-controls="fManage" aria-selected="true">완제품 관리</button>
+				</li>
+				<!--완제품 검수관리 tab-->
+
+
+				<!-- tab -->
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="myTab3" data-bs-toggle="tab"
+						data-bs-target="#pStock" type="button" role="tab"
+						aria-controls="insert" aria-selected="false">일단 탭</button>
+				</li>
+				<!-- tab -->
+
+			</ul>
+		</div>
+		<!-- tab btn end -->
+
+
+
+
+		<!-- 탭 본문 -->
+		<!-- 주문관리 start-->
+		<!-- div -->
+		<div class="tab-content" id="myTabContent">
+			<!--주문관리 탭-->
+			<div class="tab-pane fade show active" id="manage" role="tabpanel"
+				aria-labelledby="myTab">
+				<div style="margin: 15px;">
+
+					<!-- 검색창 start -->
+					<label for="actCd">검색 <input id="actCd">
+					</label>
+
+					<button class="btn btn-dark btn-sm">찾기</button>
+					<!-- 검색창 end -->
+
+					<hr>
+					<div>
+						<h3>주문 실적 조회</h3>
+					</div>
+					<!-- chart grid -->
+					<div>
+						<div id="chartGrid"></div>
+					</div>
+
+
+					<hr>
+					<div>
+						<h3>주문 접수 관리</h3>
+					</div>
+					<table style="width: 100%;">
+						<tr>
+
+							<!-- 
+								<td>납기일자 &nbsp;</td>
+								<td>
+									<div
+										class="tui-datepicker-input tui-datetime-input tui-has-focus">
+										<input id="endpicker-input" type="text" aria-label="Date">
+										<span class="tui-ico-date"></span>
+										<div id="endpicker-container" style="margin-left: -1px;"></div>
+									</div>
+
+									<button type="button" id="searchBtn"
+										class="btn btn-dark btn-sm">찾기</button>
+									<button type="button" id="cancelBtn"
+										class="btn btn-dark btn-sm">초기화</button>
+								</td>
+								 -->
+
+							<td>
+								<!-- 
+							$('#delbtn').on('click', checkDel); // 체크박스 - 삭제버튼 이벤트
+							$('#updatebtn').on('click', updatebtn); //주문 - 수정		
+							$('#newPro').on('click', newPro); //신규생산 지시버튼 이벤트 -> 체크박스 다중선택 가능
+							$('#exlBtn').on('click', exl); //엑셀버튼 클릭 이벤트			
+							 -->
+								<button id="newPro" type="button"
+									class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+									data-bs-target="#pctRequest">신규</button>
+								<button id="proPlz" class="btn btn-secondary btn-sm">접수</button>
+								<button id="updatebtn" class="btn btn-secondary btn-sm">수정</button>
+								<button id="delbtn" class="btn btn-secondary btn-sm">삭제</button>
+								<button id="exlBtn" class="btn btn-secondary btn-sm">엑셀</button>
+								<button class="btn btn-secondary btn-sm">PDF</button>
+
+							</td>
+						</tr>
+
+						<tr>
+							<td colspan="3">
+								<!-- 전체조회 grid filter -->
+								<div id="grid"></div>
+							</td>
+						</tr>
+
+					</table>
+				</div>
+			</div>
+
+
+
+
+
+
+
+
+
+			<!-- 생산 관리 tab body -->
+			<!-- 등록 탭 -->
+			<div class="tab-pane fade" id="myTab2" role="tabpanel"
+				aria-labelledby="myTab2">
+				<div style="margin: 15px;">
+					<table style="width: 100%;">
+						<tr>
+							<td style="width: 140px;">생산 계획명 &nbsp;</td>
+							<td><input type="text" name="planName" id="planName"
+								placeholder="계획명을 입력하세요"></td>
+						</tr>
+						<tr>
+							<td>생산 계획 일자 &nbsp;</td>
+							<td>
+								<div
+									class="tui-datepicker-input tui-datetime-input tui-has-focus">
+									<input type="text" id="datepicker-input" aria-label="Date-Time">
+									<span class="tui-ico-date"></span>
+								</div>
+								<div id="wrapper" style="margin-top: -1px;"></div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="insertGrid" style="width: 100%;"></div>
+							</td>
+						</tr>
+						<tr>
+							<td style="text-align: left;" colspan="2">
+								<!-- 모달버튼 -->
+								<button type="button" id="showBtn" class="btn btn-dark btn-sm"
+									data-bs-toggle="modal" data-bs-target="#requestModal">생산요청서
+									조회</button>
+								<button type="button" id="insertBtn" class="btn btn-dark btn-sm">계획등록</button>
+								<button type="button" id="plusBtn" class="btn btn-dark btn-sm">행
+									추가</button>
+								<button type="button" id="removeBtn"
+									class="btn btn-dark btn-sm btn-danger">행 삭제</button>
+							</td>
+						</tr>
+					</table>
+
+				</div>
+
+			</div>
+			<!-- 생산지시 관리 tab end -->
+
+		</div>
+		<!-- tab 본문 end -->
+
+
+
+
+
+		<!--modal start-->
+		<!-- 안 먹고있음  -->
+		<!-- 생산요청서 모달 -->
+		<div class="modal" id="requestModal" tabindex="-1">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">생산요청서 목록</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close" id="close_modal"></button>
+					</div>
+					<div class="modal-body">
+						<div>
+							<div id="requestModalGrid"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+		<script>
+			/*데이터피커-보류, 엑셀0, PDF, 수정0, 신규 -> 접수 0, 차트, 삭제전 경고창 - 만들거 11/21*/
+			//데이터 -> 계속 호출, 그리드는 한번 호출하면되니까 굳이 함수로 사용 안해도됨 
+			
+			const header = $("meta[name='_csrf_header']").attr('content');
+			const token = $("meta[name='_csrf']").attr('content');
+			const Chart = toastui.Chart; //차트그리드
+			
+			chartList(); //주문차트 그리드
+			getOrderList(); //주문조회 그리드 
+
+
+
+			/*------------------------------
+			 그리드 리프레시
+			--------------------------------*/
+			function gridRef() {
+				const matIn = document.getElementById('myTab');
+				manage.addEventListener('click', function () {
+					grid.refreshLayout();
+				})
+
+				const matOut = document.getElementById('myTab2');
+				matOut.addEventListener('click', function () {
+					grid2.refreshLayout();
+				})
+			}
+
+
+			//버튼 이벤트 핸들러
+			$('#delbtn').on('click', checkDel); // 체크박스 - 삭제버튼 이벤트
+			$('#updatebtn').on('click', updatebtn); //주문 - 수정		
+			$('#newPro').on('click', newPro); //신규주문 클릭 이벤트 -> 체크박스 다중선택 가능
+			$('#exlBtn').on('click', exl); //엑셀버튼 클릭 이벤트
+			$('#proPlz').on('click', proPlz); //요청 클릭 이벤트 - 신규txt->완료로 변환
+
+
+
+
+			/*----------------------
+			주문목록 아작스연결 호출
+			----------------------*/
+			window.onload = function () {
+				getOrderList();
+			}
+
+
+			/*----------------------
+			월별 주문수량 차트그리드 , 오류 : 튜토리얼 잘 보기 
+			----------------------*/
+			function chartList() {
+				const el = document.getElementById('chartGrid');
+				
+				let data = {			
+						categories: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월','11월','12월'],
+						series: [{
+							name: 'TPA501',
+							data: [5000, 3000, 5000, 7000, 6000, 4000, 1000]
+						},
+						{
+							name: 'TPA502',
+							data: [8000, 4000, 7000, 2000, 6000, 3000, 5000]
+						},
+						{
+							name: 'TPA503',
+							data: [4000, 4000, 6000, 3000, 4000, 5000, 7000]
+						},
+						{
+							name: 'TPA504',
+							data: [3000, 4000, 3000, 1000, 2000, 4000, 3000]
+						}
+					]
+				};
+				const options = {
+						  chart: { width: 800, height: 400 }
+						};
+				
+				const chart = Chart.columnChart({el, data, options});
+		
+				}
+
+
+						//주문 목록 리스트 
+
+							const grid = new tui.Grid({
+
+								el: document.getElementById('grid'),
+								rowHeaders: ['checkbox'], //왼쪽 체크박스
+								scrollX: false, //세로 스크롤
+								scrollY: false, //가로 스크롤
+								columns: [{
+										header: '주문번호',
+										name: 'orderNo',
+										width: 'auto'
+									}, {
+										header: '거래처번호',
+										name: 'clientNo',
+									}, {
+										header: '제품번호',
+										name: 'productNo'
+									}, {
+										header: '주문일자',
+										name: 'orderDate'
+									}, {
+										header: '납기일자',
+										name: 'deliveryDate',
+									}, {
+										header: '제품명',
+										name: 'productName',
+									}, {
+										header: '수량',
+										name: 'totalNum',
+									}, {
+										header: '공급가액',
+										name: 'totalPrice',
+									}, {
+										header: '부가세',
+										name: 'surtax',
+
+									}, {
+										header: '요청사항',
+										name: 'note',
+
+									}, {
+										header: '주문타입',
+										name: 'orderCode'
+
+
+									},
+									{
+										header: '배달상황',
+										name: 'deliveryInfo',
+										formatter: 'listItemText',
+										editor: {
+											type: 'select',
+											options: {
+												listItems: [{
+														text: '대기중',
+														value: 'B0101'
+													},
+													{
+														text: '배송중',
+														value: 'B0102'
+													},
+													{
+														text: '배송완료',
+														value: 'B0103'
+													}
+												]
+											}
+										}
+
+									}, {
+										header: '출납상황',
+										name: 'ioCode',
+										formatter: 'listItemText',
+										editor: {
+											type: 'select',
+											options: {
+												listItems: [{
+														text: '대기중',
+														value: 'B0101'
+													},
+													{
+														text: '배송중',
+														value: 'B0102'
+													},
+													{
+														text: '배송완료',
+														value: 'B0103'
+													}
+												]
+											}
+										}
+
+									}
+								]
+							});
+							
+						
+
+						// 주문 삭제 모달
+						/*
+						let delbtn = document.getElementById('delbtn');
+						delbtn.addEventListener('click', function () {
+							let myModalAlternative = new bootstrap.Modal('#delModal')
+							let modalToggle = document.getElementById('delModal');
+							myModalAlternative.show(modalToggle)
+							mioGrid.refreshLayout()
+						})
+						*/
+
+
+
+						/*------------
+						삭제 버튼 클릭(그리드행 삭제)
+
+						// 1. checkbox 선택
+						// 2. 선택된 checkbox의 값에서 no 가져오기  버튼 
+						//-> 함수(onclick -> ajax 실행) -> no 보내주고 삭제
+						// 3. 삭제 실행 (모달창의 확인 클릭)
+						//getCheckedRows -> 배열
+						----------------*/
+
+						function checkDel() {
+							const noList = [];
+							var obj = grid.getCheckedRows()
+							console.log(obj);
+							for (key of obj) {
+								//읽어낼 컬럼명
+								console.log(key.orderNo);
+								noList.push(key.orderNo); //{}
+							}
+							console.log(noList);
+							var header = $("meta[name='_csrf_header']").attr('content');
+							var token = $("meta[name='_csrf']").attr('content');
+							// debugger
+							$.ajax({
+								url: "orders/ajaxDelcheckOrder",
+								method: "Post",
+								contentType: "application/json",
+								data: JSON.stringify({
+									"noList": noList
+								}),
+								beforeSend: function (xhr) {
+									xhr.setRequestHeader(header, token);
+								},
+								success: function (result) {
+									//삭제된 데이터들 새로고침 
+									//rowKey
+									const delList = [];
+									for (key of obj) {
+										//읽어낼 컬럼명
+										console.log(key.rowKey);
+										delList.push(key.rowKey);
+									}
+									grid.removeRows(delList)
+
+								},
+								error: function (reject) {
+									console.log(reject);
+								}
+							});
+						}
+
+
+
+
+						/*------------
+						수정 버튼 클릭(출납, 배송, 생산 셀렉트엔터)
+						----------------*/
+						function updatebtn() {
+							// debugger
+							$.ajax({
+								url: "/orders/ajaxUpOrders",
+								method: "Post",
+								contentType: "application/json",
+								data: JSON.stringify(grid.getModifiedRows().updatedRows),
+								beforeSend: function (xhr) {
+									xhr.setRequestHeader(header, token);
+								},
+								success: function (result) {
+									console.log(result);
+
+								},
+								error: function (reject) {
+									console.log(reject);
+								}
+							});
+						};
+
+
+
+						/*------------
+						신규주문버튼 클릭(체크박스에 다중선택 -> 생산요청(제고연결))
+						----------------*/
+						function newPro() {
+							let data = grid.getColumnValues('orderCode');
+							// console.log(data);
+
+							let newP = grid.findRows({
+								orderCode: '신규'
+							});
+							newP.forEach((row) => {
+								grid.check(row.rowKey);
+							});
+						};
+
+						/*------------
+						접수버튼 클릭(신규 -> 접수로 txt변환)
+						--------------*/
+						function proPlz() {
+							/*
+							var recNos = ''; // 접수번호 초기화
+							for(let i=0; i<grid.getCheckedRows().length; i++){
+								if(i != 0){
+									recNos += ',';
+								}
+								recNos += grid.getCheckedRows()[i].orderNo
+							}
+							grid.getCheckedRows();
+							console.log(recNos);	
+							*/
+
+							//체크안하고 접수 버튼 클릭시 알림창
+							var rec = grid.getCheckedRows();
+							if (rec == 0) {
+								alert('신규 주문을 선택해 주세요.');
+							}
+
+							$.ajax({
+								url: "/orders/ajaxRecNos",
+								method: "Post",
+								data: JSON.stringify(grid.getCheckedRows()),
+								contentType: "application/json",
+								beforeSend: function (xhr) {
+									xhr.setRequestHeader(header, token);
+								},
+								success: function (result) {
+									console.log(result);
+									getOrderList();
+								},
+								error: function (error) {
+									console.log(error);
+								}
+							})
+						}
+
+
+						/*------------
+						 아작스 연결 - 주문목록
+						----------------*/
+						function getOrderList() {
+							$.ajax({
+								url: "/orders/ajaxOrders",
+								method: "GET",
+								dataType: "JSON",
+								success: function (result) {
+									grid.resetData(result);
+								},
+								error: function (reject) {
+									console.log(reject);
+								}
+							});
+						}
+
+
+						/*------------
+						 엑셀 다운받기
+						----------------*/
+						function exl() {
+							let options = {
+								includeHeader: true,
+								includeHiddenColumns: true,
+								onlySelected: true,
+								fileName: 'OrderList'
+							};
+							grid.export('xlsx', options);
+						};
+						// tab1 - 주문 관리 end 
+
+
+
+
+
+
+
+						//tab2 - 생산관리 start
+						function myTab2() {
+
+						}
+						//tab2 - 생산관리 end
+		</script>
+
+
+	</div>
+</body>
+
+</html>
