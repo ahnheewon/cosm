@@ -12,7 +12,7 @@ public interface WorkService {
 				public List<WorkVO> getWorkList();
 				
 				// 단건조회
-				public WorkVO getWorkInfo(int workNo);
+				public WorkVO getWorkInfo(int workNo, int workEquipNo);
 
 				// 등록
 				public int insertWork(WorkVO vo);

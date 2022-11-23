@@ -8,7 +8,8 @@
 <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 	
@@ -147,10 +148,16 @@
                     </tr>
                     <tr>
 						<td>점검예정일</td>
-                        <td>
-                      <input class="form-control" id="testDueDate" name="testDueDate" type="date" required>
-                        </td>
-                    </tr>
+									<td>
+										<div
+											class="tui-datepicker-input tui-datetime-input tui-has-focus">
+											<input id="tr-start-input" type="text" name="testDueDate"
+												aria-label="Date"  autocomplete="off" placeholder="Click"> <span
+												class="tui-ico-date"></span>
+											<div id="tr-start-container" style="margin-left: -1px;"></div>
+										</div>
+									</td>
+								</tr>
                     <tr>
                         <td>점검이유</td>
                         <td><input class="form-control" id="testReason" name="testReason" type="hidden" value="오래됨" required>
@@ -162,8 +169,8 @@
                    </tr>
                     <tr>
                         <td>점검내용</td>
-                        <td><textarea class="form-control" id="testContent" name="testContent" rows="5" readonly="readonly"
-                        style="color:gray; height :1px;">점검 후 기입 예정</textarea></td>
+                        <td><textarea class="form-control " id="testContent" name="testContent" rows="5" readonly="readonly"
+                        	onkeydown="resize(this)" style="height :48px;">점검 후 기입 예정</textarea></td>
                     </tr> 
  				
                	 	</table>
@@ -197,7 +204,7 @@
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 					
 					<!-- Modal body -->
-					<div id="equipInfo" class="modal-body">
+					<div id="testInfo" class="modal-body">
 						
 					
 						<table class="table">
@@ -209,20 +216,28 @@
 		                    <td>점검예정일</td>
 		                        <td>
 		                        	<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-				                    <input id="w-start-input" type="text" name="stestDueDate" aria-label="Date" readonly>
+				                    <input id="tv-start-input" type="text" name="sTestDueDate" aria-label="Date" style="background-color :#E9ECEF;" readonly>
 				                    <span class="tui-ico-date"></span>
-				                    <div id="w-start-container" style="margin-left: -1px;"></div>
+				                    <div id="tv-start-container" style="margin-left: -1px;"></div>
 				                    </div>
 		                        </td>		
 		                    </tr>
 		                     <tr>
 		                        <td>점검이유</td>
-		                        <td><input class="form-control" id="sTestReason" name="sTestReason" type="text" readonly></td>
+		                        <td><input class="form-control wantUpdate1" id="sTestReason" name="testReason" onkeydown="resize(this)" 
+		                       	 	style="height :48px;" autocomplete="off" type="text" readonly></td>
 		                     </tr>
 		                     <tr>
 		                        <td>점검내용</td> <!-- 특이사항 -->
-		                        <td><textarea class="form-control" id="testContent" name="testContent" rows="5" readonly="readonly"
-		                        style="color:gray; height :1px;">점검 후 기입 예정</textarea></td>
+		                        <td><textarea class="form-control wantUpdate1 " id="sTestContent" name="testContent"  onkeydown="resize(this)" 
+		                        	style="height :48px;" autocomplete="off" rows="5" readonly="readonly">점검 후 기입 예정</textarea></td>
+                        	</tr>                  
+		                     <tr>
+		                        <td>진행상황</td> <!-- 특이사항 -->
+		                        <td><input type="radio" name="testCode" value="미실시" checked="checked" style="accent-color :gray;" onclick="return(false);">미실시
+									<input type="radio" name="testCode" value="진행중" style="accent-color : gray;" onclick="return(false);">진행중
+									<input type="radio" name="testCode" value="보류" style="accent-color :gray;" onclick="return(false);">보류
+									<input type="radio" name="testCode" value="점검완료" style="accent-color :gray;" onclick="return(false);">점검완료</td>
                         	</tr>                  
 		                </table>
 					</div>
@@ -230,10 +245,10 @@
 						<!-- Modal footer -->
 						<div class="modal-footer">
 							<input id="update"type="hidden" >
-							<button type="button"  class="btn btn-primary updateBtn" onclick="updateBtnClick()">수정</button>
+							<button type="button"  class="btn btn-primary updateBtn" onclick="updateTBtnClick()">수정</button>
 							<input type="hidden" id="thisNoUD" name="equipNo"> <!-- 업데이트, 삭제 때문에 가져온 설비번호 값. -->
 							<button type="button" onclick="deleteEquip()" class="btn btn-primary">삭제</button>
-							<button type="button"  onclick="cancelUpdateEquip()"  class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+							<button type="button"  onclick="cancelUpdateTest()"  class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
 						</div>
 				</form>
 		
@@ -270,14 +285,24 @@
 							</td>    
 	                    </tr>
 	                    <tr>
+		                    <td>고장발생일</td>
+		                        <td>
+		                        	<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+				                    <input id="f-start-input" type="text" name="failDate" aria-label="Date" >
+				                    <span class="tui-ico-date"></span>
+				                    <div id="f-start-container" style="margin-left: -1px;"></div>
+				                    </div>
+		                        </td>		
+		                    </tr>
+	                    <tr>
 	                        <td>고장내역</td>
-	                        <td><textarea class="form-control textWidth" id="failContent" name="failContent" rows="5"></textarea></td>
+	                        <td><textarea class="form-control textWidth resizeInsertForm" id="failContent" onkeydown="resize(this)" name="failContent" rows="5"></textarea></td>
 	                    </tr>    
                         <tr>
 	                        <td>수리내역</td>  
-							<td><textarea class="form-control" id="testContent" name="testContent" rows="5"
+							<td><textarea class="form-control resizeInsertForm" id="failRepairContent" name="failRepairContent" rows="5"
 							 	onkeydown="resize(this)" readonly="readonly"
-                        		style="color:gray; height :1px;">수리 후 기입 예정</textarea>
+                        		style="color:gray;">수리 후 기입 예정</textarea>
                         	</td>
                         </tr>                 
 	                </table>
@@ -295,50 +320,72 @@
 	</div>
 	
 	<!-- The Modal 4 고장 단건 조회 모달 -->
-	<div class="modal fade" id="myModal4">
+	<div class="modal fade" id="myModal4" data-backdrop="static" data-keyboard="false">
 		
-		<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-	
-			<!-- Modal Header -->
-			<div class="modal-header">
-			<h4 class="modal-title"><span id="whatPno"></span>고장 정보</h4>
-			<button type="button" onclick="cancelUpdateEquip()" class="btn-close" data-bs-dismiss="modal"></button>
-			</div>
-	
-			<form id="updateForm2" method="post" name="process">
-			<!-- <sec:csrfInput/> -->
-			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-			<!-- Modal body -->
-			<div id="equipInfo" class="modal-body">
-			<table class="table">
+		<div class="modal-dialog modal-dialog-centered" >
+			<div class="modal-content">
+		
+					<!-- Modal Header -->
+					<div class="modal-header">
+					<h4 class="modal-title"><span id="whatEno"></span>고장 정보</h4>
+					<button type="button" onclick="cancelUpdateEquip()" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+		
+				<form id="updateForm1" class="updateForm" method="post" name="equip">
+				<!-- <sec:csrfInput/> -->
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 					
-                    <tr>
-						<td>공정명</td>
-                        <td><input class="form-control wantUpdate2" id="selectProcessName" name="processName" type="text"  readonly></td>              
-                    </tr>
-                    <tr>
-                        <td>공정설명</td>
-                        <td><textarea class="form-control wantUpdate2" id="selectProcessContent" name="processContent" rows="5" readonly></textarea></td>
-                    </tr> 
-                     <tr>
-                        <td>공정순서</td>
-                        <td><input class="form-control wantUpdate2" id="selectProcessSeq" name="processSeq" type="text" readonly></td>     
-                    </tr>
-                                   
-                </table>
+					<!-- Modal body -->
+					<div id="failInfo" class="modal-body">
+						
+					
+						<table class="table">
+		                    <tr>
+								<td>설비명</td>
+		                        <td><input class="form-control" id="sFailEquipName" name="testEquipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->             
+		                    </tr>
+		                    <tr>
+		                    <td>고장발생일</td>
+		                        <td>
+		                        	<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+				                    <input id="fv-start-input" class="wantUpdate" type="text" name="failDate" aria-label="Date" style="background-color :#E9ECEF;" readonly>
+				                    <span class="tui-ico-date"></span>
+				                    <div id="fv-start-container" style="margin-left: -1px;"></div>
+				                    </div>
+		                        </td>		
+		                    </tr>
+		                     <tr>
+		                        <td>고장내역</td>
+		                        <td><input class="form-control wantUpdate "  id="sFailContent" name="failContent" type="text" readonly></td>
+		                     </tr>
+		                    <tr>
+		                        <td>수리내역</td>
+								<td><textarea class="form-control wantUpdate resizeInsertForm" id="sfailRepairContent" name="failRepairContent" rows="5"
+								 	onkeydown="resize(this)" readonly="readonly"
+	                        		style="color:gray; height :1px;">수리 후 기입 예정</textarea>
+	                        	</td>
+	                        </tr>                
+		                     <tr>
+		                        <td>진행상황</td> <!-- 특이사항 -->
+		                        <td><input type="radio" name="failCode" value="미실시" checked="checked" style="accent-color :gray;" onclick="return(false);">미실시
+									<input type="radio" name="failCode" value="진행중" style="accent-color : gray;" onclick="return(false);">진행중
+									<input type="radio" name="failCode" value="보류" style="accent-color :gray;" onclick="return(false);">보류
+									<input type="radio" name="failCode" value="점검완료" style="accent-color :gray;" onclick="return(false);">수리완료</td>
+                        	</tr>                  
+		                </table>
+					</div>
+		
+						<!-- Modal footer -->
+						<div class="modal-footer">
+							<input id="update"type="hidden" >
+							<button type="button"  class="btn btn-primary updateBtn" onclick="updateBtnClick()">점검</button>
+							<input type="hidden" id="thisNoUD" name="equipNo"> <!-- 업데이트, 삭제 때문에 가져온 설비번호 값. -->
+							<button type="button" onclick="deleteEquip()" class="btn btn-primary">삭제</button>
+							<button type="button"  onclick="cancelUpdateEquip()"  class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+						</div>
+				</form>
+		
 			</div>
-	
-			<!-- Modal footer -->
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary updateBtn2" onclick="updateProcessBtnClick()">수정</button>
-				<input type="hidden" id="thisNoUD2" name="processNo" > <!-- 업데이트, 삭제 때문에 가져온 공정번호 값. -->
-				<button type="button" onclick="deleteProcess()" class="btn btn-primary">삭제</button>
-				<button type="button"class="btn btn-danger" onclick="cancelUpdateProcess()"  data-bs-dismiss="modal">닫기</button>
-			</div>
-		</form>
-	
-		</div>
 		</div>
 	</div>
 	
@@ -367,17 +414,18 @@
 							<td>공장장님</td>
 						</tr>
 						<tr class="emp">
-							<td><img src="/equipmentCss/홍길동인.PNG"></td>
+							<td><img src="/equipmentCss/홍길동인.PNG"></td> <!-- 본인 도장 사진으로 대체 -->
 							<td></td>
 							<td></td>
 							<td></td>
 						</tr>
 					</table>
+					
 					<br>
 					<table class="table">	
 	                    <tr>
 	                        <td>공사명</td>
-                        	<td><input class="form-control" id="workName" name="workName" type="text"></td>	  
+                        	<td><input class="form-control" id="workName" name="workName" autocomplete="off" type="text"></td>	  
 	                    </tr>
 	                    <tr>
 	                    	<td>설비명</td> 
@@ -397,25 +445,27 @@
 	                        <td>시공일정</td>  
 							<td>
 							 	  <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-				                  <input id="w-start-input" type="text" name="workDate" aria-label="Date">
+				                  <input id="w-start-input" name="workDate" autocomplete="off" type="text" aria-label="Date">
 				                  <span class="tui-ico-date"></span>
 				                  <div id="w-start-container" style="margin-left: -1px;"></div>
 				               	  </div>
 				               <span>-</span>
 				               <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-				                  <input id="end-input2" name="workEndDate" type="text" aria-label="Date">
+				                  <input id="w-end-input" name="workEndDate" autocomplete="off" type="text" aria-label="Date">
 				                  <span class="tui-ico-date"></span>
-				                  <div id="end-container2" style="margin-left: -1px;"></div>
+				                  <div id="w-end-container" style="margin-left: -1px;"></div>
 				               </div>
 							</td>	                     
                         </tr>
 	                    <tr>
 	                        <td>공사내용</td>
-	                        <td><textarea class="form-control textWidth" id="workContent" name="workContent" rows="5"></textarea></td> 
+	                        <td><textarea class="form-control" id="workContent" name="workContent"  placeholder="입력하세요.." 
+	                        	onkeydown="resize(this)" style="height :48px;" autocomplete="off" rows="5"></textarea></td> 
 	                    </tr>
 	                    <tr>
 	                    	<td>특이사항</td>
-	                        <td><textarea class="form-control textWidth" id="workPs" name="workPs" rows="5"></textarea></td>
+	                        <td><textarea class="form-control" id="workPs" name="workPs"  placeholder="입력하세요.." 
+	                        	onkeydown="resize(this)" style="height :48px;" autocomplete="off" rows="5"></textarea></td>
 	                    </tr>
 	                    <tr>
 	                        <td>공사업체</td>
@@ -448,18 +498,122 @@
 		</div>
 	</div>
 
+	<!-- The Modal 6 공사 단건 조회 모달 -->
+	<div class="modal fade" id="myModal6" data-backdrop="static" data-keyboard="false">
+		
+		<div class="modal-dialog modal-dialog-centered" >
+			<div class="modal-content">
+		
+					<!-- Modal Header -->
+					<div class="modal-header">
+					<h4 class="modal-title">공사 정보</h4>
+					<button type="button" onclick="cancelUpdateEquip()" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+		
+				<form id="updateForm1" class="updateForm" method="post" name="equip">
+				<!-- <sec:csrfInput/> -->
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					
+					<!-- Modal body -->
+					<div id="workInfo" class="modal-body">
+							<div class="modal-body" style="padding: 0.3rem;"> 
+					<table class="emp" >
+						<tr class="emp">
+							<td>설비사원</td>
+							<td>설비팀장</td>
+							<td>생산팀장</td>
+							<td>공장장님</td>
+						</tr>
+						<tr class="emp">
+							<td><img src="/equipmentCss/홍길동인.PNG"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+					<button type="button"  class="btn btn-primary updateBtn" style="float:right;" onclick="updateBtnClick()">승인</button>
+					<br>
+					
+						<table class="table">
+		                    <tr>
+								<td>공사명</td>
+		                        <td><input class="form-control" id="sWorkName" name="workName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->             
+		                    </tr>
+		                    <tr>
+								<td>설비명</td>
+		                        <td><input class="form-control" id="sWorkEquipName" name="workEquipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->             
+		                    </tr>
+		                   	<tr>
+	                        	<td>시공일정</td>  
+								<td>
+								 	  <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+					                  <input id="wv-start-input" name="workDate" autocomplete="off" type="text" aria-label="Date" 
+					                  		style="background-color :#E9ECEF;" readonly>
+					                  <span class="tui-ico-date" ></span>
+					                  <div id="wv-start-container" style="margin-left: -1px;"></div>
+					               	  </div>
+					               <span>-</span>
+					               <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+					                  <input id="wv-end-input" name="workEndDate" autocomplete="off" type="text" aria-label="Date" 
+					                  		style="background-color :#E9ECEF;" readonly>
+					                  <span class="tui-ico-date"></span>
+					                  <div id="wv-end-container" style="margin-left: -1px;"></div>
+					               </div>
+								</td>
+							</tr>
+							
+							 <tr>
+		                        <td>공사내역</td>
+		                        <td><input class="form-control wantUpdate " onkeydown="resize(this)" 
+		                        		style=" height :48px;" id="sWorkContent" name="workContent" type="text" readonly></td>
+		                     </tr>
 
+							 <tr>
+		                        <td>특이사항</td>
+								<td><textarea class="form-control wantUpdate " id="sWorkPs" name="workPs" rows="5"
+								 	onkeydown="resize(this)" style="height :48px;" readonly="readonly"></textarea>
+	                        	</td>
+	                        </tr>
+
+							 <tr>
+		                        <td>공사업체</td>
+		                        <td><input class="form-control wantUpdate"  id="sWorkCompany" name="workCompany" type="text" readonly></td>
+		                     </tr>
+		                     
+		                     <tr>
+		                        <td>예상비용</td>
+		                        <td><input class="form-control wantUpdate"  id="sWorkPay" name="workPay" type="text" readonly></td>
+		                     </tr>
+		                                      
+		                </table>
+					</div>
+					</div>
+		
+						<!-- Modal footer -->
+						<div class="modal-footer">
+							<button type="button"  class="btn btn-primary updateBtn" onclick="updateBtnClick()">수정</button> <!--  -->
+							
+							<input type="hidden" id="thisSeqUD" name="signSeq"> <!-- 결재순서 업데이트 때문에 가져온 값. -->
+							<input type="hidden" id="thisNoUD" name="workEquipNo"> <!-- 업데이트, 삭제 때문에 가져온 설비번호 값. -->
+							<button type="button" onclick="deleteEquip()" class="btn btn-primary">삭제</button>
+							<button type="button"  onclick="cancelUpdateEquip()"  class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+						</div>
+				
+				</form>
+				
+			</div>
+		</div>
+	</div>
 
 <script type="text/javascript">
-/* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */
-/* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */	
+/* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */
+/* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */	
 
 /* 숫자만 적으세요 그리고 음수는 안돼요 함수 미사용중 */
 
 function plzNum(){
 	let tag = document.getElementById('workPay');
 	
-
 	if(tag.value < 0){	
 		alert('금액을 제대로 입력해주세요.');
 		return false;
@@ -520,26 +674,32 @@ function test (id){
 			    {
 					header:'점검번호',
 					name:'testNo'
+					,align : 'center'
 				},
 			    {
 			        header: '설비명',
 			        name: 'testEquipName'
+			        ,align : 'center'
 			    },
 			    {
 			        header: '점검예정일',
 			        name: 'testDueDate'
+			        ,align : 'center'
 			    },
 			    {
-			        header: '점검이유',
+			        header: '점검사유',
 			        name: 'testReason'
+			        ,align : 'center'
 			    },
 			    {
 			        header: '점검내역',
 			        name: 'testContent'
+			        ,align : 'center'
 			    },
 			    {
 			        header: '진행상황',
 			        name: 'testCode'
+			        ,align : 'center'
 			    }
 			    ]
 			});
@@ -555,29 +715,32 @@ function test (id){
     
 	})
 
-  /*  공정 단건조회 불러오는 아작스 함수 */
+  /*  점검 단건조회 불러오는 아작스 함수 */
 
-	function getTestNo(testNo) {
+	function getTestNo(testNo,testEquipNo) {
 			
-		    url="/equipment/getTestInfo?testNo="+testNo // get방식이라 ?equipNo=
+		    url="/equipment/getTestInfo?testNo="+testNo+"&testEquipNo="+testEquipNo // get방식이라 ?equipNo=
 		    fetch(url) 
 		    .then(res=>res.json())
 		    .then(obj=>{
 		        console.log(obj);
-		        
+		        console.log(obj.testDueDate);
+		        console.log(obj.testEquipName);
 				document.querySelector('#sTestEquipName').value=obj.testEquipName;
-				document.getElementByTagName('sTestDueDate').value=obj.testDueDate;
+				document.querySelector('#tv-start-input').value=obj.testDueDate;
 		        document.querySelector('#sTestReason').value=obj.testReason; 
-		        document.querySelector('#sTestContent').value=obj.testContent;
-		       
+		       		       
 		    })
 	    
 		}
-		 /* 공정 그리드 셀 클릭-> 모달 팝업 이벤트 */
+
+	
+/* 점검 그리드 셀 클릭-> 모달 팝업 이벤트 */
 		 
 	    testGrid.on('click', ev => {
 	    	const tnoRow = testGrid.getRow(ev.rowKey); // 행 (객체)
-	    	const tno = tnoRow.testNo; // 행의 공정번호
+	    	const tno = tnoRow.testNo; // 행의 점검번호
+	    	const eno = tnoRow.testEquipNo; // 행의 설비번호
 	    	console.log(tno);
 	   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
 	    	console.log(ev);
@@ -588,7 +751,7 @@ function test (id){
 		    	// 생성 시 모달 속성을 넣어줍니다.
 		    	const modalToggle2 = document.getElementById('myModal2'); 
 		    	
-				getTestNo(tno);
+				getTestNo(tno,eno);
 		    	myModal2.show(modalToggle2);
 		    	
 				}
@@ -596,22 +759,167 @@ function test (id){
 		});
 
 		
-		/*  수정 취소 함수 */
-		
-/* 		function cancelUpdateEquip() {
-			console.log("수정 취소버튼 클릭");
-			const wantUpdate = document.getElementsByClassName('wantUpdate');	 
-			for (var i = 0; i< wantUpdate.length; i++) {
-	            wantUpdate[i].readOnly =true;
-	            wantUpdate[i].required = false;
-	        }
+
+/* 점검 수정 버튼 누른 함수 */
+			function updateTBtnClick() {
+				
+				console.log("점검 수정 버튼 클릭");
+				const wu = document.getElementsByClassName('wantUpdate1');	 // 점검1 고장2 공사3
+				for (var i = 0; i< wu.length; i++) {
+		            wu[i].readOnly = false;
+		            wu[i].required = true;
+		        }
+				document.querySelector('#sTestContent').innerText=''; // 제거
+				document.querySelector('#sTestContent').attr('placeholer','"입력해주세요.."')
+				
+				const radio = document.querySelectorAll('input[name="testCode"]');	// 배열
+				for (var i = 0; i< radio.length; i++) {
+					radio[i].removeAttr("onclick"); // 온클릭 false 해제 => 선택가능
+		        }
+				
+				const tcode = document.querySelector('input[name="testCode"]:checked').value;
+				
+				const btn = document.querySelector('.updateBtn1')
+				btn.innerText='저장';
+				btn.removeAttribute('onclick'); // 기존 event 제거
+				//btn.removeEventListener('click',updateBtn);
+				btn.addEventListener('click',updateProcess);
+				
+				
+				//만약 점검완료를 하려고하면?
+						if(tcode == '점검완료'){
+							
+							if(confirm('점검완료 처리하시겠습니까?')){
+								// 네 -> 점검 완료 수정불가 상태
+								//최종점검완료 아작스
+								
+							}else {
+								// 아니오
+							//단순 수정아작스 	
+							
+							
+							}
+							
+							
+						}
+			}
+
+/* 공정 수정 함수 */	
+			function updateTest() {
 			
-			const btn = document.querySelector('.updateBtn')
-			btn.innerText='수정';
-			btn.removeEventListener('click',updateEquip);
-		} */
+				console.log("아작스 전송");
+				 const url="/equipment/updateTest";
+				 
+
+				 const data = new FormData(document.getElementById('updateForm2'));
+				    	 
+				 fetch(url, {method: 'POST', body : data})
+				    .then(res=>res.json())
+				    .then(obj=>{
+				        console.log(obj);
+				        
+				        const wu = document.getElementsByClassName('wantUpdate2');	 
+					 	for (var i = 0; i< wu.length; i++) {
+				            wu[i].readOnly =true;
+				            wu[i].required = false;
+				        }
+					 	
+					 	const btn = document.querySelector('.updateBtn2')
+						btn.innerText='수정';
+						btn.removeEventListener('click',updateProcess);
+						btn.setAttribute('onclick','updateProcessBtnClick()');
+						
+						alert('수정완료!');
+						location.reload(true);// 새로고침
+				        
+					})
+					.catch((error) => console.log("error:", error));
+			}
+			
+			
+/* 점검 수정 취소 함수 */
+			
+			function cancelUpdateTest() {
+				console.log("수정 취소버튼 클릭");
+				const wu = document.getElementsByClassName('wantUpdate1');
+				for (var i = 0; i< wu.length; i++) {
+		            wu[i].readOnly =true;
+		            wu[i].required = false;
+		        }		
+				const btn = document.querySelector('.updateBtn1')
+				
+				btn.innerText='수정';
+				btn.removeEventListener('click',updateTest);
+				location.reload(true);// 새로고침
+			}
+			
+
+	
+
+/*  /* 공정 삭제 하는 함수 */
+			
+			function deleteProcess() {
+
+				const processNo = document.getElementById('thisNoUD2').value
+				
+			// 먼저, 공정이 현재 설비에서 사용 중인지 체크 => 사용 중이면 삭제 불가능!!
+				
+			     var use = 0; // 초기값 0, 사용 중이라면 1
+			     const ep = document.getElementsByClassName('equipProcess');	 
+				 	
+			     for (var i = 0; i< ep.length; i++) {
+			       if(ep[i].value == processNo){
+			            	
+			        use = 1; // 하나라도 일치하는 게 있으면 1로 변함.
+			            }   
+			        }
+				
+			   	if(use == 0){
+					const header = document.querySelector('meta[name="_csrf_header"]').content;
+					const token = document.querySelector('meta[name="_csrf"]').content;
+					    //get을 제외한 모든 방식은 토큰을 필요로 한다.
+					    
+					console.log(processNo);
+					const url1="/equipment/deleteProcess/"+processNo // 매개변수 번호를 넘겨야됨.
+					const url2="/equipment/updateDeleteProcessNo/"+processNo // 매개변수 번호를 넘겨야됨.
+				
+					const wantUpdate = document.getElementsByClassName('wantUpdate');	 
+					
+					for (var i = 0; i< wantUpdate.length; i++) {
+			            wantUpdate[i].readOnly =true;
+			            wantUpdate[i].required = false;
+			        }	
+					
+					fetch(url1,{method: 'delete', headers: {
+			                'header' : header,
+					    	'X-CSRF-Token': token }})
+						    .then(res=> res.text())
+						    .then(obj=>{
+						    	console.log(obj);
+						    	
+						    	fetch(url2,{method: 'post', headers: {
+					                'header' : header,
+							    	'X-CSRF-Token': token,
+							    	'Content-Type' : 'application/json' }})
+								    .then(res=> res.text())
+								    .then(obj=>{
+							    	console.log(obj);
+									alert('삭제 완료');
+									location.reload(true);// 새로고침
+							    })  
+					 })
+			     } else if (use == 1){
+			    	alert('현재 사용 중인 공정입니다.');
+			     }
+			   	
+			}  /*/
+
+		 
+//============================================================================================================================================================		
 		
-		
+	
+	
+	
 /*  고장 그리드  */	
 		const failGrid = new tui.Grid({
 		    el: document.querySelector('#failGrid'),
@@ -624,26 +932,32 @@ function test (id){
 		    {
 				header:'고장번호',
 				name:'failNo'
+				,align : 'center'
 			},
 		    {
 		        header: '설비명',
 		        name: 'failEquipName'
+		        ,align : 'center'
 		    },
 		    {
 		        header: '고장발생일',
 		        name: 'failDate'
+		        ,align : 'center'
 		    },
 		    {
 		        header: '고장내역',
 		        name: 'failContent'
+		        ,align : 'center'
 		    },
 		    {
 		        header: '수리내역',
 		        name: 'failRepairContent'
+		        ,align : 'center'
 		    },
 		    {
 		        header: '진행상황',
 		        name: 'failCode'
+		        ,align : 'center'
 		    }
 		    ]
 		});
@@ -659,7 +973,53 @@ function test (id){
 	        
 	    })
 
-	
+/* 고장 그리드 셀 클릭-> 모달 팝업 이벤트 */
+		 
+	    failGrid.on('click', ev => {
+	    	const fnoRow = failGrid.getRow(ev.rowKey); // 행 (객체)
+	    	const fno = fnoRow.failNo; // 행의 점검번호
+	    	const eno = fnoRow.failEquipNo; // 행의 설비번호
+	    	console.log(fno);
+	   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
+	    	console.log(ev);
+	    	
+	    	if(ev.rowKey == fnoRow.rowKey){
+				if(fno != null){
+		    	const myModal4 = new bootstrap.Modal('#myModal4',{backdrop: 'static',keyboard:false})
+		    	// 생성 시 모달 속성을 넣어줍니다.
+		    	const modalToggle4 = document.getElementById('myModal4'); 
+		    	
+				getFailNo(fno,eno);
+		    	myModal4.show(modalToggle4);
+		    	
+				}
+	    	}
+		});
+		
+/*  고장 단건조회 불러오는 아작스 함수 */
+
+		function getFailNo(failNo,failEquipNo) {
+				
+			    url="/equipment/getFailInfo?failNo="+failNo+"&failEquipNo="+failEquipNo // get방식이라 ?equipNo=
+			    fetch(url) 
+			    .then(res=>res.json())
+			    .then(obj=>{
+			        console.log(obj);
+    
+					document.querySelector('#sFailEquipName').value=obj.failEquipName;
+					document.querySelector('#fv-start-input').value=obj.failDate;
+			        document.querySelector('#sFailContent').value=obj.failContent;
+			       
+			    })
+		    
+			}	    
+
+
+//============================================================================================================================================================		
+
+
+
+
 /*  공사 그리드  */	
 		const workGrid = new tui.Grid({
 		    el: document.querySelector('#workGrid'),
@@ -672,31 +1032,38 @@ function test (id){
 		    {
 			   	header:'공사번호',
 			    name:'workNo'
+			    ,align : 'center'
 			},
 		    {
 		        header: '공사명',
 		        name: 'workName'
+		        ,align : 'center'
 		    },
 		    {
 		        header: '시공예정일',
 		        name: 'workDate'
+		        ,align : 'center'
 		    },
 		    {
-		        header: '완공예정일',
-		        name: 'workEndDate'
+		        header: '공사비용',
+		        name: 'workPay'
+		        ,align : 'right'
 		    },
 		    {
 		        header: '결재정보',
 		        name: 'signCode'
+		        ,align : 'center'
 		    },
 		    {
 		        header: '진행상황',
 		        name: 'workCode'
+		        ,align : 'center'
 		    }
 		    ]
 		});
-		
-		/* 공사 리스트 불러오는 아작스 */
+
+
+/* 공사 리스트 불러오는 아작스 */
 	    
 	    url="/equipment/workList"
 	    fetch(url) 
@@ -707,57 +1074,131 @@ function test (id){
 	        
 	    })
 	    
+/* 공사 그리드 셀 클릭-> 모달 팝업 이벤트 */
+		 
+	    workGrid.on('click', ev => {
+	    	const wnoRow = workGrid.getRow(ev.rowKey); // 행 (객체)
+	    	const wno = wnoRow.workNo; // 행의 공사번호
+	    	const eno = wnoRow.workEquipNo; // 행의 설비번호
+	    	console.log(wno);
+	   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
+	    	console.log(ev);
+	    	
+	    	if(ev.rowKey == wnoRow.rowKey){
+				if(wno != null){
+		    	const myModal6 = new bootstrap.Modal('#myModal6',{backdrop: 'static',keyboard:false})
+		    	// 생성 시 모달 속성을 넣어줍니다.
+		    	const modalToggle6 = document.getElementById('myModal6'); 
+		    	
+				getWorkNo(wno,eno);
+		    	myModal6.show(modalToggle6);
+		    	
+				}
+	    	}
+		});
+		
+/*  공사 단건조회 불러오는 아작스 함수 */
+
+function getWorkNo(workNo,workEquipNo) {
+				
+			    url="/equipment/getWorkInfo?workNo="+workNo+"&workEquipNo="+workEquipNo // get방식이라 ?equipNo=
+			    fetch(url) 
+			    .then(res=>res.json())
+			    .then(obj=>{
+			        console.log(obj);
+    
+					document.querySelector('#sWorkName').value=obj.workName;
+					document.querySelector('#sWorkEquipName').value=obj.workEquipName;
+					document.querySelector('#sWorkPs').value=obj.workPs;
+					document.querySelector('#sWorkPay').value=obj.workPay;
+					document.querySelector('#sWorkCompany').value=obj.workCompany;
+					document.querySelector('#wv-start-input').value=obj.workDate;
+					document.querySelector('#wv-end-input').value=obj.workEndDate;
+			        document.querySelector('#sWorkContent').value=obj.workContent;
+			       
+			    })
+		    
+}		    
+
+	    
 	/* Date Picker */
 
-	 const today = new Date();	
-
-	    let testPicker = tui.DatePicker.createRangePicker({
+	// const DatePicker = tui.DatePicker; // date picker 선언
+	
+	// 조회할 때는 picker 또 만들 필요 없습니다!!! => 등록할 때만 
+	 	
+		const today = new Date();
+	    
+		let testPicker = new tui.DatePicker('#tr-start-container', {
+	    	language: 'ko',  
+	    	date: new Date(today.setDate(today.getDate() + 7)),
+	            input: {
+	                element: '#tr-start-input',
+	                format: 'yyyy-MM-dd HH:mm A'
+	            },
+	            timePicker: {
+	                layoutType: 'tab',
+	                inputType: 'spinbox'
+	          },
+	   		selectableRanges: [
+                [new Date(today.setDate(today.getDate() + 7)), new Date(2999, 11,31)]
+            ],
+	    });
+	       
+        
+/*     	let testViewPicker = new DatePicker.createRangePicker('#tv-start-container',{
     	    startpicker: {
     	    	date: today,
-    	        input: '#t-start-input',
-    	        container: '#t-start-container'
+    	    	input: {
+	    	        element: '#tv-start-input',    	       
+	    	    }
     	        
-    	    },
-    	    endpicker: {
-    	    	date: today,
-    	        input: '#t-end-input',
-    	        container: '#t-end-container'
     	    }
     	   
-    	});
- 		
-	    let failPicker = tui.DatePicker.createRangePicker({
-    	    startpicker: {
-    	    	date: today,
-    	        input: '#f-start-input',
-    	        container: '#f-start-container'
-    	        
-    	    },
-    	    endpicker: {
-    	    	date: today,
-    	        input: '#f-end-input',
-    	        container: '#f-end-container'
-    	    }
-    	});
- 
-	    
-	     let workPicker = tui.DatePicker.createRangePicker({
+    	}); */
+    	
+	
+		const before2Weeks = new Date(today.setDate(today.getDate() - 14));
+		
+
+    	  let failPicker = new tui.DatePicker('#f-start-container', {
+  	    	language: 'ko',  
+  	    	date: before2Weeks,
+  	            input: {
+  	                element: '#f-start-input',
+  	                format: 'yyyy-MM-dd HH:mm A'
+  	            },
+  	            timePicker: {
+  	                layoutType: 'tab',
+  	                inputType: 'spinbox'
+  	          },
+  	   		selectableRanges: [
+                  [before2Weeks, new Date(2999, 11,31)]
+              ],
+  	    });
+    	
+    	
+		//const after2Weeks = new Date(today.setDate(today.getDate() + 14));
+		//selectableRanges는 이렇게 하면 안먹네요 ㅡㅡ
+		
+	     let workPicker = new tui.DatePicker.createRangePicker({
+	    		language: 'ko',  
 	    	    startpicker: {
-	    	    	date: today,
-	    	        input: '#start-input',
-	    	        container: '#start-container'
+	    	    	date: new Date(today.setDate(today.getDate() + 14)),
+	    	        input: '#w-start-input',
+	    	        container: '#w-start-container'	        
+		    	    },
+		    	    endpicker: {
+		    	    	date: new Date(today.setDate(today.getDate() + 14)),
+		    	        input: '#w-end-input',
+		    	        container: '#w-end-container'   
+	    	
+	    			},
+	    			selectableRanges: [
+		                [new Date(today.setDate(today.getDate() + 14)), new Date(2999, 11,31)]
+		            ]
 	    	        
-	    	    },
-	    	    endpicker: {
-	    	    	date: today,
-	    	        input: '#end-input',
-	    	        container: '#end-container'
-	    	    }
-	    	/*     ,selectableRanges: [
-	    	        [today.getDate() + 7, new Date(2099,12,31) ],
-	    	        [today.getDate() + 7, new Date(2099,12,31)]
-	    	    ] 날짜 제한 작동이 잘 안돼서 보류 */
-	    	});
+		    }); 
  
  
 

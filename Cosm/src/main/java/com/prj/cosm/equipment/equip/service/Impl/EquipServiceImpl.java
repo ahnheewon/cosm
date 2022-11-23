@@ -144,8 +144,8 @@ public class EquipServiceImpl implements EquipService {
 	}
 
 	@Override
-	public EquipVO getTestInfo(int testNo) {
-		return mapper.getTestInfo(testNo);
+	public EquipVO getTestInfo(int testNo, int testEquipNo) {
+		return mapper.getTestInfo(testNo, testEquipNo);
 	}
 
 	@Override
@@ -183,8 +183,8 @@ public class EquipServiceImpl implements EquipService {
 	}
 
 	@Override
-	public EquipVO getFailInfo(int failNo) {
-		return mapper.getFailInfo(failNo);
+	public EquipVO getFailInfo(int failNo, int failEquipNo) {
+		return mapper.getFailInfo(failNo,failEquipNo);
 	}
 
 	@Override
