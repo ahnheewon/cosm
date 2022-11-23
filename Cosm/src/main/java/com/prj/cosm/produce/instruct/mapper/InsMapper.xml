@@ -2,18 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.prj.cosm.produce.instruct.mapper.InsMapper">
 
-<!-- 전체조회 -->
+<!-- 전체조회 진행중인 것 -->
 <select id="getInsList" resultType="map">
 	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd, p.plan_product_no as planProductNo,
 		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
 		   i.instruct_date as instructDate, i.instruct_m_no as instructMNo, 
 		   i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
-		   i.instruct_material_num as instructMaterialNum,
+		   i.instruct_material_num as instructMaterialNum, g.goods_name as goodsName,
            code_name as instruct_progress_code
 	FROM produce_plan p JOIN produce_instruct i
                         ON p.plan_no = i.instruct_plan_no
+                        JOIN produce_goods g
+                        ON p.plan_product_no = g.goods_no
                         JOIN code
                         ON i.instruct_progress_code = code.code_no
+	WHERE instruct_progress_code in ('A0101','A0102')
 	ORDER BY i.instruct_no DESC
 </select>
 
@@ -48,7 +51,6 @@
                 instruct_date, 
                 instruct_plan_no,
                 instruct_m_no, 
-                instruct_progress_code,
                 instruct_material_num) 
 		VALUES ( #{instructNo}, 
        			 #{instructQuantity}, 
@@ -56,8 +58,6 @@
        			 #{instructDate}, 
        			 #{instructPlanNo}, 
        			 #{instructMNo},
-       			 (SELECT code_no FROM code 
-       			  WHERE code_name = #{instructProgressCode}),
         		 #{instructMaterialNum}
        			 )
 </insert>
@@ -104,4 +104,11 @@
 	WHERE code_adno = 'A01'
 	ORDER BY code_no
 </select>
+
+<!-- 생산지시 진행중인것 완료로 update -->
+<update id="updateInsPlay" parameterType="InsVO">
+	UPDATE produce_instruct
+	SET instruct_progress_code = 'A0103'
+	WHERE instruct_no = #{instructNo}
+</update>
 </mapper>

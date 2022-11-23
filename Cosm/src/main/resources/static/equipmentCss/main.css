@@ -18,9 +18,6 @@
 	margin: 0 auto;
 }
 
-.emp>td, .emp {
-	border: 1px solid black;
-}
 
 #mySvg {
 	background-color: #d0d0d0;
@@ -47,3 +44,11 @@
 .texts:hover {
 	cursor: pointer;
 }
+.emp>td, .emp {
+ 	border:1px solid #ced4da;
+ 	
+ }
+ .emp {
+ border-collapse: separate;
+ 	border-radius: 5px;
+ }

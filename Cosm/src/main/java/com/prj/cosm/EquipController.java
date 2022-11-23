@@ -188,8 +188,8 @@ public class EquipController {
 		// 점검 단건 조회
 		@GetMapping("/equipment/getTestInfo")
 		@ResponseBody
-		public EquipVO getTestInfo(Model model, int testNo) {
-			return eService.getTestInfo(testNo);
+		public EquipVO getTestInfo(Model model, int testNo, int testEquipNo) {
+			return eService.getTestInfo(testNo, testEquipNo);
 
 		}
 
@@ -230,8 +230,8 @@ public class EquipController {
 		// 고장 단건 조회
 		@GetMapping("/equipment/getFailInfo")
 		@ResponseBody
-		public EquipVO getFailInfo(Model model, int processNo) {
-			return eService.getFailInfo(processNo);
+		public EquipVO getFailInfo(Model model, int failNo, int failEquipNo) {
+			return eService.getFailInfo(failNo,failEquipNo);
 
 		}
 
@@ -265,8 +265,8 @@ public class EquipController {
 		// 공사 단건 조회
 		@GetMapping("/equipment/getWorkInfo")
 		@ResponseBody
-		public WorkVO getWorkInfo(Model model, int workNo) {
-			return wService.getWorkInfo(workNo);
+		public WorkVO getWorkInfo(Model model, int workNo, int workEquipNo) {
+			return wService.getWorkInfo(workNo, workEquipNo);
 		}
 		
 		// 공사 등록

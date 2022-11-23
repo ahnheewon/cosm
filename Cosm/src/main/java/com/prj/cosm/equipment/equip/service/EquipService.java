@@ -74,7 +74,7 @@ public interface EquipService {
 				public List<EquipVO> getTestList();
 				
 				// 단건조회
-				public EquipVO getTestInfo(int testNo);
+				public EquipVO getTestInfo(@Param("testNo")int testNo, @Param("testEquipNo")int testEquipNo);
 
 				// 등록
 				public int insertTest(EquipVO vo);
@@ -100,7 +100,7 @@ public interface EquipService {
 				public List<EquipVO> getFailList();
 				
 				// 단건조회
-				public EquipVO getFailInfo(int failNo);
+				public EquipVO getFailInfo(@Param("failNo")int failNo, @Param("failEquipNo")int failEquipNo);
 
 				// 등록
 				public int insertFail(EquipVO vo);

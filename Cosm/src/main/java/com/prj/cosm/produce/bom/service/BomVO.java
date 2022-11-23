@@ -21,4 +21,5 @@ public class BomVO {
 	private String goodsContents;
 	private String unitCode;
 	
+	
 }

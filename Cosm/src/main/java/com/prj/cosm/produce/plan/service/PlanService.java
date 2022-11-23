@@ -31,5 +31,8 @@ public interface PlanService {
 	
 	//생산지시 시 페이지 빠지기
 	public int updatePlay(PlanVO planVO);
+	
+	//생산계획 미완료된것만 보이기
+	public List<PlanVO> completePlanList();
 
 }

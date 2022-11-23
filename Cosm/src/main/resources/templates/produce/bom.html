@@ -61,26 +61,18 @@
 			</div>
 			<div class="col-md-3">
 				<label class="form-label">투입량</label> <input type="number"
-					name="bomQuantity" class="form-control" id="bacodeLabel">
+					name="bomQuantity" class="form-control" id="bomQuantity">
 			</div>
 			<div class="col-md-3">
 				<label for="inputState" class="form-label">제품 번호</label> <select
 					id="inputState" name="bomProductNo" class="form-select">
-					<option selected>PRO_20220001</option>
-					<option>PRO_20220002</option>
-					<option>PRO_20220003</option>
-					<option>PRO_20220004</option>
-					<option>PRO_20220005</option>
+					<option th:each="goodsNo : ${goodsNo}">[[${goodsNo.goodsNo}]]</option>
 				</select>
 			</div>
 			<div class="col-md-3">
 				<label for="inputState" class="form-label">자재 번호</label> <select
 					id="inputState" name="bomMaterialNo" class="form-select">
-					<option selected>MM1002</option>
-					<option>MM1003</option>
-					<option>MM1004</option>
-					<option>MM1005</option>
-					<option>MM1006</option>
+					<option th:each="mNo : ${mNo}">[[${mNo.mNo}]]</option>
 				</select>
 			</div>
 			<div class="col-12">
@@ -121,29 +113,21 @@
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">투입량</span> <input type="number"
-										class="form-control" id="bomQuantity" name="bomQuantity"
+										class="form-control" id="bomQuantity2" name="bomQuantity"
 										aria-label="Username" aria-describedby="basic-addon2">
 								</div>
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">제품 번호</span> <select
 										id="bomProductNo" name="bomProductNo" class="form-select">
-										<option selected>PRO_20220001</option>
-										<option>PRO_20220002</option>
-										<option>PRO_20220003</option>
-										<option>PRO_20220004</option>
-										<option>PRO_20220005</option>
+										<option th:each="goodsNo : ${goodsNo}">[[${goodsNo.goodsNo}]]</option>
 									</select>
 								</div>
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">자재 번호</span> <select
 										id="bomMaterialNo" name="bomMaterialNo" class="form-select">
-										<option selected>MM1002</option>
-										<option>MM1003</option>
-										<option>MM1004</option>
-										<option>MM1005</option>
-										<option>MM1006</option>
+										<option th:each="mNo : ${mNo}">[[${mNo.mNo}]]</option>
 									</select>
 								</div>
 
@@ -416,7 +400,15 @@
 		//BOM등록 확인창
 		$().ready(function () {
             $("#alertStart").click(function () {
-                Swal.fire({
+            	if ($('#bomQuantity').val() == "" || $('#bomQuantity').val() == null) {
+            		Swal.fire({
+                        icon: 'warning',
+                        title: '투입될 자재량을 입력하세요!',
+                    })
+					return false;
+				}
+            	
+            	Swal.fire({
                     icon: 'success',
                     title: 'BOM 등록이 완료되었습니다.',
                     text: 'success~',
@@ -433,7 +425,7 @@
 			console.log(datas1)
 			var test = JSON.stringify(datas1);
 			$('#bomNo').val(datas1[0].bomNo);
-			$('#bomQuantity').val(datas1[0].bomQuantity);
+			$('#bomQuantity2').val(datas1[0].bomQuantity);
 			$('#bomProductNo').val(datas1[0].bomProductNo);
 			$('#bomMaterialNo').val(datas1[0].bomMaterialNo);
 		}
@@ -441,7 +433,14 @@
 		//BOM 수정 확인창
 		$().ready(function () {
             $("#alertStart2").click(function () {
-                Swal.fire({
+            	if ($('#bomQuantity2').val() == "" || $('#bomQuantity').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '투입될 자재량을 입력하세요!',
+                    })
+					return false;
+				}
+            	Swal.fire({
                     icon: 'success',
                     title: '제품수정이 완료되었습니다.',
                     text: 'success~',

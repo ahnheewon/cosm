@@ -2,6 +2,8 @@ package com.prj.cosm.material.material.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.prj.cosm.material.material.service.MaterialVO;
 
 public interface MaterialMapper {
@@ -55,6 +57,10 @@ public interface MaterialMapper {
 	public List<MaterialVO> mCartList();
 
 	// 발주 대기 등록 (카트)
-	public int insertMcart(String mNo);
+	public int insertMcart(MaterialVO mVO);
+	
+	// 발주 수량 수정
+	public int updateOrderNum(MaterialVO mVO);
+
 
 }

@@ -67,6 +67,12 @@ public class PlanServiceImpl implements PlanService {
 		return mapper.updatePlay(planVO);
 	}
 
+	@Override
+	public List<PlanVO> completePlanList() {
+		// TODO Auto-generated method stub
+		return mapper.completePlanList();
+	}
+
 	
 
 }

@@ -243,7 +243,7 @@
 				<div class="sb-sidenav-menu">
 					<div class="nav">
 						<div class="sb-sidenav-menu-heading">Core</div>
-						<a class="nav-link" href="/planList">
+						<a class="nav-link" href="/produce/main">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-tachometer-alt"></i>
 							</div> 생산관리메인
@@ -266,12 +266,13 @@
 								<div class="collapse" id="collapseLayouts"
 									aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 									<nav class="sb-sidenav-menu-nested nav">
-										<a class="nav-link" href="/planList">생산계획 관리</a> <a
-											class="nav-link" href="/instructList">생산지시 관리</a> <a
-											class="nav-link" href="/regist">완제품 등록</a> <a
-											class="nav-link" href="/bom">BOM 관리</a> <a class="nav-link"
-											href="/goods">제품 관리</a> <a class="nav-link" href="/proError">불량정보
-											관리</a>
+
+										<a class="nav-link" href="/produce/main">생산관리 메인</a>
+										<a class="nav-link" href="/planList">생산계획 관리</a> <a class="nav-link"
+											href="/instructList">생산지시 관리</a>  <a class="nav-link" href="/proError">생산 구분</a>
+											<a class="nav-link" href="/regist">완제품
+											등록</a> <a class="nav-link" href="/bom">BOM 관리</a> <a class="nav-link"
+											href="/goods">제품 관리</a> 
 									</nav>
 								</div>
 
@@ -323,7 +324,31 @@
 									</nav>
 								</div>
 								<!-- Gin end -->
-
+								
+								<!-- 자재관리 -->
+								<div class="sb-sidenav-menu-heading">자재관리</div>
+								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+									data-bs-target="#collapseLayouts" aria-expanded="false"
+									aria-controls="collapseLayouts">
+									<div class="sb-nav-link-icon">
+										<i class="fas fa-columns"></i>
+									</div> 자재관리
+									<div class="sb-sidenav-collapse-arrow">
+										<i class="fas fa-angle-down"></i>
+									</div>
+								</a>
+								
+								<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+									data-bs-parent="#sidenavAccordion">
+									<nav class="sb-sidenav-menu-nested nav">
+										<a class="nav-link" href="/minfo">자재정보 관리</a> 
+										<a class="nav-link"	href="/mcart">발주진행 관리</a> 
+										<a class="nav-link" href="/miolist">입출고 목록</a> 
+										<a class="nav-link" href="#">불량자재 관리</a> 
+									</nav>
+								</div>
+								
+								<!-- Gin end -->
 								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
 									data-bs-target="#collapsePages" aria-expanded="false"
 									aria-controls="collapsePages">
