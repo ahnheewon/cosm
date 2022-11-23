@@ -437,8 +437,8 @@
 						삭제 버튼 클릭(그리드행 삭제)
 
 						// 1. checkbox 선택
-						// 2. 선택된 checkbox의 값에서 mno 가져오기  버튼 
-						//-> 함수(onclick -> ajax 실행) -> mno 보내주고 삭제
+						// 2. 선택된 checkbox의 값에서 no 가져오기  버튼 
+						//-> 함수(onclick -> ajax 실행) -> no 보내주고 삭제
 						// 3. 삭제 실행 (모달창의 확인 클릭)
 						//getCheckedRows -> 배열
 						----------------*/
@@ -457,7 +457,7 @@
 							var token = $("meta[name='_csrf']").attr('content');
 							// debugger
 							$.ajax({
-								url: "/ajax/delcheckOrder",
+								url: "orders/ajaxDelcheckOrder",
 								method: "Post",
 								contentType: "application/json",
 								data: JSON.stringify({
@@ -493,7 +493,7 @@
 						function updatebtn() {
 							// debugger
 							$.ajax({
-								url: "/ajax/upOrders",
+								url: "/orders/ajaxUpOrders",
 								method: "Post",
 								contentType: "application/json",
 								data: JSON.stringify(grid.getModifiedRows().updatedRows),
@@ -550,7 +550,7 @@
 							}
 
 							$.ajax({
-								url: "/ajax/recNos",
+								url: "/orders/ajaxRecNos",
 								method: "Post",
 								data: JSON.stringify(grid.getCheckedRows()),
 								contentType: "application/json",
@@ -573,7 +573,7 @@
 						----------------*/
 						function getOrderList() {
 							$.ajax({
-								url: "/ajax/orders",
+								url: "/orders/ajaxOrders",
 								method: "GET",
 								dataType: "JSON",
 								success: function (result) {

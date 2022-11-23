@@ -40,21 +40,26 @@
 						</tr>
 						<tr>
 							<th>담당자명</th>
-							<td><input type="text" id="manager" name="manager"></td>
+							<td><input type="text" id="manager" name="manager" value="서강중"></td>
 						</tr>
 						<tr>
 							<th>사업자번호</th>
-							<td><input type="text" id="businessNo" name="businessNo"></td>
+							<td><input type="text" id="businessNo" name="businessNo" required="required" value="5048600471"></td>
 							<td><button id="checkBtn2" type="button" onclick="checkBusinessNo()"
 									value="no">진위확인</button></td>
 						</tr>
 						<tr>
 							<th>사업자등록증</th>
-							<td><input type="text" id="licenseImg" name="licenseImg"></td>
+							<td><input id="licenseImg" name="licenseImg" type="file"><!-- html의 name과 vo의 필드명 다르게 써야함 --></td>
+							<!-- 
+							 <td><input type="text" id="licenseImg" name="licenseImg" ></td>
+							 -->
 						</tr>
 						<tr>
 							<th>개업일자</th>
-							<td><input type="Date" id="openDate" name="openDate"></td>
+							<td><input type="date" id="openDate" name="openDate"></td>
+							<td> <input type="hidden" id="changeDate"></td>
+							<!-- value="20120709" -->
 						</tr>
 					</tbody>
 				</table>
@@ -67,6 +72,7 @@
 	<script type="text/javascript">
 		const header = $("meta[name='_csrf_header']").attr('content');
 		const token = $("meta[name='_csrf']").attr('content');
+		const openDate = "";
 		$('#back').click(function () {
 			location.href = "/login"
 			return false;
@@ -80,6 +86,7 @@
 		$('#businessNo').on('change', function () {
 			$('#checkBtn2').val("no");
 		})
+		
 		/*-----------------
 		사업자번호 체크여부
 		- 최종테스트시 not null 걸어서 처음부터 받을지, 마이페이지 수정에서 추가로 받을지 결정 
@@ -95,6 +102,25 @@
 			}
 			$('#empInsertForm').submit();
 		}
+		
+		/*-----------------
+		개업일자 date -> string 20221111
+		*-----------------*/
+		$('#openDate').change(function(){
+			console.log($('#openDate').val());
+			let str = $('#openDate').val(); //날짜를 받아와서 
+			let strArray = str.split("-") //배열에 담아주고 -을 기준으로 나눠줌
+			console.log(strArray);
+			
+			let result = "";
+			for(let el of strArray){
+				result = result.concat(el);
+			}
+			console.log('changeDate',result);
+			$('#changeDate').val(result);
+		})
+		
+		
 
 		function checkForm() {
 			console.log($('#usersId').val())
@@ -145,20 +171,45 @@
 		json - 요청방식
 		*-----------------*/
 		function checkBusinessNo() {
-
-			var data = {
-				"b_no": ["xxxxxxx"] // 사업자번호 "xxxxxxx" 로 조회 시,
-			};
-
+			let ser1 ='TbtTqTFxQYPiIOJLO24eNSOv8Y/jrbuykAjul8JMntvWnmx+r9qgfSpR/8dcaKGk87MRjwmu1O2fqYFl0rEmxA==';
+			let service = 'TbtTqTFxQYPiIOJLO24eNSOv8Y%2FjrbuykAjul8JMntvWnmx%2Br9qgfSpR%2F8dcaKGk87MRjwmu1O2fqYFl0rEmxA%3D%3D';
+ 			let bno = document.getElementById('businessNo').value;
+ 			let openDate = document.getElementById('changeDate').value;
+ 			let manager = document.getElementById('manager').value;
+ 			
+		 	var data = {
+		 			  "businesses": [
+		 				    {
+		 				      "b_no": bno,
+		 				      "start_dt": openDate,
+		 				      "p_nm": manager,
+		 				      "p_nm2": "",
+		 				      "b_nm": "",
+		 				      "corp_no": "",
+		 				      "b_sector": "",
+		 				      "b_type": ""
+		 				    }
+		 				  ]
+		 				};
+ 
 			$.ajax({
-				url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=xxxxxx", // serviceKey 값을 xxxxxx에 입력
+				url: "http://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey="+service+"&returnType=JSON", // serviceKey 값을 xxxxxx에 입력
 				type: "POST",
 				data: JSON.stringify(data), // json 을 string으로 변환하여 전송
 				dataType: "JSON",
 				contentType: "application/json",
-				accept: "application/json",
+				//accept: "application/json",
 				success: function (result) {
-					console.log(result);
+					console.log('1',result.data[0].valid);
+					console.log('2',result.data);
+					if(result.data[0].valid == '01' && result.status_code == 'OK'){
+						alert("정상 인증되었습니다.")
+					} else {
+						alert("사업자 번호를 다시 확인해 주세요.")
+						$('#businessNo').val('');
+						$('#businessNo').focus();
+					}
+					console.log('3',result);
 				},
 				error: function (result) {
 					console.log(result.responseText); //responseText의 에러메세지 확인

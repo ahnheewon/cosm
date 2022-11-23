@@ -5,7 +5,7 @@ import java.util.List;
 import com.prj.cosm.sales.client.service.ClientVO;
 
 public interface ClientMapper {
-	//고객 
+//고객 
 		//고객 - 등록(회원가입)
 		public int clientIn(ClientVO cvo);
 		

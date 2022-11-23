@@ -40,4 +40,16 @@ public class ClientServiceImpl implements ClientService  {
 		return 0;
 	}
 
+	@Override
+	public List<ClientVO> myOrderList() {
+		// 내주문조회
+		return null;
+	}
+
+	@Override
+	public void insertOrder(ClientVO cvo) {
+		//주문등록
+		
+	}
+
 }
