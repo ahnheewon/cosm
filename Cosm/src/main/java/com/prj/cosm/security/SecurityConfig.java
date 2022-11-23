@@ -41,7 +41,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests((requests) -> requests
 
 				.antMatchers("/","/top", "/login", "/joinForm", "/empCheckId", "/userInsert", "/userSelect", "/planUpdate", "/planInsert", "/insUpdate", "/insInsert", "/registInsert", "/minsert","/ajax/mdelinfo","/userCheckId","/clientInsert","/insPlay","/updateInsPlay")
-				.permitAll().antMatchers("/*").hasAuthority("ROLE_D0101").antMatchers("/client/**").hasAuthority("ROLE_D0102").antMatchers("/equipment/**").hasAuthority("ROLE_D0108").anyRequest().authenticated()).formLogin()
+				.permitAll().antMatchers("/**").hasAuthority("ROLE_D0101").antMatchers("/client/**","/orders/**").hasAuthority("ROLE_D0102").antMatchers("/equipment/**").hasAuthority("ROLE_D0108").anyRequest().authenticated()).formLogin()
 				.loginPage("/login").usernameParameter("userId").loginProcessingUrl("/login")
 				.successHandler(successHandler()).and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
 				.invalidateHttpSession(true).deleteCookies("JSESSIONID").and().exceptionHandling()
