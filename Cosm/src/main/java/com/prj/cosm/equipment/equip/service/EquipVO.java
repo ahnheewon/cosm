@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
