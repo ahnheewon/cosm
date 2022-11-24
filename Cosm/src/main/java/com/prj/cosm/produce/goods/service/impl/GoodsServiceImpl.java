@@ -40,7 +40,8 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Override
 	public int deleteGoodInfo(String goodsNo) {
-		// TODO Auto-generated method stub
+		// 제품 삭제시 사용중인 bom이나 그런 것이있을 경우 삭제못하는 알림
+		// if 조건 걸어서 sql구문 삭제할수잇는지
 		return mapper.deleteGood(goodsNo);
 	}
 

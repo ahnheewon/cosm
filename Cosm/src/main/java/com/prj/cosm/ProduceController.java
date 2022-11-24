@@ -300,11 +300,25 @@ public class ProduceController {
 		return "redirect:proError";
 	}
 
-	// 생산 완료 페이지 이동
+	// 생산 메인 페이지 이동
 	@GetMapping("/produce/main")
 	public String produceMain(Model model) {
-		
+
 		return "produce/main";
+	}
+
+	// 완제품 리스트 페이지 이동
+	@GetMapping("/completeList")
+	public String completeList(Model model) {
+
+		return "produce/completeList";
+	}
+
+	// 완제품 list에 ajax주는 것
+	@GetMapping("/completedList")
+	@ResponseBody
+	public List<Map<String, Object>> completedList() {
+		return registService.completeList();
 	}
 
 	// ===========================================================

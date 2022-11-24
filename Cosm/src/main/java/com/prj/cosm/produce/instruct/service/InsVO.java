@@ -20,6 +20,7 @@ public class InsVO {
 	
 	//자재번호 리스트
 	private String mNo;
+	private String mName;
 	
 	//진행상황 리스트
 	public String codeName;

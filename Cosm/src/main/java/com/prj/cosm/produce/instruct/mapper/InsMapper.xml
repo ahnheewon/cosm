@@ -93,7 +93,7 @@
 
 <!-- 자재번호 리스트 -->
 <select id="getMaterialNoList" resultType="InsVO">
-	SELECT DISTINCT(m_no)
+	SELECT m_no, m_name
 	FROM material
 	ORDER BY m_no
 </select>

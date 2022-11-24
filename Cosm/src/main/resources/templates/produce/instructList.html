@@ -128,9 +128,9 @@
 
 
 								<div class="input-group mb-3">
-									<span class="input-group-text">자재번호</span> <select
+									<span class="input-group-text">자재번호 (자재명)</span> <select
 										id="instructMNo" name="instructMNo" class="form-select">
-										<option th:each="mNo : ${mNo}">[[${mNo.mNo}]]</option>
+										<option th:each="mNo : ${mNo}" th:value="${mNo.mNo}">[[${mNo.mNo}]] ([[${mNo.mName}]])</option>
 									</select>
 								</div>
 								<div class="input-group mb-3">

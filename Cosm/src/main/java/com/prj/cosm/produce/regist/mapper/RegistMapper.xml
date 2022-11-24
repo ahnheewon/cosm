@@ -2,8 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.prj.cosm.produce.regist.mapper.RegistMapper">
 
-<!-- 전체조회 -->
+<!-- 전체조회(오늘자) -->
 <select id="getRegistList" resultType="map">
+	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, r.code_no, r.inspection
+	FROM produce_instruct i JOIN produce_regist r
+	ON i.instruct_no = r.regist_instruct_no
+	WHERE TO_DATE(r.regist_date,'rrrr-MM-dd') = TO_DATE(sysdate,'rrrr-MM-dd')
+	ORDER BY r.regist_LOT DESC
+</select>
+
+<!-- 전체조회(오늘자) -->
+<select id="completeList" resultType="map">
 	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, r.code_no, r.inspection
 	FROM produce_instruct i JOIN produce_regist r
 	ON i.instruct_no = r.regist_instruct_no
