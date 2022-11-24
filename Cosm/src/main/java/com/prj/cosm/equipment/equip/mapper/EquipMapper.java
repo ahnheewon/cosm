@@ -81,6 +81,12 @@ public interface EquipMapper {
 			// 전체조회
 			public List<EquipVO> getTestList();
 			
+				// 미완조회
+				public List<EquipVO> getIncompleteTestList();
+				
+				// 완료조회
+				public List<EquipVO> getCompleteTestList();
+			
 			// 단건조회
 			public EquipVO getTestInfo(int testNo, int testEquipNo);
 
