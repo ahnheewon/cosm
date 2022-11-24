@@ -213,9 +213,37 @@
 					        ,'A0101')
 	</insert>
 	
-	<!-- 점검 수정 -->
-	<update id="updateTest" parameterType="equipVO">
+	<!-- 점검 완료로 수정 -->
+	<update id="updateTest1" parameterType="equipVO">
+	UPDATE TEST
+		<set>
+			<if test="testContent !=null and !testContent.equals('')">
+			test_content = #{processContent},
+			</if>
+			<if test="processSeq !=null and !processSeq.equals('')">
+			process_seq = #{processSeq}
+			</if>
+			<if test="processSeq !=null and !processSeq.equals('')">
+			process_seq = #{processSeq}
+			</if>	
+			<if test="processSeq !=null and !processSeq.equals('')">
+			process_seq = #{processSeq}
+			</if>								
+		</set>
+	WHERE TEST_NO = #{testNo}
+	</update>
 	
+	<!-- 점검 수정 -->
+	<update id="updateTest2" parameterType="equipVO">
+	UPDATE TEST
+		<set>
+			<if test="testContent !=null and !testContent.equals('')">
+			test_content = #{processContent},
+			</if>
+			<if test="processSeq !=null and !processSeq.equals('')">
+			process_seq = #{processSeq}</if>								
+		</set>
+	WHERE TEST_NO = #{testNo}
 	</update>
 	
 	<!-- 점검 삭제 -->
@@ -232,6 +260,28 @@
 	<select id="getTestNo" resultType="equipVO">
 		SELECT NVL(MAX(TEST_no),0) + 1 AS TEST_NO
 		FROM TEST
+	</select>
+	
+	<!-- 완료 안된 점검 리스트 조회 -->
+	<select id="getIncompleteTestList" resultType="equipVO">
+		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
+				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
+				,(select code_name from code where code_no = t.test_code ) AS test_code
+		FROM equip e, test t
+		where e.equip_no = t.test_equip_no 
+		AND test_code!='A0103'
+		ORDER BY TEST_NO DESC
+	</select>
+	
+	<!-- 완료된 점검 리스트 조회 -->
+	<select id="getCompleteTestList" resultType="equipVO">
+		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
+				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
+				,(select code_name from code where code_no = t.test_code ) AS test_code
+		FROM equip e, test t
+		where e.equip_no = t.test_equip_no 
+		AND test_code='A0103'
+		ORDER BY TEST_NO DESC
 	</select>
 	
 <!-- ############################################################################################  -->
