@@ -58,9 +58,17 @@ public interface MaterialMapper {
 
 	// 발주 대기 등록 (카트)
 	public int insertMcart(MaterialVO mVO);
-	
+
 	// 발주 수량 수정
 	public int updateOrderNum(MaterialVO mVO);
 
+	// 그룹번호 찾기
+	public MaterialVO getGrId();
+
+	// 발주 대기 -> 발주 등록 실행 (다건 그룹화)
+	public int updateOrderGo(MaterialVO mVO);
+
+	// 발주 대기 삭제
+	public int deleteCartOrder(MaterialVO mVo);
 
 }

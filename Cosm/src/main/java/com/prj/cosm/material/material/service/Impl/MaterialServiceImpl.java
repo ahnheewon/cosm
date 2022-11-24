@@ -118,10 +118,46 @@ public class MaterialServiceImpl implements MaterialService {
 	public int updateOrderNum(List<MaterialVO> mVO) {
 		// 발주 수량 수정
 		int result = 0;
-		for(MaterialVO vo : mVO) {
+		for (MaterialVO vo : mVO) {
 			result += mMapper.updateOrderNum(vo);
 		}
 		return result;
-	}	
+	}
 
-}
+	@Override
+	public MaterialVO getGrId() {
+		// 그룹번호 찾기 
+		return mMapper.getGrId();
+	}
+
+	 @Override
+	   public int updateOrderGo(List<MaterialVO> mVO) {
+	      // 발주 대기 -> 발주 등록(그룹)
+
+	      int result = 0;
+
+	      // 그룹번호 부여..?
+	      getGrId();
+	      for (MaterialVO vo : mVO) {
+	         // 그룹번호 넣기..?
+
+	         result += mMapper.updateOrderNum(vo);
+	      }
+	      return result;
+	   }
+
+	   @Override
+	   public int deleteCartOrder(List<MaterialVO> mVo) {
+	      // 발주 대기 삭제하기
+	      // 자재 정보 삭제 - 재고 수량도 삭제됨
+	      int result = 0;
+	      for (MaterialVO vo : mVo) {
+	         result += mMapper.deleteCartOrder(vo);
+	      }
+	      return result;
+	   }
+
+	}
+
+
+
