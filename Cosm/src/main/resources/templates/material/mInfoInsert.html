@@ -135,7 +135,7 @@
 									style="width: 250px; margin-bottom: 10px;">
 								<button type="button" class="btn btn-secondary btn-sm">검색</button>
 								<button type="button" class="btn btn-secondary btn-sm"
-									id="reg-com-btn" onclick="location.href='/mregcom'">등록</button>
+									id="reg-com-btn" onclick="window.open('/mregcom','mregcom','width=400, height=400')">등록</button>
 								<div id="grid"></div>
 							</form>
 						</div>
@@ -219,7 +219,7 @@
 
 				// 거래처 명 찾기 ajax			
 					$.ajax({
-						url : "http://localhost:85/ajax/minsert",
+						url : "/ajax/getComNm",
 						method : "GET",
 						success : function(result) {
 							findComGrid.resetData((result));						
