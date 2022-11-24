@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,9 +23,8 @@ public class EquipVO {
 	private String equipPurpose;
 	private Integer equipCheckCycle;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date equipDate;
 	
 	private Integer equipRate;
@@ -38,13 +36,9 @@ public class EquipVO {
 	// 설비별 가동 시간
 	private Integer timeEquipNo;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date timeStartDate;
-	
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date timeEndDate;
 	
 	private Integer equipTime;
 	// 실시간 측정
@@ -53,7 +47,7 @@ public class EquipVO {
 	private Integer rtcVibe;
 	private Integer rtcTemp;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date rtcDate;
 	
@@ -68,13 +62,13 @@ public class EquipVO {
 	private Integer testNo;
 	private Integer testEquipNo;
 	private String testEquipName;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm a", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date testDate;
 	private String testReason;
 	private String testContent;
 	private String testYn;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm a", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date testDueDate;
 	private String testCode;
