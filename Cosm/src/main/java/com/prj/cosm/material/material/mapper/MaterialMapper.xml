@@ -48,7 +48,7 @@
 		m.m_price,
 		m.m_company_id,
 		mc.mc_company_name AS m_company_nm,
-		find_code_name(#{mUnitCode})As m_unit_code,
+		find_code_name(m_unit_code)As m_unit_code,
 		m.m_info,
 		m.m_date,
 		m.m_reg_date
@@ -113,12 +113,13 @@
 	<!-- 자재 변동 내역 리스트 -->
 	<select id="mioList" resultType="MaterialVO">
 		SELECT m.m_no, m.m_company_id, m.m_category, m.m_name,
-		(mio.mio_input_quantity - mio.mio_output_quantity) AS m_stock,
-		mio.mio_output_quantity AS increase,
-		m.m_date, mio.mio_input_date, 		
-		mio.mio_output_date		
-		FROM Material m JOIN Material_io mio
-		ON m.m_no = mio.mio_no
+				(mio.mio_input_quantity - mio.mio_output_quantity) AS m_stock,
+				mio.mio_output_quantity AS increase,
+				m.m_date, mio.mio_input_date, 		
+				mio.mio_output_date		
+		FROM Material m 
+		JOIN Material_io mio
+		  ON m.m_no = mio.mio_no
 		WHERE mio.mio_output_date is not null
 		ORDER BY m.m_no
 	</select>
@@ -206,34 +207,62 @@
 		ON m.m_no = mo.mo_material_id
 	</select>
 
-	<!--발주 진행 리스트 -->
-	<select id="mOrderList" resultType="MaterialVO">
-		SELECT mo_date,
-			   mo.mo_order_id as m_order_id,
-			   mo.mo_name as m_name,
-		  	   mo.mo_num,
-			   find_code_name(m.m_unit_code) AS m_unit_code,
-			   (mo.mo_unit_price * mo.mo_num) as mo_tt_price,
-			   find_code_name(mo.mo_progress_code)AS mo_prog_code
-		FROM material m JOIN material_order mo
-				ON mo.mo_material_id = m.m_no
-		WHERE mo_date is not null				
+	   <!--발주 진행 리스트 -->
+   <select id="mOrderList" resultType="MaterialVO">
+      SELECT mo_date,
+            mo.mo_order_id as m_order_id,
+            mo.mo_name as m_name,
+              mo.mo_num,
+            find_code_name(m.m_unit_code) AS m_unit_code,
+            (mo.mo_unit_price * mo.mo_num) as mo_tt_price,
+            find_code_name(mo.mo_progress_code)AS mo_prog_code
+      FROM material m JOIN material_order mo
+            ON mo.mo_material_id = m.m_no
+      WHERE mo_date is not null            
 
-	</select>
+   </select>
+   
+   <!-- 발주 수량 업데이트(발주 대기) -->
+   <update id="updateOrderNum" parameterType="MaterialVO">
+   UPDATE material_order 
+   SET mo_num = #{moNum}
+   WHERE MO_ORDER_ID = #{mOrderId} 
+   </update>
+   
+   <select id="getGrId" resultType="MaterialVO">
+   SELECT DISTINCT 'GR'|| TO_CHAR(sysdate,'yyMMdd') 
+           			   || (SELECT LPAD((NVL(MAX(SUBSTR(mo_group_num, -2,2)),0)+1),2,0)
+                    FROM material_order
+                    WHERE  mo_group_num LIKE 'GR'||to_char(sysdate, 'yyMMdd')||'%') AS mo_group_num
+   FROM material_order
+   </select>
+
+   <!-- 발주 수량 업데이트 (발주 현황) -->
+ <!--   <update id="updateOrderGo" parameterType="MaterialVO">
+     UPDATE material_order 
+      SET mo_group_num = #{mGrNo},
+            mo_date = sysdate,
+          mo_progress_code = #{moProgcode}
+      WHERE mo_order_id =  #{mOrderId}   
+   </update>  -->
+   
+   <!-- 발주 대기 삭제 -->
+   <delete id="deleteCartOrder" parameterType="MaterialVO">
+      DELETE 
+      FOM material_order
+      WHERE mo_order_id = #{mOrderId} 
+   </delete>
+   
+  <!-- 발주 진행현황 -->
+    <!-- <select id="">
+		SELECT mo_group_num, mo_date,LISTAGG(mo_name, ',') WITHIN GROUP(ORDER BY mo_group_num) AS mo_name, 
+		 mo_total_price, mo_progress_code
+		FROM material_order
+		GROUP BY job
+   </select> -->
+
 	
-	<!-- 발주 수량 업데이트(발주 대기) -->
-	<update id="updateOrderNum" parameterType="MaterialVO">
-	UPDATE material_order 
-	SET mo_num = #{moNum}
-	WHERE MO_ORDER_ID = #{mOrderId} 
-	</update>
-
-	<!-- 발주 수량 업데이트 (발주 현황) -->
-	<update id="updateOrderGo" parameterType="MaterialVO">
-	UPDATE material_order 
-	SET mo_date = #{moNum}
-	WHERE MO_ORDER_ID = #{mOrderId} 
-	</update>
+	
 
 
 </mapper>

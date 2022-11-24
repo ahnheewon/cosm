@@ -36,7 +36,7 @@ public class MaterialController {
 
    /*
     * =============================================================================
-    * ==================
+    * 
     */
 
    // 자재 정보 등록폼 (이동)
@@ -44,10 +44,7 @@ public class MaterialController {
    public String mInsertForm(MaterialVO mVO, Model model) {
       model.addAttribute("category", mService.getCategoryList());
       model.addAttribute("unit", mService.getUnitList());
-      // MaterialVO mno =mService.getMno();
-      // model.addAttribute("mno", mno.getMNo());
-
-      // System.out.println("자재번호 값이 맞나여?" + mno.getMNo());
+      
       return "material/mInfoInsert";
    }
 
@@ -151,10 +148,7 @@ public class MaterialController {
 
    /*
     * =============================================================================
-    * 
     */
-
-
 
    // 발주 대기 리스트 조회, 발주 현황 리스트 조회
 
@@ -188,4 +182,6 @@ public class MaterialController {
       return mService.updateOrderNum(mvo);
    }
 
+   
+   
 }
