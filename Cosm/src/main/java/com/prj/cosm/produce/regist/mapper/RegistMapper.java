@@ -8,7 +8,10 @@ import com.prj.cosm.produce.regist.service.RegistVO;
 public interface RegistMapper {
 
 	public List<Map<String, Object>> getRegistList();
-
+	
+	//완제품 전체조회(모두)
+	public List<Map<String, Object>> completeList();
+	
 	public RegistVO getRegistLOT();
 
 	public RegistVO getRegistLabel();

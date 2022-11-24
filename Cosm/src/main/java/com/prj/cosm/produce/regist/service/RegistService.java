@@ -5,8 +5,11 @@ import java.util.Map;
 
 public interface RegistService {
 
-	//완제품 전체조회
+	//완제품 전체조회(오늘자)
 	public List<Map<String, Object>> selectRegistList();
+	
+	//완제품 전체조회(모두)
+	public List<Map<String, Object>> completeList();
 	
 	//LOT_NO
 	public RegistVO selectRegistLOT();
