@@ -164,7 +164,7 @@ public class EquipController {
 			model.addAttribute("tno",eService.getTestNo().getTestNo());
 			model.addAttribute("fno",eService.getFailNo().getFailNo());
 			model.addAttribute("wno",wService.getWorkNo().getWorkNo());
-			//model.addAttribute("wno",eService.getWorkNo().getWorkNo());
+			
 			return "/equipment/maintenance";
 		}
 		
