@@ -32,12 +32,12 @@ public class OrderClientProductController {
 	ProductService pService;
 
 // 제품페이지=================================================================================================================
-	//로그인 유무 상관없이 보여짐
+	// 로그인 유무 상관없이 보여짐
 	@RequestMapping("/client/productList")
 	public String productList(Model model) {
 		return "/client/productList";
 	}
-	
+
 // 고객=================================================================================================================
 	// 고객 - 로그인 후, 첫 화면 - 주문등록, 이전주문, 주문조회.. 볼 수 있음
 	@RequestMapping("/client/main")
@@ -46,9 +46,9 @@ public class OrderClientProductController {
 	}
 
 	// 주문하기(tab or layout),(회원+고객+주문 조인) 페이지
-	@GetMapping("/client/insertOrder") //url
+	@GetMapping("/client/insertOrder") // url
 	public String insertOrder(Model model) {
-		return "/client/insertOrder"; //resources - insertOrder
+		return "/client/insertOrder"; // resources - insertOrder
 	}
 
 	// 주문 등록시 데이터
@@ -75,7 +75,11 @@ public class OrderClientProductController {
 		return "/client/myPage";
 	}
 
-	// 진위확인 된 사업자번호
+	// 문의하기 페이지
+	@RequestMapping("/client/chat")
+	public String chat(Model model) {
+		return "/client/chat";
+	}
 
 	// 영업=================================================================================================================
 	// 메인페이지 - 주문관리
@@ -100,7 +104,7 @@ public class OrderClientProductController {
 
 	// 주문 - 수정
 	@ResponseBody
-	@PostMapping("/orders/ajaxUpOrders") //ajaxUpOrders
+	@PostMapping("/orders/ajaxUpOrders") // ajaxUpOrders
 	public int updateInfo(@RequestBody List<OrdersVO> list, RedirectAttributes ratt) {
 		int result = oService.updatePro(list);
 
