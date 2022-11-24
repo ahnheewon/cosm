@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,8 @@ import com.prj.cosm.sales.client.service.ClientVO;
 import com.prj.cosm.sales.orders.service.OrdersService;
 import com.prj.cosm.sales.orders.service.OrdersVO;
 import com.prj.cosm.sales.product.service.ProductService;
+
+import groovyjarjarantlr4.v4.parse.GrammarTreeVisitor.mode_return;
 
 @Controller
 @CrossOrigin("*")
@@ -52,7 +55,12 @@ public class OrderClientProductController {
 	}
 
 	// 주문 등록시 데이터
+	
 
+	
+	
+	
+	
 	// 주문조회 화면(월별 : 1개월 3개월 6개월 조회 가능)
 	@GetMapping("/client/orderList")
 	@ResponseBody
@@ -62,7 +70,7 @@ public class OrderClientProductController {
 	}
 
 	// 주문조회 데이터
-	@GetMapping("/client/orderList")
+	@GetMapping("/client/orderListInfo")
 	@RequestMapping
 	public List<ClientVO> orderList() {
 
@@ -95,6 +103,37 @@ public class OrderClientProductController {
 		return oService.salesOrderList();
 	}
 
+	// 주문조회 데이터
+	@GetMapping("/orders/ordersList")
+	@ResponseBody
+	public List<OrdersVO> salesorderList(Model model) {
+		model.addAttribute("id", oService.getOrderNo());
+		return oService.salesOrderList();
+	}
+	
+	// 주문등록 페이지======================	
+	@PostMapping("/orders/insertOrderAjax")
+	public String insertOrderPage(Model model, OrdersVO vo) {
+		model.addAttribute("no", oService.getOrderNo());
+		oService.insertOrder(vo);
+		
+		return "redirect:/orders/sMain";
+	}
+
+	// 주문등록 데이터=====================
+	@Transactional
+	@RequestMapping("/orders/insertOrder")
+	@ResponseBody
+	@PostMapping
+	public int insertOrder(OrdersVO vo) {
+		System.out.println(vo);
+		int a=0;
+		a = oService.insertOrder(vo);
+		return a;
+	}
+	 
+	
+	
 	// 체크박스 - 삭제
 	@ResponseBody
 	@PostMapping("/orders/ajaxDelcheckOrder") // ajaxDelcheckOrder, requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
@@ -124,14 +163,6 @@ public class OrderClientProductController {
 //	public String test(Model model) {
 //		return "sales/test";
 //	}
-
-	// 사원 - 주문목록데이터
-	@GetMapping("/orders/ordersList")
-	@ResponseBody
-	public List<OrdersVO> salesorderList(Model model) {
-		model.addAttribute("id", oService.getOrderNo());
-		return oService.salesOrderList();
-	}
 
 	/* main - 주문목록조회 = ajax, get */
 

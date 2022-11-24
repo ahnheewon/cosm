@@ -33,35 +33,34 @@
 	<!-- ORDER_CODE - 신규,불량,재주문 추가하기 -->
 	<insert id="insertOrder" parameterType="OrdersVO">
 		INSERT INTO orders (
-		ORDER_NO,
-		CLIENT_NO,
-		PRODUCT_NO,
-		ORDER_DATE,
-		DELIVERY_DATE,
-		PRODUCT_NAME,
-		TOTAL_NUM,
-		TOTAL_PRICE,
-		SURTAX,
-		NOTE,
-		ORDER_CODE,
-		ORDER_PROGRESS_CODE,
-		DELIVERY_INFO,
-		IO_CODE)
+						order_no,
+						product_no,
+						order_date,
+						delivery_date,
+						total_num,
+						pro_price,
+						surtax,
+						note,
+						order_code,
+						order_progress_code,
+						delivery_info,
+						io_code,
+						total_price
+		)
 		values (
-		#{orderNo},
-		#{clientNo},
-		#{productNo},
-		#{orderDate},
-		#{deliveryDate},
-		#{productName},
-		#{totalNum},
-		#{totalPrice},
-		#{surtax},
-		#{note},
-		#{orderCode},
-		#{orderProgressCode},
-		#{deliveryInfo},
-		#{ioCode}
+						#{orderNo},
+						#{productNo},
+						#{orderDate},
+						#{deliveryDate},
+						#{totalNum},
+						#{proPrice},
+						#{surtax},
+						#{note},
+						#{orderCode},
+						#{orderProgressCode},
+						#{deliveryInfo},
+						#{ioCode},
+						#{totalPrice}
 		)
 	</insert>
 
