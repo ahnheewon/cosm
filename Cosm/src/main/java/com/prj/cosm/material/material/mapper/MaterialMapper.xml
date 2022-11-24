@@ -17,16 +17,16 @@
 	<!-- 자재정보 전체조회 -->
 	<select id="mList" resultType="MaterialVO">
 		SELECT m. m_no,
-		m. m_company_id,
-		mc.mc_company_name As m_company_nm,
-		m.m_name m_name,
-		m.m_price,
-		c.code_name As m_unit_code,
-		m.m_category
+			   m. m_company_id,
+				mc.mc_company_name As m_company_nm,
+				m.m_name m_name,
+				m.m_price,
+				c.code_name As m_unit_code,
+				m.m_category
 		FROM Material m JOIN CODE c
-		ON m.m_unit_code = c.code_no
-		JOIN MATERIAL_COMPANY mc
-		ON m.m_company_id = mc.mc_company_id
+				ON m.m_unit_code = c.code_no
+			JOIN MATERIAL_COMPANY mc
+			ON m.m_company_id = mc.mc_company_id
 		ORDER BY m.m_no
 
 	</select>
@@ -72,19 +72,19 @@
 			</if>
 		</selectKey>
 		INSERT INTO MATERIAL (m_no,
-		m_name,
-		m_category,
-		m_price,
-		m_company_id,
-		m_unit_code,
-		m_info )
-		VALUES (#{mNo},
-		#{mName},
-		#{mCategory},
-		#{mPrice},
-		#{mCompanyId},
-		find_code_name(#{mUnitCode}),
-		#{mInfo}
+								m_name,
+								m_category,
+								m_price,
+								m_company_id,
+								m_unit_code,
+								m_info )
+				VALUES (#{mNo},
+						#{mName},
+						#{mCategory},
+						#{mPrice},
+						#{mCompanyId},
+						 find_code_name(#{mUnitCode}),
+						#{mInfo}
 		)
 	</insert>
 
@@ -157,7 +157,7 @@
 	<select id="getUnitList" resultType="MaterialVO">
 		SELECT code_name FROM code
 		WHERE code_adno = 'F01'
-		ORDER BY code_no
+		ORDER BY code_no 
 	</select>
 
 	<!-- 자재 분류 조회 -->
@@ -167,14 +167,14 @@
 		FROM material
 	</select>
 	
-	<!-- 발주 실행 -->
+	<!-- 발주 대기 관리 insert -->
 	<insert id="insertMcart" parameterType="MaterialVO">
 		<selectKey keyProperty="mOrderId" resultType="String"
-			order="BEFORE">
+			order="BEFORE" >
 			SELECT TO_CHAR(SYSDATE, 'yyMMdd')|| SUBSTR(#{mNo},1,1)||
-			(SELECT LPAD((NVL(MAX(SUBSTR(mo_order_id, -2,2)),0)+1),2,0)
-			FROM material_order
-			WHERE mo_order_id LIKE to_char(sysdate, 'yyMMdd')||'%') AS m_order_id
+				(SELECT LPAD((NVL(MAX(SUBSTR(mo_order_id, -2,2)),0)+1),2,0)
+				FROM material_order
+				WHERE mo_order_id LIKE to_char(sysdate, 'yyMMdd')||'%') AS m_order_id
 			FROM dual
 		</selectKey>
 		INSERT INTO material_order (mo_order_id,
@@ -192,19 +192,20 @@
 
 	<!--발주 대기 리스트 조회 -->
 	<select id="mCartList" resultType="MaterialVO">
-		SELECT mo.mo_order_id as m_order_id,
-		mo.mo_material_id as m_no,
-		mo.mo_company_id as m_company_id,
-		mo.mo_name as m_name,
-		mc.mc_company_name as m_company_nm,
-		mo.mo_unit_price,
-		find_code_name(m.m_unit_code) AS m_unit_code,
-		mo.mo_num,
-		(mo.mo_unit_price * mo.mo_num) as mo_tt_price
+		SELECT mo.mo_order_id AS m_order_id,
+			   mo.mo_material_id AS m_no,
+   			   mo.mo_company_id AS m_company_id,
+			   mo.mo_name as m_name,
+			   mc.mc_company_name AS m_company_nm,
+			   mo.mo_unit_price,
+			   find_code_no(m.m_unit_code) AS m_unit_code,
+			   mo.mo_num,
+			   (mo.mo_unit_price * mo.mo_num) AS mo_tt_price
 		FROM material_order mo JOIN material_company mc
-		ON mo.mo_company_id = mc.mc_company_id
+				ON mo.mo_company_id = mc.mc_company_id
 		JOIN material m
-		ON m.m_no = mo.mo_material_id
+				ON m.m_no = mo.mo_material_id
+       
 	</select>
 
 	   <!--발주 진행 리스트 -->
@@ -229,37 +230,42 @@
    WHERE MO_ORDER_ID = #{mOrderId} 
    </update>
    
+   <!-- 그룹번호 찾기 -->
    <select id="getGrId" resultType="MaterialVO">
    SELECT DISTINCT 'GR'|| TO_CHAR(sysdate,'yyMMdd') 
            			   || (SELECT LPAD((NVL(MAX(SUBSTR(mo_group_num, -2,2)),0)+1),2,0)
                     FROM material_order
-                    WHERE  mo_group_num LIKE 'GR'||to_char(sysdate, 'yyMMdd')||'%') AS mo_group_num
+                    WHERE  mo_group_num LIKE 'GR'||to_char(sysdate, 'yyMMdd')||'%') AS mo_gr_no
    FROM material_order
    </select>
 
    <!-- 발주 수량 업데이트 (발주 현황) -->
- <!--   <update id="updateOrderGo" parameterType="MaterialVO">
+ <update id="updateOrderGo" parameterType="MaterialVO">
      UPDATE material_order 
-      SET mo_group_num = #{mGrNo},
-            mo_date = sysdate,
-          mo_progress_code = #{moProgcode}
-      WHERE mo_order_id =  #{mOrderId}   
-   </update>  -->
+      SET mo_group_num = #{moGrNo},
+          mo_date = sysdate,
+          mo_progress_code = 'A0102'
+      WHERE mo_order_id IN
+      <foreach collection="moi" item="mo" separator="," open="(" close=")">
+        #{mo}   
+      </foreach>
+   </update>
    
    <!-- 발주 대기 삭제 -->
    <delete id="deleteCartOrder" parameterType="MaterialVO">
       DELETE 
-      FOM material_order
+      FROM material_order
       WHERE mo_order_id = #{mOrderId} 
    </delete>
    
   <!-- 발주 진행현황 -->
-    <!-- <select id="">
-		SELECT mo_group_num, mo_date,LISTAGG(mo_name, ',') WITHIN GROUP(ORDER BY mo_group_num) AS mo_name, 
-		 mo_total_price, mo_progress_code
+   <select id="getOrderProgress" resultType="MaterialVO">
+		SELECT 	mo_group_num as mo_gr_no,
+			  	LISTAGG(mo_name , ', ') WITHIN GROUP(ORDER BY mo_name DESC) AS m_name, SUM(mo_total_price)as mo_tt_price,
+    			mo_date, mo_progress_code AS mo_prog_code
 		FROM material_order
-		GROUP BY job
-   </select> -->
+		GROUP BY mo_group_num, mo_date, mo_progress_code
+   </select>
 
 	
 	
