@@ -41,7 +41,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests((requests) -> requests
 
 				.antMatchers("/","/top", "/login", "/joinForm", "/empCheckId", "/userInsert", "/userSelect", "/planUpdate", "/planInsert", "/insUpdate", "/insInsert", "/registInsert", "/minsert","/ajax/mdelinfo","/userCheckId","/clientInsert","/insPlay","/updateInsPlay")
-				.permitAll().antMatchers("/*").hasAuthority("ROLE_D0101").antMatchers("/client/**","/orders/**").hasAuthority("ROLE_D0102").antMatchers("/equipment/**").hasAuthority("ROLE_D0108").anyRequest().authenticated()).formLogin()
+				.permitAll().antMatchers("/client/**","/orders/**").hasAuthority("ROLE_D0102").antMatchers("/equipment/**").hasAuthority("ROLE_D0108").antMatchers("/**").hasAuthority("ROLE_D0101").anyRequest().authenticated()).formLogin()
 				.loginPage("/login").usernameParameter("userId").loginProcessingUrl("/login")
 				.successHandler(successHandler()).and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
 				.invalidateHttpSession(true).deleteCookies("JSESSIONID").and().exceptionHandling()
@@ -55,7 +55,7 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/css/**");
+		return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/css/**","/equipmentCss/**");
 	}
 
 	@Autowired
