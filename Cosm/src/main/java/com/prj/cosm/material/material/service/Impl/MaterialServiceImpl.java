@@ -1,5 +1,6 @@
 package com.prj.cosm.material.material.service.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +49,11 @@ public class MaterialServiceImpl implements MaterialService {
 	@Override
 	public int deleteMatrailInfo(List<String> mNo) {
 		// 자재 정보 삭제 - 재고 수량도 삭제됨
+		//if(사용여부 == null)
 		int result = 0;
 		for (String no : mNo) {
 			result += mMapper.deleteMatrailInfo(no);
-		}
+		}		
 		return result;
 	}
 
@@ -135,14 +137,15 @@ public class MaterialServiceImpl implements MaterialService {
 	      // 발주 대기 -> 발주 등록(그룹)
 
 	      int result = 0;
-
-	      // 그룹번호 부여..?
-	      getGrId();
-	      for (MaterialVO vo : mVO) {
-	         // 그룹번호 넣기..?
-
-	         result += mMapper.updateOrderNum(vo);
+	      MaterialVO mvo = new MaterialVO();
+	      String GrNo = mMapper.getGrId().getMoGrNo();
+	      List<String> strary = new ArrayList<String>();
+	      for(MaterialVO vo :mVO) {
+	    	  strary.add(vo.getMOrderId());
 	      }
+	      mvo.setMoGrNo(GrNo);
+	      mvo.setMoi(strary);
+	      mMapper.updateOrderGo(mvo);
 	      return result;
 	   }
 
@@ -156,6 +159,12 @@ public class MaterialServiceImpl implements MaterialService {
 	      }
 	      return result;
 	   }
+
+	@Override
+	public List<MaterialVO> getOrderProgress() {
+		// 발주 진행 현황 찾기
+		return mMapper.getOrderProgress();
+	}
 
 	}
 

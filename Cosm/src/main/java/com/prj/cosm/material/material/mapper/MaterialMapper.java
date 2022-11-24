@@ -71,4 +71,8 @@ public interface MaterialMapper {
 	// 발주 대기 삭제
 	public int deleteCartOrder(MaterialVO mVo);
 
+	// 발주 진행 현황 찾기
+	public List<MaterialVO> getOrderProgress();
+
+
 }
