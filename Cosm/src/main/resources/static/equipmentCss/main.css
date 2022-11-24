@@ -27,16 +27,37 @@
 
 .onBtn {
 	fill: green;
+	animation-iteration-count: infinite;
+	animation-delay: 250ms;
+	animation-name: btncolor;
+	animation-duration : 1s;
+}
+
+@keyframes btncolor {
+  0% {fill : rgb(0, 189, 0)}
+  50% {fill : #00ff00;}
+  100%{fill: rgb(0, 189, 0);}
 }
 
 .offBtn {
 	fill: red;
 }
 
+
+
 .pipeOn {
 	stroke: red;
+	animation-iteration-count: infinite;
+	animation-delay: 250ms;
+	animation-name:pipecolor;
+	animation-duration : 1s;
 }
 
+@keyframes pipecolor {
+  0% {stroke : red;}
+  50% {stroke : hotpink;}
+  100%{stroke: red;}
+}
 .pipeOff {
 	stroke: black;
 }
