@@ -49,7 +49,7 @@
 			<div class="tab_content" id="all_content">
 				<h3>미계획 주문서 리스트</h3>
 				<button type="button" class="btn btn-dark btn-sm"
-					onclick="insertData();" data-bs-toggle="modal"
+					onclick="insertData();" data-bs-toggle="modal" id="selectBtn"
 					data-bs-target="#requestModal" style="float: right">생산계획
 					작성</button>
 				<div id="grid"></div>
@@ -132,7 +132,8 @@
 								</div>
 
 								<div class="input-group mb-3">
-									<span class="input-group-text">BOM번호</span> <select
+									<span class="input-group-text" data-bs-toggle="modal" id="selectBom"
+										data-bs-target="#requestModal3">BOM번호</span> <select
 										id="planBomNo" name="planBomNo" class="form-select">
 										<option th:each="bomNo : ${bomNo}">[[${bomNo.bomNo}]]</option>
 									</select>
@@ -146,8 +147,8 @@
 								<div class="input-group mb-3">
 									<span class="input-group-text">생산량</span> <input type="number"
 										class="form-control" placeholder="생산량" name="planQuantity"
-										id="planQuantity"
-										aria-label="Username" aria-describedby="basic-addon2">
+										id="planQuantity" aria-label="Username"
+										aria-describedby="basic-addon2">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">주문일자</span> <input type="date"
@@ -389,8 +390,34 @@
 				</div>
 			</div>
 		</div>
+		<!-- 생산계획 수정 모달 -->
+		<div class="modal fade" id="requestModal3" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">생산계획서 수정</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+						<div class="modal-body">
+							<div id="grid5"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" id="setData"
+								data-bs-dismiss="modal">확인</button>
+						</div>
+				</div>
+			</div>
+		</div>
 
 		<script>
+	
+            $("#setData").click(function () {
+            	$('#requestModal').modal('toggle');
+            	$('#selectBtn').click();	
+          		
+            })
+	
 		window.onload = function () {
 			
 			
@@ -399,7 +426,7 @@
 			orderList();
 			bomList();
 			goodsList();
-			
+			bomList2();
 			
 			//체크박스 하나만 선택
 			grid.on('check', (ev) => {
@@ -616,6 +643,67 @@
 				},	
 				],
 			});
+		//BOM 리스트 그리드
+		 var grid5 = new tui.Grid({
+			 
+			el: document.getElementById('grid5'),
+			minBodyHeight: 30,
+			pageOptions: {
+				useClient: true, // front에서만 페이징 하는 속성
+				perPage: 5
+			},
+			
+			scrollX: false,
+			scrollY: false,
+			columns: [
+				{
+					header: 'BOM번호',
+					name: 'bomNo',
+					filter: {
+					       type: 'select',
+					        showApplyBtn: true,
+					        showClearBtn: true
+					      },
+				},
+				{
+					header: '투입량',
+					name: 'bomQuantity',
+				},
+				{
+					header: '제품번호',
+					name: 'bomProductNo',
+				},
+				
+				{
+					header: '제품이름',
+					name: 'goodsName',
+				},
+				{
+					header: '제품기준수량',
+					name: 'goodsStandard',
+				},
+				{
+					header: '제품상세정보',
+					name: 'goodsContents',
+				},
+				{
+					header: '자재번호',
+					name: 'bomMaterialNo',
+				},	
+				{
+					header: '자재명',
+					name: 'mname',
+				},	
+				{
+					header: '자재재고량',
+					name: 'mstock',
+				},	
+				{
+					header: '자재상세정보',
+					name: 'minfo',
+				},	
+				],
+			});
 		
 		//제품정보 리스트 그리드
 		 var grid4 = new tui.Grid({
@@ -713,6 +801,20 @@
 					}
 			});
 			}
+			// bom리스트 불러오기
+			function bomList2(){
+				$.ajax({
+					url: "produce/bomList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid5.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+			});
+			}
 			// 제품리스트 불러오기
 			function goodsList() {
 				$.ajax({
@@ -772,6 +874,11 @@
 			selectMno2.addEventListener('click',function(){
 			grid4.refreshLayout();
 			grid3.refreshLayout();
+			})
+		const selectMno3 = document.getElementById('selectBom');
+			selectMno3.addEventListener('click',function(){
+				grid4.refreshLayout();
+				grid5.refreshLayout();
 			})
 
 		//등록

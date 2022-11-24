@@ -26,7 +26,6 @@ public class EquipVO {
 	
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date equipDate;
 	
 	private Integer equipRate;
