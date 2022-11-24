@@ -1,110 +1,119 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/layout.html}">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout.html}">
 
 <head>
-    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
-    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+<meta charset="UTF-8">
+<title>Insert title here</title>
 
-    <!-- toast grid-->
+<!-- toast grid-->
 
-    <!-- style and js -->
-    <link rel="stylesheet" href="/equipmentCss/main.css">
-    <script src="https://d3js.org/d3.v6.min.js"></script>
+<!-- style and js -->
+<link rel="stylesheet" href="/equipmentCss/main.css">
+<script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 
 <body>
 
-    <div layout:fragment="content" style="height: 1300px; overflow: scroll" align="center">
-        <h2>설비 관리</h2>
+	<div layout:fragment="content" style="height: 1300px; overflow: scroll"
+		align="center">
+		<h2>설비 관리</h2>
 
-        <div class="row">
-            <div class="column" id="mySvg"></div>
+		<div class="row">
+			<div class="column" id="mySvg"></div>
 
-            <div class="column">
-                <h5>점검 관리(점검 안된애들만 보여주세요)</h5>
-                <div id="testGrid"></div>
-            </div>
+			<div class="column">
+				<h5>점검 관리(점검 안된애들만 보여주세요)</h5>
+				<div id="testGrid"></div>
+			</div>
 
-            <div class="column">
-                <h5>공사 관리(공사 결재안된애들만 보여주세요)</h5>
-                <div id="workGrid"></div>
-            </div>
+			<div class="column">
+				<h5>공사 관리(공사 결재안된애들만 보여주세요)</h5>
+				<div id="workGrid"></div>
+			</div>
 
-        </div>
-        <div class="modal fade" id="myModal3" data-backdrop="static" data-keyboard="false">
+		</div>
+		<div class="modal fade" id="myModal3" data-backdrop="static"
+			data-keyboard="false">
 
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
 
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">
-                            <span id="whatEno"></span>설비 정보
-                        </h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title">
+							<span id="whatEno"></span>설비 정보
+						</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
 
 
-                    <!-- <sec:csrfInput/> -->
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					<!-- <sec:csrfInput/> -->
+					<input type="hidden" th:name="${_csrf.parameterName}"
+						th:value="${_csrf.token}" />
 
-                    <!-- Modal body -->
-                    <div id="equipInfo" class="modal-body">
+					<!-- Modal body -->
+					<div id="equipInfo" class="modal-body">
 
-                        <input type="hidden" id="equipNo">
-                        <input type="hidden" id="equipProcess">
-                        <table class="table" style="text-align: center">
-                            <tr>
-                                <td width="100px">설비명</td>
-                                <td><input class="form-control wantUpdate" id="equipName" name="equipName" type="text"
-                                        readonly></td>
-                                <!-- th:value="${equip.equipName}" -->
-                                <td>설비타입</td>
-                                <td><input class="form-control wantUpdate" id="equipType" name="equipType" type="text"
-                                        readonly></td>
-                                <td rowspan="2" style="overflow: hidden; width: 100px;"></td>
-                            </tr>
-                            <tr>
-                                <td width="100px">정상진동</td>
-                                <td><input class="form-control wantUpdate" id="equipStdVibe" name="equipStdVibe"
-                                        type="text" readonly></td>
-                                <td width="100px">정상온도</td>
-                                <td><input class="form-control wantUpdate" id="equipStdTemp" name="equipStdTemp"
-                                        type="text" readonly></td>
-                            </tr>
-                            <tr>
-                                <td width="100px">설치시기</td>
-                                <td><input class="form-control" id="equipDate" name="equipDate" type="text" readonly>
-                                </td>
-                                <td width="100px">가동시간</td>
-                                <td><input class="form-control" id="equipTime" name="equipTime" type="text" readonly
-                                        style="width: 86%; display: inline-block;">시간</td>
+						<input type="hidden" id="equipNo"> <input type="hidden"
+							id="equipProcess">
+						<table class="table" style="text-align: center">
+							<tr>
+								<td width="100px">설비명</td>
+								<td><input class="form-control wantUpdate" id="equipName"
+									name="equipName" type="text" readonly></td>
+								<!-- th:value="${equip.equipName}" -->
+								<td>설비타입</td>
+								<td><input class="form-control wantUpdate" id="equipType"
+									name="equipType" type="text" readonly></td>
+								<td rowspan="2" style="overflow: hidden; width: 100px;"></td>
+							</tr>
+							<tr>
+								<td width="100px">정상진동</td>
+								<td><input class="form-control wantUpdate"
+									id="equipStdVibe" name="equipStdVibe" type="text" readonly></td>
+								<td width="100px">정상온도</td>
+								<td><input class="form-control wantUpdate"
+									id="equipStdTemp" name="equipStdTemp" type="text" readonly></td>
+							</tr>
+							<tr>
+								<td width="100px">설치시기</td>
+								<td><input class="form-control" id="equipDate"
+									name="equipDate" type="text" readonly></td>
+								<td width="100px">가동시간</td>
+								<td><input class="form-control" id="equipTime"
+									name="equipTime" type="text" readonly
+									style="width: 86%; display: inline-block;">시간</td>
 
-                            </tr>
-                            <tr>
-                                <td width="100px">설비설명</td>
-                                <td colspan="5"><textarea class="form-control wantUpdate textWidth" id="equipPurpose"
-                                        name="equipPurpose" rows="5" cols="70" readonly></textarea></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <input id="update" type="hidden">
-                        <button type="button" class="btn btn-primary updateBtn" id="doBtn">가동</button>
-                        <input type="hidden" id="thisNoUD" name="equipNo">
-                        <!-- 업데이트, 삭제 때문에 가져온 설비번호 값. -->
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
-                    </div>
+							</tr>
+							<tr>
+								<td width="100px">설비설명</td>
+								<td colspan="5"><textarea
+										class="form-control wantUpdate textWidth" id="equipPurpose"
+										name="equipPurpose" rows="5" cols="70" readonly></textarea></td>
+							</tr>
+						</table>
+					</div>
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<input id="update" type="hidden">
+						<button type="button" class="btn btn-primary updateBtn" id="doBtn">가동</button>
+						<input type="hidden" id="thisNoUD" name="equipNo">
+						<!-- 업데이트, 삭제 때문에 가져온 설비번호 값. -->
+						<button type="button" class="btn btn-danger"
+							data-bs-dismiss="modal">닫기</button>
+					</div>
 
-                </div>
-            </div>
-        </div>
+				</div>
+			</div>
+		</div>
 
-        <script>
+		<script>
             /*  점검 그리드  */
             const testGrid = new tui.Grid({
                 el: document.querySelector('#testGrid'),
@@ -188,8 +197,8 @@
                 })
         </script>
 
-        <!-- svg script -->
-        <script>
+		<!-- svg script -->
+		<script>
             const header = $("meta[name='_csrf_header']").attr('content');
             const token = $("meta[name='_csrf']").attr('content');
             getEquipList();
@@ -513,7 +522,7 @@
             }
         </script>
 
-    </div>
+	</div>
 </body>
 
 </html>
