@@ -4,8 +4,7 @@
 	layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
-<meta name="_csrf" th:content="${_csrf.token}">
-<meta name="_csrf_header" th:content="${_csrf.headerName}">
+
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <link rel="stylesheet"
@@ -342,8 +341,7 @@
 				grid4.refreshLayout();
 		})
 		
-		const header = $("meta[name='_csrf_header']").attr('content');
-		const token = $("meta[name='_csrf']").attr('content');
+
 		
 		
 		window.onload = function () {

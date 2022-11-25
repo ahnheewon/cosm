@@ -11,9 +11,6 @@ public interface RegistService {
 	//완제품 전체조회(모두)
 	public List<Map<String, Object>> completeList();
 	
-	//날짜검색
-	public List<RegistVO> getDateList(RegistVO vo);
-	
 	//LOT_NO
 	public RegistVO selectRegistLOT();
 	

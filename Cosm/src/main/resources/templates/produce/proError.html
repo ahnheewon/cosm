@@ -4,8 +4,7 @@
 	layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
-<meta name="_csrf" th:content="${_csrf.token}">
-<meta name="_csrf_header" th:content="${_csrf.headerName}">
+
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <link rel="stylesheet"
@@ -49,8 +48,7 @@
 		<button type="button" onclick="location.href='/regist'"
 					class="btn btn-primary btn-m" style="float: right; margin-right: 36px">완제품등록 페이지 이동</button>
 		<script>
-		const header = $("meta[name='_csrf_header']").attr('content');
-		const token = $("meta[name='_csrf']").attr('content');
+	
 		window.onload = function () {
 			
 			instructList();

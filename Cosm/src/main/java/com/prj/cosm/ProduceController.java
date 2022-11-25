@@ -332,13 +332,8 @@ public class ProduceController {
 	public List<Map<String, Object>> completedList() {
 		return registService.completeList();
 	}
-
-	// 완제품 list에 ajax주는 것
-	@GetMapping("/getDateList")
-	@ResponseBody
-	public List<RegistVO> getDateList(RegistVO vo) {
-		return registService.getDateList(vo);
-	}
+	
+	
 
 	// ===========================================================
 }
