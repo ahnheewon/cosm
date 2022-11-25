@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.prj.cosm.sales.client.service.ClientService;
 import com.prj.cosm.sales.client.service.ClientVO;
+import com.prj.cosm.user.alert.service.AlertService;
+import com.prj.cosm.user.alert.service.AlertVO;
 import com.prj.cosm.user.emp.service.EmpService;
 import com.prj.cosm.user.emp.service.EmpVO;
 
@@ -27,6 +29,9 @@ public class UserController {
 
 	@Autowired
 	ClientService cService;
+	
+	@Autowired
+	AlertService aService;
 
 	// 첫 화면
 	@GetMapping("/main")
@@ -127,5 +132,29 @@ public class UserController {
 		return service.userConfirm(vo);
 	}
 
+	@PostMapping("/getAlertList")
+	@ResponseBody
+	public List<AlertVO> getAlertList(String usersNo){
+		return aService.getAlertList(usersNo);
+	}
+	
+	@PostMapping("/getAlert")
+	@ResponseBody
+	public AlertVO getAlert(AlertVO aVO){
+		return aService.getAlert(aVO);
+	}
+	
+	@PostMapping("/insertAlert")
+	@ResponseBody
+	public int insertAlert(AlertVO aVO){
+		return aService.insertAlert(aVO);
+	}
+	
+	@PostMapping("/updateAlert")
+	@ResponseBody
+	public int updateAlert(AlertVO aVO){
+		return aService.updateAlert(aVO);
+	}
+	
 //	여기까지 진정욱
 }
