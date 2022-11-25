@@ -12,12 +12,11 @@ import lombok.Data;
 @Data
 public class OrdersVO {
 //고객 주문정보
-	/*	ORDER_NO
-		CLIENT_NO
+	/*	
+		ORDER_NO
 		PRODUCT_NO
 		ORDER_DATE
 		DELIVERY_DATE
-		PRODUCT_NAME
 		TOTAL_NUM
 		PRO_PRICE
 		SURTAX
@@ -26,27 +25,28 @@ public class OrdersVO {
 		ORDER_PROGRESS_CODE
 		DELIVERY_INFO
 		IO_CODE
+		TOTAL_PRICE
+		USERS_NO
 	*/
 
-		private String orderNo; 		//주문번호
-		private String clientNo; 			//거래처번호
+		private String orderNo; 			//주문번호
 		private String productNo; 			//제품번호
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		@JsonFormat(pattern = "yyyy-MM-dd")
-		private Date orderDate; 		//주문일자  
+		private Date orderDate; 			//주문일자  
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		@JsonFormat(pattern = "yyyy-MM-dd")
-		private Date deliveryDate; 		//납기일자 
-		private String productName; 	//제품명
-		private int totalNum; 			//수량 
-		private int totalPrice; 		//공급가액(부가세 제외한 금액)
-		private int surtax;				//부가세 
-		private String note; 			//비고(요청사항)
-		private String orderCode; 		//코드번호- 주문타입
-		private String orderProgressCode; //진행상황
-		private String deliveryInfo; 	// 배송상황
-		private String ioCode;			//출납상황
-	
+		private Date deliveryDate; 			//납기일자 
+		private int totalNum; 				//수량 
+		private int proPrice; 			//공급가액(부가세 제외한 금액)
+		private int surtax;					//부가세 
+		private String note; 				//비고(요청사항)
+		private String orderCode; 			//코드번호- 주문타입
+		private String orderProgressCode;	//진행상황
+		private String deliveryInfo; 		//배송상황
+		private String ioCode;				//출납상황
+		private int totalPrice; 			//총금액
+		private String usersNo;				//회원번호
 		
 		//체크박스 삭제, 셀렉트박스 상태변경, 체큿 생산지시 요청
 		private List<String> noList;

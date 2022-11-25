@@ -19,4 +19,10 @@ public interface ClientService {
 			//마이페이지 - 삭제 = 탈퇴
 			public int deleteMy(ClientVO cvo);
 			
+			//주문조회
+			public List<ClientVO> myOrderList();
+
+			//주문등록
+			public void insertOrder(ClientVO cvo);
+			
 }

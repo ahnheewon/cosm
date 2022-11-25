@@ -4,7 +4,9 @@
 
 <!-- 전체조회 -->
 <select id="getPlanList" resultType="PlanVO">
-	SELECT * FROM produce_plan ORDER BY plan_no DESC
+	SELECT * 
+	  FROM produce_plan 
+	 ORDER BY plan_no DESC
 </select>
 
 <!-- 미완료된것만 보이게 -->
@@ -20,14 +22,23 @@
 
 <!-- 생산계획 단건조회 -->
 <select id="getPlanInfo" resultType="planVO">
-	SELECT p.plan_no, p.plan_quantity, p.plan_start, p.plan_end, p.plan_ex, 
-		   p.plan_product_no, p.plan_bom_no, p.plan_order_no, b.bom_quantity, 
+	SELECT p.plan_no, 
+	       p.plan_quantity, 
+	       p.plan_start, 
+	       p.plan_end, 
+	       p.plan_ex, 
+		   p.plan_product_no, 
+		   p.plan_bom_no, p.plan_order_no, b.bom_quantity, 
 		   g.goods_name, g.goods_standard, g.goods_contents, g.goods_check, g.goods_date
-	FROM produce_plan p JOIN produce_bom b
-                    ON p.plan_bom_no = b.bom_no
-                    JOIN produce_goods g
-                    ON p.plan_product_no = g.goods_no
-    WHERE p.plan_no = #{planNo}
+	  FROM produce_plan p 
+	  
+	  JOIN produce_bom b
+        ON p.plan_bom_no = b.bom_no
+      
+      JOIN produce_goods g
+        ON p.plan_product_no = g.goods_no
+
+     WHERE p.plan_no = #{planNo}
 </select>
 
 <!-- 생산계획등록 -->
@@ -87,14 +98,14 @@
 
 <!-- 제품번호 리스트 -->
 <select id="getGoodsNoList" resultType="PlanVO">
-	SELECT DISTINCT(goods_no)
+	SELECT goods_no
 	FROM produce_goods
 	ORDER BY goods_no
 </select>
 
 <!-- BOM번호 리스트 -->
 <select id="getBomNoList" resultType="PlanVO">
-	SELECT DISTINCT(bom_no)
+	SELECT bom_no
 	FROM produce_bom
 	ORDER BY bom_no
 </select>

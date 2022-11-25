@@ -3,8 +3,6 @@
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/layout.html}">
 
 <head>
-    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
-    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
     <meta charset="UTF-8">
     <title>Insert title here</title>
 
@@ -54,8 +52,7 @@
                     <!-- Modal body -->
                     <div id="equipInfo" class="modal-body">
 
-                        <input type="hidden" id="equipNo">
-                        <input type="hidden" id="equipProcess">
+                        <input type="hidden" id="equipNo"> <input type="hidden" id="equipProcess">
                         <table class="table" style="text-align: center">
                             <tr>
                                 <td width="100px">설비명</td>
@@ -110,6 +107,7 @@
                 el: document.querySelector('#testGrid'),
                 pagination: true,
                 pageOptions: {
+                    useClient: true,
                     perPage: 4
                 },
                 columns: [{
@@ -118,7 +116,7 @@
                     },
                     {
                         header: '설비명',
-                        name: 'equipName'
+                        name: 'testEquipName'
                     },
                     {
                         header: '점검예정일',
@@ -150,6 +148,7 @@
                 el: document.querySelector('#workGrid'),
                 pagination: true,
                 pageOptions: {
+                    useClient: true,
                     perPage: 4
                 },
                 columns: [{
@@ -188,8 +187,9 @@
 
         <!-- svg script -->
         <script>
-            const header = $("meta[name='_csrf_header']").attr('content');
-            const token = $("meta[name='_csrf']").attr('content');
+            window.onload = function(){
+                setInterval(getEquipList,1000);
+            }
             getEquipList();
 
             const width = 1000;
@@ -201,7 +201,7 @@
 
 
             const runningProcess = {}
-            	
+
 
             function getEquipList() {
                 $.ajax({
@@ -209,8 +209,8 @@
                     type: "get",
                     success: function (data) {
                         var max = 0;
-                        runningProcess.equipProcess=[];
-                        runningProcess.count=[];
+                        runningProcess.equipProcess = [];
+                        runningProcess.count = [];
                         const equips = []
                         for (let i = 0; i < data.length; i++) {
                             if (max < data[i].equipProcess) {
@@ -218,8 +218,8 @@
                             }
                         }
                         for (let i = 1; i <= max; i++) {
-                        	runningProcess.equipProcess.push(i);
-                        	runningProcess.count.push(0);
+                            runningProcess.equipProcess.push(i);
+                            runningProcess.count.push(0);
                         }
                         for (let i = 1; i <= max; i++) {
                             var equip = {};
@@ -233,7 +233,7 @@
                                     if (obj['equipState'] == 'I0103') {
                                         onOff.push('off')
                                     } else {
-                                	runningProcess.count[i-1]++;
+                                        runningProcess.count[i - 1]++;
                                         onOff.push('on')
                                     }
                                 }
@@ -244,8 +244,6 @@
                             equip.count = names.length;
                             equips.push(equip);
                         }
-                        console.log(equips);
-						console.log(runningProcess);
                         makeProcess(equips[0], equips[1], equips[2], equips[3], equips[4]);
 
                     },
@@ -444,24 +442,20 @@
                     const modalToggle1 = document.getElementById('myModal3');
                     myModal3.show(modalToggle1);
                     let equipNo = $(this).attr('id');
-                    console.log(equipNo);
                     $.ajax({
                         url: "/equipment/getEquipInfo",
                         data: {
                             equipNo: equipNo
                         },
                         success: function (data) {
-                            console.log(data.equipState)
                             for (let val in data) {
                                 $('#' + val).val(data[val]);
                             }
                             $('#doBtn').off();
                             if (data.equipState == 'I0101') {
                                 $('#doBtn').text('중단').click(stopOrStart);
-                                console.log(runningProcess);
                             } else {
                                 $('#doBtn').text('가동').click(stopOrStart);
-                                console.log(runningProcess);
                             }
                         },
                         error: function (reject) {
@@ -473,21 +467,17 @@
 
             function stopOrStart() {
                 let equipProcess = $('#equipProcess').val();
-                console.log(equipProcess);
                 let equipNo = $('#equipNo').val();
                 let type = $('#doBtn').text();
-                console.log(type);
-                if(type=='가동'){
-                console.log(runningProcess);
-                	
-                } else if (type=='중단'){
-                	if(equipProcess>1){
-                		if(runningProcess.count[equipProcess-1]==1){
-                		if(runningProcess.count[equipProcess-2]>0){
-                			alert('이전 공정이 작동중입니다!');
-                			return false;
-                		}}
-                	} 
+                if (type == '중단') {
+                    if (equipProcess > 1) {
+                        if (runningProcess.count[equipProcess - 1] == 1) {
+                            if (runningProcess.count[equipProcess - 2] > 0) {
+                                alert('이전 공정이 작동중입니다!');
+                                return false;
+                            }
+                        }
+                    }
                 }
                 $.ajax({
                     url: "/equipment/equipControl",
@@ -502,7 +492,7 @@
                     success: function (data) {
                         getEquipList();
                         $('#myModal3').modal("hide");
-                        
+
                     },
                     error: function (reject) {
                         console.log(reject);
