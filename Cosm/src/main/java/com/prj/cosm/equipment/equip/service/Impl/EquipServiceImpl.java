@@ -150,8 +150,12 @@ public class EquipServiceImpl implements EquipService {
 	}
 
 	@Override
-	public int updateTest(EquipVO vo) {
-		return mapper.updateTest(vo);
+	public int updateTestComplete(EquipVO vo) {
+		return mapper.updateTestComplete(vo);
+	}
+	@Override
+	public int updateTestIncomplete(EquipVO vo) {
+		return mapper.updateTestIncomplete(vo);
 	}
 
 	@Override

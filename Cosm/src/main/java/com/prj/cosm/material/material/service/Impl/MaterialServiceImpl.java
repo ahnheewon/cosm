@@ -140,15 +140,12 @@ public class MaterialServiceImpl implements MaterialService {
 	      MaterialVO mvo = new MaterialVO();
 	      String GrNo = mMapper.getGrId().getMoGrNo();
 	      List<String> strary = new ArrayList<String>();
-	      
 	      for(MaterialVO vo :mVO) {
 	    	  strary.add(vo.getMOrderId());
 	      }
-	      
 	      mvo.setMoGrNo(GrNo);
 	      mvo.setMoi(strary);
-	      result = mMapper.updateOrderGo(mvo);
-	      System.out.println(result+"=====================");
+	      mMapper.updateOrderGo(mvo);
 	      return result;
 	   }
 
@@ -164,9 +161,9 @@ public class MaterialServiceImpl implements MaterialService {
 	   }
 
 	@Override
-	public List<MaterialVO> getOrderProgress(MaterialVO vo) {
+	public List<MaterialVO> getOrderProgress() {
 		// 발주 진행 현황 찾기
-		return mMapper.getOrderProgress(vo);
+		return mMapper.getOrderProgress();
 	}
 
 	}

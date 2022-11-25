@@ -1,8 +1,6 @@
 package com.prj.cosm.sales.orders.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,50 +17,39 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Override
 	public int getOrderNo() {
-		// 주문번호순
+		// 주문번호순 정렬
 		return mapper.getOrderNo();
 	}
 
 	@Override
-	public List<OrdersVO> getOrderList() {
-		// 전체조회
-		return mapper.getOrderList();
+	public List<OrdersVO> salesOrderList() {
+		// 주문전체조회
+		return mapper.orderList();
 	}
 
 	@Override
-	public OrdersVO getOrderInfo(int orderNo) {
-		//단건조회
-		return mapper.getOrderInfo(orderNo);
+	public OrdersVO selectOrderInfo(OrdersVO vo) {
+		// 주문 상세조회 - 단건
+		return mapper.orderInfo(vo);
 	}
 
 	@Override
 	public int insertOrder(OrdersVO vo) {
-		// 등록
-		//int count = mapper.insertOrder(vo);
+		// TODO 주문등록
 		return mapper.insertOrder(vo);
-	}
-	/*
-	public Map getResult(int count, OrdersVO vo) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("result", count);
-		result.put("data", vo);
-		return result;
-	}
-	 * */
-	
-	
-	@Override
-	public int deleteOrder(int orderNo) {
-		//삭제
-		return mapper.deleteOrder(orderNo);
 	}
 
 	@Override
-	public int updateOrder(OrdersVO vo) {
-		//수정
-		return mapper.updateOrder(vo);
+	public int deleteOrder(OrdersVO vo) {
+		// 주문 삭제
+		return mapper.deleteOrder(vo);
 	}
-	
+
+	@Override
+	public int deleteOrderInfo(OrdersVO vo) {
+		// 단건 수정
+		return mapper.deleteOrder(vo);
+	}
 
 	@Override
 	public int deleteCheck(List<String> noList) {
@@ -94,6 +81,5 @@ public class OrdersServiceImpl implements OrdersService {
 		int result = mapper.recNos(vo);
 		return result;
 	}
-
 
 }

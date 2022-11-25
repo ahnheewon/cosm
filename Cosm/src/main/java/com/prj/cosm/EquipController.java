@@ -208,12 +208,20 @@ public class EquipController {
 		}
 
 		// 점검 수정
-		@PostMapping("/equipment/updateTest")
-		@ResponseBody
-		public EquipVO updateTest(EquipVO vo) {
-			eService.updateTest(vo);
-			return vo; // "{re:true}"
-		}
+			@PostMapping("/equipment/updateTest1") //1이 완료
+			@ResponseBody
+			public EquipVO updateTest1(EquipVO vo) {
+				eService.updateTestComplete(vo);
+				return vo; // "{re:true}"
+			}
+			
+			//점검 단순 수정.
+			@PostMapping("/equipment/updateTest2") //2가 진행중
+			@ResponseBody
+			public EquipVO updateTest2(EquipVO vo) {
+				eService.updateTestIncomplete(vo);
+				return vo; // "{re:true}"
+			}
 
 		// 점검 삭제
 		@DeleteMapping("/equipment/deleteTest/{processNo}")

@@ -72,7 +72,7 @@ public interface MaterialMapper {
 	public int deleteCartOrder(MaterialVO mVo);
 
 	// 발주 진행 현황 찾기
-	public List<MaterialVO> getOrderProgress(MaterialVO vo);
+	public List<MaterialVO> getOrderProgress();
 
 
 }

@@ -179,7 +179,7 @@
 	<select id="getTestList" resultType="equipVO">
 		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
 				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
-				,(select code_name from code where code_no = t.test_code ) AS test_code
+				,t.test_code,(select code_name from code where code_no = t.test_code ) AS test_code_name
 		FROM equip e, test t
 		where e.equip_no = t.test_equip_no 
 		ORDER BY test_no DESC
@@ -188,7 +188,7 @@
 	<!-- 점검 단건 조회-->
 	<select id="getTestInfo" parameterType="Integer" resultType="equipVO">
 		SELECT test_no,(select equip_name from equip where equip_no=#{testEquipNo}) AS test_equip_name
-			   ,test_reason, test_due_date,test_content
+			   ,test_reason, test_due_date,test_content, test_code, test_date,test_yn, (select code_name from code where code_no=test_code) AS test_code_name
 		FROM test
 		Where test_no= #{testNo}
 	</select>
@@ -214,34 +214,30 @@
 	</insert>
 	
 	<!-- 점검 완료로 수정 -->
-	<update id="updateTest1" parameterType="equipVO">
+	<update id="updateTestComplete" parameterType="equipVO">
 	UPDATE TEST
 		<set>
 			<if test="testContent !=null and !testContent.equals('')">
-			test_content = #{processContent},
+			test_content = #{testContent},
 			</if>
-			<if test="processSeq !=null and !processSeq.equals('')">
-			process_seq = #{processSeq}
-			</if>
-			<if test="processSeq !=null and !processSeq.equals('')">
-			process_seq = #{processSeq}
-			</if>	
-			<if test="processSeq !=null and !processSeq.equals('')">
-			process_seq = #{processSeq}
-			</if>								
+			<if test="testYn !=null and !testYn.equals('')">
+			test_yn = 'Y',
+			</if>		
+			test_code = 'A0103',							
+			test_date = SYSDATE
+									
 		</set>
 	WHERE TEST_NO = #{testNo}
 	</update>
 	
-	<!-- 점검 수정 -->
-	<update id="updateTest2" parameterType="equipVO">
+	<!-- 점검 단순 수정 -->
+	<update id="updateTestIncomplete" parameterType="equipVO">
 	UPDATE TEST
 		<set>
-			<if test="testContent !=null and !testContent.equals('')">
-			test_content = #{processContent},
-			</if>
-			<if test="processSeq !=null and !processSeq.equals('')">
-			process_seq = #{processSeq}</if>								
+		<if test="codeName !=null and !codeName.equals('')">
+		test_code = (select code_no from code where code_name= #{tCode}),
+		</if>
+		test_content = #{testContent}
 		</set>
 	WHERE TEST_NO = #{testNo}
 	</update>
@@ -266,7 +262,7 @@
 	<select id="getIncompleteTestList" resultType="equipVO">
 		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
 				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
-				,(select code_name from code where code_no = t.test_code ) AS test_code
+				,(select code_name from code where code_no = t.test_code ) AS test_code_name
 		FROM equip e, test t
 		where e.equip_no = t.test_equip_no 
 		AND test_code!='A0103'
@@ -277,10 +273,10 @@
 	<select id="getCompleteTestList" resultType="equipVO">
 		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
 				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
-				,(select code_name from code where code_no = t.test_code ) AS test_code
+				,(select code_name from code where code_no = t.test_code ) AS test_code_name
 		FROM equip e, test t
 		where e.equip_no = t.test_equip_no 
-		AND test_code='A0103'
+		AND test_yn='Y'
 		ORDER BY TEST_NO DESC
 	</select>
 	

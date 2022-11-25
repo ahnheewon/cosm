@@ -92,16 +92,4 @@ public class MaterialVO {
 	private List<String> odMno; // 발주시 매치되는 자재번호...들	
 	//private List<String> moGrNo; // 개별 발주오더 묶는 번호
 	private String moGrNo; // 개별 발주오더 묶는 번호
-	
-
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date StartDate;
-	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date endDate;
-
-	
-	
 }

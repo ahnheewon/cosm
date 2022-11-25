@@ -5,6 +5,8 @@
 	layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>Insert title here</title>
 <style type="text/css">
 .topMargin {
@@ -79,7 +81,7 @@
 							<tr>
 								<th>이름</th>
 								<td><input type="text" id="usersId" name="usersId"></td>
-							</tr>							
+							</tr>
 							<tr>
 								<th>연락처</th>
 								<td><input type="text" id="usersTel" name="usersTel"></td>
@@ -89,8 +91,7 @@
 								<td><input type="text" id="usersAddress"
 									name="usersAddress"></td>
 							</tr>
-							
-							<tr sec:authorize="hasRole('ROLE_D0102')">
+							<tr>
 								<th>사업자번호</th>
 								<td><input type="text" id="" name="clientBusinessNo"></td>
 							</tr>
@@ -104,6 +105,8 @@
 		</div>
 	</div>
 	<script type="text/javascript">
+		const header = $("meta[name='_csrf_header']").attr('content');
+		const token = $("meta[name='_csrf']").attr('content');
 
 		const usersNo = `[[${session.usersNo}]]`;
 		$('#confirmBtn').click(function() {

@@ -8,12 +8,9 @@ public interface MorderService {
 
 
 	// 입고 리스트 전체조회
-	public List<MorderVO> mioInputList(MorderVO vo);
+	public List<MorderVO> mioInputList();
 
 	// 출고 리스트 전체조회
-	public List<MorderVO> mioOutputList(MorderVO vo);
-	
-	// 입고 대기 리스트 전체 조회
-	public List<MorderVO> getStandbyList();
+	public List<MorderVO> mioOutputList();
 
 }

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.prj.cosm.common.service.CommonService;
 import com.prj.cosm.material.material.service.MaterialService;
 import com.prj.cosm.material.material.service.MaterialVO;
 import com.prj.cosm.material.morder.service.MorderService;
@@ -39,9 +37,6 @@ public class MaterialController {
    @Autowired
    MorderService moSerivce;
    
-   // 공통코드 
-   @Autowired
-   CommonService coService;
 
    /*
     * =============================================================================
@@ -50,8 +45,8 @@ public class MaterialController {
    // 자재 정보 등록폼 (이동)
    @GetMapping("minsert")
    public String mInsertForm(MaterialVO mVO, Model model) {
-      model.addAttribute("category", coService.getCodeList("H01"));
-      model.addAttribute("unit", coService.getCodeList("F01"));
+      model.addAttribute("category", mService.getCategoryList());
+      model.addAttribute("unit", mService.getUnitList());
       
       return "material/mInfoInsert";
    }
@@ -107,7 +102,7 @@ public class MaterialController {
       map.put("list1", mService.mList()); // 자재정보리스트
       map.put("list2", mService.mioList()); // 재고 변동 현황
 
-      return map;	
+      return map;
    }
 
    @GetMapping("minfo")
@@ -148,18 +143,34 @@ public class MaterialController {
 
    }
 
-  
+   // 입고, 출고 리스트
+   @ResponseBody
+   @GetMapping("/ajax/miolist")
+   public Map<String, Object> mioList() {
+      Map<String, Object> map = new HashMap<String, Object>();
+      map.put("list1", moSerivce.mioInputList()); // 입고리스트
+      map.put("list2", moSerivce.mioOutputList()); // 출고리스트
 
-   /*=======================================================*/
-   
+      return map;
+   }
+   // 입고, 출고 리스트 페이지 
+   @GetMapping("miolist")
+   public String mioPage(MorderVO mvo, Model model) {
+      return "material/mioList";
+   }
+
+   /*
+    * =============================================================================
+    */
+
    // 발주 대기 리스트 조회, 발주 현황 리스트 조회
 
    @ResponseBody
    @GetMapping("/ajax/morder")
-   public Map<String, Object> mCartListAjax(MaterialVO vo) {
+   public Map<String, Object> mCartListAjax() {
       Map<String, Object> map = new HashMap<String, Object>();
       map.put("list1", mService.mCartList()); // 발주 대기 리스트
-      map.put("list2", mService.getOrderProgress(vo)); // 발주 현황 리스트
+      map.put("list2", mService.mOrderList()); // 발주 현황 리스트
 
       return map;
    }
@@ -178,21 +189,12 @@ public class MaterialController {
       return "material/mOrder";
    }
    
-   /* 발주 수량 업데이트 ajax */
+// 발주 수량 업데이트 ajax
    @ResponseBody
    @PostMapping("/updateMoNum")
    public int updateMnum(@RequestBody List<MaterialVO> mvo) {
-      return mService.updateOrderNum(mvo);	
-   }
-   
-   
-   /* 발주 현황 업데이트 ajax */ 
-   @ResponseBody
-   @PostMapping("/updateOrder")
-   public int updateOrderGo(@RequestBody List<MaterialVO> mvo) {
       return mService.updateOrderGo(mvo);	
    }
-
 
    // 발주 대기 삭제 
    @ResponseBody
@@ -203,31 +205,5 @@ public class MaterialController {
 
    }
 
-   /*=======================================================*/
-   
-   // 입고, 출고 리스트
-   @ResponseBody
-   @GetMapping("/ajax/miolist")
-   public Map<String, Object> mioList(MorderVO vo) {
-      Map<String, Object> map = new HashMap<String, Object>();
-      map.put("list1", moSerivce.mioInputList(vo)); // 입고리스트
-      map.put("list2", moSerivce.mioOutputList(vo)); // 출고리스트
-
-      return map;
-   }
-   
-   //  입고, 출고 리스트 페이지 
-   @GetMapping("miolist")
-   public String mioPage(MorderVO mvo, Model model) {
-      return "material/mioList";
-   }
-   
-   
-   // 입고 대기 리스트 
-   @ResponseBody
-   @GetMapping("/ajax/stanby")
-   public List<MorderVO> stanbyList() {
-	   return moSerivce.getStandbyList();
-   }
    
 }

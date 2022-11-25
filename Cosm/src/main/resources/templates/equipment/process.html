@@ -408,6 +408,7 @@ function filter(){
 		 const url="/equipment/updateEquip";
 		 
 		 const data = new FormData(document.getElementById('updateForm1'));
+		 // 매우 중요한 폼의 데이터를 가져오는 변수
 		    	 
 		 fetch(url,{method: 'POST',body:data})
 		    .then(res=>res.json()
@@ -696,7 +697,7 @@ function filter(){
 				//,width : 100
 			}, 
 			{
-				header: 'ㅤㅤ설비명',
+				header: '설비명',
 				name: 'equipName'
 				,align : 'center'
 				,filter:'text'
@@ -785,7 +786,7 @@ function filter(){
 	    	}
 		});
 	    
-		document.querySelector('a[class="tui-grid-btn-filter"]').style.visibility='hidden';	
+		document.querySelector('a[class="tui-grid-btn-filter"]').style.display='none';	
 
 		
 </script>

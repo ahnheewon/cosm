@@ -4,24 +4,24 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.prj.cosm.sales.orders.mapper.OrdersMapper">
 	<!-- 주문번호순으로 정렬 - public int getOrderNo(); -->
-	<select id="getOrderNo" resultType="Integer">
-		select max(substr(order_no,
-		-4,4)+1) from orders
+	<select id="getOrderNo">
+		SELECT NVL(MAX(order_no), 0)
+		+ 1 as orderNo FROM
+		orders
 	</select>
 
 
 	<!-- 주문 전체조회 -->
-	<select id="getOrderList" resultType="OrdersVO">
+	<select id="orderList" resultType="OrdersVO">
 		select * from orders
-		ORDER
-		BY
+		ORDER BY
 		order_no
 	</select>
 
 
 	<!-- 주문 단건조회 -->
 
-	<select id="getOrderInfo" parameterType="Integer"
+	<select id="orderInfo" parameterType="OrdersVO"
 		resultType="ordersVO">
 		SELECT * FROM orders
 		WHERE ORDER_NO = #{orderNo}
@@ -32,53 +32,41 @@
 	<!-- 주문 등록 -->
 	<!-- ORDER_CODE - 신규,불량,재주문 추가하기 -->
 	<insert id="insertOrder" parameterType="OrdersVO">
-	<!-- selectKey는 없는 정보만 들고올 때 
-		<selectKey order="BEFORE" keyProperty="orderNo"
-			resultType="String">
-			<if test="orderNo == null"> SELECT 'COO_' ||
-				LPAD(NVL(MAX(SUBSTR(order_no,-4)),0)+1,4,0)
-				FROM orders WHERE order_no LIKE 'COO_'||TO_CHAR(SYSDATE,'rrrr')||'%'
-			</if>
-			<if test="productNo">
-			</if>
-		</selectKey>
-	-->
-	<!--  
-	ORDER_NO,
-		PRODUCT_NO,
-		ORDER_DATE,
-		DELIVERY_DATE,
-		TOTAL_NUM,
-		PRO_PRICE,
-		SURTAX,
-		NOTE,
-		ORDER_CODE,
-		ORDER_PROGRESS_CODE,
-		DELIVERY_INFO,
-		IO_CODE,
-		TOTAL_PRICE,
-		USERS_NO
-		 -->
 		INSERT INTO orders (
-		ORDER_NO,
-		product_no,
-		total_num,
-		note,
-		total_price
+						order_no,
+						product_no,
+						order_date,
+						delivery_date,
+						total_num,
+						pro_price,
+						surtax,
+						note,
+						order_code,
+						order_progress_code,
+						delivery_info,
+						io_code,
+						total_price
 		)
 		values (
-
-		#{orderNo},
-		#{productNo},
-		#{totalNum},
-		#{note},
-		#{totalPrice}
+						#{orderNo},
+						#{productNo},
+						#{orderDate},
+						#{deliveryDate},
+						#{totalNum},
+						#{proPrice},
+						#{surtax},
+						#{note},
+						#{orderCode},
+						#{orderProgressCode},
+						#{deliveryInfo},
+						#{ioCode},
+						#{totalPrice}
 		)
 	</insert>
 
 
 	<!-- 주문 내역삭제 -->
-	<delete id="deleteOrder" parameterType="Integer">
+	<delete id="deleteOrder" parameterType="OrdersVO">
 		DELETE FROM orders where
 		ORDER_NO = #{orderNo}
 	</delete>

@@ -139,8 +139,6 @@ img {
 									<div id="endpicker-container" class="datePicker"
 										style="z-index: 1001"></div>
 								</div>
-								<button type="button" class="btn btn-secondary btn-sm"
-										id="searchBtn">검색</button>
 								<div id="btn">
 									<button type="button" class="btn btn-secondary btn-sm"
 										id="delbtn" style="float: right">정보 삭제</button>
@@ -183,8 +181,6 @@ img {
 							<div id="endpicker-container2" class="datePicker2"
 								style="margin-bottom: 5px; z-index: 1001"></div>
 						</div>
-						<button type="button" class="btn btn-secondary btn-sm"
-										id="findBtn" >검색</button>
 						<div>
 							<div id="grid2"></div>
 						</div>
@@ -285,7 +281,7 @@ img {
 		
       // 데이터 피커 ( 자재 날짜로 찾기)
       let today = new Date();
-      let picker = new tui.DatePicker.createRangePicker({
+      let picker = tui.DatePicker.createRangePicker({
          startpicker : {
             date : today,
             input : '#startpicker-input',
@@ -298,12 +294,10 @@ img {
             container : '#endpicker-container',
             
          },
-         selectableRanges : [ [
-				new Date(today.getFullYear() - 5, today.getMonth(),
-						today.getDate()),
-				new Date(today.getFullYear() + 5, today.getMonth(),
-						today.getDate()) ] ],
-
+         selectableRanges : [
+            [today, new Date(today.getFullYear() + 1, today.getMonth(), today.getDate())]
+            
+            ]
                      
       });   
       
@@ -313,7 +307,7 @@ img {
 
       //데이터 피커(자재 변동 최종 수정일자로 찾기)
       // 데이터 피커 ( 자재 날짜로 찾기)
-      let picker2 = new tui.DatePicker.createRangePicker({
+      let picker2 = tui.DatePicker.createRangePicker({
          startpicker : {
             date : today,
             
@@ -328,12 +322,9 @@ img {
             container : '#endpicker-container2',
          
          },
-         selectableRanges : [ [
-				new Date(today.getFullYear() - 5, today.getMonth(),
-						today.getDate()),
-				new Date(today.getFullYear() + 5, today.getMonth(),
-						today.getDate()) ] ],
-
+         selectableRanges : [
+            [today,   new Date(today.getFullYear() + 1, today.getMonth(),today.getDate())]
+            ],
       });
       
    
@@ -448,7 +439,7 @@ img {
       // 자재 정보, 자재 현황 
       function mList() {
          $.ajax({
-            url : "/ajax/minfo",
+            url : "http://localhost:85/ajax/minfo",
             method : "GET",
             success : function(result) {
                infoGrid.resetData((result.list1)); 
@@ -467,7 +458,7 @@ img {
       //자재 정보 상세내역
       function mInfo(mno) {
          $.ajax({
-            url : "/ajax/mInfoView",
+            url : "http://localhost:85/ajax/mInfoView",
             method : "GET",
             data : {"mNo": mno},
             success : function(result) {
@@ -490,7 +481,7 @@ img {
          
          
          // 자재 정보 상세조회
-      infoGrid.on('click', ev => {   
+      infoGrid.on('mousedown', ev => {   
          if(infoGrid.getRow(ev.rowKey)!=null && ev.columnName!= '_checked'){ // checkbox 클릭시, 모달 안 뜨게끔
             console.log(ev);   
             
@@ -603,69 +594,10 @@ img {
          }
              
                  
-         /*-----------------------
-	      	날짜 검색 버튼 이벤트 핸들러
-	      --------------------------*/
-	      function searchBtnHandler(){
-	     	 $('#searchBtn').on('click', function(){
-	     		 let getStartDay = $('#startpicker-input').val();
-	     		 let getEndDay = $('#endpicker-input').val();
-	     		 console.log(getStartDay);
-	     		 console.log(getEndDay);
-	     		 
-	     	  $.ajax({
-	     		  url : '/ajax/minfo',
-	     		  data : {"startDate" : getStartDay, "endDate" : getEndDay},
-	     		  contentType : "application/json",
-		              dataType : 'json',
-		              method : 'GET',
-		              success : function(result){
-		            	  console.log(result);
-		            	   infoGrid.resetData((result.list1)); 
-		              },
-		              error : function(reject){
-		            	  console.log(reject);
-		              }
-	     	  }) 
-	     		 
-	     	 })
-	      }  
+          
      
-       
-	      function findBtnHandler() {
-				$('#findBtn').on('click', function() {
-					let getStartDay = $('#startpicker-input2').val();
-					let getEndDay = $('#endpicker-input2').val();
-					console.log(getStartDay);
-					console.log(getEndDay);
-
-					$.ajax({
-						url : '/ajax/minfo',
-						data : {
-							"startDate" : getStartDay,
-							"endDate" : getEndDay
-						},
-						contentType : "application/json",
-						dataType : 'json',
-						method : 'GET',
-						success : function(result) {
-							console.log(result);
-							mioGrid.resetData((result.list2));
-						},
-						error : function(reject) {
-							console.log(reject);
-						}
-					})
-
-				})
-			}
          
-	      /*-----------------------
-	      	이벤트 핸들러
-	      --------------------------*/
-	      searchBtnHandler();
-	      findBtnHandler();
-	      
+         
       </script>
 	</div>
 	<!-- end of layout -->
