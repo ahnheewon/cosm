@@ -62,19 +62,37 @@
 			<div class="col-md-3">
 				<label for="inputState" class="form-label">제품 번호</label> <select
 					id="inputState" name="bomProductNo" class="form-select">
-					<option th:each="goodsNo : ${goodsNo}" th:value="${goodsNo.goodsNo}">[[${goodsNo.goodsNo}]] ([[${goodsNo.goodsName}]])</option>
+					<option th:each="goodsNo : ${goodsNo}"
+						th:value="${goodsNo.goodsNo}">[[${goodsNo.goodsNo}]]
+						([[${goodsNo.goodsName}]])</option>
 				</select>
 			</div>
 			<div class="col-md-3">
-				<label class="form-label">자재 투입량</label> <input type="number"
-					name="bomQuantity" class="form-control" id="bomQuantity" style="float: right">
-			</div>
-			<div class="col-md-3">
-				<label for="inputState" class="form-label">자재 번호 (자재명)</label> <select
+				<label for="inputState" class="form-label">자재 번호 (1) (자재명)</label> <select
 					id="inputState" name="bomMaterialNo" class="form-select">
-					<option th:each="mNo : ${mNo}" th:value="${mNo.mNo}">[[${mNo.mNo}]] ([[${mNo.mName}]])</option>
+					<option th:each="mNo : ${mNo}" th:value="${mNo.mNo}">[[${mNo.mNo}]]
+						([[${mNo.mName}]])</option>
 					<!-- 위에꺼처럼 value 다 넣어주기, 텍스트에는 이름 추가 -->
 				</select>
+			</div>
+			<div class="col-md-3">
+				<label class="form-label">자재 투입량 (1)</label> <input type="number"
+					name="bomQuantity" class="form-control" id="bomQuantity"
+					style="float: right">
+			</div>
+
+			<div class="col-md-3" style="float: right">
+				<label for="inputState" class="form-label">자재 번호 (2) (자재명)</label> <select
+					id="inputState" name="bomMaterialNob" class="form-select">
+					<option th:each="mNo : ${mNo}" th:value="${mNo.mNo}">[[${mNo.mNo}]]
+						([[${mNo.mName}]])</option>
+					<!-- 위에꺼처럼 value 다 넣어주기, 텍스트에는 이름 추가 -->
+				</select>
+			</div>
+			<div class="col-md-3" style="float: right">
+				<label class="form-label">자재 투입량 (2)</label> <input type="number"
+					name="bomQuantityb" class="form-control" id="bomQuantityb"
+					style="float: right">
 			</div>
 			<div class="col-12">
 				<button type="button" class="btn btn-dark btn-sm"
@@ -112,11 +130,6 @@
 										readonly="readonly">
 								</div>
 
-								<div class="input-group mb-3">
-									<span class="input-group-text">자재 투입량</span> <input type="number"
-										class="form-control" id="bomQuantity2" name="bomQuantity"
-										aria-label="Username" aria-describedby="basic-addon2">
-								</div>
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">제품 번호</span> <select
@@ -130,6 +143,24 @@
 										id="bomMaterialNo" name="bomMaterialNo" class="form-select">
 										<option th:each="mNo : ${mNo}">[[${mNo.mNo}]]</option>
 									</select>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">자재 투입량</span> <input
+										type="number" class="form-control" id="bomQuantity2"
+										name="bomQuantity" aria-label="Username"
+										aria-describedby="basic-addon2">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">자재 번호</span> <select
+										id="bomMaterialNob2" name="bomMaterialNob" class="form-select">
+										<option th:each="mNo : ${mNo}">[[${mNo.mNo}]]</option>
+									</select>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">자재 투입량</span> <input
+										type="number" class="form-control" id="bomQuantityb2"
+										name="bomQuantityb" aria-label="Username"
+										aria-describedby="basic-addon2">
 								</div>
 
 								<div id="requestModalGrid" style="width: 100%;"></div>
@@ -221,10 +252,6 @@
 				      },
 			},
 			{
-				header: '자재 투입량',
-				name: 'bomQuantity',
-			},
-			{
 				header: '제품번호',
 				name: 'bomProductNo',
 			},
@@ -241,17 +268,29 @@
 				name: 'goodsContents',
 			},
 			{
-				header: '자재번호',
+				header: '자재번호(1)',
 				name: 'bomMaterialNo',
 			},	
 			{
-				header: '자재명',
+				header: '자재명(1)',
 				name: 'mname',
 			},	
 			{
-				header: '자재재고량',
-				name: 'mstock',
+				header: '자재 투입량(1)',
+				name: 'bomQuantity',
+			},
+			{
+				header: '자재번호(2)',
+				name: 'bomMaterialNob',
 			},	
+			{
+				header: '자재명(2)',
+				name: 'mname',
+			},	
+			{
+				header: '자재 투입량(2)',
+				name: 'bomQuantityb',
+			},
 			{
 				header: '자재상세정보',
 				name: 'minfo',
@@ -404,7 +443,14 @@
             	if ($('#bomQuantity').val() == "" || $('#bomQuantity').val() == null) {
             		Swal.fire({
                         icon: 'warning',
-                        title: '투입될 자재량을 입력하세요!',
+                        title: '투입될 자재량(1)을 입력하세요!',
+                    })
+					return false;
+				}
+            	if ($('#bomQuantityb').val() == "" || $('#bomQuantityb').val() == null) {
+            		Swal.fire({
+                        icon: 'warning',
+                        title: '투입될 자재량(2)을 입력하세요!',
                     })
 					return false;
 				}
@@ -429,15 +475,24 @@
 			$('#bomQuantity2').val(datas1[0].bomQuantity);
 			$('#bomProductNo').val(datas1[0].bomProductNo);
 			$('#bomMaterialNo').val(datas1[0].bomMaterialNo);
+			$('#bomQuantityb2').val(datas1[0].bomQuantityb);
+			$('#bomMaterialNob2').val(datas1[0].bomMaterialNob);
 		}
 		
 		//BOM 수정 확인창
 		$().ready(function () {
             $("#alertStart2").click(function () {
-            	if ($('#bomQuantity2').val() == "" || $('#bomQuantity').val() == null) {
+            	if ($('#bomQuantity2').val() == "" || $('#bomQuantity2').val() == null) {
 					Swal.fire({
                         icon: 'warning',
-                        title: '투입될 자재량을 입력하세요!',
+                        title: '투입될 자재량(1)을 입력하세요!',
+                    })
+					return false;
+				}
+            	if ($('#bomQuantityb2').val() == "" || $('#bomQuantityb2').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '투입될 자재량(2)을 입력하세요!',
                     })
 					return false;
 				}

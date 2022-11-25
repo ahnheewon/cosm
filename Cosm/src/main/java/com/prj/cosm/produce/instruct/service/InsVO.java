@@ -17,7 +17,8 @@ public class InsVO {
 	private String instructMNo;
 	private String instructProgressCode;
 	private int instructMaterialNum;
-	
+	private String instructMNob;
+	private int instructMaterialNumb;
 	//자재번호 리스트
 	private String mNo;
 	private String mName;

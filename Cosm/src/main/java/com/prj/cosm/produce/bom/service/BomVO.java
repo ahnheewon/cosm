@@ -8,6 +8,8 @@ public class BomVO {
 	private int bomQuantity;
 	private String bomProductNo;
 	private String bomMaterialNo;
+	private int bomQuantityb;
+	private String bomMaterialNob;
 	
 	private String mNo;
 	private String mName;

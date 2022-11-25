@@ -35,15 +35,15 @@
 	<div layout:fragment="content"
 		style="margin-left: 30px; margin-right: 30px;">
 		<hr style="width: 100%">
-		<h3>생산계획 리스트</h3>
-		<button type="button" class="btn btn-dark btn-sm"
+		<h3>미지시 생산계획 리스트</h3>
+		<button type="button" class="btn btn-dark btn-sm" id="selectBtn"
 			onclick="insertData();" data-bs-toggle="modal"
 			data-bs-target="#requestModal" style="float: right">생산지시 작성</button>
 		<div id="grid"></div>
 
 		<hr style="width: 100%">
 
-		<h3>생산지시 리스트</h3>
+		<h3>진행중 생산지시 리스트</h3>
 		<button type="button" class="btn btn-dark btn-sm" style="float: right"
 			id="delbtn">생산지시 삭제</button>
 		<button type="button" onclick="updateData();"
@@ -53,8 +53,6 @@
 
 		<hr style="width: 100%">
 
-		<h3>자재재고 현황</h3>
-		<div id="grid3"></div>
 		<button type="button" onclick="location.href='/proError'"
 					class="btn btn-primary btn-m" style="float: right; margin-right: 36px">생산 페이지 이동</button>
 		<!-- 생산지시 작성 모달 -->
@@ -128,16 +126,28 @@
 
 
 								<div class="input-group mb-3">
-									<span class="input-group-text">자재번호 (자재명)</span> <select
-										id="instructMNo" name="instructMNo" class="form-select">
-										<option th:each="mNo : ${mNo}" th:value="${mNo.mNo}">[[${mNo.mNo}]] ([[${mNo.mName}]])</option>
-									</select>
+									<span class="input-group-text" data-bs-dismiss="modal" id="selectMaterial">자재번호 (1)</span> 
+									<input id="instructMNo" name="instructMNo" class="form-control">
+				
+									
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">투입될 자재량</span> <input
+									<span class="input-group-text">투입될 자재량(1)</span> <input
 										type="number" class="form-control" placeholder="자재량"
 										id="instructMaterialNum"
 										name="instructMaterialNum" aria-label="Username"
+										aria-describedby="basic-addon4">
+								</div>
+								
+								<div class="input-group mb-3">
+									<span class="input-group-text" data-bs-dismiss="modal" id="selectMaterial2">자재번호 (2)</span> 
+									<input id="instructMNob" name="instructMNob" class="form-control">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">투입될 자재량 (2)</span> <input
+										type="number" class="form-control" placeholder="자재량"
+										id="instructMaterialNumb"
+										name="instructMaterialNumb" aria-label="Username"
 										aria-describedby="basic-addon4">
 								</div>
 
@@ -216,15 +226,27 @@
 										aria-describedby="basic-addon4">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">자재번호</span> <select
+									<span class="input-group-text">자재번호 (자재명) (1)</span> <select
 										id="instructMNo2" name="instructMNo" class="form-select">
-										<option th:each="mNo : ${mNo}">[[${mNo.mNo}]]</option>
+										<option th:each="mNo : ${mNo}" th:value="${mNo.mNo}">[[${mNo.mNo}]] ([[${mNo.mName}]])</option>
 									</select>
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">투입될 자재량</span> <input
+									<span class="input-group-text">투입될 자재량 (1)</span> <input
 										type="number" class="form-control" name="instructMaterialNum"
 										id="instructMaterialNum2" aria-label="Username"
+										aria-describedby="basic-addon4">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">자재번호 (자재명) (2)</span> <select
+										id="instructMNob2" name="instructMNob" class="form-select">
+										<option th:each="mNo : ${mNo}" th:value="${mNo.mNo}">[[${mNo.mNo}]] ([[${mNo.mName}]])</option>
+									</select>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">투입될 자재량 (2)</span> <input
+										type="number" class="form-control" name="instructMaterialNumb"
+										id="instructMaterialNumb2" aria-label="Username"
 										aria-describedby="basic-addon4">
 								</div>
 
@@ -254,9 +276,76 @@
 				</div>
 			</div>
 		</div>
+		<!-- 자재정보 모달에 모달 1-->
+		<div class="modal fade" id="requestModal3" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">자제 상세정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+						<div class="modal-body">
+							<div id="grid3"></div>
+							<div id="requestModalGrid" style="width: 100%;"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" id="setData"
+								data-bs-dismiss="modal">확인</button>
+						</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!-- 자재정보 모달에 모달 2-->
+		<div class="modal fade" id="requestModal4" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">자제 상세정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+						<div class="modal-body">
+							<div id="grid4"></div>
+							<div id="requestModalGrid" style="width: 100%;"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" id="setData2"
+								data-bs-dismiss="modal">확인</button>
+						</div>
+				</div>
+			</div>
+		</div>
+		</div>
 		<script>	
+		
+		// 모달에 모달 체크하고 확인버튼 누르면 값 담기게
+		$("#setData").click(function () {
+        	$('#requestModal').modal('toggle');
+        	$('#selectBtn').click();	
+        	var datas = grid3.getCheckedRows();
+        	console.log(datas);
+        	$('#instructMNo').val(datas[0].mno);
+        
+        })
+        $("#setData2").click(function () {
+        	$('#requestModal').modal('toggle');
+        	$('#selectBtn').click();	
+        	var datas = grid4.getCheckedRows();
+        	console.log(datas);
+        	$('#instructMNob').val(datas[0].mno);
+        
+        })
+		$(window).on('mouseover',function(){
+				grid3.refreshLayout();
+				grid4.refreshLayout();
+		})
+		
 		const header = $("meta[name='_csrf_header']").attr('content');
 		const token = $("meta[name='_csrf']").attr('content');
+		
+		
 		window.onload = function () {
 			
 			//생산계획리스트 가져오기
@@ -291,6 +380,16 @@
 					}
 				}
 			});
+			grid3.on('check', (ev) => {
+				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
+					if(i!=`${ev.rowKey}`){
+						grid3.uncheck(i);
+					}
+				}
+				// 생산지시번호 +1 로 등록
+				var info = '[[${info.instructNo}]]';
+				$('#planNoInput').val(info)	
+			});
 				
 			grid.on('uncheck', (ev) => {
 				$('input:text').val('');
@@ -299,10 +398,38 @@
 			grid2.on('uncheck', (ev) => {
 				$('input:text').val('');
 			});
+			grid3.on('uncheck', (ev) => {
+				$('input:text').val('');
+			});
 				
 			$('#grid span').remove();
 			$('#grid2 span').remove();
+			$('#grid3 span').remove();
+			
+			$('#selectMaterial').hover(function(){
+				$(this).css("cursor", "pointer");
+				$(this).css("background-color", "#D3D3D3")
+			})
+			$('#selectMaterial').mouseout(function(){
+				$(this).css("background-color", "#E9ECEF")
+			})
+			$('#selectMaterial2').hover(function(){
+				$(this).css("cursor", "pointer");
+				$(this).css("background-color", "#D3D3D3")
+			})
+			$('#selectMaterial2').mouseout(function(){
+				$(this).css("background-color", "#E9ECEF")
+			})
+			
 		};
+		const selectMno = document.getElementById('selectMaterial');
+		selectMno.addEventListener('click',function(){
+			$('#requestModal3').modal('toggle');
+		})
+		const selectMno2 = document.getElementById('selectMaterial2');
+		selectMno2.addEventListener('click',function(){
+			$('#requestModal4').modal('toggle');
+		})
 		
 
 		// 생산계획 리스트 그리드
@@ -353,6 +480,10 @@
 				{
 					header: '제품번호',
 					name: 'planProductNo',
+				},	
+				{
+					header: '진행상황',
+					name: 'planPlayCode',
 				},	
 				{
 					header: '기타사항',
@@ -406,12 +537,20 @@
 					sortable: true
 				},
 				{
-					header: '자재번호',
+					header: '자재번호(1)',
 					name: 'INSTRUCTMNO'
 				},
 				{
-					header: '투입될 자재량',
+					header: '투입될 자재량(1)',
 					name: 'INSTRUCTMATERIALNUM'
+				},	
+				{
+					header: '자재번호(2)',
+					name: 'INSTRUCTMNOB'
+				},
+				{
+					header: '투입될 자재량(2)',
+					name: 'INSTRUCTMATERIALNUMB'
 				},	
 				{
 					header: '지시일자(desc)',
@@ -434,6 +573,49 @@
 		var grid3 = new tui.Grid({
 			el: document.getElementById('grid3'),
 			minBodyHeight: 30,
+			rowHeaders: ['checkbox'],
+			pageOptions: {
+				useClient: true, // front에서만 페이징 하는 속성
+				perPage: 5
+			},
+			scrollX: false,
+			scrollY: false,
+			columns : [ {
+				header : '자재번호',
+				name : 'mno'
+			}, {
+				header : '거래처번호',
+				name : 'mcompanyId'
+			}, {
+				header : '분류',
+				name : 'mcategory'
+			}, {
+				header : '자재명',
+				name : 'mname',
+				color : 'yellow'
+			}, {
+				header : '현재 재고',
+				name : 'mstock'
+			}, {
+				header : '증감',
+				name : 'increase'
+			}, {
+				header : '최종수정일',
+				name : 'mdate'
+			}, {
+				header : '입고일자',
+				name : 'mioInputDate'
+			}, {
+				header : '사용일자',
+				name : 'mioOutputDate'
+			} ],
+			});
+		
+		// 자재재고 현황 그리드
+		var grid4 = new tui.Grid({
+			el: document.getElementById('grid4'),
+			minBodyHeight: 30,
+			rowHeaders: ['checkbox'],
 			pageOptions: {
 				useClient: true, // front에서만 페이징 하는 속성
 				perPage: 5
@@ -517,6 +699,7 @@
 				method : "GET",
 				success : function(result) {
 					grid3.resetData((result.list2));
+					grid4.resetData((result.list2));
 					console.log(result);
 				},
 				error : function(reject) {
@@ -557,7 +740,14 @@
             	if ($('#instructMaterialNum').val() == "" || $('#instructMaterialNum').val() == null) {
 					Swal.fire({
                         icon: 'warning',
-                        title: '투입될 자재량을 입력하세요!',
+                        title: '투입될 자재량(1)을 입력하세요!',
+                    })
+					return false;
+				}
+            	if ($('#instructMaterialNumb').val() == "" || $('#instructMaterialNumb').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '투입될 자재량(2)을 입력하세요!',
                     })
 					return false;
 				}
@@ -610,6 +800,8 @@
 			$('#instructProgressCode2').val(datas1[0].INSTRUCT_PROGRESS_CODE);
 			$('#planProductNo2').val(datas1[0].PLANPRODUCTNO);
 			$('#instructMaterialNum2').val(datas1[0].INSTRUCTMATERIALNUM);
+			$('#instructMNob2').val(datas1[0].INSTRUCTMNOB);
+			$('#instructMaterialNumb2').val(datas1[0].INSTRUCTMATERIALNUMB);
 		}
 		
 		//생산지시 수정 확인창
@@ -625,7 +817,14 @@
             	if ($('#instructMaterialNum2').val() == "" || $('#instructMaterialNum2').val() == null) {
 					Swal.fire({
                         icon: 'warning',
-                        title: '투입될 자재량을 입력하세요!',
+                        title: '투입될 자재량(1)을 입력하세요!',
+                    })
+					return false;
+				}
+            	if ($('#instructMaterialNumb2').val() == "" || $('#instructMaterialNumb2').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '투입될 자재량(2)을 입력하세요!',
                     })
 					return false;
 				}

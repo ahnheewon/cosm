@@ -64,4 +64,10 @@ public class RegistServiceImpl implements RegistService {
 		return mapper.completeList();
 	}
 
+	@Override
+	public List<RegistVO> getDateList(RegistVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.getDateList(vo);
+	}
+
 }

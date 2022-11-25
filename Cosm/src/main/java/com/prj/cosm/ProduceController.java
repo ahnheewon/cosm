@@ -300,6 +300,18 @@ public class ProduceController {
 		return "redirect:proError";
 	}
 
+	// 생산지시 완료 보관으로 전환
+	@PostMapping("/updateInsPlay2")
+	public String updateInsPlay2(InsVO insVO, RedirectAttributes ratt) {
+		int result = insService.updateInsPlay2(insVO);
+		if (result == 1) {
+			ratt.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+		} else {
+			ratt.addAttribute("msg", "정상적으로 수정되지 않았습니다.");
+		}
+		return "redirect:regist";
+	}
+
 	// 생산 메인 페이지 이동
 	@GetMapping("/produce/main")
 	public String produceMain(Model model) {
@@ -319,6 +331,13 @@ public class ProduceController {
 	@ResponseBody
 	public List<Map<String, Object>> completedList() {
 		return registService.completeList();
+	}
+
+	// 완제품 list에 ajax주는 것
+	@GetMapping("/getDateList")
+	@ResponseBody
+	public List<RegistVO> getDateList(RegistVO vo) {
+		return registService.getDateList(vo);
 	}
 
 	// ===========================================================
