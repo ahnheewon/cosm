@@ -98,6 +98,7 @@ public interface EquipService {
 				// 입력될 번호를 조회
 				public EquipVO getTestNo();		
 						
+				public int updateTest(EquipVO vo);
 				
 //=====================================================================================	
 				

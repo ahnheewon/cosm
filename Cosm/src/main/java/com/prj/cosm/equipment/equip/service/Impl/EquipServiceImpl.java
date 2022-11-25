@@ -240,4 +240,10 @@ public class EquipServiceImpl implements EquipService {
 		return mapper.getCompleteTestList();
 	}
 
+	@Override
+	public int updateTest(EquipVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
