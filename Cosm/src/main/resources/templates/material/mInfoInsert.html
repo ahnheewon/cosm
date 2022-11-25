@@ -61,8 +61,11 @@
 							<label for="exampleFormControlSelect1" class="col-form-label">자재분류</label>
 							<select class="form-control" id="mCategorySelect"
 								name="mCategory">
-								<option th:each="category : ${category}">[[${category.mCategory}]]</option>
-							</select>
+								<option selected="selected"></option>
+								<th:block th:each="category : ${category}">
+									<option th:text="${category.codeName}"></option>
+								</th:block>
+						</select>
 						</div>
 					</div>
 					<div class="col">
@@ -70,6 +73,8 @@
 							type="text" class="form-control" name="mName" placeholder="">
 					</div>
 				</div>
+
+
 
 				<div class="row p-3">
 					<div class="col">
@@ -84,14 +89,17 @@
 				</div>
 
 				<div class="row p-3">
-					
+
 					<div class="col">
 						<div class="form-group">
 							<label for="exampleFormControlSelect1" class="col-form-label">자재단위</label>
 							<input type="hidden" class="form-control" id="mUnit" value="L"
 								onchange="mUnitSelect"> <select class="form-control"
 								id="mUnitSelect" name="mUnitCode">
-								<option th:each="unit : ${unit}">[[${unit.codeName}]]</option>
+								<option selected="selected"></option>
+								<th:block th:each="unit : ${unit}">
+									<option th:text="${unit.codeName}"></option>
+								</th:block>
 
 							</select>
 						</div>
@@ -135,14 +143,16 @@
 									style="width: 250px; margin-bottom: 10px;">
 								<button type="button" class="btn btn-secondary btn-sm">검색</button>
 								<button type="button" class="btn btn-secondary btn-sm"
-									id="reg-com-btn" onclick="window.open('/mregcom','mregcom','width=400, height=400')">등록</button>
+									id="reg-com-btn"
+									onclick="window.open('/mregcom','mregcom','width=400, height=400')">등록</button>
 								<div id="grid"></div>
 							</form>
 						</div>
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+						<button type="button" class="btn btn-primary"
+							data-bs-dismiss="modal">확인</button>
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">취소</button>
 					</div>

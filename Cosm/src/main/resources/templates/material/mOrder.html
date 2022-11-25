@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-   xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{/layout/layout.html}">
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout.html}">
 <head>
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <meta charset="UTF-8">
 
-<title>자재정보관리</title>
+<title>발주정보관리</title>
 
 <!-- CSS only -->
 <link
-   href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-   rel="stylesheet"
-   integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-   crossorigin="anonymous">
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+	crossorigin="anonymous">
 <!-- JavaScript Bundle with Popper -->
 <script
-   src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-   integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-   crossorigin="anonymous">
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+	crossorigin="anonymous">
    
 </script>
 <!--jqeury-->
 <script
-   src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <!--toast grid-->
 <link rel="stylesheet"
-   href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
 <script
-   src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 <link rel="stylesheet"
-   href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <!--toast date-picker-->
 <link rel="stylesheet"
-   href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
 <script
-   src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 
 
 
@@ -46,186 +46,185 @@
 <style>
 /*bootstrap grid 스타일 */
 * {
-   box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 /* Create two equal columns that floats next to each other */
 .column {
-   width: 100%;
-   padding: 10px;
-   height: auto;
-   /* Should be removed. Only for demonstration */
-   outline: solid 1px black;
+	width: 100%;
+	padding: 10px;
+	height: auto;
+	/* Should be removed. Only for demonstration */
+	outline: solid 1px black;
 }
 
 /* Clear floats after the columns */
 .row:after {
-   content: "";
-   display: table;
-   clear: both;
+	content: "";
+	display: table;
+	clear: both;
 }
 
 #btn {
-   float: right;
-   margin-right: 5px;
+	float: right;
+	margin-right: 5px;
 }
 
 /* 검색창 스타일 */
 #search {
-   margin-left: 30px;
-   margin-top: 30px;
-   margin-bottom: 10px;
+	margin-left: 30px;
+	margin-top: 30px;
+	margin-bottom: 10px;
 }
 
 .search {
-   position: relative;
-   width: 360px;
+	position: relative;
+	width: 360px;
 }
 
 input {
-   width: 100%;
-   border: 1px solid #bbb;
-   padding: 6px 27px 6px 10px;
-   font-size: 14px;
+	width: 100%;
+	border: 1px solid #bbb;
+	padding: 6px 27px 6px 10px;
+	font-size: 14px;
 }
 
 img {
-   position: absolute;
-   width: 17px;
-   top: 10px;
-   right: 12px;
-   margin: 0;
+	position: absolute;
+	width: 17px;
+	top: 10px;
+	right: 12px;
+	margin: 0;
 }
 
 #regdate {
-   margin-left: 10px;
+	margin-left: 10px;
 }
 </style>
 </head>
 
 <body>
-   <div layout:fragment="content">
-      <div class="container">
+	<div layout:fragment="content">
+		<div class="container">
 
-         <div class="row">
-            <div class="column">
-               <h2>발주 대기 관리</h2>
-               <div id="wrap">
-                  <form>
+			<div class="row">
+				<div class="column">
+					<h2>발주 대기 관리</h2>
+					<div id="wrap">
+						<form>
 
-                     <div id="btn">
-                          
-                        <button type="button" class="btn btn-secondary btn-sm"
-                           id="insertbtn" style="float: right" onclick="updateMoNum()">
-                           저장</button>
-                        <button type="button" class="btn btn-secondary btn-sm"
-                           id="orderbtn" style="float: right">추가</button>
-                        <button type="button" class="btn btn-secondary btn-sm"
-                          id="cdelbtn" style="float: right" >삭제</button>
-                     </div>
+							<div id="btn">
 
-                  </form>
-                  <div>
-                     <div id="grid"></div>
-                  </div>
-               </div>
-            </div>
-            <div class="column">
-               <h2>발주 진행 현황</h2>
+								<button type="button" class="btn btn-secondary btn-sm"
+									id="insertbtn" style="float: right" onclick="updateMoNum()">
+									저장</button>
+								<!-- <button type="button" class="btn btn-secondary btn-sm"
+									id="plusbtn" style="float: right" >추가</button> -->
+								<button type="button" class="btn btn-secondary btn-sm"
+									id="cdelbtn" style="float: right">삭제</button>
+							</div>
 
-               <div id="mdate" style="margin-left: 10px; z-index: 1001;">
-                  <span>발주일자</span>
-                  <div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-                     style="margin-bottom: 5px; z-index: 1001;">
-                     <input id="startpicker-input" type="text" aria-label="Date"
-                        style="margin-bottom: 5px; z-index: 1001"> <span
-                        class="tui-ico-date"></span>
-                     <div id="startpicker-container" class="datePicker2"
-                        style="z-index: 1001"></div>
-                  </div>
-                  <span>~</span>
-                  <div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-                     style="margin-bottom: 5px; z-index: 1001">
-                     <input id="endpicker-input" type="text" aria-label="Date"
-                        style="margin-bottom: 5px; z-index: 1001"> <span
-                        class="tui-ico-date"></span>
-                     <div id="endpicker-container" class="datePicker2"
-                        style="margin-bottom: 5px; z-index: 1001"></div>					
-                  </div>
-                  <button type="button" class="btn btn-secondary btn-sm"
-                        id="" >검색</button>
-                  <div id="btn">
-                     <button type="button" class="btn btn-secondary btn-sm"
-                        id="regibtn" style="float: right">주문 예약</button>
-                     <button type="button" class="btn btn-secondary btn-sm"
-                        id="execlWord" style="float: right">주문 출력</button>
-                     <button type="button" class="btn btn-secondary btn-sm"
-                        id="orderbtn" style="float: right">주문 발주</button>
-                     <button type="button" class="btn btn-secondary btn-sm"
-                        id="odelbtn" style="float: right">주문 삭제</button>
-                  </div>
-                  <div>
-                     <div id="grid2"></div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+						</form>
+						<div>
+							<div id="grid"></div>
+						</div>
+					</div>
+				</div>
+				<div class="column">
+					<h2>발주 진행 현황</h2>
 
-      <!-- 발주 취소 알림-->
-      <div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
-         <div class="modal-dialog">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title" style="font-weight: bold;">발주확정알림</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"
-                     aria-label="Close"></button>
-               </div>
-               <div class="modal-body" style="text-align: center">
-                  <h5>
-                     발주 삭제 시,
-                     </h>
-                     <h>처음부터 진행해야합니다.
-                  </h5>
-                  <h5>발주를 삭제하시겠습니까?</h5>
-               </div>
-               <div class="modal-footer" style="text-align: center">
-                  <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-                  <button type="button" class="btn btn-primary"
-                     data-bs-dismiss="modal" onclick="checkCartDel()">확인</button>
-                  <button type="button" class="btn btn-secondary"
-                     data-bs-dismiss="modal">취소</button>
-               </div>
-            </div>
-         </div>
-      </div>
+					<div id="mdate" style="margin-left: 10px; z-index: 1001;">
+						<span>발주일자</span>
+						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
+							style="margin-bottom: 5px; z-index: 1001;">
+							<input id="startpicker-input" type="text" aria-label="Date" name="startDate"
+								style="margin-bottom: 5px; z-index: 1001"> <span
+								class="tui-ico-date"></span>
+							<div id="startpicker-container" class="datePicker2"
+								style="z-index: 1001"></div>
+						</div>
+						<span>~</span>
+						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
+							style="margin-bottom: 5px; z-index: 1001">
+							<input id="endpicker-input" type="text" aria-label="Date" name=""
+								style="margin-bottom: 5px; z-index: 1001"> <span
+								class="tui-ico-date"></span>
+							<div id="endpicker-container" class="datePicker2"
+								style="margin-bottom: 5px; z-index: 1001"></div>
+						</div>
+						<button type="button" class="btn btn-secondary btn-sm" id="searchBtn">검색</button>
+						<div id="btn">
+							<button type="button" class="btn btn-secondary btn-sm"
+								id="regibtn" style="float: right">주문 예약</button>
+							<button type="button" class="btn btn-secondary btn-sm"
+								id="execlWord" style="float: right">주문 출력</button>
+							<button type="button" class="btn btn-secondary btn-sm"
+								id="orderbtn" style="float: right">주문 발주</button>
+							<button type="button" class="btn btn-secondary btn-sm"
+								id="odelbtn" style="float: right">주문 삭제</button>
+						</div>
+						<div>
+							<div id="grid2"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-      <!-- 자재 주문 추가 모달-->
-      <div class="modal" tabindex="-1" id="mInfoModal" style="z-index: 1300">
-         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title" style="font-weight: bold;">자재 정보 상세내역</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"
-                     aria-label="Close"></button>
-               </div>
-               <div class="modal-body" style="text-align: left">
-                  <div id="grid2"></div>
-               </div>
-               <div class="modal-footer" style="text-align: center">
-                  <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-                  <button type="button" class="btn btn-primary"
-                     data-bs-dismiss="modal" onclick="">확인</button>
-                  <button type="button" class="btn btn-secondary"
-                     data-bs-dismiss="modal">취소</button>
-               </div>
-            </div>
-         </div>
-      </div>
+		<!-- 발주 취소 알림-->
+		<div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">발주확정알림</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body" style="text-align: center">
+						<h5>
+							발주 삭제 시,
+							</h>
+							<h>처음부터 진행해야합니다. 
+						</h5>
+						<h5>발주를 삭제하시겠습니까?</h5>
+					</div>
+					<div class="modal-footer" style="text-align: center">
+						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+						<button type="button" class="btn btn-primary"
+							data-bs-dismiss="modal" onclick="checkCartDel()">확인</button>
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
+		<!-- 자재 주문 추가 모달-->
+		<div class="modal" tabindex="-1" id="mInfoModal" style="z-index: 1300">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">자재 정보 상세내역</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body" style="text-align: left">
+						<div id="grid2"></div>
+					</div>
+					<div class="modal-footer" style="text-align: center">
+						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+						<button type="button" class="btn btn-primary"
+							data-bs-dismiss="modal" onclick="">확인</button>
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
-      <script>
+
+		<script>
          const header = $("meta[name='_csrf_header']").attr('content');
          const token = $("meta[name='_csrf']").attr('content');
 
@@ -245,11 +244,13 @@ img {
 
             },
             selectableRanges : [ [
-                  today,
-                  new Date(today.getFullYear() + 1, today.getMonth(),
+                  new Date(today.getFullYear() - 5, today.getMonth(),
+                        today.getDate()),
+                  new Date(today.getFullYear() + 5, today.getMonth(),
                         today.getDate()) ] ],
 
          });
+         
 
          // 발주 대기 관리 (상단)
          let mCartGrid;
@@ -290,6 +291,12 @@ img {
                   dataType : 'text',
                   required : true,
                   min : 2
+               },
+               onAfterChange: function(ev){
+            	   let price =  mCartGrid.getRow(ev.rowKey).moUnitPrice
+            	   let num = ev.value
+            	   mCartGrid.setValue(ev.rowKey,'moTtPrice', price * num)
+            	   console.log(ev);
                }
 
             },
@@ -323,9 +330,10 @@ img {
             scrollX : false, // 세로 스크롤 
             scrollY : false, // 가로 스크롤
             columns : [ 
-            {
+            
+            	{
                header : '그룹번호', // 이름 어떤 걸로 할지 체크
-               name : 'getGrId'
+               name : 'moGrNo'
             },         
             
              {
@@ -345,7 +353,7 @@ img {
 
             {
                header : '진행상태',
-               name : 'moProgcode'
+               name : 'moProgCode'
 
             }
 
@@ -395,6 +403,40 @@ img {
             })
 
          }
+         
+         
+  /*-----------------------
+      	날짜 검색 버튼 이벤트 핸들러
+      --------------------------*/
+      function searchBtnHandler(){
+     	 $('#searchBtn').on('click', function(){
+     		 let getStartDay = $('#startpicker-input').val();
+     		 let getEndDay = $('#endpicker-input').val();
+     		 console.log(getStartDay);
+     		 console.log(getEndDay);
+     		 
+     	  $.ajax({
+     		  url : '/ajax/morder',
+     		  data : {"startDate" : getStartDay, "endDate" : getEndDay},
+     		  contentType : "application/json",
+	          dataType : 'json',
+	              method : 'GET',
+	              success : function(result){
+	            	  console.log(result);
+	            	  mOrderGrid.resetData(result.list2);
+	              },
+	              error : function(reject){
+	            	  console.log(reject);
+	              }
+     	  }) 
+     		 
+     	 })
+      }
+         
+         
+      searchBtnHandler();
+         
+         
 
          /* -------------------------------------------------
            발주 대기목록 수량 업데이트
@@ -405,41 +447,36 @@ img {
 
          
          function getMoNum() {
+			
+			$.ajax({
+	               url : "/updateMoNum",
+	               method : "POST",
+	               contentType : "application/json",
+	               data : JSON.stringify(),
+	               beforeSend : function(xhr) {
+	                  xhr.setRequestHeader(header, token);
+	               },
+	               success : function(result) {
+	                  console.log(result);
+	                  mOrder();
+	                 
+	               },
+	               error : function(reject) {
+	                  alert('수량 변경 실패');
 
-            let updateNum = mCartGrid.getModifiedRows().updatedRows;
-
-            $.ajax({
-               url : "/updateMoNum",
-               method : "POST",
-               contentType : "application/json",
-               data : JSON.stringify(updateNum),
-               beforeSend : function(xhr) {
-                  xhr.setRequestHeader(header, token);
-               },
-               success : function(result) {
-                  console.log(result);
-                  mOrder();
-               },
-               error : function(reject) {
-                  alert('수량 변경 실패');
-
-               }
-            })
-            
-            
-            
-
-         }
-
-      
-
+	               }
+	            })
+           }	
+		
+           
          function updateMoNum() {
 
-
+        	 
+        	 //let updateNum = mCartGrid.getModifiedRows().updatedRows[0].moNum;
              let obj = mCartGrid.getCheckedRows();
 
             $.ajax({
-               url : "/updateMoNum",
+               url : "/updateOrder",
                method : "POST",
                contentType : "application/json",
                data : JSON.stringify(obj),
@@ -447,15 +484,18 @@ img {
                   xhr.setRequestHeader(header, token);
                },
                success : function(result) {
-                console.log(result);
+            	   mOrder();
                },
                error : function(reject) {
                   alert('수량 변경 실패');
 
                }
             })
+            
+            	
+            }
 
-         }
+         
 
        
       // 발주 대기 삭제 확인 모달   
@@ -492,7 +532,7 @@ img {
                },
                success : function(result) {
                   console.log(result);
-                  mOrder();
+                  mCartGrid.resetData(result)
 
                },
                error : function(reject) {
@@ -505,6 +545,7 @@ img {
             ajax 호출 
             -------------------------------*/
          mOrder();
+       // getMoNum();
          
           /*-----------------------------
          // 엑셀 내보내기
@@ -521,8 +562,8 @@ img {
           
          
        </script>
-   </div>
-   <!-- end of layout -->
+	</div>
+	<!-- end of layout -->
 </body>
 
 </html>

@@ -4,11 +4,12 @@
 	
 	<!-- 코드 조회 -->
 	<select id="getCodeList" resultType="CodeVO">
-		SELECT code_name, code_no 
+		SELECT code_name
 		  FROM code
 		 WHERE code_adno = #{value}
 		 ORDER BY code_no
 	</select>
 
-	
+
+
 </mapper>
