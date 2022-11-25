@@ -68,6 +68,6 @@ public interface MaterialService {
 	public int deleteCartOrder(List<MaterialVO> mVo);
 
 	// 발주 진행 현황 찾기
-	public List<MaterialVO> getOrderProgress();
+	public List<MaterialVO> getOrderProgress(MaterialVO vo);
 
 }

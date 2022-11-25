@@ -17,15 +17,21 @@ public class MorderServiceImpl implements MorderService {
 
 
 	@Override
-	public List<MorderVO> mioInputList() {
+	public List<MorderVO> mioInputList(MorderVO vo) {
 		// 자재 입고 리스트 조회
-		return moMapper.mioInputList();
+		return moMapper.mioInputList(vo);
 	}
 
 	@Override
-	public List<MorderVO> mioOutputList() {
+	public List<MorderVO> mioOutputList(MorderVO vo) {
 		// 자재 출고 리스트 조회 
-		return moMapper.mioOutputList();
+		return moMapper.mioOutputList(vo);
+	}
+
+	@Override
+	public List<MorderVO> getStandbyList() {
+		// 입고 대기 리스트 조회
+		return moMapper.getStandbyList();
 	}
 
 }

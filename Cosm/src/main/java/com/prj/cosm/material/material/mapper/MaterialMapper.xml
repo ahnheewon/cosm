@@ -27,6 +27,11 @@
 				ON m.m_unit_code = c.code_no
 			JOIN MATERIAL_COMPANY mc
 			ON m.m_company_id = mc.mc_company_id
+		<where>
+		<if test="startDate != null and endDate != null">
+ 		TRUNC(mo.mo_date) BETWEEN #{startDate} AND #{endDate}
+ 		</if> 
+ 		</where>
 		ORDER BY m.m_no
 
 	</select>
@@ -121,6 +126,9 @@
 		JOIN Material_io mio
 		  ON m.m_no = mio.mio_no
 		WHERE mio.mio_output_date is not null
+		<if test="startDate != null and endDate != null">
+ 			AND TRUNC(mo.mo_date) BETWEEN #{startDate} AND #{endDate}
+ 		</if> 
 		ORDER BY m.m_no
 	</select>
 
@@ -155,7 +163,8 @@
 
 	<!-- 단위코드 조회 -->
 	<select id="getUnitList" resultType="MaterialVO">
-		SELECT code_name FROM code
+		SELECT code_name 
+		FROM code
 		WHERE code_adno = 'F01'
 		ORDER BY code_no 
 	</select>
@@ -205,6 +214,7 @@
 				ON mo.mo_company_id = mc.mc_company_id
 		JOIN material m
 				ON m.m_no = mo.mo_material_id
+       	WHERE mo_progress_code is null
        
 	</select>
 
@@ -219,7 +229,7 @@
             find_code_name(mo.mo_progress_code)AS mo_prog_code
       FROM material m JOIN material_order mo
             ON mo.mo_material_id = m.m_no
-      WHERE mo_date is not null            
+ 	           
 
    </select>
    
@@ -235,7 +245,7 @@
    SELECT DISTINCT 'GR'|| TO_CHAR(sysdate,'yyMMdd') 
            			   || (SELECT LPAD((NVL(MAX(SUBSTR(mo_group_num, -2,2)),0)+1),2,0)
                     FROM material_order
-                    WHERE  mo_group_num LIKE 'GR'||to_char(sysdate, 'yyMMdd')||'%') AS mo_gr_no
+                    WHERE mo_group_num LIKE 'GR'||to_char(sysdate, 'yyMMdd')||'%') AS mo_gr_no
    FROM material_order
    </select>
 
@@ -262,9 +272,14 @@
    <select id="getOrderProgress" resultType="MaterialVO">
 		SELECT 	mo_group_num as mo_gr_no,
 			  	LISTAGG(mo_name , ', ') WITHIN GROUP(ORDER BY mo_name DESC) AS m_name, SUM(mo_total_price)as mo_tt_price,
-    			mo_date, mo_progress_code AS mo_prog_code
+    			mo_date, (select code_name from code where code_no = mo_progress_code) AS mo_prog_code
 		FROM material_order
+	 	  WHERE mo_group_num is not null	 
+ 		<if test="startDate != null and endDate != null">
+ 		AND	TRUNC(mo_date) BETWEEN #{startDate} AND #{endDate}
+ 		</if>           	
 		GROUP BY mo_group_num, mo_date, mo_progress_code
+		ORDER BY mo_date
    </select>
 
 	
