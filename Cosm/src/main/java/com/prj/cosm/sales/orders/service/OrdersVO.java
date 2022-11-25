@@ -12,19 +12,21 @@ import lombok.Data;
 @Data
 public class OrdersVO {
 //고객 주문정보
-	/*	order_no	NUMBER		NOT NULL,
-		product_no	NUMBER		NULL,
-		order_date	DATE		NULL,
-		delivery_date	DATE		NULL,
-		total_num	NUMBER		NULL,
-		pro_price	NUMBER		NULL,
-		surtax	NUMBER		NULL,
-		note	VARCHAR2(2000)		NULL,
-		order_code	VARCHAR2(10)		NULL,
-		order_progress_code	VARCHAR2(10)		NULL,
-		delivery_info	VARCHAR2(10)		NULL,
-		io_code	VARCHAR2(10)		NULL,
-		total_price	NUMBER		NULL
+	/*	
+		ORDER_NO
+		PRODUCT_NO
+		ORDER_DATE
+		DELIVERY_DATE
+		TOTAL_NUM
+		PRO_PRICE
+		SURTAX
+		NOTE
+		ORDER_CODE
+		ORDER_PROGRESS_CODE
+		DELIVERY_INFO
+		IO_CODE
+		TOTAL_PRICE
+		USERS_NO
 	*/
 
 		private String orderNo; 			//주문번호
@@ -44,7 +46,7 @@ public class OrdersVO {
 		private String deliveryInfo; 		//배송상황
 		private String ioCode;				//출납상황
 		private int totalPrice; 			//총금액
-	
+		private String usersNo;				//회원번호
 		
 		//체크박스 삭제, 셀렉트박스 상태변경, 체큿 생산지시 요청
 		private List<String> noList;

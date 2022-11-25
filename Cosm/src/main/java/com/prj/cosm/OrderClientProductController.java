@@ -48,11 +48,13 @@ public class OrderClientProductController {
 		return "/client/main";
 	}
 
-	// 주문하기(tab or layout),(회원+고객+주문 조인) 페이지
-	@GetMapping("/client/insertOrder") // url
+	/*
+	@GetMapping("/client/insertOrderInfosssssss") // url
 	public String insertOrder(Model model) {
-		return "/client/insertOrder"; // resources - insertOrder
+		return "/client/insertOrdersssssss"; // resources - insertOrder
 	}
+	주문하기(tab or layout),(회원+고객+주문 조인) 페이지
+	 * */ 
 
 	// 주문 등록시 데이터
 	
@@ -69,13 +71,14 @@ public class OrderClientProductController {
 		return cService.myOrderList();
 	}
 
-	// 주문조회 데이터
+	/*
 	@GetMapping("/client/orderListInfo")
 	@RequestMapping
 	public List<ClientVO> orderList() {
-
 		return cService.myOrderList();
 	}
+	주문조회 데이터
+	 * */ 
 
 	// 마이페이지 화면
 	@RequestMapping("/client/myPage")
@@ -100,7 +103,7 @@ public class OrderClientProductController {
 	@ResponseBody
 	@GetMapping("/orders/ajaxOrders") // url
 	public List<OrdersVO> ajaxOrder(Model model) {
-		return oService.salesOrderList();
+		return oService.getOrderList();
 	}
 
 	// 주문조회 데이터
@@ -108,30 +111,34 @@ public class OrderClientProductController {
 	@ResponseBody
 	public List<OrdersVO> salesorderList(Model model) {
 		model.addAttribute("id", oService.getOrderNo());
-		return oService.salesOrderList();
+		return oService.getOrderList();
 	}
 	
-	// 주문등록 페이지======================	
-	@PostMapping("/orders/insertOrderAjax")
-	public String insertOrderPage(Model model, OrdersVO vo) {
+	//등록 페이지
+	@GetMapping("/orders/insertOrder")
+	public String insertOrder (Model model) {
 		model.addAttribute("no", oService.getOrderNo());
-		oService.insertOrder(vo);
-		
+		return "/orders/insertOrder";
+	}
+	//주문 등록 데이터
+	@PostMapping("/orders/insertOrderData")
+	public String insertOrderPage( OrdersVO ovo) {
+		System.out.println("insert vo" + ovo);
+		//System.out.println("insert cvo" + cvo);
+		oService.insertOrder(ovo);
 		return "redirect:/orders/sMain";
 	}
-
-	// 주문등록 데이터=====================
-	@Transactional
-	@RequestMapping("/orders/insertOrder")
-	@ResponseBody
-	@PostMapping
-	public int insertOrder(OrdersVO vo) {
-		System.out.println(vo);
-		int a=0;
-		a = oService.insertOrder(vo);
-		return a;
+	/*
+	//insert Map getResult
+	public Map getResult(int count, OrdersVO vo) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", count);
+		result.put("data", vo);
+		return result;
 	}
-	 
+	 * */
+	
+
 	
 	
 	// 체크박스 - 삭제
@@ -157,12 +164,6 @@ public class OrderClientProductController {
 		int result = oService.recNos(vo);
 		return result;
 	}
-
-	// 테스트용
-//	@RequestMapping("/test")
-//	public String test(Model model) {
-//		return "sales/test";
-//	}
 
 	/* main - 주문목록조회 = ajax, get */
 
