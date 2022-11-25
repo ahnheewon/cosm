@@ -23,7 +23,7 @@ public class EquipVO {
 	private String equipPurpose;
 	private Integer equipCheckCycle;
 	
-	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	@JsonFormat(pattern="yyyy-MM-dd a", timezone = "Asia/Seoul",locale="EN_US")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date equipDate;
 	
@@ -36,7 +36,7 @@ public class EquipVO {
 	// 설비별 가동 시간
 	private Integer timeEquipNo;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd a", timezone = "Asia/Seoul",locale="EN_US")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date timeStartDate;
 	
@@ -47,7 +47,7 @@ public class EquipVO {
 	private Integer rtcVibe;
 	private Integer rtcTemp;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd a", timezone = "Asia/Seoul",locale="EN_US")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date rtcDate;
 	
@@ -62,13 +62,13 @@ public class EquipVO {
 	private Integer testNo;
 	private Integer testEquipNo;
 	private String testEquipName;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm a", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm a", timezone = "Asia/Seoul",locale="EN_US")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date testDate;
 	private String testReason;
 	private String testContent;
 	private String testYn;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm a", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm a", timezone = "Asia/Seoul",locale="EN_US")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date testDueDate;
 	private String testCode;
@@ -79,11 +79,11 @@ public class EquipVO {
 	private Integer failEquipNo;
 	private String failEquipName;
 	private String failContent; // 고장내역
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm a", timezone = "Asia/Seoul",locale="EN_US")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date failDate;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm a", timezone = "Asia/Seoul",locale="EN_US")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date failRepairDate;
 	

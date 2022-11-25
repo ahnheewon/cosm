@@ -12,6 +12,12 @@ public interface EquipService {
 				// 전체조회
 				public List<EquipVO> getEquipList();
 				
+					// 미완조회
+					public List<EquipVO> getIncompleteTestList();
+					
+					// 완료조회
+					public List<EquipVO> getCompleteTestList();
+				
 				// 단건조회
 				public EquipVO getEquipInfo(@Param("equipNo")int equipNo);
 			

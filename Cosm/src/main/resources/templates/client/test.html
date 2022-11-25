@@ -1,104 +1,217 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout.html}">
 
-<html xmlns:th="http://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{/layout/layout}">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-
-<link rel="stylesheet"
-   href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<link rel="stylesheet"
-   href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-
-<script
-   src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="_csrf" th:content="${_csrf.token}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+	<title>회원가입</title>
 </head>
 
+<body layout:fragment="content">
+	<div align="center">
+		<div style="width: 40%; position: relative; top: 50px;">
+			<h2>회원가입</h2>
+			<form action="clientInsert" method="post" id="empInsertForm">
+				<!-- <sec:csrfInput/> -->
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> <input type="hidden"
+					name="usersAuthor" value="고객">
+				<table>
+					<tbody>
+						<tr>
+							<th>주문번호</th>
+							<td><input type="text" id="usersId" name="usersId"></td>
+						</tr>
+						<tr>
+							<th>제품번호</th>
+							<td><input type="password" id="usersPassword" name="usersPassword"></td>
+						</tr>
+						<tr>
+							<th>주문일자</th>
+							<td><input type="text" id="usersName" name="usersName"></td>
+						</tr>
 
-<body>
+						<tr>
+							<th>납기일자</th>
+							<td><input type="text" id="name" name="name"></td>
+						</tr>
+						<tr>
+							<th>수량</th>
+							<td><input type="text" id="manager" name="manager" value="서강중"></td>
+						</tr>
+						<tr>
+							<th>총금액</th>
+							<td><input type="text" id="businessNo" name="businessNo" required="required" value="5048600471"></td>
+							<td><button id="checkBtn2" type="button" onclick="checkBusinessNo()"
+									value="no">진위확인</button></td>
+						</tr>
+						<tr>
+							<th>요청사항</th>
+							<td><input id="licenseImg" name="licenseImg" type="file"><!-- html의 name과 vo의 필드명 다르게 써야함 --></td>
+							<!-- 
+							 <td><input type="text" id="licenseImg" name="licenseImg" ></td>
+							 -->
+						</tr>
+						
+					</tbody>
+				</table>
+				<hr>
+				<button type="button" onclick="checkForm()" class="btn btn-primary">회원추가</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='/top'">취소</button>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		const header = $("meta[name='_csrf_header']").attr('content');
+		const token = $("meta[name='_csrf']").attr('content');
+		const openDate = "";
+		$('#back').click(function () {
+			location.href = "/login"
+			return false;
+		})
+		$('#usersId').on('change', function () {
+			$('#checkBtn').val("no");
+		})
+		/*-----------------
+		사업자번호 진위확인
+		*-----------------*/
+		$('#businessNo').on('change', function () {
+			$('#checkBtn2').val("no");
+		})
+		
+		/*-----------------
+		사업자번호 체크여부
+		- 최종테스트시 not null 걸어서 처음부터 받을지, 마이페이지 수정에서 추가로 받을지 결정 
+		-----------------*/
+		function checkBNo() {
+			console.log($('#businessNo').val())
+			if ($('#businessNo').val() == "" || $('#businessNo').val() == null) {
+				alert('사업자번호를 입력해주세요!');
+				return false;
+			}
+			if ($('#checkBtn2').val() != "Yes") {
+				alert('사업자번호 진위확인을 해주세요!');
+			}
+			$('#empInsertForm').submit();
+		}
+		
+		/*-----------------
+		개업일자 date -> string 20221111
+		*-----------------*/
+		$('#openDate').change(function(){
+			console.log($('#openDate').val());
+			let str = $('#openDate').val(); //날짜를 받아와서 
+			let strArray = str.split("-") //배열에 담아주고 -을 기준으로 나눠줌
+			console.log(strArray);
+			
+			let result = "";
+			for(let el of strArray){
+				result = result.concat(el);
+			}
+			console.log('changeDate',result);
+			$('#changeDate').val(result);
+		})
+		
+		
 
-   <div layout:fragment="content">
-      <div id="grid"></div>
-      <script>
-      
-      window.onload = function(){
-         
-          $.ajax({
-              url : "/plan",
-              method :"GET",
-              dataType : "JSON",
-              success : function(result){
-                  
-                  console.log(result);
-                  for(let plan of result){
-                     plan.planStart = plan.planStart.substr(0,10);
-                     plan.planEnd = plan.planEnd.substr(0,10);
-                  }
-                  grid.resetData(result);
-              },
-              error : function(reject){
-                  console.log(reject);
-              }
-          
-          });
-          
-          var grid = new tui.Grid({
-              el: document.getElementById('grid'),
-              rowHeaders: ['checkbox'],
-              minBodyHeight: 30,
-              pageOptions: {
-                 useClient: true,   // front에서만 페이징 하는 속성
-                  perPage: 5
-              },
+		function checkForm() {
+			console.log($('#usersId').val())
+			if ($('#usersId').val() == "" || $('#usersId').val() == null) {
+				alert('아이디를 입력하세요!');
+				return false;
+			}
+			if ($('#checkBtn').val() != "Yes") {
+				alert('아이디 중복 확인을 해주십시오');
+				return false;
+			}
+			$('#empInsertForm').submit();
+		}
 
-              scrollX: false,
-              scrollY: false,
-              columns: [
-              
-                {
-                  header: '생산계획번호',
-                  name: 'planNo',
-                },
-                {
-                  header: '생산량',
-                  name: 'planQuantity',
-                },
-                {
-                  header: '시작일자(desc)',
-                  name: 'planStart',
-                  sortingType: 'desc',
-                   sortable: true
-                },
-                {
-                  header: '종료일자(desc)',
-                  name: 'planEnd',
-                  sortingType: 'desc',
-                   sortable: true
-                },
-                {
-                  header: '기타사항',
-                  name: 'planEx',
-                },
-                {
-                   header: '생산계획 작성',
-                  name : 'formatter'
-                
-                }
-              ],
-              formatter: { key: "dt", label: "기능", width: "150", align: "center", formatter:function(){
-                 return "저장";
-              }}
-            });
-          
-            };
-            
-      </script>
-   </div>
+		function checkId() {
+			var usersId = $('#usersId').val();
+			console.log(usersId);
+			$.ajax({
+				url: "/userCheckId",
+				type: "get",
+				data: {
+					usersId: usersId
+				},
+				async: false,
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success: function (data) {
+					if (data == 0 && usersId != "") {
+						alert("사용 할 수 있는 아이디 입니다");
+						$('#checkBtn').val("Yes");
+
+					} else {
+						alert("이미 존재하는 아이디 입니다!");
+						$('#usersId').val("");
+						$('#usersId').focus();
+					}
+					console.log(data);
+				},
+				error: function (reject) {
+					console.log(reject);
+				}
+			})
+		}
+
+		/*-----------------
+		사업자번호 중복체크
+		json - 요청방식
+		*-----------------*/
+		function checkBusinessNo() {
+			let ser1 ='TbtTqTFxQYPiIOJLO24eNSOv8Y/jrbuykAjul8JMntvWnmx+r9qgfSpR/8dcaKGk87MRjwmu1O2fqYFl0rEmxA==';
+			let service = 'TbtTqTFxQYPiIOJLO24eNSOv8Y%2FjrbuykAjul8JMntvWnmx%2Br9qgfSpR%2F8dcaKGk87MRjwmu1O2fqYFl0rEmxA%3D%3D';
+ 			let bno = document.getElementById('businessNo').value;
+ 			let openDate = document.getElementById('changeDate').value;
+ 			let manager = document.getElementById('manager').value;
+ 			
+		 	var data = {
+		 			  "businesses": [
+		 				    {
+		 				      "b_no": bno,
+		 				      "start_dt": openDate,
+		 				      "p_nm": manager,
+		 				      "p_nm2": "",
+		 				      "b_nm": "",
+		 				      "corp_no": "",
+		 				      "b_sector": "",
+		 				      "b_type": ""
+		 				    }
+		 				  ]
+		 				};
+ 
+			$.ajax({
+				url: "http://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey="+service+"&returnType=JSON", // serviceKey 값을 xxxxxx에 입력
+				type: "POST",
+				data: JSON.stringify(data), // json 을 string으로 변환하여 전송
+				dataType: "JSON",
+				contentType: "application/json",
+				//accept: "application/json",
+				success: function (result) {
+					console.log('1',result.data[0].valid);
+					console.log('2',result.data);
+					if(result.data[0].valid == '01' && result.status_code == 'OK'){
+						alert("정상 인증되었습니다.")
+					} else {
+						alert("사업자 번호를 다시 확인해 주세요.")
+						$('#businessNo').val('');
+						$('#businessNo').focus();
+					}
+					console.log('3',result);
+				},
+				error: function (result) {
+					console.log(result.responseText); //responseText의 에러메세지 확인
+				}
+			});
+
+		}
+	</script>
 </body>
-
 
 </html>

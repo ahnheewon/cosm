@@ -114,13 +114,14 @@ img {
                   <form>
 
                      <div id="btn">
+                          
                         <button type="button" class="btn btn-secondary btn-sm"
-                           id="orderbtn" style="float: right">주문 추가</button>
-                        <button type="button" class="btn btn-secondary btn-sm"
-                           id="cdelbtn" style="float: right" onclick="checkCartDel()">주문 삭제</button>
-                        <button type="button" class="btn btn-secondary btn-sm"
-                           id="insertbtn" style="float: right" onclick="updateMoNum()">주문
+                           id="insertbtn" style="float: right" onclick="updateMoNum()">
                            저장</button>
+                        <button type="button" class="btn btn-secondary btn-sm"
+                           id="orderbtn" style="float: right">추가</button>
+                        <button type="button" class="btn btn-secondary btn-sm"
+                          id="cdelbtn" style="float: right" >삭제</button>
                      </div>
 
                   </form>
@@ -149,9 +150,10 @@ img {
                         style="margin-bottom: 5px; z-index: 1001"> <span
                         class="tui-ico-date"></span>
                      <div id="endpicker-container" class="datePicker2"
-                        style="margin-bottom: 5px; z-index: 1001"></div>
-
+                        style="margin-bottom: 5px; z-index: 1001"></div>					
                   </div>
+                  <button type="button" class="btn btn-secondary btn-sm"
+                        id="" >검색</button>
                   <div id="btn">
                      <button type="button" class="btn btn-secondary btn-sm"
                         id="regibtn" style="float: right">주문 예약</button>
@@ -190,7 +192,7 @@ img {
                <div class="modal-footer" style="text-align: center">
                   <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
                   <button type="button" class="btn btn-primary"
-                     data-bs-dismiss="modal" onclick="checkDel()">확인</button>
+                     data-bs-dismiss="modal" onclick="checkCartDel()">확인</button>
                   <button type="button" class="btn btn-secondary"
                      data-bs-dismiss="modal">취소</button>
                </div>
@@ -325,15 +327,16 @@ img {
                header : '그룹번호', // 이름 어떤 걸로 할지 체크
                name : 'getGrId'
             },         
-            {
-               header : '발주일자',
-               name : 'moDate'
-            },
-
+            
              {
                header : '자재명',
                name : 'mname'
             },
+
+            {
+                header : '발주일자',
+                name : 'moDate'
+             },
 
             {
                header : '총 금액',
@@ -422,6 +425,9 @@ img {
 
                }
             })
+            
+            
+            
 
          }
 
@@ -429,7 +435,8 @@ img {
 
          function updateMoNum() {
 
-            let obj = mCartGrid.getCheckedRows();
+
+             let obj = mCartGrid.getCheckedRows();
 
             $.ajax({
                url : "/updateMoNum",
@@ -440,8 +447,7 @@ img {
                   xhr.setRequestHeader(header, token);
                },
                success : function(result) {
-                  console.log(result);
-                  mOrder();
+                console.log(result);
                },
                error : function(reject) {
                   alert('수량 변경 실패');
@@ -451,7 +457,8 @@ img {
 
          }
 
-         // 주문 정보 삭제 모달   
+       
+      // 발주 대기 삭제 확인 모달   
          let cartdelbtn = document.getElementById('cdelbtn');
          cartdelbtn.addEventListener('click', function() {
             let myModalAlternative = new bootstrap.Modal('#delModal')
@@ -459,11 +466,10 @@ img {
             myModalAlternative.show(modalToggle)
             mOrderGrid.refreshLayout()
 
-         });//end of delmodal
+      	   });//end of delmodal
+        
          
-         
-         
-
+		// 발주 대기 삭제
          function checkCartDel() {
 
             let delmno = [];
@@ -473,6 +479,8 @@ img {
                delmno.push(obj[key].morderId);
 
             }
+            
+            
 
             $.ajax({
                url : "/ajax/delcart",
@@ -497,7 +505,6 @@ img {
             ajax 호출 
             -------------------------------*/
          mOrder();
-         getMoNum();
          
           /*-----------------------------
          // 엑셀 내보내기

@@ -171,11 +171,25 @@ public class EquipController {
 	//점검	
 		
 		// 점검 전체 리스트 조회
-		@GetMapping("/equipment/testList")
+		@GetMapping("/equipment/testAllList")
 		@ResponseBody
-		public List<EquipVO> test(){
+		public List<EquipVO> testAllList(){
 						
 		return eService.getTestList();
+		}
+		// 점검 미완 리스트 조회
+		@GetMapping("/equipment/incompleteTestList")
+		@ResponseBody
+		public List<EquipVO> incompleteTestList(){
+			
+			return eService.getIncompleteTestList();
+		}
+		// 점검 완료 리스트 조회
+		@GetMapping("/equipment/completeTestList")
+		@ResponseBody
+		public List<EquipVO> completeTestList(){
+			
+			return eService.getCompleteTestList();
 		}
 		
 		// 점검 등록
@@ -188,7 +202,7 @@ public class EquipController {
 		// 점검 단건 조회
 		@GetMapping("/equipment/getTestInfo")
 		@ResponseBody
-		public EquipVO getTestInfo(Model model, int testNo, int testEquipNo) {
+		public EquipVO getTestInfo(int testNo, int testEquipNo) {
 			return eService.getTestInfo(testNo, testEquipNo);
 
 		}
@@ -230,7 +244,7 @@ public class EquipController {
 		// 고장 단건 조회
 		@GetMapping("/equipment/getFailInfo")
 		@ResponseBody
-		public EquipVO getFailInfo(Model model, int failNo, int failEquipNo) {
+		public EquipVO getFailInfo(int failNo, int failEquipNo) {
 			return eService.getFailInfo(failNo,failEquipNo);
 
 		}
@@ -265,7 +279,7 @@ public class EquipController {
 		// 공사 단건 조회
 		@GetMapping("/equipment/getWorkInfo")
 		@ResponseBody
-		public WorkVO getWorkInfo(Model model, int workNo, int workEquipNo) {
+		public WorkVO getWorkInfo(int workNo, int workEquipNo) {
 			return wService.getWorkInfo(workNo, workEquipNo);
 		}
 		
@@ -275,7 +289,8 @@ public class EquipController {
 			wService.insertWork(vo);
 			wService.insertWorkSign(vo);
 			ratt.addFlashAttribute("msg","정상적으로 등록되었습니다."); // 휘발성
-		return "redirect:/equipment/maintenance";}
+		return "redirect:/equipment/maintenance";
+		}
 		
 		//공사 결재안건 수정
 	

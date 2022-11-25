@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/layout/layout}">
+	layout:decorate="~{/layout/modalLayout}">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -85,11 +85,12 @@
 				<div style="margin-top: 20px; text-align: right;">
 					<button type="button" class="btn btn-primary" id="saveCom">저장</button>
 					<button type="button" class="btn btn-secondary" id="cancleCom"
-						onclick="location.href='/minsert'">취소</button>
+						onclick="window.close()">취소</button>
 				</div>
 			</form>
 			<!--자재 정보 등록 form end-->
 		</div>
+		
 		<script>
 			// 거래처 정보 등록
 			$('#saveCom').on('click', function() {

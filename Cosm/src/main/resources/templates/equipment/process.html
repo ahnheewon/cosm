@@ -23,16 +23,15 @@
  	<div layout:fragment="content" style="height: 900px; overflow: scroll; margin:15px;">
  	
 		  <!-- model and view로 보낸 데이터 [[${pno}]] 이런식으로 써야합니다 밖에서 쓰려면. -->
-		  <h2>공정 관리</h2>
+		  <h2 style=" padding-bottom: 30px;">공정 관리</h2>
 		
 		  <div class="row">
 			        <div class="column">
 			           <h5>공정 관리</h5>
-			           <div class="searchbox">
+			           <div >
 			            <div class="header">
 			         	<button type="button" class="btn btn-dark btn-sm margin5"
-			         	data-bs-toggle="modal" data-bs-target="#myModal1">등록</button>
-						     <input onkeyup="filter()" style="float:right;" type="text" id="value" placeholder="Type to Search">
+			         	data-bs-toggle="modal" data-bs-target="#myModal1">등록</button>   
 						 </div>
       				   </div>
 
@@ -42,20 +41,22 @@
 
 		        	</div>
 		
-			        <div class="column">
+			        <div class="column" style=" padding-top: 50px;">
 			          <h5>설비 관리</h5>
 			          <div class="searchbox">
-			            <div class="header">
-			         	<button type="button" class="btn btn-dark btn-sm margin5"
-			         	data-bs-toggle="modal" data-bs-target="#myModal2">등록</button>
-						     <input style="float:right;" type="text" id="value" placeholder="Type to Search">
-						 </div>
-      				   </div>
-					  <div id="equipList">
-   					  </div>
+				            <div class="header">
+							     <div style="padding-right: 50px;">
+						         	<button type="button" class="btn btn-dark btn-sm margin5"
+						         	data-bs-toggle="modal" data-bs-target="#myModal2">등록</button>
+							     	<input onkeyup="filter()" type="text" style="float: right" id="searchFilter" placeholder="설비명을 입력해주세요..">
+							     </div>
+	      				   </div>
+	      				   
+						  <div id="equipList" style=" padding-top: 10px;">
+	   					  </div>
 			        </div>
 		
-		  </div>
+		  		</div>
 
 	<!-- The Modal 1 공정모달 -->
 	<div class="modal fade" id="myModal1">
@@ -316,42 +317,27 @@
 /* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */
 /* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */	
 
-/* 검색 기능 함수 */
-function filter(){
-	
-        var value, name, i;   
-        const search = document.getElementById("value")
-         value = search.value.toUpperCase();
-        
-		var val =[];
-		
-        url="/equipment/processList"
-    		fetch(url) 
-    		.then(res=>res.json())
-    		.then(obj=>{
-    			console.log(obj);
-    			
-    			for(i=0; i < obj.length; i++){
-    			val.push(processGrid.getValue(i,'processName')); // 갖고있는 값
-    			
-    			}
-    		
-				for(i=0; i < val.length; i++){		
-		
-		    	
-				}
-        // item = document.getElementsByClassName("item");
+/* 검색 기능 함수 *//* 설비명 필터 */
 
-   /*      for(i=0;i<item.length;i++){
-          name = item[i].processName
-          if(name[0].innerHTML.toUpperCase().indexOf(value) > -1){
-            item[i].style.display = "flex";
-          }else{
-            item[i].style.display = "none";
-          }
-        }
- */
-  })
+		
+function filter(){
+
+        const search = document.getElementById("searchFilter")
+		
+		//const sf = document.querySelector('#searchFilter');
+		
+			
+		const state = [{code: 'contain', value: search.value.toUpperCase()}];
+			
+		if(search.value == ''){	
+			
+			equipGrid.unfilter('equipName');
+		
+		}else {
+			
+			equipGrid.filter('equipName', state);
+		}
+		
 }
 
 /* 적용 공정 선택하게 하는 함수 */ 
@@ -654,11 +640,13 @@ function filter(){
 				useClient: true,
 				perPage: 4
 			},
+			//width:1500,
 		    columns: [
 		    {
 				header: '공정번호',
 				name: 'processNo'
 				,align : 'center'
+				//,width : 100
 			},
 		    {
 		        header: '공정명',
@@ -699,35 +687,46 @@ function filter(){
 				useClient: true,
 				perPage: 4
 			},
+			
 		    columns: [
 		    {
 				header: '설비번호',
 				name: 'equipNo'
 				,align : 'center'
+				//,width : 100
 			}, 
 			{
-				header: '설비명',
+				header: 'ㅤㅤ설비명',
 				name: 'equipName'
 				,align : 'center'
+				,filter:'text'
+				
+				//,width : 150
+			
 			},
 		    {
 		        header: '설비타입',
 		        name: 'equipType'
 		       ,align : 'center'
+		       //,width : 'auto'
+		       
 		    },
 		    {
 		        header: '설비용도',
 		        name: 'equipPurpose'
 		        ,align : 'center'
+		        //,width : 200
 		    },
 		    {
 		        header: '적용공정',
 		        name: 'equipProcess'
 		        ,align : 'center'
+		     // ,width : 100
 		    }
 		    ]
 		});
-
+		
+		
 		/* 설비 리스트 불러오는 아작스 */
 			    
 		url="/equipment/equipList"
@@ -786,7 +785,7 @@ function filter(){
 	    	}
 		});
 	    
-		
+		document.querySelector('a[class="tui-grid-btn-filter"]').style.visibility='hidden';	
 
 		
 </script>

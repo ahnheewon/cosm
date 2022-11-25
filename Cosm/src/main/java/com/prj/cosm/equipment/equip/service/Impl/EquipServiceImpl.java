@@ -224,4 +224,16 @@ public class EquipServiceImpl implements EquipService {
 		return result;
 	}
 
+	@Override
+	public List<EquipVO> getIncompleteTestList() {
+	
+		return mapper.getIncompleteTestList();
+	}
+
+	@Override
+	public List<EquipVO> getCompleteTestList() {
+		
+		return mapper.getCompleteTestList();
+	}
+
 }

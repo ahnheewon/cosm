@@ -58,4 +58,10 @@ public class RegistServiceImpl implements RegistService {
 		return mapper.getUnitList();
 	}
 
+	@Override
+	public List<Map<String, Object>> completeList() {
+		// TODO Auto-generated method stub
+		return mapper.completeList();
+	}
+
 }

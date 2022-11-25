@@ -60,19 +60,20 @@
 					readonly="readonly">
 			</div>
 			<div class="col-md-3">
-				<label class="form-label">투입량</label> <input type="number"
-					name="bomQuantity" class="form-control" id="bomQuantity">
-			</div>
-			<div class="col-md-3">
 				<label for="inputState" class="form-label">제품 번호</label> <select
 					id="inputState" name="bomProductNo" class="form-select">
-					<option th:each="goodsNo : ${goodsNo}">[[${goodsNo.goodsNo}]]</option>
+					<option th:each="goodsNo : ${goodsNo}" th:value="${goodsNo.goodsNo}">[[${goodsNo.goodsNo}]] ([[${goodsNo.goodsName}]])</option>
 				</select>
 			</div>
 			<div class="col-md-3">
-				<label for="inputState" class="form-label">자재 번호</label> <select
+				<label class="form-label">자재 투입량</label> <input type="number"
+					name="bomQuantity" class="form-control" id="bomQuantity" style="float: right">
+			</div>
+			<div class="col-md-3">
+				<label for="inputState" class="form-label">자재 번호 (자재명)</label> <select
 					id="inputState" name="bomMaterialNo" class="form-select">
-					<option th:each="mNo : ${mNo}">[[${mNo.mNo}]]</option>
+					<option th:each="mNo : ${mNo}" th:value="${mNo.mNo}">[[${mNo.mNo}]] ([[${mNo.mName}]])</option>
+					<!-- 위에꺼처럼 value 다 넣어주기, 텍스트에는 이름 추가 -->
 				</select>
 			</div>
 			<div class="col-12">
@@ -112,7 +113,7 @@
 								</div>
 
 								<div class="input-group mb-3">
-									<span class="input-group-text">투입량</span> <input type="number"
+									<span class="input-group-text">자재 투입량</span> <input type="number"
 										class="form-control" id="bomQuantity2" name="bomQuantity"
 										aria-label="Username" aria-describedby="basic-addon2">
 								</div>
@@ -220,7 +221,7 @@
 				      },
 			},
 			{
-				header: '투입량',
+				header: '자재 투입량',
 				name: 'bomQuantity',
 			},
 			{

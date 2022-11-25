@@ -14,12 +14,12 @@ public class MaterialVO {
 	
 	
 	
-	public void setmUnitCode(String mUnitCode) {
-		this.mUnitCode = mUnitCode;
-	}
-	public void setmNo(String mNo) {
-		this.mNo = mNo; 
-	}
+//	public void setmUnitCode(String mUnitCode) {
+//		this.mUnitCode = mUnitCode;
+//	}
+//	public void setmNo(String mNo) {
+//		this.mNo = mNo; 
+//	}
 	// 1. 자재 정보, 재고 관리
 	private String mNo; // 자재번호
 	private String mName; // 자재명
@@ -79,7 +79,7 @@ public class MaterialVO {
 
 	// 5. 발주 관리
 	private String mOrderId; // 발주번호
-
+	private List<String> moi;
 	private Integer moTtPrice;// 총금액
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
@@ -87,8 +87,9 @@ public class MaterialVO {
 
 	private Integer moUnitPrice;// 발주단가
 	private Integer moNum;// 발주수량
-	private String moProgcode; // 진행코드
+	private String moProgCode; // 진행코드
 	
 	private List<String> odMno; // 발주시 매치되는 자재번호...들	
-	private List<String> mGrNo; // 개별 발주오더 묶는 번호
+	//private List<String> moGrNo; // 개별 발주오더 묶는 번호
+	private String moGrNo; // 개별 발주오더 묶는 번호
 }
