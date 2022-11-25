@@ -21,142 +21,89 @@
 
 
 <body>
-	<!-- 
-	☆고객등록 후 추가할 기능
-	고객가입후 조회시 사업자 번호 -> 엑셀파일(어떤시스템 및 DB에도 적용가능)가져와서 -> 모달창 -> 조회누르면 -> 업장상태확인가능하게 
--->
 	<div layout:fragment="content">
-<!-- 
-	☆고객등록 후 추가할 기능
-	고객가입후 조회시 사업자 번호 -> 엑셀파일(어떤시스템 및 DB에도 적용가능)가져와서 -> 모달창 -> 조회누르면 -> 업장상태확인가능하게 
--->
-	
-			<div style="width: 40%; position: relative; top: 50px;">
-			<form action="insertOrderPage">
-				<h2>주문등록</h2>
-				<table id="insertOrder">
-					<tbody>
-						<tr>
-							<th>제품명</th>
-							<td><input type="text" id="productNo" name="productNo"></td>
-						</tr>
-						<tr>
-							<th>주문일자</th>
-							<td><input type="date" id="orderDate" name="orderDate"></td>
+		<!-- 
+	☆주문등록 - 고객가입후 조회시 사업자 번호 -> 엑셀파일(어떤시스템 및 DB에도 적용가능)가져와서 -> 모달창 -> 조회누르면 -> 업장상태확인가능하게 
+	-->
 
-						</tr>
-
-						<tr>
-							<th>납기일자</th>
-							<td><input type="date" id="deliveryDate" name="deliveryDate"></td>
-						</tr>
-						<tr>
-							<th>수량</th>
-							<td><input type="number" id="totalNum" name="totalNum"></td>
-						</tr>
-						<tr>
-							<th>총금액</th>
-							<td><input type="number" id="totalPrice" name="totalPrice"></td>
-
-						</tr>
-						<tr>
-							<th>요청사항</th>
-							<td><input id="note" name="note" type="text">
-							<!-- html의 name과 vo의 필드명 다르게 써야함 --></td>
-							<!-- 
-							 <td><input type="text" id="licenseImg" name="licenseImg" ></td>
-							 -->
-						</tr>
-
-					</tbody>
-				</table>
-				<hr>
-				<button type="button" class="btn btn-primary" id="inOrder" onclick="insertOrderForm()">주문</button>
-				<button type="button" class="btn btn-secondary"
-					onclick="location.href='/top'">취소</button>
-		</form>
-			</div>
-			<hr>
-		
-
-			<div align="center">
-				<h3>영업 관리</h3>
-			</div>
+		<div align="center">
+			<h3>영업 관리</h3>
+		</div>
 
 
-			<!-- tab btn start  -->
-			<div>
-				<ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
+		<!-- tab btn start  -->
+		<div>
+			<ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
 
-					<!--주문관리 tab btn-->
-					<li class="nav-item" role="presentation">
+				<!--주문관리 tab btn-->
+				<li class="nav-item" role="presentation">
 
-						<button class="nav-link active" id="manage-tab"
-							data-bs-toggle="tab" data-bs-target="#manage" type="button"
-							role="tab" aria-controls="manage" aria-selected="true">주문관리</button>
+					<button class="nav-link active" id="manage-tab"
+						data-bs-toggle="tab" data-bs-target="#manage" type="button"
+						role="tab" aria-controls="manage" aria-selected="true">주문관리</button>
 
-					</li>
-					<!--주문관리 tab btn-->
+				</li>
+				<!--주문관리 tab btn-->
 
-					<!--완제품 검수, 재고, 출고관리 tab 
+				<!--완제품 검수, 재고, 출고관리 tab 
 				aria-selected - 탭활성화 -->
-					<li class="nav-item" role="presentation">
+				<li class="nav-item" role="presentation">
 
-						<button class="nav-link" id="manage2-tab" data-bs-toggle="tab"
-							data-bs-target="#manage2" type="button" role="tab"
-							aria-controls="manage2" aria-selected="true">완제품 관리</button>
-					</li>
-					<!--완제품 검수관리 tab-->
-
-
-					<!-- tab -->
-					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="myTab3" data-bs-toggle="tab"
-							data-bs-target="#pStock" type="button" role="tab"
-							aria-controls="insert" aria-selected="false">고객관리</button>
-					</li>
-					<!-- tab -->
-
-				</ul>
-			</div>
-			<!-- tab btn end -->
+					<button class="nav-link" id="manage2-tab" data-bs-toggle="tab"
+						data-bs-target="#manage2" type="button" role="tab"
+						aria-controls="manage2" aria-selected="true">완제품 관리</button>
+				</li>
+				<!--완제품 검수관리 tab-->
 
 
+				<!-- tab -->
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="myTab3" data-bs-toggle="tab"
+						data-bs-target="#pStock" type="button" role="tab"
+						aria-controls="insert" aria-selected="false">고객관리</button>
+				</li>
+				<!-- tab -->
+
+			</ul>
+		</div>
+		<!-- tab btn end -->
 
 
-			<!-- 주문관리 tab 본문-->
-			<!-- div -->
-			<div class="tab-content" id="myTabContent">
-				<!--주문관리 탭-->
-				<div class="tab-pane fade show active" id="manage" role="tabpanel"
-					aria-labelledby="manage-tab">
-					<div style="margin: 15px;">
 
-						<!-- 검색창 start -->
-						<label for="actCd">검색 <input id="actCd">
-						</label>
 
-						<button class="btn btn-dark btn-sm">찾기</button>
-						<!-- 검색창 end -->
+		<!-- 주문관리 tab 본문-->
+		<!-- div -->
+		<div class="tab-content" id="myTabContent">
+			<!--주문관리 탭-->
+			<div class="tab-pane fade show active" id="manage" role="tabpanel"
+				aria-labelledby="manage-tab">
+				<div style="margin: 15px;">
 
-						<hr>
-						<div>
-							<h3>주문 실적 조회</h3>
-						</div>
+					<!-- 검색창 start -->
+					<label for="actCd">검색 <input id="actCd">
+					</label>
 
-						<!-- chart grid -->
-						<div>
-							<div id="chartGrid"></div>
-						</div>
-						<!-- chart grid end-->
-						<hr>
-						<div>
-							<h3>주문 접수 관리</h3>
-						</div>
-						<table style="width: 100%;">
-							<tr>
+					<button class="btn btn-dark btn-sm">찾기</button>
+					<!-- 검색창 end -->
 
-								<!-- 
+					<hr>
+					<div>
+						<h3>주문 실적 조회</h3>
+					</div>
+
+					<!-- chart grid -->
+					<div>
+						<div id="chartGrid"></div>
+					</div>
+					<!-- chart grid end-->
+					<hr>
+					<div>
+						<h3>주문 접수 관리</h3>
+					</div>
+					<table style="width: 100%;">
+						<tr>
+
+							<!-- 
 								<td>납기일자 &nbsp;</td>
 								<td>
 									<div
@@ -173,66 +120,57 @@
 								</td>
 								 -->
 
-								<td>
-									<!-- 
+							<td>
+								<!-- 
 							$('#delbtn').on('click', checkDel); // 체크박스 - 삭제버튼 이벤트
 							$('#updatebtn').on('click', updatebtn); //주문 - 수정		
 							$('#newPro').on('click', newPro); //신규생산 지시버튼 이벤트 -> 체크박스 다중선택 가능
 							$('#exlBtn').on('click', exl); //엑셀버튼 클릭 이벤트			
 							 -->
-									<button id="newPro" type="button"
-										class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-										data-bs-target="#pctRequest">신규</button>
-									<button id="proPlz" class="btn btn-secondary btn-sm">접수</button>
-									<button id="updatebtn" class="btn btn-secondary btn-sm">수정</button>
-									<button id="delbtn" class="btn btn-secondary btn-sm">삭제</button>
-									<button id="exlBtn" class="btn btn-secondary btn-sm">엑셀</button>
-									<button class="btn btn-secondary btn-sm">PDF</button>
+								<button id="newPro" type="button"
+									class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+									data-bs-target="#pctRequest">신규</button>
+								<button id="proPlz" class="btn btn-secondary btn-sm">접수</button>
+								<button id="updatebtn" class="btn btn-secondary btn-sm">수정</button>
+								<button id="delbtn" class="btn btn-secondary btn-sm">삭제</button>
+								<button id="exlBtn" class="btn btn-secondary btn-sm">엑셀</button>
+								<button class="btn btn-secondary btn-sm">PDF</button>
 
-								</td>
-							</tr>
+							</td>
+						</tr>
 
-							<tr>
-								<td colspan="3">
-									<!-- 전체조회 grid filter -->
-									<div id="grid"></div>
-								</td>
-							</tr>
+						<tr>
+							<td colspan="3">
+								<!-- 전체조회 grid filter -->
+								<div id="grid"></div>
+							</td>
+						</tr>
 
-						</table>
-					</div>
+					</table>
 				</div>
-				<!--주문관리 탭 end -->
+			</div>
+			<!--주문관리 탭 end -->
 
 
 
-				<!-- 완제품 관리 탭 start body -->
-				<div class="tab-pane fade " id="manage2" role="tabpanel"
-					aria-labelledby="manage2-tab">
-					<div style="margin: 15px;">
+			<!-- 완제품 관리 탭 start body -->
+			<div class="tab-pane fade " id="manage2" role="tabpanel"
+				aria-labelledby="manage2-tab">
+				<div style="margin: 15px;">
 
-						<!-- 검색창 start -->
-						<label for="actCd">검색 <input id="actCd">
-						</label>
+					<!-- 검색창 start -->
+					<label for="actCd">검색 <input id="actCd">
+					</label>
 
-						<button class="btn btn-dark btn-sm">찾기</button>
-						<!-- 검색창 end -->
-
-						<hr>
-						<div>
-							<h3>완제품 관리</h3>
-						</div>
-
-
-
-						<hr>
-						<div>
-							<h3>완제품 출고관리</h3>
-						</div>
-						<table style="width: 100%;">
-							<tr>
-
-								<!-- 
+					<button class="btn btn-dark btn-sm">찾기</button>
+					<!-- 검색창 end -->
+					<hr>
+					<div>
+						<h3>완제품 출고관리</h3>
+					</div>
+					<table style="width: 100%;">
+						<tr>
+							<!-- 
 								<td>납기일자 &nbsp;</td>
 								<td>
 									<div
@@ -249,114 +187,45 @@
 								</td>
 								 -->
 
-								<td>
-									<!-- 
+							<td>
+								<!-- 
 							$('#newPro2').on('click', newPro2); //입고
 							$('#outbtn2').on('click', updatebtn2); //출고	
 							$('#delribtn2').on('click', checkDel2); // 배송
 							$('#delbtn2').on('click', exl2); //삭제	
 							$('#exlBtn2').on('click', exl2); //엑셀		
 							 -->
-									<button id="newPro" type="button"
-										class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-										data-bs-target="#pctRequest">입고</button>
-									<button id="outbtn2" class="btn btn-secondary btn-sm">출고</button>
-									<button id="delribtn2" class="btn btn-secondary btn-sm">배송</button>
-									<button id="delbtn2" class="btn btn-secondary btn-sm">삭제</button>
-									<button id="exlBtn2" class="btn btn-secondary btn-sm">엑셀</button>
+								<button id="outbtn2" class="btn btn-secondary btn-sm">출고</button>
+								<button id="delribtn2" class="btn btn-secondary btn-sm">배송</button>
+								<button id="delbtn2" class="btn btn-secondary btn-sm">삭제</button>
+								<button id="exlBtn2" class="btn btn-secondary btn-sm">엑셀</button>
+							</td>
+						</tr>
 
-								</td>
-							</tr>
+						<tr>
+							<td colspan="3">
+								<!-- 전체조회 grid filter -->
+								<div id="grid2"></div>
+							</td>
+						</tr>
 
-							<tr>
-								<td colspan="3">
-									<!-- 전체조회 grid filter -->
-									<div id="grid2"></div>
-								</td>
-							</tr>
-
-						</table>
-					</div>
+					</table>
 				</div>
-				<!-- 완제품 관리 탭 end -->
-
 			</div>
-			<!-- tab 본문 end -->
+			<!-- 완제품 관리 탭 end -->
+
+		</div>
+		<!-- tab 본문 end -->
 
 
 
-			<script>
+		<script>
 			/*데이터피커-보류, 엑셀0, PDF, 수정0, 신규 -> 접수 0, 차트, 삭제전 경고창 - 만들거 11/21*/
 			//데이터 -> 계속 호출, 그리드는 한번 호출하면되니까 굳이 함수로 사용 안해도됨 
 			
 			const header = $("meta[name='_csrf_header']").attr('content');
 			const token = $("meta[name='_csrf']").attr('content');
-			const Chart = toastui.Chart; //차트그리드
-			
-			
-		/* 	//주문등록
-			$('#inOrder').on('click', function() {
-				$('#insertOrder').submit();
-				// 같은 경로두번 작성시 데이터 안넘어감
-			}); */
-
-			//주문버튼 클릭시 
-			 function insertOrderForm() {
-				console.log($('#totalNum').val())
-			
-				$('#insertOrderForm').submit();
-			} 
-			//그리드에 등록하면 바로 결과 보여주는 역할
-			function showAll(){
-	               
-	               fetch("lineList")
-	               .then(res=>res.json())
-	               .then(obj=>{
-	                  lineGrid.resetData(obj);
-	               })
-	            }
-			/*------------
-			 아작스 연결 - 주문등록
-			----------------*/
-			/* function insertOrderList() {
-				$.ajax({
-					url: "/orders/insertOrderAjax",
-					method: "POST",
-					dataType: "JSON",
-					success:function(data){
-	                     if(data > 0) {
-	                        alert("수정완료");
-	                        showAll();   
-	                        console.log(UPH);
-	                        
-	                     } else {
-	                        alert("수정실패");
-	                        
-	                     }
-	                 
-					},
-					error: function (reject) {
-						console.log(reject);
-					}
-				});
-			} */
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			const Chart = toastui.Chart; //차트그리드	
 			
 			  //주문관리 그리드
 	            let grid2 = finishList(); //완제품관리 그리드
@@ -564,7 +433,7 @@
 								var token = $("meta[name='_csrf']").attr('content');
 								// debugger
 								$.ajax({
-									url: "orders/ajaxDelcheckOrder",
+									url: "/orders/ajaxDelcheckOrder",
 									method: "Post",
 									contentType: "application/json",
 									data: JSON.stringify({
@@ -819,7 +688,7 @@
 							</script>
 
 
-		</div>
+	</div>
 </body>
 
 </html>
