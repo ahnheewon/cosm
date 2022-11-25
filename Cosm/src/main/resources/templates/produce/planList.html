@@ -119,10 +119,9 @@
 										readonly="readonly">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" data-bs-dismiss="modal" id="selectGoods">제품번호</span> <select
-										id="planProductNo" name="planProductNo" class="form-select">
-										<option th:each="goodsNo : ${goodsNo}">[[${goodsNo.goodsNo}]]</option>
-									</select>
+									<span class="input-group-text" data-bs-dismiss="modal" id="selectGoods">제품번호</span> 
+									<input id="planProductNo" name="planProductNo" class="form-control" readonly="readonly">
+									
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">제품명</span> <input type="text"
@@ -130,13 +129,12 @@
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
 								</div>
-
+								
 								<div class="input-group mb-3">
-									<span class="input-group-text" data-bs-dismiss="modal" id="selectBom"
-										>BOM번호</span> <select
-										id="planBomNo" name="planBomNo" class="form-select">
-										<option th:each="bomNo : ${bomNo}">[[${bomNo.bomNo}]]</option>
-									</select>
+									<span class="input-group-text" data-bs-dismiss="modal" id="selectBom">BOM번호
+									</span> <input type="text" id="planBomNo" name="planBomNo" class="form-control"
+									placeholder="왼쪽박스를 클릭하세요..">
+
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">주문량</span> <input type="number"
@@ -390,7 +388,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- 생산계획 수정 모달 -->
+		<!-- bom 모달에 모달 -->
 		<div class="modal fade" id="requestModal3" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-xl">
@@ -412,13 +410,13 @@
 		</div>
 		</div>
 		
-		<!-- 생산계획 수정 모달 -->
+		<!-- 제품 모달에 모달 -->
 		<div class="modal fade" id="requestModal4" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-xl">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">생산계획서 수정</h5>
+						<h5 class="modal-title" id="exampleModalLabel">제품 상세정보</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
@@ -439,12 +437,15 @@
             $("#setData").click(function () {
             	$('#requestModal').modal('toggle');
             	$('#selectBtn').click();	
-          		
+            	var datas = grid5.getCheckedRows();
+            	$('#planBomNo').val(datas[0].bomNo);
+            
             })
              $("#setData1").click(function () {
             	$('#requestModal').modal('toggle');
             	$('#selectBtn').click();	
-          		
+            	var datas = grid7.getCheckedRows();
+            	$('#planProductNo').val(datas[0].goodsNo);
             })
 	
 		window.onload = function () {
@@ -484,6 +485,17 @@
 					}
 				}
 			});
+			
+			grid5.on('check', (ev) => {
+				for(let i=0;i<$('#grid5 input:checkbox[name="_checked"]').length;i++){
+					if(i!=`${ev.rowKey}`){
+						grid5.uncheck(i);
+					}
+				}
+				// 생산계획번호 +1 로 등록
+				var info = '[[${info.planNo}]]';
+				$('#planNoInput').val(info)	
+			});
 				
 			grid.on('uncheck', (ev) => {
 				$('input:text').val('');
@@ -492,9 +504,14 @@
 			grid2.on('uncheck', (ev) => {
 				$('input:text').val('');
 			});
+			
+			grid5.on('uncheck', (ev) => {
+				$('input:text').val('');
+			});
 				
 			$('#grid span').remove();
 			$('#grid2 span').remove();
+			$('#grid5 span').remove();
 			
 			$(window).on('mouseover',function(){
 				grid5.refreshLayout();
@@ -563,6 +580,10 @@
 				{
 					header: '제품번호',
 					name: 'planProductNo',
+				},	
+				{
+					header: '진행상황',
+					name: 'planPlayCode',
 				},	
 				{
 					header: '기타사항',
@@ -694,11 +715,12 @@
 				},	
 				],
 			});
-		//BOM 리스트 그리드
+		//모달에 모달 BOM 리스트 그리드
 		 var grid5 = new tui.Grid({
 			 
 			el: document.getElementById('grid5'),
 			minBodyHeight: 30,
+			rowHeaders: ['checkbox'],
 			pageOptions: {
 				useClient: true, // front에서만 페이징 하는 속성
 				perPage: 10
@@ -761,6 +783,7 @@
 			 
 			el: document.getElementById('grid4'),
 			minBodyHeight: 30,
+			rowHeaders: ['checkbox'],
 			pageOptions: {
 				useClient: true, // front에서만 페이징 하는 속성
 				perPage: 5
@@ -798,7 +821,7 @@
 
 			});
 		
-		//제품정보 리스트 그리드
+		//모달에 모달 제품정보 리스트 그리드
 		 var grid6 = new tui.Grid({
 			 
 			el: document.getElementById('grid6'),

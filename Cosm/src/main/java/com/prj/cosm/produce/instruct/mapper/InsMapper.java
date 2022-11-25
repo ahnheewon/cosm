@@ -28,4 +28,7 @@ public interface InsMapper {
 
 	// 생산지시 완료되게 업데이트
 	public int updateInsPlay(InsVO InsVO);
+	
+	// 생산지시 완료되게 업데이트
+	public int updateInsPlay2(InsVO InsVO);
 }

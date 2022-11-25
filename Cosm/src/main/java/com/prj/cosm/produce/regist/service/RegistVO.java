@@ -1,5 +1,7 @@
 package com.prj.cosm.produce.regist.service;
 
+import java.util.Date;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
@@ -18,6 +20,8 @@ public class RegistVO {
 	private String codeNo;
 	private String inspection;
 	
+	private Date startDate;
+	private Date endDate;
 	//진행상황,단위코드 리스트
 	public String codeName;
 	

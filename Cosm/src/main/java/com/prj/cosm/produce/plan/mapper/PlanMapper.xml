@@ -6,7 +6,7 @@
 <select id="getPlanList" resultType="PlanVO">
 	SELECT * 
 	  FROM produce_plan 
-	 ORDER BY plan_no DESC
+	 ORDER BY plan_play_code
 </select>
 
 <!-- 미완료된것만 보이게 -->

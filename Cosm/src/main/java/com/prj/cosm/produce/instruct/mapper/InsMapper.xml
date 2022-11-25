@@ -8,7 +8,9 @@
 		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
 		   i.instruct_date as instructDate, i.instruct_m_no as instructMNo, 
 		   i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
-		   i.instruct_material_num as instructMaterialNum, g.goods_name as goodsName,
+		   i.instruct_material_num as instructMaterialNum,
+		   i.instruct_m_nob as instructMNob, i.instruct_material_numb as instructMaterialNumb,
+		   g.goods_name as goodsName,
            code_name as instruct_progress_code
 	FROM produce_plan p JOIN produce_instruct i
                         ON p.plan_no = i.instruct_plan_no
@@ -27,14 +29,19 @@
 		   i.instruct_date as instructDate, i.instruct_m_no as instructMNo, 
 		   i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
 		   i.instruct_material_num as instructMaterialNum,
+		   i.instruct_m_nob as instructMNob, i.instruct_material_numb as instructMaterialNumb,
+           g.goods_name as goodsName,
            code_name as instruct_progress_code
 	FROM produce_plan p JOIN produce_instruct i
                         ON p.plan_no = i.instruct_plan_no
+                        JOIN produce_goods g
+                        ON p.plan_product_no = g.goods_no
                         JOIN code
                         ON i.instruct_progress_code = code.code_no
     WHERE instruct_progress_code = 'A0103'
 	ORDER BY i.instruct_no DESC
 </select>
+
 
 <!-- 지시번호 +1 -->
 <select id="getInsNo" resultType="InsVO">
@@ -51,14 +58,19 @@
                 instruct_date, 
                 instruct_plan_no,
                 instruct_m_no, 
-                instruct_material_num) 
+                instruct_material_num,
+                instruct_m_nob,
+                instruct_material_numb
+                ) 
 		VALUES ( #{instructNo}, 
        			 #{instructQuantity}, 
         		 #{instructEx}, 
        			 #{instructDate}, 
        			 #{instructPlanNo}, 
        			 #{instructMNo},
-        		 #{instructMaterialNum}
+        		 #{instructMaterialNum},
+        		 #{instructMNob},
+                 #{instructMaterialNumb}
        			 )
 </insert>
 
@@ -77,6 +89,12 @@
 			</if>
 			<if test="instructMaterialNum != null and !instructMaterialNum.equals('')">
 				instruct_material_num = #{instructMaterialNum},
+			</if>
+			<if test="instructMNob != null and !instructMNob.equals('')">
+				instruct_m_nob = #{instructMNob},
+			</if>
+			<if test="instructMaterialNumb != null and !instructMaterialNumb.equals('')">
+				instruct_material_numb = #{instructMaterialNumb},
 			</if>
 			<if test="instructProgressCode != null and !instructProgressCode.equals('')">
 				instruct_progress_code = (SELECT code_no FROM code 
@@ -109,6 +127,13 @@
 <update id="updateInsPlay" parameterType="InsVO">
 	UPDATE produce_instruct
 	SET instruct_progress_code = 'A0103'
+	WHERE instruct_no = #{instructNo}
+</update>
+
+<!-- 생산지시 완료된 것 보관으로 update -->
+<update id="updateInsPlay2" parameterType="InsVO">
+	UPDATE produce_instruct
+	SET instruct_progress_code = 'A0107'
 	WHERE instruct_no = #{instructNo}
 </update>
 </mapper>
