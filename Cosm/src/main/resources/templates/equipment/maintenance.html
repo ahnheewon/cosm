@@ -53,9 +53,9 @@
 								            <div class="header">
 								         	<button type="button" class="btn btn-dark btn-sm margin5"
 								         		data-bs-toggle="modal" data-bs-target="#myModal1">등록</button>
-								         		<input type="radio" class="radio0" name="tStatus0" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD;">전체ㅤ
-												<input type="radio" class="radio0" name="tStatus0" value="미완료" onclick="completeChk()" style="accent-color : #0000CD;">미완료ㅤ
-												<input type="radio" class="radio0" name="tStatus0" value="완료" onclick="completeChk()" style="accent-color :#0000CD;">완료
+								         		<input type="radio" name="tStatus0" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD;">전체ㅤ
+												<input type="radio" name="tStatus0" value="미완료" onclick="completeChk()" style="accent-color : #0000CD;">미완료ㅤ
+												<input type="radio" name="tStatus0" value="완료" onclick="completeChk()" style="accent-color :#0000CD;">완료
 											     <input onkeyup="filter()" style="float:right;" type="text" 
 											     id="value" placeholder="Type to Search">
 											 </div>
@@ -106,6 +106,9 @@
 							              <div class="header">
 							         	  <button type="button" class="btn btn-dark btn-sm margin5"
 							         	  data-bs-toggle="modal" data-bs-target="#myModal5">등록</button>
+										     <input type="radio" class="radio4" name="tStatus2" checked="checked" onclick="completeChk3()" value="전체" style="accent-color :#0000CD;">전체ㅤ
+											 <input type="radio" class="radio4" name="tStatus2" value="미승인" onclick="completeChk3()" style="accent-color : #0000CD;">미승인ㅤ
+											 <input type="radio" class="radio4" name="tStatus2" value="승인완료" onclick="completeChk3()" style="accent-color :#0000CD;">승인완료	     
 										     <input onkeyup="filter()" style="float:right;" 
 										     type="text" id="value" placeholder="Type to Search">
 										  </div>
@@ -173,7 +176,7 @@
                     <tr>
                         <td>점검내용</td>
                         <td><textarea class="form-control " id="testContent" name="testContent" rows="5" readonly="readonly"
-                        	onkeydown="resize(this)" style="height :48px;">점검 후 기입 예정</textarea></td>
+                        	onkeydown="resize(this)" style="color:gray; height :48px;">점검 후 기입 예정</textarea></td>
                     </tr> 
  				
                	 	</table>
@@ -201,10 +204,10 @@
 					<h4 class="modal-title"><span id="whatEno"></span>점검 정보</h4>
 					<button type="button" onclick="cancelUpdateTest()" class="btn-close" data-bs-dismiss="modal"></button>
 					</div>
-		
-				<form id="updateForm1" class="updateForm" method="post" name="equip">
-				<!-- <sec:csrfInput/> -->
-				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					
+				<form id="updateForm1" class="updateForm" method="post" name="test">
+					<!-- <sec:csrfInput/> -->
+					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 					
 					<!-- Modal body -->
 					<div id="testInfo" class="modal-body">
@@ -219,7 +222,7 @@
 		                    <td>점검예정일</td>
 		                        <td>
 		                        	<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-				                    <input id="tv-start-input" class="wantUpdate1" type="text" name="sTestDueDate" 
+				                    <input id="tv-start-input" type="text" name="testDueDate" 
 				                    	aria-label="Date" style="background-color :#E9ECEF;" readonly>
 				                    <span class="tui-ico-date"></span>
 				                    <div id="tv-start-container" style="margin-left: -1px;"></div>				                   
@@ -229,12 +232,12 @@
 		                     <tr>
 		                        <td>점검이유</td>
 		                        <td><input class="form-control" id="sTestReason" name="testReason" onkeydown="resize(this)" 
-		                       	 	style="height :48px;" autocomplete="off" type="text" readonly></td>
+		                       	 	 autocomplete="off" type="text" readonly></td>
 		                     </tr>
 		                     <tr>
 		                        <td>점검내용</td> <!-- 특이사항 -->
-		                        <td><textarea class="form-control wantUpdate1 " id="sTestContent" name="testContent"  onkeydown="resize(this)" 
-		                        	style="color:gray; height :48px;" autocomplete="off" rows="5" readonly="readonly">점검 후 기입 예정</textarea></td>
+		                        <td><textarea class="form-control wantUpdate1" id="sTestContent" name="testContent" onkeydown="resize(this)" 
+		                        	autocomplete="off" rows="5" readonly="readonly"></textarea></td>
                         	</tr>                  
 		                     <tr>
 		                        <td>진행상황</td> <!-- 특이사항 -->
@@ -249,10 +252,14 @@
 						<!-- Modal footer -->
 						<div class="modal-footer">
 							<input id="update"type="hidden" >
-							<button type="button"  class="btn btn-primary updateBtn1" onclick="updateTBtnClick()">수정</button>
-							<input type="hidden" id="thisNoUD" name="equipNo"> <!-- 업데이트, 삭제 때문에 가져온 설비번호 값. -->
-							<button type="button" onclick="deleteEquip()" class="btn btn-primary">삭제</button>
+							<button type="button" id="testUbtn" class="btn btn-primary updateBtn1" onclick="updateTBtnClick()">수정</button>					
+							<button type="button" id="testDbtn" onclick="deleteTest()" class="btn btn-primary">삭제</button>
 							<button type="button"  onclick="cancelUpdateTest()"  class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+							
+							<input type="hidden" id="thisNoUD" name="testNo"> <!-- 업데이트, 삭제 때문에 가져온 점검번호 값. -->
+							<input type="hidden" id="thisYnUD" name="testYn"> <!-- 업데이트, 삭제 때문에 가져온 점검유무 값. -->
+							<input type="hidden" id="thisCdUD" name="testCode"> <!-- 업데이트, 삭제 때문에 가져온 점검코드 값. -->
+							<input type="hidden" id="thisCdNmUD" name="testCodeName"> <!-- 업데이트, 삭제 때문에 가져온 점검코드 값. -->
 						</div>
 				</form>
 		
@@ -415,7 +422,7 @@
 							<td>설비사원</td>
 							<td>설비팀장</td>
 							<td>생산팀장</td>
-							<td>공장장님</td>
+							<td>총괄팀장</td>
 						</tr>
 						<tr class="emp">
 							<td><img src="/equipmentCss/홍길동인.PNG"></td> <!-- 본인 도장 사진으로 대체 -->
@@ -613,6 +620,7 @@
 /* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */
 /* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */	
 
+
 /* 숫자만 적으세요 그리고 음수는 안돼요 함수 미사용중 */
 
 function plzNum(){
@@ -702,7 +710,7 @@ function test (id){
 			    },
 			    {
 			        header: '진행상황',
-			        name: 'testCode'
+			        name: 'testCodeName'
 			        ,align : 'center'
 			    }
 			    ]
@@ -736,6 +744,7 @@ const ts = document.querySelector('input[name="tStatus0"]:checked').value
 	    
 		})
 	}else if (ts =='미완료'){
+		
 /* 점검 미완료 리스트 불러오는 아작스 */
  		//testGrid.clear();
  		
@@ -749,7 +758,8 @@ const ts = document.querySelector('input[name="tStatus0"]:checked').value
 	    
 		})
 		
-	}else if (ts=='완료'){	
+	}else if (ts=='완료'){
+		
 /* 점검 완료 리스트 불러오는 아작스 */
 		//testGrid.clear();
 		
@@ -775,13 +785,58 @@ const ts = document.querySelector('input[name="tStatus0"]:checked').value
 		    .then(res=>res.json())
 		    .then(obj=>{
 		        console.log(obj);
-		        console.log(obj.testDueDate);
-		        console.log(obj.testEquipName);
+		        
 				document.querySelector('#sTestEquipName').value=obj.testEquipName;
+				document.querySelector('#thisNoUD').value=obj.testNo;
+				document.querySelector('#thisYnUD').value=obj.testYn;	
+				document.querySelector('#thisCdNmUD').value=obj.codeName;
+				let tCode = document.querySelector('#thisCdUD').value;
+					  tCode = obj.testCode;
+					  
 				document.querySelector('#tv-start-input').value=obj.testDueDate;
 		        document.querySelector('#sTestReason').value=obj.testReason; 
-		       		       
-		    })
+		        
+		        let tContent= document.querySelector('#sTestContent'); 
+		        	
+		        if(obj.testContent != null && tContent.value != '')
+		        	tContent.value = obj.testContent;	        		
+		        	
+				const radio = document.getElementsByClassName('radio2');
+			    const btn1 = document.querySelector('#testUbtn'); // 수정버튼
+			    const btn2 = document.querySelector('#testDbtn'); // 삭제버튼
+
+			    
+			    if(tContent != '점검 후 기입 예정') {
+			    
+					if(tCode=='A0103'){ // 조회한 글이 완료상태라면
+						
+							tContent.value = obj.testContent;
+							btn1.style.visibility= 'hidden';
+							btn2.style.visibility= 'hidden';
+							
+							for (var i = 0; i< radio.length; i++) {
+									radio[i].checked=false; //체크되어있는 항목 모두 해제		
+					        	}
+									radio[3].checked = true;
+								
+					} else { // 조회한 글이 미완료라면
+						
+							btn1.style.visibility= 'visible';
+							btn2.style.visibility= 'visible';
+							
+								if(tContent.value != '점검 후 기입 예정'){ //그런데 수정도 한 번 했다면
+									tContent.value = obj.testContent;
+									for (var i = 0; i< radio.length; i++)
+									radio[i].checked=false;		
+						        	
+									if(tCode=='A0101') radio[0].checked=true;
+									else if (tCode=='A0102') radio[1].checked=true;
+									else if (tCode=='A0106') radio[2].checked=true;
+							
+						}
+					}
+			  }	       
+		  })
 	    
 		}
 
@@ -815,26 +870,26 @@ const ts = document.querySelector('input[name="tStatus0"]:checked').value
 			function updateTBtnClick() {
 				
 				console.log("점검 수정 버튼 클릭");
+				
 				const wu = document.getElementsByClassName('wantUpdate1');	 // 점검1 고장2 공사3
-				for (var i = 0; i< wu.length; i++) {
-		            wu[i].readOnly = false;
-		            wu[i].required = true;
-		        }
-		        
-				const tContent= document.querySelector('#sTestContent');
-						
-				if(tContent.value=='점검 후 기입 예정'){
-							tContent.innerText=''; // 기존의 예시내용 제거
-						}
-					tContent.style.color='black'; // 새로작성할 점검내역 글씨색 검정색
-
+			    const tCode = document.querySelector('.radio2:checked');
 				const radio = document.getElementsByClassName('radio2');	// 배열
-					console.log(radio);
+				const tContent= document.querySelector('#sTestContent');
+				
+					for (var i = 0; i< wu.length; i++) {
+			            wu[i].readOnly = false;
+			            wu[i].required = true;
+			        }
+			        
+				if(tCode.value == '' || tCode.value != '점검완료'){
+					
+					tContent.style.color='black'; // 새로작성할 점검내역 글씨색 검정색
 					
 					for (var i = 0; i< radio.length; i++) {
 						radio[i].removeAttribute("onclick"); // 온클릭 false 해제 => 선택가능
 						radio[i].style.accentColor='#0000CD';
 			        }
+				}
 				/// datepicker
 				
 				
@@ -857,16 +912,14 @@ const ts = document.querySelector('input[name="tStatus0"]:checked').value
 				    });*/
 				
 				
-				const tCode = document.querySelector('input[name="tCode"]:checked').value;
 				console.log(tCode);
 				const btn = document.querySelector('.updateBtn1')
 				btn.innerHTML='저장';
 				
-				
-	
+				btn.removeAttribute("onclick"); // 기존 onclick 제거.
+				btn.removeEventListener('click',updateTBtnClick);
 				
 				btn.addEventListener('click',updateTest);
-				
 				
 	
 			}
@@ -875,23 +928,28 @@ const ts = document.querySelector('input[name="tStatus0"]:checked').value
 			
 		function updateTest() {
 	
-				const url1="/equipment/updateTest1";
-				const url2="/equipment/updateTest2";
+				const url1="/equipment/updateTest1"; //1이 완료
+				const url2="/equipment/updateTest2"; //2가 진행중
 				const data = new FormData(document.getElementById('updateForm1'));
 				const wu = document.getElementsByClassName('wantUpdate1');
 			    const btn = document.querySelector('.updateBtn1');
-			    const tCode = document.querySelector('input[name="tCode"]:checked');
-			    const radio = document.getElementsByClassName('radio2');	
+			    const radio = document.getElementsByClassName('radio2');
+			    const tContent= document.querySelector('#sTestContent');
+			    const tCdNm= document.querySelector('#thisCdNmUD');
+			 	
+			    // DB에 보낼 코드 값
+			    let tCode = document.querySelector('.radio2:checked'); // 점검 체크한 값.
+			    	tCdNm.value = tCode.value; // 변수에 값을 담기.
 			    	
-
+				let tcon = tContent.value;
+			    	
 				if(tCode.value == '점검완료'){
-						
+						console.log(tcon);
 						if(confirm('점검완료 처리하시겠습니까? 수정이 불가능 합니다.')){
 								// 네 -> 점검 완료 수정불가 상태
 								//최종점검완료 아작스 
 								console.log("최종수정 아작스 전송");
 								
-								tCode.setAttribute('name','testCode'); // DB에 보낼 라디오 name값
 								
 								 fetch(url1, {method: 'POST', body : data})
 								    .then(res=>res.json())
@@ -920,38 +978,44 @@ const ts = document.querySelector('input[name="tStatus0"]:checked').value
 									
 										radio[i].checked=false; //체크되어있는 항목 모두 해제		
 						        	}
-								
+									
 										radio[3].checked = true; // 그대로 점검완료에 checked
+										tContent.value = tcon;
 								}
 					
 				} else { // 아니오
-							 //단순 수정아작스 	
+						 // 단순 수정 아작스
+					
+						console.log("단순 수정 아작스 전송");
+						console.log(tCdNm.value);
 						
-						console.log("단순수정 아작스 전송");
-						tCode.setAttribute('name','testCode'); // DB에 보낼 라디오 name값
-						 fetch(url2, {method: 'POST', body : data})
+						fetch(url2, {method: 'POST', body : data})
 						    .then(res=>res.json())
 						    .then(obj=>{
 						        console.log(obj);
+						        console.log(obj.tCode);
+						        console.log(obj.testContent);
+						        console.log(obj.testCodeName);
 						        
-						        // 업데이트 하고자 하는 애들 닫아주기
+						        // 업데이트 하고자 하는 애들 다시 닫아주기
 							 	for (var i = 0; i< wu.length; i++) {
 							 		
 						            wu[i].readOnly =true;
 						            wu[i].required = false;
     
 						        }
-							 // wu[0].style.backgroundColor='#E9ECEF';
 							 
 								btn.innerText='수정';
 								btn.removeEventListener('click',updateTest);
-								btn.setAttribute('onclick','updateTBtnClick()');
+								btn.addEventListener('click',updateTBtnClick);
 								
 								for (var i = 0; i< radio.length; i++) {		
 									radio[i].setAttribute('name','tCode'); // 모든 radio 네임값 초기화
 						        }
 								
-							  	alert('수정완료!');					
+							  	alert('수정완료!');
+							  	
+							  	btn.addEventListener('click',updateTest);
 							  	location.reload(true);// 새로고침
 					 
 						    
@@ -971,35 +1035,38 @@ const ts = document.querySelector('input[name="tStatus0"]:checked').value
 				console.log("수정 취소버튼 클릭");
 				
 				const wu = document.getElementsByClassName('wantUpdate1');
+			    const tCode = document.querySelector('.radio2:checked'); // 체크한 값.
 				const btn = document.querySelector('.updateBtn1');
 				const tContent= document.querySelector('#sTestContent');
-				
-					for (var i = 0; i< wu.length; i++) {
-			            wu[i].readOnly =true;
-			            wu[i].required = false;
-			        }
-					 	wu[0].style.backgroundColor='#E9ECEF';
-					 
- 	
-					tContent.style.color='gray';
-					tContent.value='점검 후 기입예정'; // textArea는 value를 써야하구나 
 					
-					const radio = document.getElementsByClassName('radio2');
-						// 배열
-					for (var i = 0; i< radio.length; i++) {
-						
-							radio[i].setAttribute("onclick","return false"); // 온클릭 false 해제 => 선택가능
-							radio[i].style.accentColor='gray';	   
-							radio[i].checked=false; //체크되어있는 항목 모두 해제		
-				        }
-						
-					radio[0].checked = true; // 첫 번째만 checked
 					
-					btn.innerText='수정';
-					btn.removeEventListener('click',updateTest);
-				
-			}
-			
+						 	
+						 if(tContent.value == '' || tCode!='점검완료'){ // 수정 아예 안했거나 완료가 아니라면.
+						
+							for (var i = 0; i< wu.length; i++) {
+					            wu[i].readOnly =true;
+					            wu[i].required = false;
+					        }
+							 	wu[0].style.backgroundColor='#E9ECEF';
+							 	
+							const radio = document.getElementsByClassName('radio2');
+								// 배열
+							for (var i = 0; i< radio.length; i++) {
+								
+									radio[i].setAttribute("onclick","return false"); // 온클릭 false 해제 => 선택가능
+									radio[i].style.accentColor='gray';	   
+									//radio[i].checked=false; //체크되어있는 항목 모두 해제		
+						        }
+							 if(tContent.value == ''){ //점검을 아예 건들지도 않았다면..
+							 	radio[0].checked = true; // 첫 번째만 checked
+							 }
+							btn.innerText='수정';
+							btn.removeEventListener('click',updateTest);
+							btn.addEventListener('click',updateTBtnClick);
+					}
+				}
+
+		
 
 	
 
@@ -1279,13 +1346,14 @@ function getWorkNo(workNo,workEquipNo) {
 	// 조회할 때는 picker 또 만들 필요 없습니다!!! => 등록할 때만 
 	 	
 		const today = new Date();
-		const afterWeek = new Date(today.setDate(today.getDate() + 7));
+		//const afterWeek = new Date(today.setDate(today.getDate() + 7));
+		//시연할 때 제대로 못보여줄 듯...
 	    
-		// 변수에 담아서 넣어야 데이터가 보입니다.. ㅅㅂ
+		// 변수에 담아서 넣어야 데이터가 보입니다.. 수박
 		
 		let testPicker = new tui.DatePicker('#t-start-container', {
 	    	language: 'ko',
-	    		date :afterWeek,
+	    		date :today,
 	            input: {
 	                element: '#t-start-input',
 	                format: 'yyyy-MM-dd HH:mm A'
@@ -1295,7 +1363,7 @@ function getWorkNo(workNo,workEquipNo) {
 	                inputType: 'spinbox'
 	          },
 	   			selectableRanges: [
-                [afterWeek, new Date(2999, 11,31)]
+                [today, new Date(2999, 11,31)]
             ],
 	    });
 	
@@ -1356,6 +1424,9 @@ function getWorkNo(workNo,workEquipNo) {
 		    }); 
  
  
+let TC = document.querySelector('#sTestContent');
+TC.style.height = '8'+`${TC.scrollHeight}`+'px';
+
 
     
 

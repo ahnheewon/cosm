@@ -86,7 +86,8 @@ public interface EquipService {
 				public int insertTest(EquipVO vo);
 							
 				// 수정
-				public int updateTest(EquipVO vo);
+				public int updateTestComplete(EquipVO vo);
+				public int updateTestIncomplete(EquipVO vo);
 				
 				// 삭제
 				public int deleteTest(@Param("testNo")int testNo); 
