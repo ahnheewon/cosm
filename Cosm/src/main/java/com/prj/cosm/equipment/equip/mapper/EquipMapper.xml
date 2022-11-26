@@ -185,6 +185,28 @@
 		ORDER BY test_no DESC
 	</select>
 	
+	<!-- 완료 안된 점검 리스트 조회 -->
+	<select id="getIncompleteTestList" resultType="equipVO">
+		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
+				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
+				,(select code_name from code where code_no = t.test_code ) AS test_code_name
+		FROM equip e, test t
+		where e.equip_no = t.test_equip_no 
+		AND test_code!='A0103'
+		ORDER BY TEST_NO DESC
+	</select>
+	
+	<!-- 완료된 점검 리스트 조회 -->
+	<select id="getCompleteTestList" resultType="equipVO">
+		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
+				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
+				,(select code_name from code where code_no = t.test_code ) AS test_code_name
+		FROM equip e, test t
+		where e.equip_no = t.test_equip_no 
+		AND test_yn='Y'
+		ORDER BY TEST_NO DESC
+	</select>
+	
 	<!-- 점검 단건 조회-->
 	<select id="getTestInfo" parameterType="Integer" resultType="equipVO">
 		SELECT test_no,(select equip_name from equip where equip_no=#{testEquipNo}) AS test_equip_name
@@ -234,8 +256,8 @@
 	<update id="updateTestIncomplete" parameterType="equipVO">
 	UPDATE TEST
 		<set>
-		<if test="codeName !=null and !codeName.equals('')">
-		test_code = (select code_no from code where code_name= #{tCode}),
+		<if test="testCodeName !=null and !testCodeName.equals('')">
+		test_code = (select code_no from code where code_name= #{testCodeName}),
 		</if>
 		test_content = #{testContent}
 		</set>
@@ -258,37 +280,39 @@
 		FROM TEST
 	</select>
 	
-	<!-- 완료 안된 점검 리스트 조회 -->
-	<select id="getIncompleteTestList" resultType="equipVO">
-		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
-				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
-				,(select code_name from code where code_no = t.test_code ) AS test_code_name
-		FROM equip e, test t
-		where e.equip_no = t.test_equip_no 
-		AND test_code!='A0103'
-		ORDER BY TEST_NO DESC
-	</select>
 	
-	<!-- 완료된 점검 리스트 조회 -->
-	<select id="getCompleteTestList" resultType="equipVO">
-		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
-				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
-				,(select code_name from code where code_no = t.test_code ) AS test_code_name
-		FROM equip e, test t
-		where e.equip_no = t.test_equip_no 
-		AND test_yn='Y'
-		ORDER BY TEST_NO DESC
-	</select>
 	
 <!-- ############################################################################################  -->
 																					<!-- 고장  -->
-	<!-- 고장 리스트 -->
+	<!-- 전체 고장 리스트 -->
 	<select id="getFailList" resultType="equipVO">
 		SELECT f.fail_no, f.fail_equip_no, e.equip_name as fail_equip_name
 				,f.fail_date, f.fail_content, f.fail_repair_yn
 				,(select code_name from code where code_no = f.fail_code) as fail_code
 		FROM equip e, FAIL f
 		where e.equip_no = f.fail_equip_no 
+		ORDER BY fail_no DESC
+	</select>
+	
+	<!-- 수리 안된 고장 리스트 조회 -->
+	<select id="getIncompleteFailList" resultType="equipVO">
+		SELECT f.fail_no, f.fail_equip_no, e.equip_name as fail_equip_name
+				,f.fail_date, f.fail_content, f.fail_repair_yn
+				,(select code_name from code where code_no = f.fail_code) as fail_code
+		FROM equip e, FAIL f
+		where e.equip_no = f.fail_equip_no
+		and f.fail_repair_yn = 'N'
+		ORDER BY fail_no DESC
+	</select>
+	
+	<!-- 수리 완료된 고장 리스트 조회 -->
+	<select id="getCompleteFailList" resultType="equipVO">
+		SELECT f.fail_no, f.fail_equip_no, e.equip_name as fail_equip_name
+				,f.fail_date, f.fail_content, f.fail_repair_yn
+				,(select code_name from code where code_no = f.fail_code) as fail_code
+		FROM equip e, FAIL f
+		where e.equip_no = f.fail_equip_no
+		and f.fail_repair_yn = 'Y'
 		ORDER BY fail_no DESC
 	</select>
 	

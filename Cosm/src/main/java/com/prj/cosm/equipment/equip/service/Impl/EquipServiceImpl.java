@@ -181,6 +181,14 @@ public class EquipServiceImpl implements EquipService {
 	public List<EquipVO> getFailList() {
 		return mapper.getFailList();
 	}
+		@Override
+		public List<EquipVO> getIncompleteFailList() {
+			return mapper.getIncompleteFailList();
+		}
+		@Override
+		public List<EquipVO> getCompleteFailList() {
+			return mapper.getCompleteFailList();
+		}
 
 	@Override
 	public EquipVO getFailInfo(int failNo, int failEquipNo) {
