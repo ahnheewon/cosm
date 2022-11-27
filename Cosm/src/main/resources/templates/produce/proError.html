@@ -59,6 +59,7 @@
 				for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
 					if(i!=`${ev.rowKey}`){
 						grid.uncheck(i);
+						$('#updatebtn').prop('disabled', false);
 					}
 				}
 				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
@@ -80,7 +81,9 @@
 				
 			grid.on('uncheck', (ev) => {
 				$('input:text').val('');
+				$('#updatebtn').prop('disabled', true);
 			});
+			$('#updatebtn').prop('disabled', true);
 				
 			grid2.on('uncheck', (ev) => {
 				$('input:text').val('');
@@ -145,7 +148,13 @@
 				},
 				{
 					header: '진행상황',
-					name: 'INSTRUCT_PROGRESS_CODE'
+					name: 'INSTRUCT_PROGRESS_CODE',
+					renderer : {
+						styles: {
+								 fontWeight: 'bold',
+								 color: (props) => props.value == '진행중' ? '#009900' : 'red'
+							}
+					},
 				},	
 				{
 					header: '기타사항',
@@ -205,7 +214,13 @@
 				},
 				{
 					header: '진행상황',
-					name: 'INSTRUCT_PROGRESS_CODE'
+					name: 'INSTRUCT_PROGRESS_CODE',
+					renderer : {
+						styles: {
+								 fontWeight: 'bold',
+								 color: (props) => props.value == '진행중' ? '#009900' : 'blue'
+							}
+					},
 				},	
 				{
 					header: '기타사항',

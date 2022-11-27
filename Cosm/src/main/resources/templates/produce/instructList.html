@@ -291,6 +291,7 @@
 				for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
 					if(i!=`${ev.rowKey}`){
 						grid.uncheck(i);
+						$('#selectBtn').prop('disabled', false);
 					}
 				}
 				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
@@ -309,6 +310,8 @@
 				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
 					if(i!=`${ev.rowKey}`){
 						grid2.uncheck(i);
+						$('#updateBtn').prop('disabled', false);
+						$('#delbtn').prop('disabled', false);
 					}
 				}
 			});
@@ -316,11 +319,17 @@
 				
 			grid.on('uncheck', (ev) => {
 				$('input:text').val('');
+				$('#selectBtn').prop('disabled', true);
 			});
+			$('#selectBtn').prop('disabled', true);
 				
 			grid2.on('uncheck', (ev) => {
 				$('input:text').val('');
+				$('#updateBtn').prop('disabled', true);
+				$('#delbtn').prop('disabled', true);
 			});
+			$('#updateBtn').prop('disabled', true);
+			$('#delbtn').prop('disabled', true);
 		
 				
 			$('#grid span').remove();
@@ -328,7 +337,9 @@
 		
 		
 		};
-	
+		
+		
+		
 		// 생산계획 리스트 그리드
 		var grid = new tui.Grid({
 			el: document.getElementById('grid'),
@@ -381,6 +392,12 @@
 				{
 					header: '진행상황',
 					name: 'planPlayCode',
+					renderer : {
+						styles: {
+								 fontWeight: 'bold',
+								 color: (props) => props.value == '미완료' ? 'red' : 'blue'
+							}
+					},
 				},	
 				{
 					header: '기타사항',
@@ -433,7 +450,13 @@
 				},
 				{
 					header: '진행상황',
-					name: 'INSTRUCT_PROGRESS_CODE'
+					name: 'INSTRUCT_PROGRESS_CODE',
+					renderer : {
+						styles: {
+								 fontWeight: 'bold',
+								 color: (props) => props.value == '진행중' ? '#009900' : 'red'
+							}
+					},
 				},	
 				]
 			});
@@ -445,46 +468,55 @@
 			bodyHeight: 300,
 			pageOptions: {
 				useClient: true, // front에서만 페이징 하는 속성
-				perPage: 10
+				perPage: 7
 			},
 			scrollX: false,
 			scrollY: false,
 			columns: [
 				{
 					header: '생산지시번호',
-					name: 'INSTRUCTNO'
+					name: 'INSTRUCTNO',
+					align : 'center'
 				},
 				{
 					header: '생산계획번호',
-					name: 'PLANNO'
+					name: 'PLANNO',
+					align : 'center'
 				},
 				{
 					header: '생산최종지시량',
-					name: 'INSTRUCTQUANTITY'
+					name: 'INSTRUCTQUANTITY',
+					align : 'center'
 				},
 				{
 					header: '제품번호',
-					name: 'PLANPRODUCTNO'
+					name: 'PLANPRODUCTNO',
+					align : 'center'
 				},
 				{
 					header: '제품명',
-					name: 'GOODSNAME'
+					name: 'GOODSNAME',
+					align : 'center'
+					
 				},
 				{
-					header: '시작일자(desc)',
+					header: '시작일자',
 					name: 'PLANSTART',
 					sortingType: 'desc',
-					sortable: true
+					sortable: true,
+					align : 'center'
 				},
 				{
-					header: '종료일자(desc)',
+					header: '종료일자',
 					name: 'PLANEND',
 					sortingType: 'desc',
-					sortable: true
+					sortable: true,
+					align : 'center'
 				},
 				{
-					header: '지시일자(desc)',
+					header: '지시일자',
 					name: 'INSTRUCTDATE',
+					align : 'center',
 					sortingType: 'desc',
 					sortable: true,
 					formatter: function(e){
@@ -494,11 +526,21 @@
 				},
 				{
 					header: '진행상황',
-					name: 'INSTRUCT_PROGRESS_CODE'
+					name: 'INSTRUCT_PROGRESS_CODE',
+					align : 'center',
+					sortingType: 'desc',
+					sortable: true,
+					renderer : {
+					 	styles: {
+							fontWeight: 'bold',
+							color: (props) => props.value == '진행중' ? '#009900' :  props.value == '완료' ? 'blue' : 'black'
+						}
+					},
 				},	
 				{
 					header: '기타사항',
-					name: 'INSTRUCTEX'
+					name: 'INSTRUCTEX',
+					align : 'center'
 				},	
 				]
 			});

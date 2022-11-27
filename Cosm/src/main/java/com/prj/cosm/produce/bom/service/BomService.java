@@ -2,6 +2,8 @@ package com.prj.cosm.produce.bom.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface BomService {
 
 	//전체조회
@@ -24,4 +26,7 @@ public interface BomService {
 	
 	//제품번호 리스트
 	public List<BomVO> getGoodsNoList();
+	
+	//bom생산계획에 쓸 단건 조회
+	public BomVO getBomInfo(@Param("goodsNo")String goodsNo);
 }

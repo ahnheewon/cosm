@@ -31,4 +31,15 @@ public class PlanVO {
 	private String goodsContents;
 	private String goodsCheck;
 	private String goodsDate;
+	
+	//주문
+	private String orderNo;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date orderDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date deliveryDate;
+	private int totalNum;
+	private String note;
+	private String codeName;
+	private String orderProgressCode;
 }

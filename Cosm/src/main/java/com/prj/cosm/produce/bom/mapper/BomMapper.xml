@@ -14,6 +14,21 @@
     ORDER BY bom_no DESC
 </select>
 
+<!-- 제품번호의 bom조회 -->
+<select id="getBomInfo" resultType="BomVO">
+	SELECT b.bom_no, b.bom_quantity, m.m_name, m.m_info, m.m_stock, p.goods_name, 
+		   p.goods_standard, p.goods_contents, b.bom_product_no, b.bom_material_no,
+		   b.bom_quantityb, b.bom_material_nob
+	FROM produce_bom b JOIN produce_goods p
+                    	ON b.bom_product_no = p.goods_no
+                   	   JOIN material m
+                    	ON b.bom_material_no = m.m_no
+    WHERE goods_no = #{goodsNo}
+</select>
+
+
+
+
 <!-- bom번호 -->
 <select id="getBomNo" resultType="BomVO">
 	SELECT 'BOM_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(bom_no,-4)),0)+1,4,0) as bom_no

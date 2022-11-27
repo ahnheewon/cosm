@@ -57,4 +57,10 @@ public class BomServiceImpl implements BomService {
 		return mapper.getGoodsNoList();
 	}
 
+	@Override
+	public BomVO getBomInfo(String goodsNo) {
+		// TODO Auto-generated method stub
+		return mapper.getBomInfo(goodsNo);
+	}
+
 }

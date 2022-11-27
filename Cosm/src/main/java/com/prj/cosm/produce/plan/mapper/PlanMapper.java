@@ -36,4 +36,9 @@ public interface PlanMapper {
 		
 		//생산계획 미완료된것만 보이기
 		public List<PlanVO> completePlanList();
+		
+		//주문서 전체조회
+		public List<PlanVO> selectOrderList();
+		
+		
 }
