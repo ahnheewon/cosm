@@ -543,7 +543,7 @@
 
 			if (`[[${session.usersAuthor}]]` != null) {
 				getAlertList();
-				//setInterval(getAlertList, 1000);
+				setInterval(getAlertList, 1000);
 			}
 
 			function getAlertList() {
@@ -558,6 +558,7 @@
 						xhr.setRequestHeader(header, token);
 					},
 					success: function (data) {
+						console.log(data);
 							$('#alertTable').empty();
 						if (data.length == 0) {
 							$('#alertTable')

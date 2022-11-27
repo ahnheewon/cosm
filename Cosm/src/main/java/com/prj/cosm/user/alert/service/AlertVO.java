@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 public class AlertVO {
-	private String alertNo;
+	private int alertNo;
 	private String alertSend;
 	private String alertReceive;
 	private String alertContent;
