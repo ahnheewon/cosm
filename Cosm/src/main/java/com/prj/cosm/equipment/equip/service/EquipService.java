@@ -45,6 +45,8 @@ public interface EquipService {
 				// 이용중인 공정 번호 조회
 				public List<EquipVO> getEquipProcess();
 				
+				public void doWork(int quan);
+				
 //===================================================================================================
 	// 공정 
 	
