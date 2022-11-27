@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.method.annotation.RedirectAttributesMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.produce.bom.service.BomService;
 import com.prj.cosm.produce.bom.service.BomVO;
 import com.prj.cosm.produce.goods.service.GoodsService;
@@ -41,6 +41,8 @@ public class ProduceController {
 
 	@Autowired
 	GoodsService goodsService;
+	@Autowired
+	EquipService equipService;
 
 	// =============================생산관리=======================
 	// 생산계획 list에 ajax주는 것
@@ -138,6 +140,7 @@ public class ProduceController {
 	@PostMapping("insInsert")
 	public String insertInsInfo(InsVO insVO) {
 		insService.insertInsInfo(insVO);
+		equipService.doWork(insVO.getInstructQuantity());
 		return "redirect:instructList";
 	}
 
@@ -332,8 +335,6 @@ public class ProduceController {
 	public List<Map<String, Object>> completedList() {
 		return registService.completeList();
 	}
-	
-	
 
 	// ===========================================================
 }
