@@ -107,6 +107,13 @@ public interface EquipService {
 				// 전체조회
 				public List<EquipVO> getFailList();
 				
+					// 미완조회
+					public List<EquipVO> getIncompleteFailList();
+					
+					// 완료조회
+					public List<EquipVO> getCompleteFailList();
+		
+				
 				// 단건조회
 				public EquipVO getFailInfo(@Param("failNo")int failNo, @Param("failEquipNo")int failEquipNo);
 

@@ -43,8 +43,6 @@
 	fill: red;
 }
 
-
-
 .pipeOn {
 	stroke: red;
 	animation-iteration-count: infinite;
@@ -58,6 +56,7 @@
   50% {stroke : hotpink;}
   100%{stroke: red;}
 }
+
 .pipeOff {
 	stroke: black;
 }
@@ -69,7 +68,24 @@
  	border:1px solid #ced4da;
  	
  }
+ 
  .emp {
  border-collapse: separate;
  	border-radius: 5px;
  }
+ 
+  textarea {
+    width: 100%;
+    height: 6.25em;
+    border: none;
+    resize: none;
+ 
+  }
+
+body {
+	-webkit-user-select:none;
+  	-moz-user-select:none;
+  	-ms-user-select:none;
+  	user-select:none;	
+}
+

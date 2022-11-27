@@ -22,6 +22,7 @@ public class WorkVO {
 	private String workContent;
 	private String workCompany;
 	private Integer workPay;
+
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul") // date picker
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date workDate;
@@ -42,6 +43,8 @@ public class WorkVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date signDate;
 	private String signCode;
+	
+	private String position; // 직급 때문에 임시 변수추가
 	
 	// 공통코드
 	
