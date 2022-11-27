@@ -11,12 +11,17 @@ import org.springframework.stereotype.Service;
 import com.prj.cosm.equipment.equip.mapper.EquipMapper;
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
+import com.prj.cosm.user.alert.service.AlertService;
+import com.prj.cosm.user.alert.service.AlertVO;
 
 @Service
 public class EquipServiceImpl implements EquipService {
 
 	@Autowired
 	EquipMapper mapper;
+	
+	@Autowired
+	AlertService aService;
 //============================================================================================================================
 
 	// 설비
@@ -228,6 +233,13 @@ public class EquipServiceImpl implements EquipService {
 			mapper.stopWork(evo);
 			mapper.updateEquipTime(evo.getEquipNo());
 		}
+		
+		AlertVO aVO = new AlertVO();
+		
+		aVO.setAlertContent("생산이 완료되었습니다");
+		aVO.setAlertSend("D0101");
+		aVO.setAlertReceive("D0101");
+		aService.insertAlert(aVO);
 	}
 
 //===================================================================================================

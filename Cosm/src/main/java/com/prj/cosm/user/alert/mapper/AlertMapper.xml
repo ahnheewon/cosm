@@ -5,25 +5,32 @@
 <mapper namespace="com.prj.cosm.user.alert.mapper.AlertMapper">
 	<!-- 알림 전체조회 -->
 	<select id="getAlertList" resultType="AlertVO">
-	SELECT alert_no, users_id as alert_send, alert_content FROM alert a JOIN users u ON a.alert_send = u.users_no WHERE alert_receive = #{usersNo} AND a.code_no ='K0101' ORDER BY alert_no
+		SELECT alert_no, users_id as alert_send, alert_content FROM alert a JOIN
+		users u ON a.alert_send = u.users_no WHERE alert_receive = #{usersNo}
+		AND a.code_no ='K0101' ORDER BY alert_no
 	</select>
 
 	<!-- 알림 단건조회 -->
 	<select id="getAlert" resultType="AlertVO">
-	SELECT alert_no, users_id as alert_send, alert_content, alert_date FROM alert a JOIN users u ON a.alert_send = u.users_no WHERE alert_no = #{alertNo}
+		SELECT alert_no, users_id as alert_send, alert_content, alert_date FROM
+		alert a JOIN users u ON a.alert_send = u.users_no WHERE alert_no =
+		#{alertNo}
 	</select>
 
 	<!-- 알림 생성 -->
 	<insert id="insertAlert" parameterType="AlertVO">
-	<selectKey keyProperty="alertNo" resultType="Integer" order="BEFORE">
-	SELECT NVL(MAX(alert_no),0)+1 FROM alert
-	</selectKey>
-	INSERT INTO alert(ALERT_NO,ALERT_SEND,ALERT_RECEIVE,ALERT_CONTENT)
-	VALUES(#{alertNo},#{alertSend},#{alertReceive},#{alertContent})
+		<selectKey keyProperty="alertNo" resultType="Integer"
+			order="BEFORE">
+			SELECT NVL(MAX(alert_no),0)+1 FROM alert
+		</selectKey>
+		INSERT INTO alert(ALERT_NO,ALERT_SEND,ALERT_RECEIVE,ALERT_CONTENT)
+		VALUES(#{alertNo},(SELECT users_no FROM users WHERE users_author =
+		#{alertSend}),(SELECT users_no FROM users WHERE users_author =
+		#{alertReceive}),#{alertContent})
 	</insert>
-	
+
 	<update id="updateAlert" parameterType="AlertVO">
-	UPDATE alert SET code_no = 'K0102' WHERE alert_no = #{alertNo}
+		UPDATE alert SET code_no = 'K0102' WHERE alert_no = #{alertNo}
 	</update>
 
 </mapper>
