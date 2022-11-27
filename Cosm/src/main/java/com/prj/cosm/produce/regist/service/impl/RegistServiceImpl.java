@@ -59,9 +59,15 @@ public class RegistServiceImpl implements RegistService {
 	}
 
 	@Override
-	public List<Map<String, Object>> completeList() {
+	public List<Map<String, Object>> completeList(RegistVO vo) {
 		// TODO Auto-generated method stub
-		return mapper.completeList();
+		return mapper.completeList(vo);
+	}
+
+	@Override
+	public List<Map<String, Object>> errorList(RegistVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.errorList(vo);
 	}
 
 }

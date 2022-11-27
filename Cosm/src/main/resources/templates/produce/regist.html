@@ -58,9 +58,9 @@
 					id="instructNo" readonly="readonly">
 			</div>
 			<div class="col-md-4">
-				<label for="inputAddress2" class="form-label">자재번호</label> <input
-					type="text" name="instructMNo" class="form-control"
-					id="instructMNo" readonly="readonly">
+				<label for="inputAddress2" class="form-label">제품명</label> <input
+					type="text" name="goodsName" class="form-control"
+					id="goodsName" readonly="readonly">
 			</div>
 			
 			<div class="col-md-4">
@@ -141,19 +141,24 @@
 					grid2.uncheck(i);
 				}
 			}
-			const abc = $(grid2.getCheckedRows())[0].INSTRUCTMNO + $(grid2.getCheckedRows())[0].INSTRUCTMNOB
+			$('#registError').off();
 			//리스트에 있는 것 등록폼에 뿌려주기
 			$('#instructNo').val($(grid2.getCheckedRows())[0].INSTRUCTNO);
-			$('#instructMNo').val(abc);
 			$('#instructQuantity').val($(grid2.getCheckedRows())[0].INSTRUCTQUANTITY);
 			$('#planProductNo').val($(grid2.getCheckedRows())[0].PLANPRODUCTNO);
+			$('#goodsName').val($(grid2.getCheckedRows())[0].GOODSNAME);
 			var info = '[[${info.registLOT}]]';
 			$('#inputCity').val(info)
 			var label = '[[${label.registLabel}]]';
 			$('#bacodeLabel').val(label)
 			$('#registError').val(0)
-
+			$('#registError').on('keyup',function(){
+			$('#instructQuantity').val($(grid2.getCheckedRows())[0].INSTRUCTQUANTITY-$('#registError').val());
+			})
+			
+			
 		});
+		
 			
 		grid.on('uncheck', (ev) => {
 			$('input:text').val('');
@@ -165,6 +170,7 @@
 			
 		$('#grid span').remove();
 		$('#grid2 span').remove();
+		
 	};
 	
 	// 생산지시 리스트 그리드
@@ -184,10 +190,6 @@
 				name: 'INSTRUCTNO'
 			},
 			{
-				header: '생산계획번호',
-				name: 'PLANNO'
-			},
-			{
 				header: '생산최종지시량',
 				name: 'INSTRUCTQUANTITY'
 			},
@@ -200,35 +202,19 @@
 				name: 'GOODSNAME'
 			},
 			{
-				header: '시작일자(desc)',
+				header: '시작일자',
 				name: 'PLANSTART',
 				sortingType: 'desc',
 				sortable: true
 			},
 			{
-				header: '종료일자(desc)',
+				header: '종료일자',
 				name: 'PLANEND',
 				sortingType: 'desc',
 				sortable: true
 			},
 			{
-				header: '자재번호(1)',
-				name: 'INSTRUCTMNO'
-			},
-			{
-				header: '투입될 자재량(1)',
-				name: 'INSTRUCTMATERIALNUM'
-			},	
-			{
-				header: '자재번호(2)',
-				name: 'INSTRUCTMNOB'
-			},
-			{
-				header: '투입될 자재량(2)',
-				name: 'INSTRUCTMATERIALNUMB'
-			},	
-			{
-				header: '지시일자(desc)',
+				header: '지시일자',
 				name: 'INSTRUCTDATE',
 				sortingType: 'desc',
 				sortable: true
@@ -236,10 +222,6 @@
 			{
 				header: '진행상황',
 				name: 'INSTRUCT_PROGRESS_CODE'
-			},	
-			{
-				header: '기타사항',
-				name: 'INSTRUCTEX'
 			},	
 			]
 		});

@@ -9,7 +9,10 @@ public interface RegistService {
 	public List<Map<String, Object>> selectRegistList();
 	
 	//완제품 전체조회(모두)
-	public List<Map<String, Object>> completeList();
+	public List<Map<String, Object>> completeList(RegistVO vo);
+	
+	//불량품 조회
+	public List<Map<String, Object>> errorList(RegistVO vo);
 	
 	//LOT_NO
 	public RegistVO selectRegistLOT();

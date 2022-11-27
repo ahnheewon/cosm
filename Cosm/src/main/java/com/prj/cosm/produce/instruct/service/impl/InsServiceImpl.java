@@ -75,5 +75,11 @@ public class InsServiceImpl implements InsService {
 		return mapper.updateInsPlay2(InsVO);
 	}
 
+	@Override
+	public List<Map<String, Object>> allInsList(InsVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.allInsList(vo);
+	}
+
 
 }

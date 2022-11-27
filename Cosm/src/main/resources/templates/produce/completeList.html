@@ -18,49 +18,52 @@
 	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 
+<!--toast date-picker-->
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<script
+	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 </head>
 <body>
 	<div layout:fragment="content">
 		<hr style="width: 100%">
 		<h3 style="text-align: center">완제품 리스트</h3>
 		<br>
-<!-- 
-			<div align="center">
-				<div align="right">
-					<select id="empSearchType">
-						<option value="none">------
-					</select> <input type="text" id="empSearchContent" class="searchInput">
-					<button id="empFilter">검색</button>
-				</div>
-				<div id="grid"></div>
-			</div> -->
-		<input onkeyup="filter()" type="date" style="float: right" id="searchFilter">	
-		<label style="float: right; margin-right: 20px">날짜 검색</label>
+		
+		<div id="select_input">
+						<span>등록일자</span>
+						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
+							style="margin-left: -1px; z-index: 1100">
+							<input id="startpicker-input" type="text" aria-label="Date"
+								style="z-index: 1100"> <span class="tui-ico-date"></span>
+							<div id="startpicker-container"
+								style="margin-left: -1px; z-index: 1100"></div>
+						</div>
+						<span>~</span>
+						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
+							style="z-index: 1100">
+							<input id="endpicker-input" type="text" aria-label="Date"
+								style="margin-left: -1px; z-index: 1100"> <span
+								class="tui-ico-date"></span>
+							<div id="endpicker-container"
+								style="margin-left: -1px; z-index: 1100"></div>
+						</div>
+						<button type="button" class="btn btn-secondary" id="searchBtn">조회</button>
+						
+
+					</div>
+		
+		
+		
 			
 		<input onkeyup="filter2()" type="text" style="float: right" id="searchFilter2">	
 		<label style="float: right; margin-right: 20px">검수여부 검색</label>
 		<div id="grid"></div>
-
+		
 
 		<script>
 	
 	
-	function filter(){ // 토스트그리드 필터이용 검색함수
-
-		const search = document.getElementById("searchFilter") //인풋태그
-		      
-		const state = [{code: 'equals', value: search.value}];
-		
-		      if(search.value == ''){   
-		         
-		    	  grid.unfilter('REGIST_DATE');
-		      
-		      }else {
-		          
-		    	  grid.filter(('REGIST_DATE'), state);
-		      }
-		      
-		}
 	function filter2(){ // 토스트그리드 필터이용 검색함수
 
 		const search = document.getElementById("searchFilter2") //인풋태그
@@ -81,6 +84,7 @@
 	window.onload = function () {
 		//완제품리스트 가져오기
 		registList();
+		searchBtnHandler();
 	}
 	var grid = new tui.Grid({
 		el: document.getElementById('grid'),
@@ -164,30 +168,6 @@
 				}
 				grid.resetData(result);
 			
-				/* for (let i = 1; i < grid.gridEl._component.props.store.column.allColumns.length; i++) {
-					let option = $('<option>' + grid.gridEl._component.props.store.column.allColumns[i]
-						.header + '</option>').val(grid.gridEl._component.props.store.column.allColumns[i]
-						.name);
-					$('#empSearchType').append(option)
-				}
-				
-				$('#empSearchType').on('change', function () {
-					console.log($('#empSearchType').val());
-				})
-		
-				$('#empFilter').on('click', function () {
-					for (let i = 1; i < grid.gridEl._component.props.store.column.allColumns
-						.length; i++) {
-						grid.unfilter(grid.gridEl._component.props.store.column.allColumns[i].name);
-					}
-					if ($('#empSearchContent').val() != '') {
-						grid.filter($('#empSearchType').val(), [{
-							code: 'contain',
-							value: $('#empSearchContent').val()
-						}]);
-					}
-				}) */
-			
 			
 			
 			},
@@ -196,6 +176,61 @@
 			}
 		});
 	}
+	
+	let today = new Date();
+	let picker = new tui.DatePicker.createRangePicker({
+		startpicker : {
+			date : today,
+			input : '#startpicker-input',
+			container : '#startpicker-container'
+		},
+		endpicker : {
+			date : today,
+			input : '#endpicker-input',
+			container : '#endpicker-container'
+		},
+		selectableRanges : [[
+				new Date(today.getFullYear() - 5, today.getMonth(),
+						today.getDate()),
+				new Date(today.getFullYear() + 5, today.getMonth(),
+						today.getDate()) ] ]
+
+	});
+	
+	/*-----------------------
+ 	날짜 검색 버튼 이벤트 핸들러
+ --------------------------*/
+function searchBtnHandler() {
+	$('#searchBtn').on('click', function() {
+		let getStartDay = $('#startpicker-input').val();
+		let getEndDay = $('#endpicker-input').val();
+		console.log(getStartDay);
+		console.log(getEndDay);
+
+		$.ajax({
+			url : '/completedList',
+			data : {
+				"startDate" : getStartDay,
+				"endDate" : getEndDay
+			},
+			contentType : "application/json",
+			method : 'GET',
+			dataType : 'json',
+			success : function(result) {
+				for (let regist of result) {
+					regist.REGIST_DATE = String(regist.REGIST_DATE).substr(0, 10);
+				}
+				console.log(result);
+				grid.resetData(result);
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+
+	})
+
+}
 	</script>
 	</div>
 </body>
