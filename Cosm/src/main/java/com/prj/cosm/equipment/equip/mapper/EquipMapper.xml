@@ -99,6 +99,13 @@
 	 FROM EQUIP
 	</select>
 	
+	<!-- 현재 적용 공정에 달려있는 설비 갯수 -->
+	<select id="getMaxEquipNum" resultType="equipVO">
+	select count(equip_process) as equip_process
+	from equip
+	where equip_process= #{equipProcess}
+	</select>
+	
 	
 <!-- ############################################################################################  -->
 																					<!-- 공정  -->	
@@ -266,12 +273,15 @@
 	
 	<!-- 점검 삭제 -->
 	<delete id="deleteTest" parameterType="Integer">
-	
+	DELETE test
+	WHERE test_no = #{testNo}
 	</delete>
 	
 	<!-- 점검 삭제 시 번호 정렬 update문-->
 	<update id="updateDeleteTestNo" parameterType="Integer">
-	
+	UPDATE TEST
+	SET TEST_NO = TEST_NO-1
+	WHERE TEST_NO <![CDATA[>]]> #{testNo}
 	</update>
 	
 	<!-- 입력될 점검 번호 조회 -->

@@ -21,29 +21,14 @@
 			  <div class="row">
 			  
 			        <div class="column">
-			          <h5>부품 내역</h5>
+			        
 			          <div class="searchbox">
 			            <div class="header">
-			         	<button type="button" class="btn btn-dark btn-sm margin5"
-			         	data-bs-toggle="modal" data-bs-target="#myModal1">등록</button>
 						     <input onkeyup="filter()" style="float:right;" type="text" id="value" placeholder="Type to Search">
 						 </div>
       				   </div>
 						  <div id="part">
 						  </div>
-			        </div>
-			
-			        <div class="column">
-			          <h5>변동 내역</h5>
-			          <div class="searchbox">
-			            <div class="header">
-			         	<button type="button" class="btn btn-dark btn-sm margin5"
-			         	data-bs-toggle="modal" data-bs-target="#myModal2">등록</button>
-						     <input onkeyup="filter()" style="float:right;" type="text" id="value" placeholder="Type to Search">
-						 </div>
-      				   </div>
-				          <div id="partBuy">
-				          </div>
 			        </div>
 			        		
 			  </div>
@@ -79,6 +64,10 @@
 			        name: 'partName'
 			    },
 			    {
+			        header: '부품수량',
+			        name: 'partAmount'
+			    },
+			    {
 			        header: '적용설비',
 			        name: 'partEquipName'
 			    }
@@ -96,7 +85,9 @@
     
 	})
 	
-/*  변동 그리드  */	
+/*
+  
+ // 변동 그리드  
 		const partBuyGrid = new tui.Grid({
 		    el: document.querySelector('#partBuy'),
 		    pagination:true,
@@ -124,18 +115,8 @@
 		    ]
 		});
 		
+*/
 
-
-	/* 발주 리스트 불러오는 아작스 */
-	    
-	    url="/equipment/partBuyList"
-	    fetch(url) 
-	    .then(res=>res.json())
-	    .then(obj=>{
-	        console.log(obj);
-	        partBuyGrid.resetData(obj);
-	        
-	    })
 
 </script>
 </div>

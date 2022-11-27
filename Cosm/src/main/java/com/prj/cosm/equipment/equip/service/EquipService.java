@@ -45,6 +45,9 @@ public interface EquipService {
 				// 이용중인 공정 번호 조회
 				public List<EquipVO> getEquipProcess();
 				
+				// 설비 등록하기 전에 현재 적용 공정에 달려있는 설비 갯수 조회
+				public EquipVO getMaxEquipNum(@Param("equipProcess")int equipProcess);
+				
 //===================================================================================================
 	// 공정 
 	
@@ -98,7 +101,6 @@ public interface EquipService {
 				// 입력될 번호를 조회
 				public EquipVO getTestNo();		
 						
-				public int updateTest(EquipVO vo);
 				
 //=====================================================================================	
 				

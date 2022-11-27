@@ -5,7 +5,6 @@
 	  layout:decorate="~{/layout/layout.html}">
 <head>
 
-<meta charset="UTF-8">
 <title>Insert title here</title>
 
 <!-- date-picker & time-picker -->
@@ -24,7 +23,7 @@
 <body><!-- 드래그 방지 -->
 
 	<div layout:fragment="content" style="height: 900px; overflow: scroll; margin:15px;">
-			  <h2>설비 유지 관리</h2>
+			  <h2>설비 보수 관리</h2>
   
 		<div> 
             <!-- 탭 목록(버튼) 설정 -->
@@ -32,7 +31,7 @@
                <li class="nav-item" role="presentation">
                   <button class="nav-link active" id="maintenanceTab"
                      data-bs-toggle="tab" data-bs-target="#maintenance" type="button"
-                     role="tab" aria-controls="maintenance" aria-selected="true" >보수</button>
+                     role="tab" aria-controls="maintenance" aria-selected="true" >점검</button>
                </li>
                <li class="nav-item" role="presentation">
                   <button class="nav-link" id="workTab" data-bs-toggle="tab"
@@ -68,7 +67,7 @@
 	                                       
 	                                    </div>
 	                            
-	                                    <div class="column">
+	                                 <!-- <div class="column">
 	                                      <h5>고장 내역</h5>
 	                                     	<div class="searchbox">
 								            <div class="header">
@@ -83,9 +82,9 @@
 					      				   </div>
 					      				   
 	                                       <div id="failGrid">
-	                                       </div>
-	                                         
-	                                    </div>			        		
+	                                       </div>    
+	                                    </div>	-->	 
+	                                           		
 	                                 </div>
 	                              </td>
 	                           </tr>                       
@@ -244,7 +243,7 @@
                         	</tr>                  
 		                     <tr>
 		                        <td>진행상황</td> <!-- 특이사항 -->
-		                        <td><input type="radio" class="radio2" name="testCodeName" value="미실시" style="accent-color :gray;" onclick="return(false);" checked="checked">미실시
+		                        <td><input type="radio" class="radio2" name="testCodeName" value="미실시" style="accent-color :gray;" onclick="return(false);">미실시
 									<input type="radio" class="radio2" name="testCodeName" value="진행중" style="accent-color : gray;" onclick="return(false);">진행중
 									<input type="radio" class="radio2" name="testCodeName" value="보류" style="accent-color :gray;" onclick="return(false);">보류
 									<input type="radio" class="radio2" name="testCodeName" value="점검완료" style="accent-color :gray;" onclick="return(false);">점검완료</td>
@@ -255,13 +254,13 @@
 						<!-- Modal footer -->
 						<div class="modal-footer">
 							<input id="update"type="hidden" >
-							<button type="button" id="testUbtn" class="btn btn-primary updateBtn1" onclick="updateTBtnClick()">수정</button>					
+							<button type="button" id="testUbtn" class="btn btn-primary" onclick="updateTBtnClick()">수정</button>					
 							<button type="button" id="testDbtn" onclick="deleteTest()" class="btn btn-primary">삭제</button>
 							<button type="button"  onclick="cancelUpdateTest()" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
 							
-							<input type="hidden" id="thisNoUD" name="testNo"> <!-- 업데이트, 삭제 때문에 가져온 점검번호 값. -->
-							<input type="hidden" id="thisYnUD" name="testYn"> <!-- 업데이트, 삭제 때문에 가져온 점검유무 값. -->
-							<input type="hidden" id="thisCdUD" name="testCode"> <!-- 업데이트, 삭제 때문에 가져온 점검코드 값. -->
+							<input type="hidden" id="thisTNoUD" name="testNo"> <!-- 업데이트, 삭제 때문에 가져온 점검번호 값. -->
+							<input type="hidden" id="thisTYnUD" name="testYn"> <!-- 업데이트, 삭제 때문에 가져온 점검유무 값. -->
+							<input type="hidden" id="thisTCdUD" name="testCode"> <!-- 업데이트, 삭제 때문에 가져온 점검코드 값. -->
 						
 						</div>
 				</form>
@@ -316,7 +315,7 @@
 	                        <td>수리내역</td>  
 							<td><textarea class="form-control resizeInsertForm" id="failRepairContent" name="failRepairContent" rows="5"
 							 	onkeydown="resize(this)" readonly="readonly"
-                        		style="color:gray;">수리 후 기입 예정</textarea>
+                        		style="color:gray; height :48px;" >수리 후 기입 예정</textarea>
                         	</td>
                         </tr>                 
 	                </table>
@@ -392,10 +391,10 @@
 						<!-- Modal footer -->
 						<div class="modal-footer">
 							<input id="update"type="hidden" >
-							<button type="button"  class="btn btn-primary updateBtn" onclick="updateBtnClick()">점검</button>
-							<input type="hidden" id="thisNoUD" name="equipNo"> <!-- 업데이트, 삭제 때문에 가져온 설비번호 값. -->
-							<button type="button" onclick="deleteEquip()" class="btn btn-primary">삭제</button>
-							<button type="button"  onclick="cancelUpdateEquip()"  class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+							<button type="button"  class="btn btn-primary" onclick="updateBtnClick()">점검</button>
+							<input type="hidden"  > <!-- 업데이트, 삭제 때문에 가져온 설비번호 값. -->
+							<button type="button" class="btn btn-primary">삭제</button>
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
 						</div>
 				</form>
 		
@@ -704,7 +703,7 @@ function test (id){
 	const mt = document.querySelector('#maintenanceTab');
   	mt.addEventListener('shown.bs.tab',function(){ // 탭과 관련되어있어서
 	   testGrid.refreshLayout();
- 	  	failGrid.refreshLayout();
+ 	  //failGrid.refreshLayout();
 	});
 	
 	const wt = document.querySelector('#workTab');
@@ -720,7 +719,7 @@ function test (id){
 			    pagination:true,
 				pageOptions: {
 					useClient: true,
-					perPage: 4
+					perPage: 10
 				},
 			    columns: [
 			    {
@@ -780,10 +779,10 @@ function test (id){
 		        console.log(obj);
 		    
 				document.querySelector('#sTestEquipName').value=obj.testEquipName;
-				document.querySelector('#thisNoUD').value=obj.testNo;
-				document.querySelector('#thisYnUD').value=obj.testYn;	
+				document.querySelector('#thisTNoUD').value=obj.testNo;
+				document.querySelector('#thisTYnUD').value=obj.testYn;	
 				
-				let tCode = document.querySelector('#thisCdUD').value;
+				let tCode = document.querySelector('#thisTCdUD').value;
 					  tCode = obj.testCode;
 					  
 				document.querySelector('#tv-start-input').value=obj.testDueDate;
@@ -798,7 +797,9 @@ function test (id){
 			    const btn1 = document.querySelector('#testUbtn'); // 수정버튼
 			    const btn2 = document.querySelector('#testDbtn'); // 삭제버튼
 
-			    
+			    btn1.style.display='block'; //초기화
+				btn2.style.display='block'; //초기화
+				
 			    if(tContent != '') {
 							tContent.value = obj.testContent;
 			    
@@ -810,8 +811,8 @@ function test (id){
 								
 					} else { // 조회한 글이 미완료라면
 						
-							btn1.style.display='none';
-							btn2.style.display='none';
+							btn1.style.display='block';
+							btn2.style.display='block';
 					}	
 					
 					if(tContent.value != ''){ //그런데 수정도 한 번 했다면
@@ -885,7 +886,7 @@ function test (id){
 
 				console.log(tCode);
 				
-				const btn = document.querySelector('.updateBtn1')
+				const btn = document.querySelector('#testUbtn')
 				
 				btn.innerHTML='저장';
 				btn.removeAttribute("onclick"); // 기존 onclick 제거.
@@ -902,7 +903,7 @@ function test (id){
 				const url2="/equipment/updateTest2"; //2가 진행중
 				const data = new FormData(document.getElementById('updateForm1'));
 				const wu = document.getElementsByClassName('wantUpdate1');
-			    const btn = document.querySelector('.updateBtn1');
+			    const btn = document.querySelector('#testUbtn');
 			    const radio = document.querySelector('input[name="testCodeName"]:checked').value;
 			    const radios = document.getElementsByClassName('radio2');
 			    const tContent= document.querySelector('#sTestContent');
@@ -968,24 +969,25 @@ function test (id){
 						            wu[i].required = false;
 						        }				 							
 
-								if(obj.testCodeName='미실시')
-									 radios[0].checked=true;
-								else if(obj.testCodeName='진행중')
-									 radios[1].checked=true;
-								else if(obj.testCodeName='보류')
-									 radios[2].checked=true;
 								
 								btn.innerText='수정';
 								btn.removeEventListener('click',updateTest); 
 							  	btn.setAttribute('onclick','updateTBtnClick()');
 							  	
 							  	alert('수정완료!');
-							  	location.reload(true);// 새로고침
+							  	
+								if(obj.testCodeName='미실시')
+									 radios[0].checked=true;
+								else if(obj.testCodeName='진행중')
+									 radios[1].checked=true;
+								else if(obj.testCodeName='보류')
+									 radios[2].checked=true;
 					 
 						    
 				 	})
 					.catch((error) => console.log("error:", error));
 					
+					location.reload(true);// 새로고침
 				}   
 				      		
 			}
@@ -1000,7 +1002,7 @@ function test (id){
 				
 				const wu = document.getElementsByClassName('wantUpdate1');
 			    const tCode = document.querySelector('.radio2:checked'); // 체크한 값.
-				const btn = document.querySelector('.updateBtn1');
+				const btn = document.querySelector('#testUbtn');
 				const tContent= document.querySelector('#sTestContent');
 					
 					
@@ -1028,66 +1030,40 @@ function test (id){
 							btn.setAttribute('onclick','updateTBtnClick()');
 					}
 				}
-/*  점검 삭제 하는 함수 
-			
-			function deleteProcess() {
+				
+ // 점검 삭제 하는 함수 
+function deleteTest() {
 
-				const processNo = document.getElementById('thisNoUD2').value
-				
-			// 먼저, 공정이 현재 설비에서 사용 중인지 체크 => 사용 중이면 삭제 불가능!!
-				
-			     var use = 0; // 초기값 0, 사용 중이라면 1
-			     const ep = document.getElementsByClassName('equipProcess');	 
-				 	
-			     for (var i = 0; i< ep.length; i++) {
-			       if(ep[i].value == processNo){
-			            	
-			        use = 1; // 하나라도 일치하는 게 있으면 1로 변함.
-			            }   
-			        }
-				
-			   	if(use == 0){
-					  
-					console.log(processNo);
-					const url1="/equipment/deleteProcess/"+processNo // 매개변수 번호를 넘겨야됨.
-					const url2="/equipment/updateDeleteProcessNo/"+processNo // 매개변수 번호를 넘겨야됨.
-				
-					const wantUpdate = document.getElementsByClassName('wantUpdate');	 
-					
-					for (var i = 0; i< wantUpdate.length; i++) {
-			            wantUpdate[i].readOnly =true;
-			            wantUpdate[i].required = false;
-			        }	
-					
-					fetch(url1,{method: 'delete', headers: {
-			                'header' : header,
-					    	'X-CSRF-Token': token }})
-						    .then(res=> res.text())
-						    .then(obj=>{
-						    	console.log(obj);
-						    	
-						    	fetch(url2,{method: 'post', headers: {
-					                'header' : header,
-							    	'X-CSRF-Token': token,
-							    	'Content-Type' : 'application/json' }})
-								    .then(res=> res.text())
-								    .then(obj=>{
-							    	console.log(obj);
-									alert('삭제 완료');
-									location.reload(true);// 새로고침
-							    })  
-					 })
-			     } else if (use == 1){
-			    	alert('현재 사용 중인 공정입니다.');
-			     }
-			    	
-			}   */
+	 // 삭제하는데 사용할 변수 가져오기
 
+	const testNo = document.getElementById('thisTNoUD').value
+
+	const url1="/equipment/deleteTestNo/"+testNo // 매개변수 번호를 넘겨야됨.
+	const url2="/equipment/updateDeleteTestNo/"+testNo // 매개변수 번호를 넘겨야됨.
+				
+	const wu = document.getElementsByClassName('wantUpdate1');	 
+					
+			for (var i = 0; i< wu.length; i++) {
+				wu[i].readOnly =true;
+				wu[i].required = false;
+			  }	
+		console.log('삭제 아작스 전송');
+		
+		 fetch(url1,{method: 'DELETE', headers: {
+	         'header' : header,
+		     'X-CSRF-Token': token }})
+			 .then(res=> res.text())
+		     .then(obj=>{
+				console.log(obj);
+				console.log('삭제완료!');
+				location.reload(true);// 새로고침
+		})
+ }
 		 
 //============================================================================================================================================================		
 			
-	
-/*  고장 그리드  */	
+/* 	
+  고장 그리드 
 		const failGrid = new tui.Grid({
 		    el: document.querySelector('#failGrid'),
 		    pagination:true,
@@ -1129,7 +1105,7 @@ function test (id){
 		    ]
 		});
 		
-/* 고장 리스트 불러오는 아작스 */
+ 고장 리스트 불러오는 아작스
 	    
 	    url="/equipment/failAllList"
 	    fetch(url) 
@@ -1139,15 +1115,14 @@ function test (id){
 	        failGrid.resetData(obj);
 	        
 	    })
-
-/* 고장 그리드 셀 클릭-> 모달 팝업 이벤트 */
+ 고장 그리드 셀 클릭-> 모달 팝업 이벤트
 		 
 	    failGrid.on('click', ev => {
 	    	const fnoRow = failGrid.getRow(ev.rowKey); // 행 (객체)
 	    	const fno = fnoRow.failNo; // 행의 점검번호
 	    	const eno = fnoRow.failEquipNo; // 행의 설비번호
 	    	console.log(fno);
-	   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
+	   	
 	    	console.log(ev);
 	    	
 	    	if(ev.rowKey == fnoRow.rowKey){
@@ -1163,7 +1138,7 @@ function test (id){
 	    	}
 		});
 		
-/*  고장 단건조회 불러오는 아작스 함수 */
+ 고장 단건조회 불러오는 아작스 함수
 
 		function getFailNo(failNo,failEquipNo) {
 				
@@ -1180,6 +1155,7 @@ function test (id){
 			    })
 		    
 			}	    
+			*/
 
 
 //============================================================================================================================================================		
@@ -1277,6 +1253,16 @@ function getWorkNo(workNo,workEquipNo) {
 				const deleteWBtn = document.querySelector('#deleteWBtn');
 				const updateWSBtn = document.querySelector('#updateWSBtn');
 				
+				// 결재승인 사인, 수정/삭제 버튼 초기화
+		        document.getElementById('seq1').style.visibility='hidden';
+		        document.getElementById('seq2').style.visibility='hidden';
+		        document.getElementById('seq3').style.visibility='hidden';
+		        document.getElementById('seq4').style.visibility='hidden';
+		        updateWSBtn.style.visibility='hidden';
+		        updateWBtn.style.display='block'; 
+	        	deleteWBtn.style.display='block';
+				
+				
 			    url="/equipment/getWorkInfo?workNo="+workNo+"&workEquipNo="+workEquipNo // get방식이라 ?equipNo=
 			    fetch(url) 
 			    .then(res=>res.json())
@@ -1287,14 +1273,7 @@ function getWorkNo(workNo,workEquipNo) {
 			        	updateWBtn.style.display='none';
 			        	deleteWBtn.style.display='none';
 			        }
-			        
-			     	// 결재승인 사인 초기화
-			        document.getElementById('seq1').style.visibility='hidden';
-			        document.getElementById('seq2').style.visibility='hidden';
-			        document.getElementById('seq3').style.visibility='hidden';
-			        document.getElementById('seq4').style.visibility='hidden';
-			        updateWSBtn.style.visibility='hidden'; 
-			        
+   
 			        if(obj.signSeq > 0){ // 조회한 글의 seq가 1이상이면
 			        	
 			        	document.getElementById('seq1').style.visibility='visible'; // 사원의 사인이 보여라!
@@ -1360,7 +1339,6 @@ function updateWSBtnClick() {
 					 fetch(url, {method: 'POST', body : data})
 					    .then(res=>res.json())
 					    .then(obj=>{
-					        console.log(obj);
 					        
 						  	alert('승인완료!');
 							
@@ -1476,7 +1454,42 @@ function cancelUpdateWork() { // 되감기^^
 		btn.removeEventListener('click',updateWork);
 		btn.setAttribute('onclick','updateWBtnClick()');
 }
+// 점검 삭제 하는 함수 
+function deleteWork() {
 
+	 // 삭제하는데 사용할 변수 가져오기
+	const workNo = document.getElementById('thisWNoUD').value
+
+	const url1="/equipment/deleteWorkNo/"+workNo // 매개변수 번호를 넘겨야됨.
+	const url2="/equipment/updateDeleteWorkNo/"+workNo // 매개변수 번호를 넘겨야됨.
+				
+	const wu = document.getElementsByClassName('wantUpdate3');	 
+					
+			for (var i = 0; i< wu.length; i++) {
+				wu[i].readOnly =true;
+				wu[i].required = false;
+			  }	
+		console.log('삭제 아작스 전송');
+		
+		fetch(url1,{method: 'delete', headers: {
+			 'header' : header,
+			 'X-CSRF-Token': token }})
+			 .then(res=> res.text())
+		     .then(obj=>{
+				console.log(obj);
+						    	
+				fetch(url2,{method: 'post', headers: {
+					    'header' : header,
+					    'X-CSRF-Token': token,
+					    'Content-Type' : 'application/json' }})
+						.then(res=> res.text())
+						.then(obj=>{
+							    	console.log(obj);
+									alert('삭제 완료');
+									location.reload(true);// 새로고침
+							    })  
+					 })
+		}
 
 	    
 /* Date Picker *//* Date Picker *//* Date Picker *//* Date Picker *//* Date Picker *//* Date Picker *//* Date Picker *//* Date Picker *//* Date Picker *//* Date Picker *//* Date Picker *//* Date Picker *//* Date Picker *//* Date Picker */
@@ -1558,7 +1571,6 @@ TC.style.height = '8'+`${TC.scrollHeight}`+'px';
 
 function completeChk(){ // 전체, 미완료, 완료 라디오박스
 	const ts = document.querySelector('input[name="tStatus0"]:checked').value; //점검 라디오박스
-	const fs = document.querySelector('input[name="tStatus1"]:checked').value; //고장 라디오박스
 	const ws = document.querySelector('input[name="tStatus2"]:checked').value; //공사 라디오박스
 	const usersAuthor = `[[${session.usersAuthor}]]`;
 	
@@ -1609,49 +1621,6 @@ function completeChk(){ // 전체, 미완료, 완료 라디오박스
 			})
 		}
 	
-///////////////////////////////////////////////////////////////
-// 고장
-
-		if(fs == '전체'){
-			//testGrid.clear();
-			//testGrid.refreshLayout();
-			
-			 url="/equipment/failAllList"
-			fetch(url) 
-			.then(res=>res.json())
-			.then(obj=>{
-			    console.log(obj);
-			    failGrid.resetData(obj);     
-			})
-		}else if (fs =='미완료'){
-			
-	/* 고장 미완료 리스트 불러오는 아작스 */
-	 		//testGrid.clear();
-	 		
-			url="/equipment/incompleteFailList"
-			fetch(url) 
-			.then(res=>res.json())
-			.then(obj=>{
-			    console.log(obj);
-			    failGrid.resetData(obj);
-			   
-		    
-			})
-			
-		}else if (fs =='완료'){
-			
-	/* 고장 완료 리스트 불러오는 아작스 */
-			//testGrid.clear();
-			
-			url="/equipment/completeFailList"
-			fetch(url) 
-			.then(res=>res.json())
-			.then(obj=>{
-			    console.log(obj);
-			    failGrid.resetData(obj);
-		    
-			})
-		}
 	
 ///////////////////////////////////////////////////////////////
 // 공사

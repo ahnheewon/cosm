@@ -93,7 +93,7 @@ public class EquipVO {
 	private String failRepairContent; // 수리내역
 	private String failEffect; //안쓸예정
 	private String failCode;
-	
+
 	
 	// 공통코드
 	
