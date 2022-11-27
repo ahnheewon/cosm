@@ -2,37 +2,101 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.prj.cosm.sales.salesIo.mapper.SalesIoMapper">
-  
-  <!-- 전체조회 -->
-  <select id="inoutList" resultType="SalesIoVO">
-  select * from sales_io ORDER BY client_no
-  </select>
-  
-  
-  <!-- 등록 -->
-  <insert id="" parameterType="SalesIoVO">
-  insert into sales_io(
-		order_date,
-		delivery_date,
-		state,
-		note,
-		client_no,
-		regist_LOT,
-		code_no,
-		Field
-		)
-values(
-		#{order_date},
-		#{delivery_date},
+
+<mapper
+	namespace="com.prj.cosm.sales.salesIo.mapper.SalesIoMapper">
+
+	<!-- 완제품 번호 -->
+	<select id="getSalesNo" resultType="Integer">
+		select
+		max(substr(SALES_NO,-4,4)+1) from sales_io
+	</select>
+
+	<!-- 전체조회 -->
+	<select id="getSalesIoList" resultType="SalesIoVO">
+		select
+		SALES_NO,
+		ORDER_DATE,
+		DELIVERY_DATE,
+		STATE,
+		NOTE,
+		find_code_no(CODE_NO) as CODE_NO,
+		CKECK,
+		ORDER_NO,
+		USERS_NO,
+		REGIST_LOT
+		
+		from sales_io
+	</select>
+
+	<!-- 단건조회 -->
+	<select id="selectSalesInfo" parameterType="String">
+		select
+		SALES_NO,
+		ORDER_DATE,
+		DELIVERY_DATE,
+		STATE,
+		NOTE,
+		CODE_NO,
+		CKECK,
+		ORDER_NO,
+		USERS_NO,
+		REGIST_LOT
+		from sales_io
+		where sales_no = #{salesNo}
+	</select>
+
+	<!-- 등록 -->
+	<insert id="insertSalesInfo" parameterType="SalesIoVO">
+		insert into sales_io
+		(
+		SALES_NO,
+		ORDER_DATE,
+		DELIVERY_DATE,
+		STATE,
+		NOTE,
+		CODE_NO,
+		CKECK,
+		ORDER_NO,
+		USERS_NO,
+		REGIST_LOT
+		) values (
+		#{salesNo},
+		#{orderDate},
+		#{deliveryDate},
 		#{state},
 		#{note},
-		#{client_no},
-		#{regist_LOT},
-		#{code_no},
-		#{Field}
-	);
-  </insert>
-  
-  </mapper>
+		#{codeNo},
+		#{ckeck},
+		#{orderNo},
+		#{usersNo},
+		#{registLot}
+		)
+	</insert>
+
+	<!-- 수정 : 진행상황, 검수여부 -->
+	<update id="updateSales" parameterType="SalesIoVO">
+		UPDATE SALES_IO
+		<set>
+			<if test="state != null and !state.equals('')">
+				STATE = #{state}
+			</if>
+			<if test="ckeck != null and !ckeck.equals('')">
+				,CKECK = #{ckeck}
+			</if>
+		</set>
+		WHERE SALES_NO = #{salesNo}
+	</update>
+
+	<!-- 삭제 -->
+	<delete id="deleteSales" parameterType="Integer">
+		DELETE FROM sales_io
+		WHERE sales_no = #{salesNo}
+	</delete>
+
+	<!-- 여러조건 삭제 -->
+	<delete id="deleteCheck" parameterType="String">
+		DELETE FROM sales_io where
+		sales_no = #{salesNo}
+	</delete>
+</mapper>

@@ -19,6 +19,8 @@ import com.prj.cosm.sales.client.service.ClientVO;
 import com.prj.cosm.sales.orders.service.OrdersService;
 import com.prj.cosm.sales.orders.service.OrdersVO;
 import com.prj.cosm.sales.product.service.ProductService;
+import com.prj.cosm.sales.salesIo.service.SalesIoService;
+import com.prj.cosm.sales.salesIo.service.SalesIoVO;
 
 import groovyjarjarantlr4.v4.parse.GrammarTreeVisitor.mode_return;
 
@@ -27,6 +29,9 @@ import groovyjarjarantlr4.v4.parse.GrammarTreeVisitor.mode_return;
 public class OrderClientProductController {
 	@Autowired
 	OrdersService oService;
+	
+	@Autowired
+	SalesIoService sService;
 
 	@Autowired
 	ClientService cService;
@@ -99,6 +104,22 @@ public class OrderClientProductController {
 		return "/orders/sMain";
 	}
 
+	//완제품 조회 리스트
+	@ResponseBody
+	@GetMapping("/orders/ajaxSalesList")
+	public List<SalesIoVO> ajaxSalesList(Model model){
+		return sService.getSalesIoList();
+	}
+	
+	//완제품 조회 데이터
+	@ResponseBody
+	@GetMapping("/orders/salesList")
+	public List<SalesIoVO> salesList(Model model){
+		model.addAttribute("id", sService.getSalesNo());
+		return sService.getSalesIoList();
+	}
+	
+
 	// 주문조회 리스트
 	@ResponseBody
 	@GetMapping("/orders/ajaxOrders") // url
@@ -115,16 +136,15 @@ public class OrderClientProductController {
 	}
 	
 	//등록 페이지
-	@GetMapping("/orders/insertOrder")
+	@RequestMapping("/orders/insertOrder")
 	public String insertOrder (Model model) {
-		model.addAttribute("no", oService.getOrderNo());
+		//model.addAttribute("no", oService.getOrderNo());
 		return "/orders/insertOrder";
 	}
 	//주문 등록 데이터
 	@PostMapping("/orders/insertOrderData")
 	public String insertOrderPage( OrdersVO ovo) {
 		System.out.println("insert vo" + ovo);
-		//System.out.println("insert cvo" + cvo);
 		oService.insertOrder(ovo);
 		return "redirect:/orders/sMain";
 	}
@@ -156,7 +176,16 @@ public class OrderClientProductController {
 
 		return result;
 	}
-
+	
+	//완제품 체크박스 -삭제
+	/*
+	 * @ResponseBody
+	 * 
+	 * @PostMapping("/orders/ajaxSalesOutDelete") public int
+	 * ajaxSalesOutDelete(@RequestMapping SalesIoVO vo) { return
+	 * sService.(vo.getSalesNo()); }
+	 */
+	
 	// 접수 버튼 이벤트
 	@ResponseBody
 	@PostMapping("/orders/ajaxRecNos")
@@ -165,8 +194,7 @@ public class OrderClientProductController {
 		return result;
 	}
 
-	/* main - 주문목록조회 = ajax, get */
-
+	
 	// 영업 end =======================================================
 
 }

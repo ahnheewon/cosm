@@ -14,18 +14,43 @@ public class SalesIoServiceImpl implements SalesIoService {
 
 	@Autowired
 	SalesIoMapper mapper;
-	
+
 	@Override
-	public List<SalesIoVO> inoutList() {
-		// TODO Auto-generated method stub
-		return mapper.inoutList();
+	public int getSalesNo() {
+		//완제품 번호
+		return mapper.getSalesNo();
 	}
 
 	@Override
-	public SalesIoVO insertInfo(SalesIoVO vo) {
-		// TODO Auto-generated method stub
-		return mapper.insertInfo(vo);
+	public List<SalesIoVO> getSalesIoList() {
+		//
+		return mapper.getSalesIoList();
 	}
+
+	@Override
+	public SalesIoVO selectSalesInfo(String salesNo) {
+		// TODO Auto-generated method stub
+		return mapper.selectSalesInfo(salesNo);
+	}
+
+	@Override
+	public int insertSalesInfo(SalesIoVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.insertSalesInfo(vo);
+	}
+
+	@Override
+	public int updateSales(SalesIoVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.updateSales(vo) ;
+	}
+
+	@Override
+	public int deleteSales(int salesNo) {
+		// TODO Auto-generated method stub
+		return mapper.deleteSales(salesNo) ;
+	}
+	
 
 	
 }
