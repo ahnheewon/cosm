@@ -70,6 +70,14 @@ public class EquipController {
 		return "redirect:/equipment/process";
 		}
 		
+		// 현재 적용 공정에 달려있는 설비 갯수 조회
+		@PostMapping("/equipment/getMaxEquipNum/{equipProcess}")
+		@ResponseBody
+		public EquipVO getMaxEquipNum(@PathVariable int equipProcess) {
+			
+		return eService.getMaxEquipNum(equipProcess);
+		}	
+
 		// 설비 단건 조회
 		@GetMapping("/equipment/getEquipInfo")
 		@ResponseBody
@@ -152,7 +160,7 @@ public class EquipController {
 			int result= eService.updateDeleteProcessNo(processNo);
 			result = result + eService.updateDeleteEquipProcess(processNo);
 			return result; 
-		}		
+		}
 
 //================================================================================================================================	
 
@@ -229,68 +237,67 @@ public class EquipController {
 
 
 		// 점검 삭제
-		@DeleteMapping("/equipment/deleteTest/{processNo}")
+		@DeleteMapping("/equipment/deleteTestNo/{testNo}")
 		@ResponseBody
 		public int deleteTest(@PathVariable int testNo) {
 			int result = eService.deleteTest(testNo);
-			return result;
-		}	
-		
-		
-	//고장
-		
-		// 고장 전체 리스트 조회
-		@GetMapping("/equipment/failAllList")
-		@ResponseBody
-		public List<EquipVO> failAllList(){
-						
-		return eService.getFailList();
-		}
-			// 고장 미완 리스트 조회
-			@GetMapping("/equipment/incompleteFailList")
-			@ResponseBody
-			public List<EquipVO> incompleteFailList(){
-				
-				return eService.getIncompleteFailList();
-			}
-			// 고장 완료 리스트 조회
-			@GetMapping("/equipment/completeFailList")
-			@ResponseBody
-			public List<EquipVO> completeFailList(){
-				
-				return eService.getCompleteFailList();
-			}
-		
-		// 고장 등록
-		@PostMapping("/equipment/insertFail")
-		public String insertFail(EquipVO vo, RedirectAttributes ratt) {
-			eService.insertFail(vo);
-			return "redirect:/equipment/maintenance";
-		}
-
-		// 고장 단건 조회
-		@GetMapping("/equipment/getFailInfo")
-		@ResponseBody
-		public EquipVO getFailInfo(int failNo, int failEquipNo) {
-			return eService.getFailInfo(failNo,failEquipNo);
-
-		}
-
-		// 고장 수정
-		@PostMapping("/equipment/updateFail")
-		@ResponseBody
-		public EquipVO updateFail(EquipVO vo) {
-			eService.updateFail(vo);
-			return vo; // "{re:true}"
-		}
-
-		// 고장 삭제
-		@DeleteMapping("/equipment/deleteFail/{failNo}")
-		@ResponseBody
-		public int deleteFail(@PathVariable int failNo) {
-			int result = eService.deleteFail(failNo);
+				result = result + eService.updateDeleteTestNo(testNo); //삭제 후 번호 정렬
 			return result;
 		}
+		
+		
+		/*
+		 * //고장
+		 * 
+		 * // 고장 전체 리스트 조회
+		 * 
+		 * @GetMapping("/equipment/failAllList")
+		 * 
+		 * @ResponseBody public List<EquipVO> failAllList(){
+		 * 
+		 * return eService.getFailList(); } // 고장 미완 리스트 조회
+		 * 
+		 * @GetMapping("/equipment/incompleteFailList")
+		 * 
+		 * @ResponseBody public List<EquipVO> incompleteFailList(){
+		 * 
+		 * return eService.getIncompleteFailList(); } // 고장 완료 리스트 조회
+		 * 
+		 * @GetMapping("/equipment/completeFailList")
+		 * 
+		 * @ResponseBody public List<EquipVO> completeFailList(){
+		 * 
+		 * return eService.getCompleteFailList(); }
+		 * 
+		 * // 고장 등록
+		 * 
+		 * @PostMapping("/equipment/insertFail") public String insertFail(EquipVO vo,
+		 * RedirectAttributes ratt) { eService.insertFail(vo); return
+		 * "redirect:/equipment/maintenance"; }
+		 * 
+		 * // 고장 단건 조회
+		 * 
+		 * @GetMapping("/equipment/getFailInfo")
+		 * 
+		 * @ResponseBody public EquipVO getFailInfo(int failNo, int failEquipNo) {
+		 * return eService.getFailInfo(failNo,failEquipNo);
+		 * 
+		 * }
+		 * 
+		 * // 고장 수정
+		 * 
+		 * @PostMapping("/equipment/updateFail")
+		 * 
+		 * @ResponseBody public EquipVO updateFail(EquipVO vo) {
+		 * eService.updateFail(vo); return vo; // "{re:true}" }
+		 * 
+		 * // 고장 삭제
+		 * 
+		 * @DeleteMapping("/equipment/deleteFail/{failNo}")
+		 * 
+		 * @ResponseBody public int deleteFail(@PathVariable int failNo) { int result =
+		 * eService.deleteFail(failNo); return result; }
+		 */
 		
 //================================================================================================================================
 // 공사
@@ -361,9 +368,11 @@ public class EquipController {
 		//공사 결재안건 수정 seq+1
 		@PostMapping("/equipment/updateSignSeq")
 		@ResponseBody
-		public WorkVO updateSignSeq(WorkVO vo) {
-				wService.updateSignSeq(vo);
-			return vo; // "{re:true}"
+		public int updateSignSeq(WorkVO vo) {
+			int result = wService.updateSignSeq(vo);
+			result = result + wService.updateWorkCode(vo);
+			
+			return result; // "{re:true}"
 		}
 		
 		//공사 수정
@@ -374,7 +383,15 @@ public class EquipController {
 			return vo; // "{re:true}"
 		}
 		
-		
+		// 고장 삭제
+		@DeleteMapping("/equipment/deleteWorkNo/{workNo}")
+		@ResponseBody
+		public int deleteWork(@PathVariable int workNo) {
+				int result = wService.deleteWork(workNo);
+					result = result + wService.updateDeleteSignNo(workNo); //삭제 후 번호 정렬
+					result = result + wService.updateDeleteWorkNo(workNo); //삭제 후 번호 정렬
+			return result;	
+		}
 		
 		/*
 		 * // 공사 품의 등록한 사람의 회원번호로 그 사람 권한 조회하기

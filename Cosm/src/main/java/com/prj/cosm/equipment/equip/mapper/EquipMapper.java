@@ -41,6 +41,9 @@ public interface EquipMapper {
 			
 			// 이용중인 공정 번호 조회
 			public List<EquipVO> getEquipProcess();
+
+			// 현재 적용 공정에 달려있는 설비 갯수 조회
+			public EquipVO getMaxEquipNum(@Param("equipProcess")int equipProcess);
 			
 //===================================================================================================
 	

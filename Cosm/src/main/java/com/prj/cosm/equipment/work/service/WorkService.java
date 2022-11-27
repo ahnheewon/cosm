@@ -39,6 +39,9 @@ public interface WorkService {
 				
 					// 공사 결재정보 수정
 					public int updateSignSeq(WorkVO vo);
+					
+					// 공사 결재승인에 따른 공사코드 수정
+					public int updateWorkCode(WorkVO vo);
 				
 				// 삭제
 				public int deleteWork(@Param("workNo")int workNo); 

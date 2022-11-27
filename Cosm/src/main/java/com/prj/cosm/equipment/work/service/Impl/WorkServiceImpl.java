@@ -99,7 +99,12 @@ public class WorkServiceImpl implements WorkService {
 		return mapper.getSignEmpNo(signEmpNo);
 	}
 
-													
+	@Override
+	public int updateWorkCode(WorkVO vo) {
+		
+		return mapper.updateWorkCode(vo);
+	}
+												
 
 //============================================================================================================================
 	

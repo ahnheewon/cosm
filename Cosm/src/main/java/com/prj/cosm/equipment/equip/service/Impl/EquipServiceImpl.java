@@ -75,6 +75,8 @@ public class EquipServiceImpl implements EquipService {
 
 		return mapper.getEquipProcess();
 	}
+	
+	
 
 //============================================================================================================================
 
@@ -129,6 +131,12 @@ public class EquipServiceImpl implements EquipService {
 	public int updateDeleteEquipProcess(int equipProcess) {
 
 		return mapper.updateDeleteEquipProcess(equipProcess);
+	}
+	
+	@Override
+	public EquipVO getMaxEquipNum(int equipProcess) {
+		
+		return mapper.getMaxEquipNum(equipProcess);
 	}
 
 	@Override
@@ -343,10 +351,7 @@ public class EquipServiceImpl implements EquipService {
 		return mapper.getCompleteTestList();
 	}
 
-	@Override
-	public int updateTest(EquipVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
+
 
 }

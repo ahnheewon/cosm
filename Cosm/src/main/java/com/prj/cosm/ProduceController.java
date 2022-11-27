@@ -33,7 +33,7 @@ public class ProduceController {
 	@Autowired
 	InsService insService;
 
-	@Autowired
+	@Autowired 	
 	RegistService registService;
 
 	@Autowired
