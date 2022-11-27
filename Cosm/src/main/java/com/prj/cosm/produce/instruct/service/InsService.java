@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface InsService {
-
-	// 생산지시 전체조회
+	// 모든 생산지시 전체조회
+	public List<Map<String, Object>> allInsList(InsVO vo);
+	
+	
+	// 생산지시 진행중 전체조회
 	public List<Map<String, Object>> selectInsList();
 
 	// 생산지시 번호
@@ -28,6 +31,7 @@ public interface InsService {
 
 	// 생산완료된 생산지시 리스트
 	public List<Map<String, Object>> completeList();
+	
 
 	// 생산지시 완료되게 업데이트
 	public int updateInsPlay(InsVO InsVO);

@@ -124,6 +124,13 @@ public class ProduceController {
 		return "produce/instructList";
 	}
 
+	// 모든 생산지시 리스트
+	@GetMapping("/allInsList")
+	@ResponseBody
+	public List<Map<String, Object>> allInsList(InsVO vo) {
+		return insService.allInsList(vo);
+	}
+
 	// 생산지시 등록시 생산계획 리스트 업데이트
 	@PostMapping("/insPlay")
 	public String updatePlanPlay(PlanVO planVO, RedirectAttributes ratt) {
@@ -332,8 +339,22 @@ public class ProduceController {
 	// 완제품 list에 ajax주는 것
 	@GetMapping("/completedList")
 	@ResponseBody
-	public List<Map<String, Object>> completedList() {
-		return registService.completeList();
+	public List<Map<String, Object>> completedList(RegistVO vo) {
+		return registService.completeList(vo);
+	}
+
+	//불량관리 페이지 이동
+	@GetMapping("/errorPage")
+	public String errorPage(Model model) {
+
+		return "produce/errorPage";
+	}
+
+	// 불량리스트
+	@GetMapping("/errorList")
+	@ResponseBody
+	public List<Map<String, Object>> errorList(RegistVO vo) {
+		return registService.errorList(vo);
 	}
 
 	// ===========================================================

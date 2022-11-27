@@ -28,7 +28,10 @@ public interface InsMapper {
 
 	// 생산지시 완료되게 업데이트
 	public int updateInsPlay(InsVO InsVO);
-	
+
 	// 생산지시 완료되게 업데이트
 	public int updateInsPlay2(InsVO InsVO);
+
+	// 모든 생산지시 전체조회
+	public List<Map<String, Object>> allInsList(InsVO vo);
 }

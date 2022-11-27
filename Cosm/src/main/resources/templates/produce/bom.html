@@ -40,7 +40,8 @@
 			style="float: right">BOM 삭제</button>
 		<button type="button" onclick="updateData();"
 			class="btn btn-dark btn-sm" data-bs-toggle="modal"
-			data-bs-target="#requestModala" style="float: right">BOM 수정</button>
+			data-bs-target="#requestModala" style="float: right" id="updateBtn">BOM
+			수정</button>
 		<div id="grid"></div>
 
 
@@ -60,35 +61,27 @@
 					readonly="readonly">
 			</div>
 			<div class="col-md-3">
-				<label for="inputState" class="form-label">제품 번호</label> <select
-					id="inputState" name="bomProductNo" class="form-select">
-					<option th:each="goodsNo : ${goodsNo}"
-						th:value="${goodsNo.goodsNo}">[[${goodsNo.goodsNo}]]
-						([[${goodsNo.goodsName}]])</option>
-				</select>
+				<label for="inputCity" class="form-label">제품 번호</label> <input
+					data-bs-dismiss="modal" id="selectGoods" type="text"
+					name="bomProductNo" class="form-control">
 			</div>
 			<div class="col-md-3">
-				<label for="inputState" class="form-label">자재 번호 (1) (자재명)</label> <select
-					id="inputState" name="bomMaterialNo" class="form-select">
-					<option th:each="mNo : ${mNo}" th:value="${mNo.mNo}">[[${mNo.mNo}]]
-						([[${mNo.mName}]])</option>
-					<!-- 위에꺼처럼 value 다 넣어주기, 텍스트에는 이름 추가 -->
-				</select>
+				<label for="inputCity" class="form-label">자재 번호 (1)</label> <input
+					data-bs-dismiss="modal" id="selectMaterial" type="text"
+					name="bomMaterialNo" class="form-control">
 			</div>
+
 			<div class="col-md-3">
 				<label class="form-label">자재 투입량 (1)</label> <input type="number"
 					name="bomQuantity" class="form-control" id="bomQuantity"
 					style="float: right">
 			</div>
-
-			<div class="col-md-3" style="float: right">
-				<label for="inputState" class="form-label">자재 번호 (2) (자재명)</label> <select
-					id="inputState" name="bomMaterialNob" class="form-select">
-					<option th:each="mNo : ${mNo}" th:value="${mNo.mNo}">[[${mNo.mNo}]]
-						([[${mNo.mName}]])</option>
-					<!-- 위에꺼처럼 value 다 넣어주기, 텍스트에는 이름 추가 -->
-				</select>
+			<div class="col-md-3">
+				<label for="inputCity" class="form-label">자재 번호 (2)</label> <input
+					data-bs-dismiss="modal" id="selectMaterial2" type="text"
+					name="bomMaterialNob" class="form-control">
 			</div>
+
 			<div class="col-md-3" style="float: right">
 				<label class="form-label">자재 투입량 (2)</label> <input type="number"
 					name="bomQuantityb" class="form-control" id="bomQuantityb"
@@ -100,12 +93,7 @@
 			</div>
 
 		</form>
-		<hr style="width: 100%">
-		<h3>제품 번호에따른 정보</h3>
-		<div id="grid2"></div>
-		<hr style="width: 100%">
-		<h3>자재 번호에따른 정보</h3>
-		<div id="grid3"></div>
+
 
 		<!-- BOM 수정 모달 -->
 		<div class="modal fade" id="requestModala" tabindex="-1"
@@ -129,35 +117,34 @@
 										aria-label="Username" aria-describedby="basic-addon1"
 										readonly="readonly">
 								</div>
-
-
 								<div class="input-group mb-3">
-									<span class="input-group-text">제품 번호</span> <select
-										id="bomProductNo" name="bomProductNo" class="form-select">
-										<option th:each="goodsNo : ${goodsNo}">[[${goodsNo.goodsNo}]]</option>
-									</select>
+									<span class="input-group-text">제품 번호</span> <input type="text"
+										data-bs-dismiss="modal" class="form-control" id="selectGoods2"
+										name="bomProductNo" aria-label="Username"
+										aria-describedby="basic-addon1">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">자재 번호 (1)</span> <input
+										type="text" data-bs-dismiss="modal" class="form-control"
+										id="bomMaterialNo" name="bomMaterialNo" aria-label="Username"
+										aria-describedby="basic-addon1">
 								</div>
 
 								<div class="input-group mb-3">
-									<span class="input-group-text">자재 번호</span> <select
-										id="bomMaterialNo" name="bomMaterialNo" class="form-select">
-										<option th:each="mNo : ${mNo}">[[${mNo.mNo}]]</option>
-									</select>
-								</div>
-								<div class="input-group mb-3">
-									<span class="input-group-text">자재 투입량</span> <input
+									<span class="input-group-text">자재 투입량 (1)</span> <input
 										type="number" class="form-control" id="bomQuantity2"
 										name="bomQuantity" aria-label="Username"
 										aria-describedby="basic-addon2">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text">자재 번호</span> <select
-										id="bomMaterialNob2" name="bomMaterialNob" class="form-select">
-										<option th:each="mNo : ${mNo}">[[${mNo.mNo}]]</option>
-									</select>
+									<span class="input-group-text">자재 번호 (2)</span> <input
+										type="text" data-bs-dismiss="modal" class="form-control"
+										id="bomMaterialNob2" name="bomMaterialNob"
+										aria-label="Username" aria-describedby="basic-addon1">
 								</div>
+
 								<div class="input-group mb-3">
-									<span class="input-group-text">자재 투입량</span> <input
+									<span class="input-group-text">자재 투입량 (2)</span> <input
 										type="number" class="form-control" id="bomQuantityb2"
 										name="bomQuantityb" aria-label="Username"
 										aria-describedby="basic-addon2">
@@ -176,13 +163,213 @@
 			</div>
 		</div>
 
+		<!-- 제품정 모달에 모달 -->
+		<div class="modal fade" id="requestModal4" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">제품 상세정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="grid6"></div>
+						<div id="requestModalGrid" style="width: 100%;"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" id="setData"
+								data-bs-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 자재정보 모달에 모달 1-->
+		<div class="modal fade" id="requestModal3" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">자제 상세정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="grid3"></div>
+						<div id="requestModalGrid" style="width: 100%;"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" id="setData2"
+								data-bs-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 자재정보 모달에 모달 2-->
+		<div class="modal fade" id="requestModal2" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">자제 상세정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="grid4"></div>
+						<div id="requestModalGrid" style="width: 100%;"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" id="setData3"
+								data-bs-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 수정 제품정 모달에 모달 -->
+		<div class="modal fade" id="requestModal5" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">제품 상세정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="grid7"></div>
+						<div id="requestModalGrid" style="width: 100%;"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" id="setData4"
+								data-bs-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 수정 자재정보 모달에 모달 1-->
+		<div class="modal fade" id="requestModal6" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">자제 상세정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="grid8"></div>
+						<div id="requestModalGrid" style="width: 100%;"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" id="setData5"
+								data-bs-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 수정 자재정보 모달에 모달 2-->
+		<div class="modal fade" id="requestModal7" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">자제 상세정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="grid9"></div>
+						<div id="requestModalGrid" style="width: 100%;"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" id="setData6"
+								data-bs-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<script>
+		// modal 닫을때 값 넣
+		
+		$("#setData").click(function () {	
+            var datas = grid6.getCheckedRows();
+            $('#selectGoods').val(datas[0].goodsNo);
+            
+         })
+        $("#setData2").click(function () {	
+            var datas = grid3.getCheckedRows();
+            console.log(datas);
+            $('#selectMaterial').val(datas[0].mno);
+            
+         })
+         $("#setData3").click(function () {	
+            var datas = grid4.getCheckedRows();
+            $('#selectMaterial2').val(datas[0].mno);
+            
+         })
+          
+          $("#setData5").click(function () {
+        	  $('#updateBtn').click();
+            var datas = grid8.getCheckedRows();
+            $('#bomMaterialNo').val(datas[0].mno);
+            
+         })
+          $("#setData6").click(function () {
+        	  $('#updateBtn').click();
+            var datas = grid9.getCheckedRows();
+            $('#bomMaterialNob2').val(datas[0].mno);
+            
+         })
+		 $("#setData4").click(function () {
+	        	$('#updateBtn').click();	
+	            var datas = grid7.getCheckedRows();
+	            $('#selectGoods2').val(datas[0].goodsNo);
+	            
+	         })
+		// 제품 모달에 모달 불러오기
+		const selectMno = document.getElementById('selectGoods');
+		selectMno.addEventListener('click',function(){
+			$('#requestModal4').modal('toggle');
+		})
+		const selectMno1 = document.getElementById('selectMaterial');
+		selectMno1.addEventListener('click',function(){
+			$('#requestModal3').modal('toggle');
+		})
+		const selectMno2 = document.getElementById('selectMaterial2');
+		selectMno2.addEventListener('click',function(){
+			$('#requestModal2').modal('toggle');
+		})
+		const selectMno3 = document.getElementById('selectGoods2');
+		selectMno3.addEventListener('click',function(){
+			$('#requestModal5').modal('toggle');
+		})
+		const selectMno4 = document.getElementById('bomMaterialNo');
+		selectMno4.addEventListener('click',function(){
+			$('#requestModal6').modal('toggle');
+		})
+		const selectMno5 = document.getElementById('bomMaterialNob2');
+		selectMno5.addEventListener('click',function(){
+			$('#requestModal7').modal('toggle');
+		})
+		
+		
+		$(window).on('mouseover',function(){
+			grid3.refreshLayout();
+			grid4.refreshLayout();
+			grid6.refreshLayout();
+			grid7.refreshLayout();
+			grid8.refreshLayout();
+			grid9.refreshLayout();
+		})
+		
 	window.onload = function (){
 		var info = '[[${info.bomNo}]]';
 		$('#inputCity').val(info)	
 		bomList();
 		goodsList();
 		mList();
+		
 		//체크박스 하나만 선택
 		grid.on('check', (ev) => {
 			for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
@@ -190,26 +377,53 @@
 					grid.uncheck(i);
 				}
 			}
-			for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
-				grid2.uncheck(i);
-			}
 			// bom번호 +1 로 등록
 			var info = '[[${info.bomNo}]]';
 			$('#inputCity').val(info)	
 		
 		});
 
-		grid2.on('check', (ev) => {
-			for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
-				grid.uncheck(i);
-			}
-			for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
+		grid6.on('check', (ev) => {
+			for(let i=0;i<$('#grid6 input:checkbox[name="_checked"]').length;i++){
 				if(i!=`${ev.rowKey}`){
-					grid2.uncheck(i);
+					grid6.uncheck(i);
 				}
 			}
-			var info = '[[${info.bomNo}]]';
-			$('#inputCity').val(info)	
+		});
+		grid3.on('check', (ev) => {
+			for(let i=0;i<$('#grid6 input:checkbox[name="_checked"]').length;i++){
+				if(i!=`${ev.rowKey}`){
+					grid3.uncheck(i);
+				}
+			}
+		});
+		grid4.on('check', (ev) => {
+			for(let i=0;i<$('#grid6 input:checkbox[name="_checked"]').length;i++){
+				if(i!=`${ev.rowKey}`){
+					grid4.uncheck(i);
+				}
+			}
+		});
+		grid7.on('check', (ev) => {
+			for(let i=0;i<$('#grid6 input:checkbox[name="_checked"]').length;i++){
+				if(i!=`${ev.rowKey}`){
+					grid7.uncheck(i);
+				}
+			}
+		});
+		grid8.on('check', (ev) => {
+			for(let i=0;i<$('#grid6 input:checkbox[name="_checked"]').length;i++){
+				if(i!=`${ev.rowKey}`){
+					grid8.uncheck(i);
+				}
+			}
+		});
+		grid9.on('check', (ev) => {
+			for(let i=0;i<$('#grid6 input:checkbox[name="_checked"]').length;i++){
+				if(i!=`${ev.rowKey}`){
+					grid9.uncheck(i);
+				}
+			}
 		});
 			
 		grid.on('uncheck', (ev) => {
@@ -218,14 +432,13 @@
 			$('#inputCity').val(info)	
 		});
 			
-		grid2.on('uncheck', (ev) => {
-			$('input:text').val('');
-			var info = '[[${info.bomNo}]]';
-			$('#inputCity').val(info)	
-		});
-			
 		$('#grid span').remove();
-		$('#grid2 span').remove();
+		$('#grid6 span').remove();
+		$('#grid3 span').remove();
+		$('#grid4 span').remove();
+		$('#grid7 span').remove();
+		$('#grid8 span').remove();
+		$('#grid9 span').remove();
 	};
 	
 	
@@ -251,10 +464,7 @@
 				        showClearBtn: true
 				      },
 			},
-			{
-				header: '제품번호',
-				name: 'bomProductNo',
-			},
+			
 			{
 				header: '제품이름',
 				name: 'goodsName',
@@ -263,10 +473,7 @@
 				header: '제품기준수량',
 				name: 'goodsStandard',
 			},
-			{
-				header: '제품상세정보',
-				name: 'goodsContents',
-			},
+		
 			{
 				header: '자재번호(1)',
 				name: 'bomMaterialNo',
@@ -291,18 +498,64 @@
 				header: '자재 투입량(2)',
 				name: 'bomQuantityb',
 			},
-			{
-				header: '자재상세정보',
-				name: 'minfo',
-			},	
+			
 			],
 		
 		});
 	
 	//제품정보 그리드
-	var grid2 = new tui.Grid({
-		el: document.getElementById('grid2'),
+	var grid6 = new tui.Grid({
+		el: document.getElementById('grid6'),
 		minBodyHeight: 30,
+		rowHeaders: ['checkbox'],
+		pageOptions: {
+			useClient: true, // front에서만 페이징 하는 속성
+			perPage: 5
+		},
+		scrollX: false,
+		scrollY: false,
+		columns: [
+			{
+				header: '제품번호',
+				name: 'goodsNo',
+				filter: {
+				       type: 'select',
+				        showApplyBtn: true,
+				        showClearBtn: true
+				      },
+			},
+			{
+				header: '제품명',
+				name: 'goodsName',
+			},
+			{
+				header: '제품기준수량',
+				name: 'goodsStandard',
+			},
+			{
+				header: '제품설명',
+				name: 'goodsContents',
+			},
+			{
+				header: '제품검수기준',
+				name: 'goodsCheck',
+			},
+			{
+				header: '제작기간',
+				name: 'goodsDate',
+			},
+			{
+				header: '단위코드',
+				name: 'unitCode',
+			},	
+			],
+		
+		});
+	//수정 제품정보 그리드
+	var grid7 = new tui.Grid({
+		el: document.getElementById('grid7'),
+		minBodyHeight: 30,
+		rowHeaders: ['checkbox'],
 		pageOptions: {
 			useClient: true, // front에서만 페이징 하는 속성
 			perPage: 5
@@ -347,10 +600,139 @@
 		
 		});
 	
-	//자재정보 그리드
+	//자재정보 그리드1
 	var grid3 = new tui.Grid({
 		el: document.getElementById('grid3'),
 		minBodyHeight: 30,
+		rowHeaders: ['checkbox'],
+		pageOptions: {
+			useClient: true, // front에서만 페이징 하는 속성
+			perPage: 5
+		},
+		scrollX: false,
+		scrollY: false,
+		columns : [ {
+			header : '자재번호',
+			name : 'mno'
+		}, {
+			header : '거래처번호',
+			name : 'mcompanyId'
+		}, {
+			header : '분류',
+			name : 'mcategory'
+		}, {
+			header : '자재명',
+			name : 'mname',
+			color : 'yellow'
+		}, {
+			header : '현재 재고',
+			name : 'mstock'
+		}, {
+			header : '증감',
+			name : 'increase'
+		}, {
+			header : '최종수정일',
+			name : 'mdate'
+		}, {
+			header : '입고일자',
+			name : 'mioInputDate'
+		}, {
+			header : '사용일자',
+			name : 'mioOutputDate'
+		} ],
+		
+		});
+	
+	//자재정보 그리드2
+	var grid4 = new tui.Grid({
+		el: document.getElementById('grid4'),
+		minBodyHeight: 30,
+		rowHeaders: ['checkbox'],
+		pageOptions: {
+			useClient: true, // front에서만 페이징 하는 속성
+			perPage: 5
+		},
+		scrollX: false,
+		scrollY: false,
+		columns : [ {
+			header : '자재번호',
+			name : 'mno'
+		}, {
+			header : '거래처번호',
+			name : 'mcompanyId'
+		}, {
+			header : '분류',
+			name : 'mcategory'
+		}, {
+			header : '자재명',
+			name : 'mname',
+			color : 'yellow'
+		}, {
+			header : '현재 재고',
+			name : 'mstock'
+		}, {
+			header : '증감',
+			name : 'increase'
+		}, {
+			header : '최종수정일',
+			name : 'mdate'
+		}, {
+			header : '입고일자',
+			name : 'mioInputDate'
+		}, {
+			header : '사용일자',
+			name : 'mioOutputDate'
+		} ],
+		
+		});
+	//수정 자재정보 그리드1
+	var grid8= new tui.Grid({
+		el: document.getElementById('grid8'),
+		minBodyHeight: 30,
+		rowHeaders: ['checkbox'],
+		pageOptions: {
+			useClient: true, // front에서만 페이징 하는 속성
+			perPage: 5
+		},
+		scrollX: false,
+		scrollY: false,
+		columns : [ {
+			header : '자재번호',
+			name : 'mno'
+		}, {
+			header : '거래처번호',
+			name : 'mcompanyId'
+		}, {
+			header : '분류',
+			name : 'mcategory'
+		}, {
+			header : '자재명',
+			name : 'mname',
+			color : 'yellow'
+		}, {
+			header : '현재 재고',
+			name : 'mstock'
+		}, {
+			header : '증감',
+			name : 'increase'
+		}, {
+			header : '최종수정일',
+			name : 'mdate'
+		}, {
+			header : '입고일자',
+			name : 'mioInputDate'
+		}, {
+			header : '사용일자',
+			name : 'mioOutputDate'
+		} ],
+		
+		});
+	
+	//수정 자재정보 그리드2
+	var grid9 = new tui.Grid({
+		el: document.getElementById('grid9'),
+		minBodyHeight: 30,
+		rowHeaders: ['checkbox'],
 		pageOptions: {
 			useClient: true, // front에서만 페이징 하는 속성
 			perPage: 5
@@ -413,8 +795,8 @@
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
-					grid2.resetData(result);
-					
+					grid6.resetData(result);
+					grid7.resetData(result);
 				},
 				error: function (reject) {
 					console.log(reject);
@@ -428,6 +810,9 @@
 				method : "GET",
 				success : function(result) {
 					grid3.resetData((result.list2));
+					grid4.resetData((result.list2));
+					grid8.resetData((result.list2));
+					grid9.resetData((result.list2));
 					console.log(result);
 				},
 				error : function(reject) {
@@ -440,10 +825,32 @@
 		//BOM등록 확인창
 		$().ready(function () {
             $("#alertStart").click(function () {
+            	if ($('#selectGoods').val() == "" || $('#selectGoods').val() == null) {
+            		Swal.fire({
+                        icon: 'warning',
+                        title: '제품번호를 입력하세요!',
+                    })
+					return false;
+				}
+            	if ($('#selectMaterial').val() == "" || $('#selectMaterial').val() == null) {
+            		Swal.fire({
+                        icon: 'warning',
+                        title: '자재번호 (1)을 입력하세요!',
+                    })
+					return false;
+				}
+            	
             	if ($('#bomQuantity').val() == "" || $('#bomQuantity').val() == null) {
             		Swal.fire({
                         icon: 'warning',
                         title: '투입될 자재량(1)을 입력하세요!',
+                    })
+					return false;
+				}
+            	if ($('#selectMaterial2').val() == "" || $('#selectMaterial2').val() == null) {
+            		Swal.fire({
+                        icon: 'warning',
+                        title: '자재번호 (2)을 입력하세요!',
                     })
 					return false;
 				}
@@ -472,20 +879,44 @@
 			console.log(datas1)
 			var test = JSON.stringify(datas1);
 			$('#bomNo').val(datas1[0].bomNo);
+			$('#selectGoods2').attr("placeholder", datas1[0].bomProductNo);
 			$('#bomQuantity2').val(datas1[0].bomQuantity);
-			$('#bomProductNo').val(datas1[0].bomProductNo);
-			$('#bomMaterialNo').val(datas1[0].bomMaterialNo);
+			$('#bomMaterialNo').attr("placeholder", datas1[0].bomMaterialNo);
 			$('#bomQuantityb2').val(datas1[0].bomQuantityb);
-			$('#bomMaterialNob2').val(datas1[0].bomMaterialNob);
+			$('#bomMaterialNob2').attr("placeholder", datas1[0].bomMaterialNob);
+			
+			
 		}
 		
 		//BOM 수정 확인창
 		$().ready(function () {
             $("#alertStart2").click(function () {
+            	if ($('#selectGoods2').val() == "" || $('#selectGoods2').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '제품번호를 입력하세요!',
+                    })
+					return false;
+				}
+            	if ($('#bomMaterialNo').val() == "" || $('#bomMaterialNo').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '자재번호(1)을 입력하세요!',
+                    })
+					return false;
+				}
             	if ($('#bomQuantity2').val() == "" || $('#bomQuantity2').val() == null) {
 					Swal.fire({
                         icon: 'warning',
                         title: '투입될 자재량(1)을 입력하세요!',
+                    })
+					return false;
+				}
+
+            	if ($('#bomMaterialNob2').val() == "" || $('#bomMaterialNob2').val() == null) {
+					Swal.fire({
+                        icon: 'warning',
+                        title: '자재번호(2)을 입력하세요!',
                     })
 					return false;
 				}
@@ -496,6 +927,8 @@
                     })
 					return false;
 				}
+            	
+            	
             	Swal.fire({
                     icon: 'success',
                     title: '제품수정이 완료되었습니다.',
@@ -556,6 +989,6 @@
         });
 	</script>
 	</div>
-	</div>
+
 </body>
 </html>

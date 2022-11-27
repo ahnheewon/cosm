@@ -2,14 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.prj.cosm.produce.instruct.mapper.InsMapper">
 
+<!-- 모든 생산지시 리스트 -->
+<select id="allInsList" resultType="map">
+	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd, p.plan_product_no as planProductNo,
+		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
+		   i.instruct_date as instructDate, i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
+		   g.goods_name as goodsName,
+           code_name as instruct_progress_code
+	FROM produce_plan p JOIN produce_instruct i
+                        ON p.plan_no = i.instruct_plan_no
+                        JOIN produce_goods g
+                        ON p.plan_product_no = g.goods_no
+                        JOIN code
+                        ON i.instruct_progress_code = code.code_no
+    <where>
+	<if test="startDate != null and endDate != null">
+		TRUNC(i.instruct_date) BETWEEN #{startDate} AND #{endDate}
+	</if>
+	</where>
+	ORDER BY i.instruct_no DESC
+</select>
+
 <!-- 전체조회 진행중인 것 -->
 <select id="getInsList" resultType="map">
 	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd, p.plan_product_no as planProductNo,
 		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
-		   i.instruct_date as instructDate, i.instruct_m_no as instructMNo, 
-		   i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
-		   i.instruct_material_num as instructMaterialNum,
-		   i.instruct_m_nob as instructMNob, i.instruct_material_numb as instructMaterialNumb,
+		   i.instruct_date as instructDate, i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
 		   g.goods_name as goodsName,
            code_name as instruct_progress_code
 	FROM produce_plan p JOIN produce_instruct i
@@ -26,10 +44,7 @@
 <select id="completeList" resultType="map">
 	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd, p.plan_product_no as planProductNo,
 		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
-		   i.instruct_date as instructDate, i.instruct_m_no as instructMNo, 
-		   i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
-		   i.instruct_material_num as instructMaterialNum,
-		   i.instruct_m_nob as instructMNob, i.instruct_material_numb as instructMaterialNumb,
+		   i.instruct_date as instructDate, i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,   
            g.goods_name as goodsName,
            code_name as instruct_progress_code
 	FROM produce_plan p JOIN produce_instruct i
@@ -56,21 +71,13 @@
                 instruct_quantity, 
                 instruct_ex, 
                 instruct_date, 
-                instruct_plan_no,
-                instruct_m_no, 
-                instruct_material_num,
-                instruct_m_nob,
-                instruct_material_numb
+                instruct_plan_no
                 ) 
 		VALUES ( #{instructNo}, 
        			 #{instructQuantity}, 
         		 #{instructEx}, 
        			 #{instructDate}, 
-       			 #{instructPlanNo}, 
-       			 #{instructMNo},
-        		 #{instructMaterialNum},
-        		 #{instructMNob},
-                 #{instructMaterialNumb}
+       			 #{instructPlanNo}
        			 )
 </insert>
 
@@ -83,18 +90,6 @@
 			</if>
 			<if test="instructEx != null and !instructEx.equals('')">
 				instruct_ex = #{instructEx},
-			</if>
-			<if test="instructMNo != null and !instructMNo.equals('')">
-				instruct_m_no = #{instructMNo},
-			</if>
-			<if test="instructMaterialNum != null and !instructMaterialNum.equals('')">
-				instruct_material_num = #{instructMaterialNum},
-			</if>
-			<if test="instructMNob != null and !instructMNob.equals('')">
-				instruct_m_nob = #{instructMNob},
-			</if>
-			<if test="instructMaterialNumb != null and !instructMaterialNumb.equals('')">
-				instruct_material_numb = #{instructMaterialNumb},
 			</if>
 			<if test="instructProgressCode != null and !instructProgressCode.equals('')">
 				instruct_progress_code = (SELECT code_no FROM code 
