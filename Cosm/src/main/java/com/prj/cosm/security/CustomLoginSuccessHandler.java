@@ -32,7 +32,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		request.getSession().setAttribute("usersAuthor", vo.getUsersAuthor());
 		System.out.println(vo.getUsersPassword());
 		// 사용자
-		if (vo.getUsersAuthor().equals("D0108") && vo.getUsersAuthor().equals("D0107")) {
+		if (vo.getUsersAuthor().equals("D0108") || vo.getUsersAuthor().equals("D0107")) {
 			response.sendRedirect(request.getContextPath() + "/equipment/main");
 		}else if(vo.getUsersAuthor().equals("D0102")) {
 			response.sendRedirect(request.getContextPath() + "/orders/sMain");

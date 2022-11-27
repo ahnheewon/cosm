@@ -11,6 +11,17 @@
 		ORDER BY
 		users_no
 	</select>
+	
+		<!-- 담당에 따른 인원 전체 조회 -->
+	<select id="usersAuthorSelectList" resultType="EmpVO">
+		SELECT
+		users_no
+		FROM users JOIN code
+		ON users.users_author = code.code_no
+		WHERE code_name=#{str}
+		ORDER BY
+		users_no
+	</select>
 
 	<!-- 조회(로그인) -->
 	<select id="empSelect" resultType="EmpVO">
