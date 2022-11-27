@@ -20,9 +20,6 @@ public interface EquipMapper {
 			// 등록
 			public int insertEquip(EquipVO vo);
 			
-			// 설비 시간테이블 등록
-			public int insertEquipTime(EquipVO vo);
-			
 			// 수정
 			public int updateEquip(EquipVO vo);
 			
@@ -44,6 +41,9 @@ public interface EquipMapper {
 			
 			// 이용중인 공정 번호 조회
 			public List<EquipVO> getEquipProcess();
+
+			// 현재 적용 공정에 달려있는 설비 갯수 조회
+			public EquipVO getMaxEquipNum(@Param("equipProcess")int equipProcess);
 			
 //===================================================================================================
 	
@@ -72,6 +72,14 @@ public interface EquipMapper {
 			
 			// 입력될 번호를 조회
 			public EquipVO getProcessNo();
+			
+			public void doWork(EquipVO vo);
+			
+			public void stopWork(EquipVO vo);
+			
+			public EquipVO getDoEquipNo(int proNo);
+			
+			public List<EquipVO> getStopEquipNo(int proNo);
 			
 
 //===================================================================================================
@@ -113,6 +121,13 @@ public interface EquipMapper {
 			
 			// 전체조회
 			public List<EquipVO> getFailList();
+			
+				// 미완조회
+				public List<EquipVO> getIncompleteFailList();
+				
+				// 완료조회
+				public List<EquipVO> getCompleteFailList();
+		
 			
 			// 단건조회
 			public EquipVO getFailInfo(@Param("failNo")int failNo, @Param("failEquipNo")int failEquipNo);

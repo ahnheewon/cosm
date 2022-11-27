@@ -45,6 +45,10 @@ public interface EquipService {
 				// 이용중인 공정 번호 조회
 				public List<EquipVO> getEquipProcess();
 				
+				// 설비 등록하기 전에 현재 적용 공정에 달려있는 설비 갯수 조회
+				public EquipVO getMaxEquipNum(@Param("equipProcess")int equipProcess);
+				public void doWork(int quan);
+				
 //===================================================================================================
 	// 공정 
 	
@@ -98,7 +102,6 @@ public interface EquipService {
 				// 입력될 번호를 조회
 				public EquipVO getTestNo();		
 						
-				public int updateTest(EquipVO vo);
 				
 //=====================================================================================	
 				
@@ -106,6 +109,13 @@ public interface EquipService {
 				
 				// 전체조회
 				public List<EquipVO> getFailList();
+				
+					// 미완조회
+					public List<EquipVO> getIncompleteFailList();
+					
+					// 완료조회
+					public List<EquipVO> getCompleteFailList();
+		
 				
 				// 단건조회
 				public EquipVO getFailInfo(@Param("failNo")int failNo, @Param("failEquipNo")int failEquipNo);

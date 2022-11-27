@@ -4,8 +4,6 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{/layout/layout.html}">
 <head>
-<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
-<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
@@ -31,7 +29,7 @@
 			           <div >
 			            <div class="header">
 			         	<button type="button" class="btn btn-dark btn-sm margin5"
-			         	data-bs-toggle="modal" data-bs-target="#myModal1">등록</button>   
+			         	data-bs-toggle="modal" onclick="pno5()" >등록</button>   
 						 </div>
       				   </div>
 
@@ -55,7 +53,6 @@
 						  <div id="equipList" style=" padding-top: 10px;">
 	   					  </div>
 			        </div>
-		
 		  		</div>
 
 	<!-- The Modal 1 공정모달 -->
@@ -116,7 +113,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
 		
-				<form id="insertForm2" action="insertEquip" method="post">
+				<form id="insertForm2" action="insertEquip" method="post" onsubmit="return getMaxEquipNum()">
 				<!-- <sec:csrfInput/> -->
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 				<!-- Modal body -->
@@ -213,6 +210,11 @@
 		                        	id="selectEquipStdTemp" name="equipStdTemp" type="text" readonly></td>
 		                    </tr>
 		                    <tr>
+		                        <td>설비설명</td>
+		                        <td><textarea class="form-control wantUpdate textWidth" 
+		                        	id="selectEquipPurpose" name="equipPurpose" rows="5" readonly></textarea></td>
+		                    </tr>                  
+		                    <tr>
 		                        <td>설치시기</td>                      
 		                        <td>
 								 	  <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
@@ -240,11 +242,6 @@
 					               </div> 
 					            </td>
 		                    </tr>
-		                    <tr>
-		                        <td>설비설명</td>
-		                        <td><textarea class="form-control wantUpdate textWidth" 
-		                        	id="selectEquipPurpose" name="equipPurpose" rows="5" readonly></textarea></td>
-		                    </tr>                  
 		                </table>
 					</div>
 		
@@ -319,6 +316,51 @@
 
 /* 검색 기능 함수 *//* 설비명 필터 */
 
+function pno5() { //공정
+	const pno = `[[${pno}]]`;
+	if(pno > 5)
+	alert('설치 가능한 공정 개수 최대 5개입니다!');
+	else{
+		
+		const myModal1 = new bootstrap.Modal('#myModal1',{backdrop: 'static',keyboard:false})
+    	// 생성 시 모달 속성을 넣어줍니다.
+    	const toggle = document.getElementById('myModal1'); 
+    	
+    	myModal1.show(toggle);
+    	
+	}
+}
+
+function getMaxEquipNum() { //현재 적용 공정에 달려있는 설비 갯수 조회
+	
+	console.log('적용공정 개수 조회 아작스 전송');
+	
+	const header = document.querySelector('meta[name="_csrf_header"]').content;
+    const token = document.querySelector('meta[name="_csrf"]').content;
+	const equipProcess = document.querySelector('#equipProcess').value;
+	
+
+		url="/equipment/getMaxEquipNum/"+equipProcess 
+		 fetch(url,{method: 'POST', headers: {
+	         'header' : header,
+		     'X-CSRF-Token': token }})
+	    .then(res=>res.json())
+	    .then(obj=>{
+	      console.log(obj);     
+	      if(obj.equipProcess == 3){
+	    	yn=0;
+	    	alert('해당 공정에 설치 가능한 설비 수를 초과했습니다.');
+	    	return false;
+	    	
+	    	}else if (obj.equipProcess < 3)
+	    	yn=1;   
+	   })
+   
+	   consnole.log(yn);
+	   if(yn==0) {return false;}//최대 설비 초과입니다
+   	   else if(yn==1) {return true;}
+ 	   else {return false;}
+}
 		
 function filter(){
 
@@ -470,9 +512,9 @@ function filter(){
 				    	'Content-Type' : 'application/json' }})
 					    .then(res=> res.text())
 					    .then(obj=>{
-				    	console.log(obj);
-						alert('삭제 완료');
-						location.reload(true);// 새로고침
+						    	console.log(obj);
+								alert('삭제 완료');
+								location.reload(true);// 새로고침
 				    })
 			})	    
 		}
@@ -572,8 +614,6 @@ function filter(){
 	        }
 		
 	   	if(use == 0){
-			const header = document.querySelector('meta[name="_csrf_header"]').content;
-			const token = document.querySelector('meta[name="_csrf"]').content;
 			    //get을 제외한 모든 방식은 토큰을 필요로 한다.
 			    
 			console.log(processNo);
@@ -635,11 +675,7 @@ function filter(){
 /*  공정 그리드  */	
 		const processGrid = new tui.Grid({ 
 		    el: document.querySelector('#processList'),
-			pagination:true,
-			pageOptions: {
-				useClient: true,
-				perPage: 4
-			},
+	
 			//width:1500,
 		    columns: [
 		    {
@@ -685,7 +721,7 @@ function filter(){
 			pagination:true,
 			pageOptions: {
 				useClient: true,
-				perPage: 4
+				perPage: 5
 			},
 			
 		    columns: [
@@ -696,7 +732,7 @@ function filter(){
 				//,width : 100
 			}, 
 			{
-				header: 'ㅤㅤ설비명',
+				header: '설비명',
 				name: 'equipName'
 				,align : 'center'
 				,filter:'text'
@@ -785,7 +821,7 @@ function filter(){
 	    	}
 		});
 	    
-		document.querySelector('a[class="tui-grid-btn-filter"]').style.visibility='hidden';	
+		document.querySelector('a[class="tui-grid-btn-filter"]').style.display='none';	
 
 		
 </script>

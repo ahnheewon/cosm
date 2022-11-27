@@ -1,5 +1,6 @@
 package com.prj.cosm.equipment.equip.service.Impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +75,8 @@ public class EquipServiceImpl implements EquipService {
 
 		return mapper.getEquipProcess();
 	}
+	
+	
 
 //============================================================================================================================
 
@@ -129,6 +132,103 @@ public class EquipServiceImpl implements EquipService {
 
 		return mapper.updateDeleteEquipProcess(equipProcess);
 	}
+	
+	@Override
+	public EquipVO getMaxEquipNum(int equipProcess) {
+		
+		return mapper.getMaxEquipNum(equipProcess);
+	}
+
+	@Override
+	public void doWork(int quan) {
+		EquipVO vo = new EquipVO();
+		List<EquipVO> list = new ArrayList<>();
+		vo = mapper.getDoEquipNo(1);
+		mapper.doWork(vo);
+		mapper.insertEquipTime(vo.getEquipNo());
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		vo = mapper.getDoEquipNo(2);
+		mapper.doWork(vo);
+		mapper.insertEquipTime(vo.getEquipNo());
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		vo = mapper.getDoEquipNo(3);
+		mapper.doWork(vo);
+		mapper.insertEquipTime(vo.getEquipNo());
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		vo = mapper.getDoEquipNo(4);
+		mapper.doWork(vo);
+		mapper.insertEquipTime(vo.getEquipNo());
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		vo = mapper.getDoEquipNo(5);
+		mapper.doWork(vo);
+		mapper.insertEquipTime(vo.getEquipNo());
+		try {
+			Thread.sleep(quan * 50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		list = mapper.getStopEquipNo(1);
+		for (EquipVO evo : list) {
+			mapper.stopWork(evo);
+			mapper.updateEquipTime(evo.getEquipNo());
+		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		list = mapper.getStopEquipNo(2);
+		for (EquipVO evo : list) {
+			mapper.stopWork(evo);
+			mapper.updateEquipTime(evo.getEquipNo());
+		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		list = mapper.getStopEquipNo(3);
+		for (EquipVO evo : list) {
+			mapper.stopWork(evo);
+			mapper.updateEquipTime(evo.getEquipNo());
+		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		list = mapper.getStopEquipNo(4);
+		for (EquipVO evo : list) {
+			mapper.stopWork(evo);
+			mapper.updateEquipTime(evo.getEquipNo());
+		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		list = mapper.getStopEquipNo(5);
+		for (EquipVO evo : list) {
+			mapper.stopWork(evo);
+			mapper.updateEquipTime(evo.getEquipNo());
+		}
+	}
 
 //===================================================================================================
 
@@ -153,6 +253,7 @@ public class EquipServiceImpl implements EquipService {
 	public int updateTestComplete(EquipVO vo) {
 		return mapper.updateTestComplete(vo);
 	}
+
 	@Override
 	public int updateTestIncomplete(EquipVO vo) {
 		return mapper.updateTestIncomplete(vo);
@@ -183,8 +284,18 @@ public class EquipServiceImpl implements EquipService {
 	}
 
 	@Override
+	public List<EquipVO> getIncompleteFailList() {
+		return mapper.getIncompleteFailList();
+	}
+
+	@Override
+	public List<EquipVO> getCompleteFailList() {
+		return mapper.getCompleteFailList();
+	}
+
+	@Override
 	public EquipVO getFailInfo(int failNo, int failEquipNo) {
-		return mapper.getFailInfo(failNo,failEquipNo);
+		return mapper.getFailInfo(failNo, failEquipNo);
 	}
 
 	@Override
@@ -230,20 +341,17 @@ public class EquipServiceImpl implements EquipService {
 
 	@Override
 	public List<EquipVO> getIncompleteTestList() {
-	
+
 		return mapper.getIncompleteTestList();
 	}
 
 	@Override
 	public List<EquipVO> getCompleteTestList() {
-		
+
 		return mapper.getCompleteTestList();
 	}
 
-	@Override
-	public int updateTest(EquipVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
+
 
 }

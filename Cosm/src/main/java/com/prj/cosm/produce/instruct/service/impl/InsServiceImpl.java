@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.prj.cosm.equipment.equip.service.EquipService;
+import com.prj.cosm.equipment.work.service.WorkService;
 import com.prj.cosm.produce.instruct.mapper.InsMapper;
 import com.prj.cosm.produce.instruct.service.InsService;
 import com.prj.cosm.produce.instruct.service.InsVO;
@@ -15,7 +17,7 @@ public class InsServiceImpl implements InsService {
 
 	@Autowired
 	InsMapper mapper;
-
+	
 	@Override
 	public List<Map<String, Object>> selectInsList() {
 		return mapper.getInsList();
@@ -29,7 +31,6 @@ public class InsServiceImpl implements InsService {
 
 	@Override
 	public int insertInsInfo(InsVO insVO) {
-
 		return mapper.insertIns(insVO);
 	}
 

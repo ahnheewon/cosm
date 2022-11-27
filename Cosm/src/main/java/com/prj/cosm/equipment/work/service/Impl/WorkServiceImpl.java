@@ -17,8 +17,30 @@ public class WorkServiceImpl implements WorkService {
 //============================================================================================================================
 
 	@Override
-	public List<WorkVO> getWorkList() {
-		return mapper.getWorkList();
+	public List<WorkVO> getWorkAllList() {
+		return mapper.getWorkAllList();
+	}
+	
+	@Override
+	public List<WorkVO> getIncompleteWorkList() {
+		return mapper.getIncompleteWorkList();
+	}
+	@Override
+	public List<WorkVO> getIncompleteWork1() {
+		return mapper.getIncompleteWork1();
+	}
+	@Override
+	public List<WorkVO> getIncompleteWork2() {
+		return mapper.getIncompleteWork2();
+	}
+	@Override
+	public List<WorkVO> getIncompleteWork3() {
+		return mapper.getIncompleteWork3();
+	}
+	
+	@Override
+	public List<WorkVO> getCompleteWorkList() {
+		return mapper.getCompleteWorkList();
 	}
 	
 	@Override
@@ -42,8 +64,8 @@ public class WorkServiceImpl implements WorkService {
 	}
 	
 	@Override
-	public int updateWorkSign(WorkVO vo) {
-		return mapper.updateWorkSign(vo);
+	public int updateSignSeq(WorkVO vo) {
+		return mapper.updateSignSeq(vo);
 	}
 	
 	@Override
@@ -71,7 +93,18 @@ public class WorkServiceImpl implements WorkService {
 		return mapper.getWorkNo();
 	}
 
-													
+	@Override
+	public WorkVO getSignEmpNo(int signEmpNo) {
+		
+		return mapper.getSignEmpNo(signEmpNo);
+	}
+
+	@Override
+	public int updateWorkCode(WorkVO vo) {
+		
+		return mapper.updateWorkCode(vo);
+	}
+												
 
 //============================================================================================================================
 	

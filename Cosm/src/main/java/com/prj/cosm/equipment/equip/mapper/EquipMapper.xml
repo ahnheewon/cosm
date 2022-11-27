@@ -2,101 +2,119 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.prj.cosm.equipment.equip.mapper.EquipMapper">
-<!-- ############################################################################################  -->																						 																						
- 																					<!-- 설비 -->	
-	
+
+<mapper
+	namespace="com.prj.cosm.equipment.equip.mapper.EquipMapper">
+	<!-- ############################################################################################ -->
+	<!-- 설비 -->
+
 	<!-- 설비 전체 리스트 -->
 	<select id="getEquipList" resultType="equipVO">
 		SELECT *
 		FROM equip
-		ORDER BY EQUIP_NO
+		ORDER BY
+		EQUIP_NO
 	</select>
-	
+
 	<!-- 설비 단건조회 -->
-	<select id="getEquipInfo" parameterType="Integer" resultType="equipVO">
+	<select id="getEquipInfo" parameterType="Integer"
+		resultType="equipVO">
 		SELECT *
-		FROM equip 
+		FROM equip
 		Where equip_no= #{value}
 	</select>
-	
+
 	<!-- 설비 등록 -->
 	<insert id="insertEquip" parameterType="equipVO">
-		INSERT INTO EQUIP	( equip_no
-							,equip_name
-							,equip_type
-							,equip_std_vibe
-	                        ,equip_std_temp
-							,equip_process
-							,equip_purpose
-							,equip_date
-							)
-        values (#{equipNo},#{equipName},#{equipType},#{equipStdVibe},#{equipStdTemp},#{equipProcess},#{equipPurpose},SYSDATE)
+		INSERT INTO EQUIP (
+		equip_no
+		,equip_name
+		,equip_type
+		,equip_std_vibe
+		,equip_std_temp
+		,equip_process
+		,equip_purpose
+		,equip_date
+		)
+		values
+		(#{equipNo},#{equipName},#{equipType},#{equipStdVibe},#{equipStdTemp},#{equipProcess},#{equipPurpose},SYSDATE)
 
 	</insert>
-	
-		
+
+
 	<!-- 설비 수정 -->
 	<update id="updateEquip" parameterType="equipVO">
-	UPDATE equip
-	<set>
-		<if test="equipName !=null and !equipName.equals('')">
-		equip_name = #{equipName},
-		</if>
-		<if test="equipType !=null and !equipType.equals('')">
-		equip_type = #{equipType},
-		</if>
-		<if test="equipStdVibe !=null">
-		equip_std_vibe = #{equipStdVibe},
-		</if>
-		<if test="equipStdTemp !=null">
-		equip_std_temp = #{equipStdTemp},
-		</if>
-		<if test="equipPurpose !=null and !equipPurpose.equals('')">
-		equip_purpose = #{equipPurpose}
-		</if>									
-	</set>
+		UPDATE equip
+		<set>
+			<if test="equipName !=null and !equipName.equals('')">
+				equip_name = #{equipName},
+			</if>
+			<if test="equipType !=null and !equipType.equals('')">
+				equip_type = #{equipType},
+			</if>
+			<if test="equipStdVibe !=null">
+				equip_std_vibe = #{equipStdVibe},
+			</if>
+			<if test="equipStdTemp !=null">
+				equip_std_temp = #{equipStdTemp},
+			</if>
+			<if test="equipPurpose !=null and !equipPurpose.equals('')">
+				equip_purpose = #{equipPurpose}
+			</if>
+		</set>
 		WHERE equip_no = #{equipNo}
-	
+
 	</update>
-	
+
 	<!-- 설비 삭제 -->
 	<delete id="deleteEquip" parameterType="Integer">
-	DELETE EQUIP
-	WHERE EQUIP_NO = #{equipNo}
+		DELETE EQUIP
+		WHERE
+		EQUIP_NO = #{equipNo}
 	</delete>
-	
+
 	<!-- 설비 삭제 시 설비별 가동 시간 데이터 삭제 -->
 	<delete id="deleteEquipTime" parameterType="Integer">
-	DELETE EQUIP_TIME
-	WHERE TIME_EQUIP_NO = #{equipNo}
+		DELETE EQUIP_TIME
+		WHERE TIME_EQUIP_NO = #{equipNo}
 	</delete>
-	
+
 	<!-- 설비 삭제 시 번호 정렬 update문 -->
 	<update id="updateDeleteEquipNo" parameterType="Integer">
-	UPDATE EQUIP
-	SET EQUIP_NO = EQUIP_NO-1
-	WHERE EQUIP_NO <![CDATA[>]]> #{equipNo}
+		UPDATE EQUIP
+		SET EQUIP_NO = EQUIP_NO-1
+		WHERE EQUIP_NO <![CDATA[>]]>
+		#{equipNo}
 	</update>
-	
+
 	<!-- 설비 삭제 시 번호 정렬 update문 -->
 	<update id="updateDeleteTimeEquipNo" parameterType="Integer">
-	UPDATE EQUIP_TIME
-	SET TIME_EQUIP_NO = TIME_EQUIP_NO-1
-	WHERE TIME_EQUIP_NO <![CDATA[>]]> #{equipNo}
+		UPDATE EQUIP_TIME
+		SET TIME_EQUIP_NO = TIME_EQUIP_NO-1
+		WHERE
+		TIME_EQUIP_NO <![CDATA[>]]>
+		#{equipNo}
 	</update>
-	
+
 	<!-- 입력될 설비 번호 조회 -->
 	<select id="getEquipNo" resultType="equipVO">
-		SELECT NVL(MAX(equip_no),0) + 1 AS equip_no
+		SELECT NVL(MAX(equip_no),0) +
+		1 AS equip_no
+		FROM EQUIP
+	</select>
+
+	<!-- 이용중인 공정 번호 조회 (다중행) -->
+	<select id="getEquipProcess" resultType="equipVO">
+		SELECT
+		DISTINCT(EQUIP_PROCESS)
 		FROM EQUIP
 	</select>
 	
-	<!-- 이용중인 공정 번호 조회 (다중행)-->
-	<select id="getEquipProcess" resultType="equipVO">
-	 SELECT DISTINCT(EQUIP_PROCESS)
-	 FROM EQUIP
+	<!-- 현재 적용 공정에 달려있는 설비 갯수 -->
+	<select id="getMaxEquipNum" resultType="equipVO">
+	select count(equip_process) as equip_process
+	from equip
+	where equip_process= #{equipProcess}
 	</select>
 	
 	
@@ -109,257 +127,384 @@
 		FROM PROCESS
 		ORDER BY PROCESS_NO
 	</select>
-	
+
 	<!-- 공정 단건 조회 -->
-	<select id="getProcessInfo" parameterType="Integer" resultType="equipVO">
-		SELECT process_no,process_name, process_content, process_seq
+	<select id="getProcessInfo" parameterType="Integer"
+		resultType="equipVO">
+		SELECT process_no,process_name, process_content,
+		process_seq
 		FROM process
 		Where process_no= #{value}
 	</select>
-	
+
 	<!-- 공정 등록 -->
 	<insert id="insertProcess" parameterType="equipVO">
-		INSERT INTO PROCESS	   ( process_no
-								,process_name
-								,process_content
-								,process_seq )
-									
-						VALUES( #{processNo}
-								,#{processName}
-								,#{processContent}
-								,#{processSeq} )	
+		INSERT INTO PROCESS (
+		process_no
+		,process_name
+		,process_content
+		,process_seq )
+
+		VALUES(
+		#{processNo}
+		,#{processName}
+		,#{processContent}
+		,#{processSeq} )
 	</insert>
-	
+
 	<!-- 입력될 공정 번호 조회 -->
 	<select id="getProcessNo" resultType="equipVO">
-		SELECT NVL(MAX(process_no),0) + 1 AS process_no
+		SELECT
+		NVL(MAX(process_no),0) + 1 AS process_no
 		FROM process
 	</select>
-	
+
 	<!-- 공정 수정 -->
 	<update id="updateProcess" parameterType="equipVO">
-	UPDATE process
+		UPDATE process
 		<set>
 			<if test="processName !=null and !processName.equals('')">
-			process_name = #{processName},
+				process_name = #{processName},
 			</if>
 			<if test="processContent !=null and !processContent.equals('')">
-			process_content = #{processContent},
+				process_content = #{processContent},
 			</if>
 			<if test="processSeq !=null and !processSeq.equals('')">
-			process_seq = #{processSeq}</if>								
+				process_seq = #{processSeq}
+			</if>
 		</set>
-	WHERE process_no = #{processNo}
+		WHERE process_no = #{processNo}
 	</update>
-	
+
 	<!-- 공정 삭제 -->
 	<delete id="deleteProcess" parameterType="Integer">
 		DELETE process
-		WHERE process_no = #{processNo}
+		WHERE
+		process_no = #{processNo}
 	</delete>
-	
+
 	<!-- 공정 삭제 시 번호 정렬 update문 -->
 	<update id="updateDeleteProcessNo" parameterType="Integer">
 		UPDATE PROCESS
 		SET PROCESS_NO = PROCESS_NO-1
-		WHERE PROCESS_NO <![CDATA[>]]> #{processNo}
+		WHERE PROCESS_NO <![CDATA[>]]>
+		#{processNo}
 	</update>
-	
+
 	<!-- 공정 삭제 시 적용공정 정렬 update문 -->
 	<update id="updateDeleteEquipProcess" parameterType="Integer">
 		update equip
-	    set equip_process = equip_process-1
-	    where equip_process <![CDATA[>]]> #{equipProcess}
-    </update>
-	
-<!-- ############################################################################################  -->
-																					<!-- 점검  -->
+		set equip_process = equip_process-1
+		where equip_process <![CDATA[>]]>
+		#{equipProcess}
+	</update>
+
+	<!-- ############################################################################################ -->
+	<!-- 점검 -->
 
 	<!-- 점검 전체 리스트 -->
 	<select id="getTestList" resultType="equipVO">
-		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
-				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
-				,t.test_code,(select code_name from code where code_no = t.test_code ) AS test_code_name
+		SELECT t.test_no,
+		test_equip_no, e.equip_name as test_equip_name
+		, t.test_due_date,
+		t.test_date, t.test_reason, t.test_content,
+		t.test_yn
+		,t.test_code,(select code_name from code where code_no = t.test_code )
+		AS test_code_name
 		FROM equip e, test t
-		where e.equip_no = t.test_equip_no 
+		where e.equip_no =
+		t.test_equip_no
 		ORDER BY test_no DESC
 	</select>
-	
-	<!-- 점검 단건 조회-->
-	<select id="getTestInfo" parameterType="Integer" resultType="equipVO">
-		SELECT test_no,(select equip_name from equip where equip_no=#{testEquipNo}) AS test_equip_name
-			   ,test_reason, test_due_date,test_content, test_code, test_date,test_yn, (select code_name from code where code_no=test_code) AS test_code_name
-		FROM test
+
+	<!-- 완료 안된 점검 리스트 조회 -->
+	<select id="getIncompleteTestList" resultType="equipVO">
+		SELECT t.test_no,
+		test_equip_no, e.equip_name as test_equip_name
+		, t.test_due_date,
+		t.test_date, t.test_reason, t.test_content,
+		t.test_yn
+		,(select code_name
+		from code where code_no = t.test_code ) AS test_code_name
+		FROM equip e,
+		test t
+		where e.equip_no = t.test_equip_no
+		AND test_code!='A0103'
+		ORDER BY
+		TEST_NO DESC
+	</select>
+
+	<!-- 완료된 점검 리스트 조회 -->
+	<select id="getCompleteTestList" resultType="equipVO">
+		SELECT t.test_no,
+		test_equip_no, e.equip_name as test_equip_name
+		, t.test_due_date,
+		t.test_date, t.test_reason, t.test_content,
+		t.test_yn
+		,(select code_name
+		from code where code_no = t.test_code ) AS test_code_name
+		FROM equip e,
+		test t
+		where e.equip_no = t.test_equip_no
+		AND test_yn='Y'
+		ORDER BY
+		TEST_NO DESC
+	</select>
+
+	<!-- 점검 단건 조회 -->
+	<select id="getTestInfo" parameterType="Integer"
+		resultType="equipVO">
+		SELECT test_no,(select equip_name from equip where
+		equip_no=#{testEquipNo}) AS test_equip_name
+		,test_reason,
+		test_due_date,test_content, test_code, test_date,test_yn, (select
+		code_name from code where code_no=test_code) AS test_code_name
+		FROM
+		test
 		Where test_no= #{testNo}
 	</select>
-	
+
 	<!-- 점검일정 등록 -->
 	<insert id="insertTest" parameterType="equipVO">
 
-		 INSERT INTO TEST ( test_no
-							,test_equip_no
-							,test_reason
-	                        ,test_yn
-	                        ,test_due_date
-	                        ,test_code
-							)
-	        		values ( #{testNo}
-					        ,(SELECT equip_no
-						      FROM equip
-						      WHERE equip_name = #{testEquipName})
-					        ,#{testReason}
-					        ,'N'
-					        ,#{testDueDate}
-					        ,'A0101')
+		INSERT INTO TEST ( test_no
+		,test_equip_no
+		,test_reason
+		,test_yn
+		,test_due_date
+		,test_code
+		)
+		values (
+		#{testNo}
+		,(SELECT equip_no
+		FROM equip
+		WHERE equip_name =
+		#{testEquipName})
+		,#{testReason}
+		,'N'
+		,#{testDueDate}
+		,'A0101')
 	</insert>
-	
+
 	<!-- 점검 완료로 수정 -->
 	<update id="updateTestComplete" parameterType="equipVO">
-	UPDATE TEST
+		UPDATE TEST
 		<set>
 			<if test="testContent !=null and !testContent.equals('')">
-			test_content = #{testContent},
+				test_content = #{testContent},
 			</if>
 			<if test="testYn !=null and !testYn.equals('')">
-			test_yn = 'Y',
-			</if>		
-			test_code = 'A0103',							
+				test_yn = 'Y',
+			</if>
+			test_code = 'A0103',
 			test_date = SYSDATE
-									
+
 		</set>
-	WHERE TEST_NO = #{testNo}
+		WHERE TEST_NO = #{testNo}
 	</update>
-	
+
 	<!-- 점검 단순 수정 -->
 	<update id="updateTestIncomplete" parameterType="equipVO">
-	UPDATE TEST
+		UPDATE TEST
 		<set>
-		<if test="codeName !=null and !codeName.equals('')">
-		test_code = (select code_no from code where code_name= #{tCode}),
-		</if>
-		test_content = #{testContent}
+			<if test="testCodeName !=null and !testCodeName.equals('')">
+				test_code = (select code_no from code where code_name=
+				#{testCodeName}),
+			</if>
+			test_content = #{testContent}
 		</set>
-	WHERE TEST_NO = #{testNo}
+		WHERE TEST_NO = #{testNo}
 	</update>
-	
+
 	<!-- 점검 삭제 -->
 	<delete id="deleteTest" parameterType="Integer">
-	
+	DELETE test
+	WHERE test_no = #{testNo}
 	</delete>
-	
-	<!-- 점검 삭제 시 번호 정렬 update문-->
+
+	<!-- 점검 삭제 시 번호 정렬 update문 -->
 	<update id="updateDeleteTestNo" parameterType="Integer">
-	
+	UPDATE TEST
+	SET TEST_NO = TEST_NO-1
+	WHERE TEST_NO <![CDATA[>]]> #{testNo}
 	</update>
-	
+
 	<!-- 입력될 점검 번호 조회 -->
 	<select id="getTestNo" resultType="equipVO">
-		SELECT NVL(MAX(TEST_no),0) + 1 AS TEST_NO
+		SELECT NVL(MAX(TEST_no),0) + 1
+		AS TEST_NO
 		FROM TEST
 	</select>
-	
-	<!-- 완료 안된 점검 리스트 조회 -->
-	<select id="getIncompleteTestList" resultType="equipVO">
-		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
-				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
-				,(select code_name from code where code_no = t.test_code ) AS test_code_name
-		FROM equip e, test t
-		where e.equip_no = t.test_equip_no 
-		AND test_code!='A0103'
-		ORDER BY TEST_NO DESC
-	</select>
-	
-	<!-- 완료된 점검 리스트 조회 -->
-	<select id="getCompleteTestList" resultType="equipVO">
-		SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
-				, t.test_due_date, t.test_date, t.test_reason, t.test_content, t.test_yn
-				,(select code_name from code where code_no = t.test_code ) AS test_code_name
-		FROM equip e, test t
-		where e.equip_no = t.test_equip_no 
-		AND test_yn='Y'
-		ORDER BY TEST_NO DESC
-	</select>
-	
-<!-- ############################################################################################  -->
-																					<!-- 고장  -->
-	<!-- 고장 리스트 -->
+
+
+
+	<!-- ############################################################################################ -->
+	<!-- 고장 -->
+	<!-- 전체 고장 리스트 -->
 	<select id="getFailList" resultType="equipVO">
-		SELECT f.fail_no, f.fail_equip_no, e.equip_name as fail_equip_name
-				,f.fail_date, f.fail_content, f.fail_repair_yn
-				,(select code_name from code where code_no = f.fail_code) as fail_code
-		FROM equip e, FAIL f
-		where e.equip_no = f.fail_equip_no 
+		SELECT f.fail_no,
+		f.fail_equip_no, e.equip_name as fail_equip_name
+		,f.fail_date,
+		f.fail_content, f.fail_repair_yn
+		,(select code_name from code where
+		code_no = f.fail_code) as fail_code
+		FROM
+		equip e, FAIL f
+		where e.equip_no
+		= f.fail_equip_no
 		ORDER BY fail_no DESC
 	</select>
-	
-	<!-- 고장 단건 조회-->
-	<select id="getFailInfo" parameterType="Integer" resultType="equipVO">
-		 SELECT fail_no, fail_content, fail_date, fail_repair_date
-		 		,(select equip_name from equip where equip_no = #{failEquipNo}) AS fail_equip_name
-			    , fail_repair_yn, find_code_name(fail_code) AS fail_code
-		   FROM fail
-		  Where fail_no= #{failNo}
+
+	<!-- 수리 안된 고장 리스트 조회 -->
+	<select id="getIncompleteFailList" resultType="equipVO">
+		SELECT f.fail_no,
+		f.fail_equip_no, e.equip_name as fail_equip_name
+		,f.fail_date,
+		f.fail_content, f.fail_repair_yn
+		,(select code_name from code where
+		code_no = f.fail_code) as fail_code
+		FROM
+		equip e, FAIL f
+		where e.equip_no
+		= f.fail_equip_no
+		and f.fail_repair_yn
+		= 'N'
+		ORDER BY fail_no DESC
 	</select>
-	
+
+	<!-- 수리 완료된 고장 리스트 조회 -->
+	<select id="getCompleteFailList" resultType="equipVO">
+		SELECT f.fail_no,
+		f.fail_equip_no, e.equip_name as fail_equip_name
+		,f.fail_date,
+		f.fail_content, f.fail_repair_yn
+		,(select code_name from code where
+		code_no = f.fail_code) as fail_code
+		FROM
+		equip e, FAIL f
+		where e.equip_no
+		= f.fail_equip_no
+		and f.fail_repair_yn
+		= 'Y'
+		ORDER BY fail_no DESC
+	</select>
+
+	<!-- 고장 단건 조회 -->
+	<select id="getFailInfo" parameterType="Integer"
+		resultType="equipVO">
+		SELECT fail_no, fail_content, fail_date, fail_repair_date
+		,(select equip_name from equip where equip_no = #{failEquipNo}) AS
+		fail_equip_name
+		, fail_repair_yn, find_code_name(fail_code) AS
+		fail_code
+		FROM fail
+		Where fail_no= #{failNo}
+	</select>
+
 	<!-- 고장 등록 -->
 	<insert id="insertFail" parameterType="equipVO">
-		 	  INSERT INTO fail ( fail_no
-								,fail_equip_no
-								,fail_content
-		                        ,fail_date
-		                        ,fail_repair_yn
-		                        ,fail_code
-								)
-		        		values ( #{failNo}
-						        ,(SELECT equip_no
-							      FROM equip
-							      WHERE equip_name = #{failEquipName})
-						        ,#{failContent}
-						        ,#{failDate}
-						        ,'N'
-						        ,'A0101')
+		INSERT INTO fail ( fail_no
+		,fail_equip_no
+		,fail_content
+		,fail_date
+		,fail_repair_yn
+		,fail_code
+		)
+		values
+		( #{failNo}
+		,(SELECT equip_no
+		FROM equip
+		WHERE equip_name =
+		#{failEquipName})
+		,#{failContent}
+		,#{failDate}
+		,'N'
+		,'A0101')
 	</insert>
-	
+
 	<!-- 고장 수정 -->
 	<update id="updateFail" parameterType="equipVO">
 	</update>
-	
+
 	<!-- 고장 삭제 -->
 	<delete id="deleteFail" parameterType="Integer">
 		DELETE FAIL
-		WHERE FAIL_NO = #{failNo}
+		WHERE FAIL_NO =
+		#{failNo}
 	</delete>
-	
-	<!-- 고장 삭제 시 번호 정렬 update문-->
+
+	<!-- 고장 삭제 시 번호 정렬 update문 -->
 	<update id="updateDeleteFailNo" parameterType="Integer">
 		UPDATE FAIL
 		SET fail_no = fail_no-1
-		WHERE fail_no <![CDATA[>]]> #{failNo}
+		WHERE fail_no <![CDATA[>]]>
+		#{failNo}
 	</update>
-	
+
 	<!-- 입력될 고장 번호 조회 -->
 	<select id="getFailNo" resultType="equipVO">
-		SELECT NVL(MAX(fail_no),0) + 1 AS FAIL_NO
+		SELECT NVL(MAX(fail_no),0) + 1
+		AS FAIL_NO
 		FROM FAIL
 	</select>
-	
-<!-- ############################################################################################  -->
+
+	<!-- ############################################################################################ -->
 
 	<update id="updateEquipState">
-	UPDATE equip SET equip_state = (SELECT CASE WHEN equip_state = 'I0101' THEN 'I0103' ELSE 'I0101' END FROM equip WHERE equip_no = #{equipNo}) WHERE equip_no = #{equipNo}
+		UPDATE equip SET equip_state = (SELECT CASE WHEN
+		equip_state = 'I0101' THEN
+		'I0103' ELSE 'I0101' END FROM equip WHERE
+		equip_no = #{equipNo}) WHERE
+		equip_no = #{equipNo}
 	</update>
-	
-		<!-- 설비 시간 등록 -->
+
+	<!-- 설비 시간 등록 -->
 	<insert id="insertEquipTime">
-	INSERT INTO equip_time(time_equip_no) VALUES(#{equipNo})
+		INSERT INTO equip_time(time_equip_no)
+		VALUES(#{equipNo})
 	</insert>
-	
+
 	<update id="updateEquipTime">
-	UPDATE equip_time SET time_end_date = sysdate WHERE time_end_date IS NULL AND time_equip_no = #{equipNo} AND time_start_date IS NOT NULL
+		UPDATE equip_time SET time_end_date = sysdate WHERE
+		time_end_date IS NULL
+		AND time_equip_no = #{equipNo} AND
+		time_start_date IS NOT NULL
 	</update>
-	
+
 	<select id="getEquipTime" resultType="Integer">
-SELECT NVL(SUM(NVL(ROUND((TO_DATE(time_end_date, 'YYYY-MM-DD HH24:MI:SS') 
-            - TO_DATE(time_start_date, 'YYYY-MM-DD HH24:MI:SS'))*24+(TO_CHAR(time_end_date, 'HH24')-TO_CHAR(time_start_date, 'HH24')), 2),0)),0) AS equip_time FROM equip_time WHERE time_equip_no = #{equipNo} AND time_end_date IS NOT NULL AND time_start_date IS NOT NULL
+		SELECT
+		NVL(SUM(NVL(ROUND((TO_DATE(time_end_date, 'YYYY-MM-DD HH24:MI:SS')
+		-
+		TO_DATE(time_start_date, 'YYYY-MM-DD
+		HH24:MI:SS'))*24+(TO_CHAR(time_end_date,
+		'HH24')-TO_CHAR(time_start_date, 'HH24')), 2),0)),0) AS equip_time
+		FROM equip_time WHERE time_equip_no = #{equipNo} AND time_end_date IS
+		NOT NULL AND time_start_date IS NOT NULL
 	</select>
+
+	<update id="doWork" parameterType="equipVO">
+		UPDATE equip SET equip_state =
+		'I0101' WHERE equip_no = #{equipNo}
+	</update>
+
+	<select id="getDoEquipNo" resultType="equipVO">
+
+		SELECT MIN(time_equip_no) as equip_no FROM (SELECT ROUND(SUM(time_end_date -
+		time_start_date)*24) as time, time_equip_no FROM equip_time t JOIN
+		equip e ON e.equip_no = t.time_equip_no WHERE equip_process=#{proNo} GROUP BY
+		time_equip_no ORDER BY time_equip_no) WHERE time = (SELECT
+		MIN(ROUND(SUM(time_end_date - time_start_date)*24)) FROM equip e JOIN
+		equip_time t ON e.equip_no = t.time_equip_no WHERE equip_process=#{proNo} AND
+		equip_state = 'I0103' GROUP BY time_equip_no)
+	</select>
+
+	<update id="stopWork" parameterType="equipVO">
+		UPDATE equip SET equip_state
+		= 'I0103' WHERE equip_no = #{equipNo}
+	</update>
+
+	<select id="getStopEquipNo" resultType="equipVO">
+		SELECT * FROM equip WHERE equip_process=#{proNo}
+	</select>
+
 </mapper>

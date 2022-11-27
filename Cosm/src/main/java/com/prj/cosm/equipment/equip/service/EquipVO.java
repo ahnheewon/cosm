@@ -73,7 +73,7 @@ public class EquipVO {
 	private Date testDueDate;
 	private String testCode;
 	
-	private String testCodeName;
+	private String testCodeName; // 코드진행상황 업데이트용 변수
 	private String tCode; // 코드진행상황 업데이트용 변수
 	
 	// 고장관련
@@ -93,7 +93,7 @@ public class EquipVO {
 	private String failRepairContent; // 수리내역
 	private String failEffect; //안쓸예정
 	private String failCode;
-	
+
 	
 	// 공통코드
 	

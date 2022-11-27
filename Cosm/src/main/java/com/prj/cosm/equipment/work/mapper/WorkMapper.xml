@@ -8,7 +8,7 @@
  																					<!-- 공사 -->	
 	
 	<!-- 공사 전체 리스트 -->
-	<select id="getWorkList" resultType="workVO">
+	<select id="getWorkAllList" resultType="workVO">
 		SELECT w.work_no, w.work_equip_no, e.equip_name AS work_equip_name, 
 			   w.work_name, w.work_content, w.work_company, w.work_pay,
 			    w.work_date, w.work_end_date, w.work_ps
@@ -21,6 +21,80 @@
 		ORDER BY work_no DESC
 	</select>
 	
+	<!-- 완료 안된 공사 리스트 조회 -->
+	<select id="getIncompleteWorkList" resultType="workVO">
+	SELECT w.work_no, w.work_equip_no, e.equip_name AS work_equip_name, 
+			   w.work_name, w.work_content, w.work_company, w.work_pay,
+			    w.work_date, w.work_end_date, w.work_ps
+			  ,(select code_name from code where code_no = w.work_code) AS work_code
+			  ,s.sign_emp_no, s.sign_seq, s.sign_date
+			  ,(select code_name from code where code_no = s.sign_code) AS sign_code 
+		FROM equip e, work w, work_sign s
+		where e.equip_no = w.work_equip_no
+		and w.work_no = s.sign_work_no
+        and sign_seq != 4
+		ORDER BY work_no DESC
+	</select>
+	
+	<!-- SEQ 1 공사 리스트 조회 -->
+	<select id="getIncompleteWork1" resultType="workVO">
+	SELECT w.work_no, w.work_equip_no, e.equip_name AS work_equip_name, 
+			   w.work_name, w.work_content, w.work_company, w.work_pay,
+			    w.work_date, w.work_end_date, w.work_ps
+			  ,(select code_name from code where code_no = w.work_code) AS work_code
+			  ,s.sign_emp_no, s.sign_seq, s.sign_date
+			  ,(select code_name from code where code_no = s.sign_code) AS sign_code 
+		FROM equip e, work w, work_sign s
+		where e.equip_no = w.work_equip_no
+		and w.work_no = s.sign_work_no
+        and sign_seq = 1
+		ORDER BY work_no DESC
+	</select>
+	
+	<!-- SEQ 2 공사 리스트 조회 -->
+	<select id="getIncompleteWork2" resultType="workVO">
+	SELECT w.work_no, w.work_equip_no, e.equip_name AS work_equip_name, 
+			   w.work_name, w.work_content, w.work_company, w.work_pay,
+			    w.work_date, w.work_end_date, w.work_ps
+			  ,(select code_name from code where code_no = w.work_code) AS work_code
+			  ,s.sign_emp_no, s.sign_seq, s.sign_date
+			  ,(select code_name from code where code_no = s.sign_code) AS sign_code 
+		FROM equip e, work w, work_sign s
+		where e.equip_no = w.work_equip_no
+		and w.work_no = s.sign_work_no
+        and sign_seq = 2
+		ORDER BY work_no DESC
+	</select>
+	
+	<!-- SEQ 3 공사 리스트 조회 -->
+	<select id="getIncompleteWork3" resultType="workVO">
+	SELECT w.work_no, w.work_equip_no, e.equip_name AS work_equip_name, 
+			   w.work_name, w.work_content, w.work_company, w.work_pay,
+			    w.work_date, w.work_end_date, w.work_ps
+			  ,(select code_name from code where code_no = w.work_code) AS work_code
+			  ,s.sign_emp_no, s.sign_seq, s.sign_date
+			  ,(select code_name from code where code_no = s.sign_code) AS sign_code 
+		FROM equip e, work w, work_sign s
+		where e.equip_no = w.work_equip_no
+		and w.work_no = s.sign_work_no
+        and sign_seq = 3
+		ORDER BY work_no DESC
+	</select>
+	
+	<!-- 완료된 공사 리스트 조회 -->
+	<select id="getCompleteWorkList" resultType="workVO">
+		SELECT w.work_no, w.work_equip_no, e.equip_name AS work_equip_name, 
+			   w.work_name, w.work_content, w.work_company, w.work_pay,
+			    w.work_date, w.work_end_date, w.work_ps
+			  ,(select code_name from code where code_no = w.work_code) AS work_code
+			  ,s.sign_emp_no, s.sign_seq, s.sign_date
+			  ,(select code_name from code where code_no = s.sign_code) AS sign_code 
+		FROM equip e, work w, work_sign s
+		where e.equip_no = w.work_equip_no
+		and w.work_no = s.sign_work_no
+        and sign_seq = 4
+		ORDER BY work_no DESC
+	</select>
 
 	<!-- 공사 등록 -->
 	<insert id="insertWork" parameterType="workVO">
@@ -60,7 +134,7 @@
 								)
 						 values (#{workNo}
 							   ,(select users_no from users where users_id = #{usersId})
-							   ,2 <!-- 결재 되는 순서대로 (사원)1,2,3,4 -->
+							   ,1 <!-- 결재 되는 순서대로 (사원)1,2,3,4 -->
 							   ,SYSDATE
 							   ,'C0101'
 							   )
@@ -72,36 +146,66 @@
 		FROM WORK
 	</select>
 
-	<!-- 공사 단건조회 미완료 -->
+	<!-- 공사 단건 조회-->
 	<select id="getWorkInfo" parameterType="Integer" resultType="workVO">
-		SELECT work_no,work_name,(select equip_name from equip where equip_no=#{workEquipNo}) AS work_equip_name
-			   ,work_content, work_pay,work_ps, work_company, work_date, work_end_date
-		FROM work
-		Where work_no= #{workNo}
+		SELECT w.work_no,w.work_name,(select equip_name from equip where equip_no=#{workEquipNo}) AS work_equip_name
+			   ,w.work_content, w.work_pay,work_ps, w.work_company, w.work_date, w.work_end_date
+			   ,(select code_name from code where code_no=u.users_author) as position
+               ,s.sign_emp_no,s.sign_seq,u.users_name, u.users_author,s.sign_code
+		FROM work w, work_sign s, users u
+		where w.work_no = s.sign_work_no
+		and s.sign_emp_no = u.users_no
+		and work_no=#{workNo}
 	</select>
 	
 	<!-- 공사 수정 미완료 -->
 	<update id="updateWork" parameterType="workVO">
 	UPDATE work
 	<set>
-		<if test="equipName !=null and !equipName.equals('')">
-		equip_name = #{equipName},
-		</if>
-		<if test="equipType !=null and !equipType.equals('')">
-		equip_type = #{equipType},
-		</if>
-		<if test="equipStdVibe !=null">
-		equip_std_vibe = #{equipStdVibe},
-		</if>
-		<if test="equipStdTemp !=null">
-		equip_std_temp = #{equipStdTemp},
-		</if>
-		<if test="equipPurpose !=null and !equipPurpose.equals('')">
-		equip_purpose = #{equipPurpose}
+		<if test="workName !=null and !workName.equals('')">
+		work_name = #{workName},
+		</if>									
+		<if test="workEquipName !=null and !workEquipName.equals('')">
+		work_equip_no = (select equip_no from equip where equip_name = #{workEquipName}),
+		</if>									
+		<if test="workContent !=null and !workContent.equals('')">
+		work_content = #{workContent},
+		</if>									
+		<if test="workCompany !=null and !workCompany.equals('')">
+		work_company = #{workCompany},
+		</if>									
+		<if test="workPs !=null and !workPs.equals('')">
+		work_ps = #{workPs},
+		</if>									
+		<if test="workPay !=null">
+		work_pay = #{workPay},
 		</if>									
 	</set>
-		WHERE equip_no = #{equipNo}
+	WHERE work_no = #{workNo}
 	
+	</update>
+	
+	<!-- 공사 결재 승인 seq + 1 -->
+	<update id="updateSignSeq" parameterType="workVO">
+	 update work_sign
+		 <set>
+			  <if test="signSeq == 3">
+			     sign_code = 'C0102',
+			  </if>
+		  	  sign_seq = sign_seq + 1
+		 </set>
+     where sign_work_no = #{workNo}
+	</update>
+	
+	<!-- 공사 승인후 시공대기중으로 코드변경 -->
+	<update id="updateWorkCode" parameterType="workVO">
+	 update work
+		 <set>
+			  <if test="signSeq == 3">
+			     work_code = 'B0101',
+			  </if>
+		 </set>
+     where work_no = #{workNo}
 	</update>
 	
 	<!-- 공사 삭제 -->
@@ -130,7 +234,7 @@
 	WHERE sign_work_no <![CDATA[>]]> #{workNo}
 	</update>
 	
-
+	
 	
 	
 <!-- ############################################################################################  -->

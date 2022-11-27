@@ -151,7 +151,7 @@
 						</a>
 					</div>
 				</div>
-				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0108')">
+				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0107')||hasRole('ROLE_D0108')">
 					<div class="nav">
 						<div class="sb-sidenav-menu-heading">Core</div>
 						<a class="nav-link" href="/equipment/main">
@@ -543,7 +543,7 @@
 
 			if (`[[${session.usersAuthor}]]` != null) {
 				getAlertList();
-				setInterval(getAlertList, 1000);
+				//setInterval(getAlertList, 1000);
 			}
 
 			function getAlertList() {
