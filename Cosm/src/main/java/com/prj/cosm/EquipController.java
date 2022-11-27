@@ -390,7 +390,7 @@ public class EquipController {
 				int result = wService.deleteWork(workNo);
 					result = result + wService.updateDeleteSignNo(workNo); //삭제 후 번호 정렬
 					result = result + wService.updateDeleteWorkNo(workNo); //삭제 후 번호 정렬
-			return result;
+			return result;	
 		}
 		
 		/*
