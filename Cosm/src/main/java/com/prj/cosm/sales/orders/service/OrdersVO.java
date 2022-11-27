@@ -14,12 +14,11 @@ public class OrdersVO {
 //고객 주문정보
 	/*	
 		ORDER_NO
-		PRODUCT_NO
+		GOODS_NO
 		ORDER_DATE
 		DELIVERY_DATE
 		TOTAL_NUM
 		PRO_PRICE
-		SURTAX
 		NOTE
 		ORDER_CODE
 		ORDER_PROGRESS_CODE
@@ -27,10 +26,12 @@ public class OrdersVO {
 		IO_CODE
 		TOTAL_PRICE
 		USERS_NO
+		surtax
 	*/
 
 		private String orderNo; 			//주문번호
-		private String productNo; 			//제품번호
+		private String goodsNo; 			//제품번호
+		private String goodsName; 			//제품명
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		private Date orderDate; 			//주문일자  
@@ -38,7 +39,7 @@ public class OrdersVO {
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		private Date deliveryDate; 			//납기일자 
 		private int totalNum; 				//수량 
-		private int proPrice; 			//공급가액(부가세 제외한 금액)
+		private int proPrice; 				//공급가액(부가세 제외한 금액)
 		private int surtax;					//부가세 
 		private String note; 				//비고(요청사항)
 		private String orderCode; 			//코드번호- 주문타입

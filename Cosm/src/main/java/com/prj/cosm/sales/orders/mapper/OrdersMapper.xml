@@ -11,11 +11,16 @@
 
 
 	<!-- 주문 전체조회 -->
+	<!-- select o.order_no, o.order_date, o.delivery_date, o.total_num, o.pro_price, 
+		o.surtax, o.note, find_code_no(o.order_code) as order_code , o.delivery_info, 
+		o.io_code, g.goods_no, g.goods_name, c.users_no from orders o JOIN produce_goods 
+		g on o.goods_no = g.goods_no JOIN client c on o.users_no = c.users_no -->
 	<select id="getOrderList" resultType="OrdersVO">
-		select * from orders
-		ORDER
-		BY
-		order_no
+		select ORDER_NO, GOODS_NO, ORDER_DATE, DELIVERY_DATE, TOTAL_NUM, PRO_PRICE,
+		NOTE, find_code_no(order_code) as order_code, ORDER_PROGRESS_CODE,
+		DELIVERY_INFO,
+		IO_CODE, TOTAL_PRICE, USERS_NO, SURTAX from orders
+
 	</select>
 
 
@@ -32,47 +37,36 @@
 	<!-- 주문 등록 -->
 	<!-- ORDER_CODE - 신규,불량,재주문 추가하기 -->
 	<insert id="insertOrder" parameterType="OrdersVO">
-	<!-- selectKey는 없는 정보만 들고올 때 
+
 		<selectKey order="BEFORE" keyProperty="orderNo"
 			resultType="String">
 			<if test="orderNo == null"> SELECT 'COO_' ||
 				LPAD(NVL(MAX(SUBSTR(order_no,-4)),0)+1,4,0)
-				FROM orders WHERE order_no LIKE 'COO_'||TO_CHAR(SYSDATE,'rrrr')||'%'
-			</if>
-			<if test="productNo">
+				FROM orders
 			</if>
 		</selectKey>
-	-->
-	<!--  
-	ORDER_NO,
-		PRODUCT_NO,
-		ORDER_DATE,
-		DELIVERY_DATE,
-		TOTAL_NUM,
-		PRO_PRICE,
-		SURTAX,
-		NOTE,
-		ORDER_CODE,
-		ORDER_PROGRESS_CODE,
-		DELIVERY_INFO,
-		IO_CODE,
-		TOTAL_PRICE,
-		USERS_NO
-		 -->
+
 		INSERT INTO orders (
 		ORDER_NO,
-		product_no,
-		total_num,
-		note,
-		total_price
+		GOODS_NO,
+		DELIVERY_DATE,
+		TOTAL_NUM,
+		NOTE,
+		TOTAL_PRICE,
+		USERS_NO
 		)
 		values (
-
 		#{orderNo},
-		#{productNo},
+		(select GOODS_NO
+		from
+		produce_goods where GOODS_NAME=#{goodsName}),
+		#{deliveryDate},
 		#{totalNum},
 		#{note},
-		#{totalPrice}
+		#{totalPrice},
+		(select users_no
+		from users where
+		users_no=#{usersNo})
 		)
 	</insert>
 
@@ -92,7 +86,7 @@
 	<!-- 생산 접수 버튼 이벤트 -->
 	<!-- recNos값 하나만 들고와줘서 주기만 하면됨 -->
 	<update id="recNos">
-		UPDATE orders SET ORDER_CODE = '접수' WHERE order_no IN
+		UPDATE orders SET ORDER_CODE = 'B0107' WHERE order_no IN
 		<foreach collection="vo" item="recNos" open="(" close=")"
 			separator=",">
 			#{recNos.orderNo}

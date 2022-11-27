@@ -5,148 +5,137 @@
 	layout:decorate="~{/layout/layout}">
 
 <head>
-<meta name="_csrf" th:content="${_csrf.token}">
-<meta name="_csrf_header" th:content="${_csrf.headerName}">
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sales main</title>
-
-
+<title>insert orders main</title>
 <body>
 	<div layout:fragment="content">
 
-	
-			<div style="width: 40%; position: relative; top: 50px;">
+
+		<div style="width: 40%; position: relative; top: 50px;">
 			<!-- onsubmit="return formOption" -->
-			<form id="insertFrm" action="/orders/insertOrderData" method="post" >
-				<h2>주문등록</h2>	<input type="hidden" th:name="${_csrf.parameterName}"
+			<form id="insertFrm" action="/orders/insertOrderData" method="post">
+				<h2>주문등록</h2>
+				<input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}" />
 				<table id="table">
 					<tbody>
 						
-						<tr>
-							<th>주문번호</th>
-							<td><input type="text" id="orderNo" name="orderNo"></td>
-						</tr>
 						
 						<tr>
-							<th>제품명 - 선택하고 넘어오니까 readonly할 예정</th>
-							<td><input type="text" id=productNo name="productNo"></td>
+							<th>제품명</th>
+							<td><input type="text" id="goodsName" name="goodsName"
+								value="TPA502" readonly="readonly"></td>
 						</tr>
-						
-						
+						<tr>
+							<th>납기일자</th>
+							<td><input type="date" id=deliveryDate name="deliveryDate"></td>
+						</tr>
 						<tr>
 							<th>수량</th>
 							<td><input type="number" id="totalNum" name="totalNum"></td>
 						</tr>
+
+						<tr>
+							<th>비고</th>
+							<td><input type="text" id="note" name="note"></td>
+						</tr>
+
 						<tr>
 							<th>총금액</th>
 							<td><input type="number" id="totalPrice" name="totalPrice"></td>
-
 						</tr>
-						<tr>
-							<th>요청사항</th>
-							<td><input id="note" name="note" type="text">
-							<!-- html의 name과 vo의 필드명 다르게 써야함 --></td>
-							
-							<!-- 
-							 <td><input type="text" id="licenseImg" name="licenseImg" ></td>
-							 -->
-						</tr>
-
 					</tbody>
 				</table>
 				<hr>
-				<button type="submit" class="btn btn-primary" onclick="insertOrderForm()" >주문</button>
-				<!--  onclick="insertOrderForm()" -->
+				<button type="submit" class="btn btn-primary"
+					onclick="insertOrderForm()">주문</button>
 				<button type="button" class="btn btn-secondary"
 					onclick="location.href='/top'">취소</button>
-		</form>
-			</div>
-			<hr>
+				<input type="hidden" id="usersNo" name="usersNo">
+			</form>
+		</div>
+		<hr>
+
+
+
+		<script>
+			$('#usersNo').val('[[${session.usersNo}]]');
+
+			$('#insertOrderForm').on('click', function() {
+				$('#insertFrm').submit();
+			});
+
+			/*
+			var result = 
+			console.log(resutl);
+			$('input[name=uNo]').attr('value'.result);
+			
+			$('#usersNo').change(function() {
+				console.log('#userNo')
+				let result = $('#usersNo').val('[[${session.usersNo}]]');
+				consloe.log("result");
+				$('#uNo').val(result);
+
+			}); */
+
+			/*-----------------
+			주문등록 버튼 클릭이벤트
+			-------------------*/
+
+			//$('#goodsName').change
+			/*-----------------
+			hidden으로 받아올 
+			goodsNo proPrice surtax orderCode 
+			orderProgressCode deliveryInfo ioCode name
+			
+			$('#goodsNo').change(function(){
+			    let str = $('#goodsNo').val();
+			    
+			}) 
+			proPrice 
+			surtax 
+			ioCode 
+			name
+			
+			let goodsNo = document.getElementById('goodsNo');
+			let proPrice = document.getElementById('proPrice');
+			let surtax = document.getElementById('surtax');
+			
+			let orderCode = document.getElementById('orderCode');
+			let orderProgressCode = document
+					.getElementById('orderProgressCode');
+			let deliveryInfo = document.getElementById('deliveryInfo');
+			let ioCode = document.getElementById('ioCode');
+			let name = document.getElementById('name');
 			
 
-		
+			function insertOrder() {
+				
+				$.ajax({
+					url : "/orders/insertOrderAjax",
+					method : "POST",
+					dataType : "JSON",
+					success : function(data) {
+						if (data > 0) {
+							alert("등록완료");
 
-	<script type="text/javascript">
-	
-	const header = $("meta[name='_csrf_header']").attr('content');
-	const token = $("meta[name='_csrf']").attr('content');
+							console.log(data);
 
+						} else {
+							alert("등록실패");
 
-	
-	
-	/* //주문등록
-		$('#inOrder').on('click', function() {
-			$('#insertOrder').submit();
-			// 같은 경로두번 작성시 데이터 안넘어감
-		}); */
+						}
 
-		/*
-		//주문버튼 클릭시 
-		 function insertOrderForm() {
-			console.log($('#totalNum').val())
-			$('#insertOrderForm').submit();
-		} 
-		*/
-		
-		/*
-		//그리드에 등록하면 바로 결과 보여주는 역할
-		function showAll(){
-               
-               fetch("lineList")
-               .then(res=>res.json())
-               .then(obj=>{
-                  lineGrid.resetData(obj);
-               })
-            }
-		*/
-		
-		
-		function chec(){
-			let a = $('#table');
-			console.log('등록페이지 도착 : ',a);
-		}
-		
-		$('#insertOrderForm').on('click', function() {
-			$('#insertFrm').submit();
-		});
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				});
 
-		/*------------
-		 아작스 연결 - 주문등록
-		----------------*/
-		/*
-		 function insertOrderList() {
-			$.ajax({
-				url: "/orders/insertOrderAjax",
-				method: "POST",
-				dataType: "JSON",
-				success:function(data){
-                     if(data > 0) {
-                        alert("등록완료");
-                           
-                        console.log(data);
-                        
-                     } else {
-                        alert("등록실패");
-                        
-                     }
-                 
-				},
-				error: function (reject) {
-					console.log(reject);
-				}
-			});
-		} 
-		*/
-		
-		
-		
-		
-	
-	</script>
+			}
+
+			-------------------*/
+		</script>
 	</div>
 </body>
 </html>
