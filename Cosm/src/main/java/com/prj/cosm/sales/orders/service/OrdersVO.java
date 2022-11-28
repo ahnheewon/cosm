@@ -26,12 +26,14 @@ public class OrdersVO {
 		IO_CODE
 		TOTAL_PRICE
 		USERS_NO
-		surtax
+		SURTAX
+		CLIENT_NAME
 	*/
 
 		private String orderNo; 			//주문번호
 		private String goodsNo; 			//제품번호
 		private String goodsName; 			//제품명
+		private String clientName;			//거래처명
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		private Date orderDate; 			//주문일자  
