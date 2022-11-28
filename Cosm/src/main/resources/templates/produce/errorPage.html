@@ -100,7 +100,13 @@
 				{
 					header: '불량수량',
 					name: 'REGIST_ERROR',
-					align : 'center'
+					align : 'center',
+					renderer : {
+					 	styles: {
+							fontWeight: 'bold',
+							color: (props) => props.value > 0 ? 'red' : 'black'
+						}
+					},
 				},	
 				{
 					header: '등록일자(desc)',
@@ -125,7 +131,13 @@
 					header: '검수여부',
 					name: 'INSPECTION',
 					align : 'center',
-					filter : 'text'
+					filter : 'text',
+					renderer : {
+					 	styles: {
+							fontWeight: 'bold',
+							color: (props) => props.value == '검수완료' ? 'blue' :  props.value == '불량발생' ? 'red' : 'black'
+						}
+					},
 				},	
 				],
 			

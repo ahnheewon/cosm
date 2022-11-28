@@ -4,36 +4,56 @@
 
 <!-- 전체조회(오늘자) -->
 <select id="getRegistList" resultType="map">
-	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, r.code_no, r.inspection
+	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, 
+           c2.code_name as code_no,
+           c1.code_name as inspection 
 	FROM produce_instruct i JOIN produce_regist r
-	ON i.instruct_no = r.regist_instruct_no
+                            ON i.instruct_no = r.regist_instruct_no
+                            JOIN code c1
+                            ON r.inspection = c1.code_no  
+                            JOIN code c2
+                            ON r.code_no = c2.code_no
 	WHERE TO_DATE(r.regist_date,'rrrr-MM-dd') = TO_DATE(sysdate,'rrrr-MM-dd')
 	ORDER BY r.regist_LOT DESC
 </select>
 
 <!-- 전체조회 -->
 <select id="completeList" resultType="map">
-	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, r.code_no, r.inspection
+	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, 
+           c2.code_name as code_no,
+           c1.code_name as inspection 
 	FROM produce_instruct i JOIN produce_regist r
-	ON i.instruct_no = r.regist_instruct_no
+                            ON i.instruct_no = r.regist_instruct_no
+                            JOIN code c1
+                            ON r.inspection = c1.code_no  
+                            JOIN code c2
+                            ON r.code_no = c2.code_no
 	<where>
 	<if test="startDate != null and endDate != null">
 		TRUNC(r.regist_date) BETWEEN #{startDate} AND #{endDate}
 	</if>
 	</where>
 	ORDER BY r.regist_LOT DESC
+	
 </select>
 
 <!-- error 전체조회 -->
 <select id="errorList" resultType="map">
-	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, r.code_no, r.inspection
+	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, 
+           c2.code_name as code_no,
+           c1.code_name as inspection 
 	FROM produce_instruct i JOIN produce_regist r
-	ON i.instruct_no = r.regist_instruct_no
-	WHERE r.regist_error > 0 
+                            ON i.instruct_no = r.regist_instruct_no
+                            JOIN code c1
+                            ON r.inspection = c1.code_no  
+                            JOIN code c2
+                            ON r.code_no = c2.code_no
+	WHERE r.regist_error > 0
 	<if test="startDate != null and endDate != null">
 	AND	TRUNC(r.regist_date) BETWEEN #{startDate} AND #{endDate}
 	</if>
 	ORDER BY r.regist_LOT DESC
+
 </select>
 
 <!-- LOT번호 -->
@@ -69,8 +89,8 @@
 					#{registError},
 					#{registProductNo},
 					#{registInstructNo},
-					#{codeNo},
-					#{inspection}
+					find_code_name(#{codeNo}),
+					find_code_name(#{inspection})
 					)	
 </insert>
 
@@ -81,7 +101,7 @@
 <!-- 진행코드 조회 -->
 <select id="getPlayList" resultType="RegistVO">
 	SELECT code_name FROM code
-	WHERE code_adno = 'A01'
+	WHERE code_adno = 'M01'
 	ORDER BY code_no
 </select>
 <!-- 단위코드 조회 -->
