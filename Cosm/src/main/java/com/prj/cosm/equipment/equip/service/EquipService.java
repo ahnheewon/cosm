@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.prj.cosm.produce.instruct.service.InsVO;
+
 public interface EquipService {
 
 	// 설비 
@@ -47,7 +49,8 @@ public interface EquipService {
 				
 				// 설비 등록하기 전에 현재 적용 공정에 달려있는 설비 갯수 조회
 				public EquipVO getMaxEquipNum(@Param("equipProcess")int equipProcess);
-				public void doWork(int quan);
+				
+				public void doWork(InsVO insVO);
 				
 //===================================================================================================
 	// 공정 
