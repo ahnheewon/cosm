@@ -419,10 +419,7 @@ public class EquipController {
 		public List<PartVO> part(){
 										
 			return pService.getPartList();
-		}
-		
-		// 부품 등록은 따로하지 않고 DB에서 넣습니다.
-		
+		}	
 		
 		// 부품변동 전체 리스트 조회
 		@GetMapping("/equipment/partIOList")

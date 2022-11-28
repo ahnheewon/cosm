@@ -4,13 +4,14 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class PartVO {
-	
+public class PartVO {	
 
 	// 부품
 
@@ -46,5 +47,31 @@ public class PartVO {
 	
 	private Integer equipNo;
 	private String equipName;
+	
+	// 자재
+	
+	private String mNo; // 자재번호
+	private String mName; // 자재명
+
+	private String mCategory; // 분류
+
+	private int mPrice; // 가격
+	private int mStock; // 현재 재고
+
+	private String mUnitCode; // 단위코드
+	private String mUnitNm; // 단위이름(L,Kg...)
+	private String mInfo; // 상세정보
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date mDate; // 최종수정일
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date mRegDate; // 등록일자
+	
+	private Integer totalAmount; // 현재 필요한 재고수량
+	private String orderProgress; // 발주 진행 여부
+	private Long shortage; // 부족 수량
+	private Long totalMoNum; // 발주 수량 합계
 
 }

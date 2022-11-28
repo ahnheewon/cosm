@@ -32,9 +32,6 @@
 			        </div>
 			        		
 			  </div>
-		  
-	
-
 
 
 <script type="text/javascript">
@@ -46,35 +43,34 @@
 
 
 /*  부품 그리드  */	
-	const part = new tui.Grid({
+	const partGrid = new tui.Grid({
 			    el: document.querySelector('#part'),
 			    pagination:true,
 				pageOptions: {
 					useClient: true,
-					perPage: 4
+					perPage: 10
 				},
-				
 			    columns: [
 			    {
 			        header: '부품번호',
-			        name: 'partNo'
+			        name: 'mno'
 			    },
 			    {
 			        header: '부품명',
-			        name: 'partName'
+			        name: 'mname'
 			    },
 			    {
 			        header: '부품수량',
-			        name: 'partAmount'
-			    },
-			    {
+			        name: 'mstock'
+			    }
+			/*  ,{
 			        header: '적용설비',
 			        name: 'partEquipName'
-			    }
+			    } */
 			    ]
 			});
 
-	/* 부품 리스트 불러오는 아작스 */
+/* 부품 리스트 불러오는 아작스 */
 
 	url="/equipment/partList"
 	fetch(url) 
