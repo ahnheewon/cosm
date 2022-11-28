@@ -16,11 +16,21 @@
 		o.io_code, g.goods_no, g.goods_name, c.users_no from orders o JOIN produce_goods 
 		g on o.goods_no = g.goods_no JOIN client c on o.users_no = c.users_no -->
 	<select id="getOrderList" resultType="OrdersVO">
-		select ORDER_NO, GOODS_NO, ORDER_DATE, DELIVERY_DATE, TOTAL_NUM, PRO_PRICE,
-		NOTE, find_code_no(order_code) as order_code, ORDER_PROGRESS_CODE,
-		DELIVERY_INFO,
-		IO_CODE, TOTAL_PRICE, USERS_NO, SURTAX from orders
-
+		select ORDER_NO, 
+				GOODS_NO, 
+				ORDER_DATE, 
+				DELIVERY_DATE, 
+				TOTAL_NUM, 
+				PRO_PRICE,
+				NOTE, 
+				find_code_no(order_code) as order_code, 
+				ORDER_PROGRESS_CODE,
+				DELIVERY_INFO,
+				IO_CODE, 
+				TOTAL_PRICE, 
+				USERS_NO, 
+				SURTAX 
+		from orders
 	</select>
 
 
@@ -45,28 +55,24 @@
 				FROM orders
 			</if>
 		</selectKey>
-
 		INSERT INTO orders (
 		ORDER_NO,
 		GOODS_NO,
+		CLIENT_NAME,
 		DELIVERY_DATE,
 		TOTAL_NUM,
 		NOTE,
-		TOTAL_PRICE,
-		USERS_NO
+		TOTAL_PRICE
 		)
 		values (
 		#{orderNo},
-		(select GOODS_NO
-		from
-		produce_goods where GOODS_NAME=#{goodsName}),
+		(select GOODS_NO from produce_goods where GOODS_NAME=#{goodsName}),
+		(select USERS_NO from client where client_name=#{clientName}),
 		#{deliveryDate},
 		#{totalNum},
 		#{note},
-		#{totalPrice},
-		(select users_no
-		from users where
-		users_no=#{usersNo})
+		#{totalPrice}
+		
 		)
 	</insert>
 
