@@ -88,9 +88,7 @@
 			<div class="col-md-4">
 				<label for="inputState" class="form-label">검수여부</label> <select
 					id="inputState" name="inspection" class="form-select">
-					<option selected>완료</option>
-					<option>미완료</option>
-					<option>보류</option>
+					<option th:each="playNo : ${playNo}">[[${playNo.codeName}]]</option>
 				</select>
 			</div>
 
@@ -309,7 +307,7 @@
 					renderer : {
 					 	styles: {
 							fontWeight: 'bold',
-							color: (props) => props.value == '완료' ? 'blue' :  props.value == '미완료' ? 'red' : 'black'
+							color: (props) => props.value == '검수완료' ? 'blue' :  props.value == '불량발생' ? 'red' : 'black'
 						}
 					},
 				},	
