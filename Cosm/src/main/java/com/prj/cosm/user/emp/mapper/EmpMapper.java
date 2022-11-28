@@ -33,4 +33,6 @@ public interface EmpMapper {
 	// 개인정보 비밀번호 확인
 	public String userConfirm(EmpVO vo);
 
+	public List<EmpVO> getReceiveUsers(String usersAuthor);
+
 }

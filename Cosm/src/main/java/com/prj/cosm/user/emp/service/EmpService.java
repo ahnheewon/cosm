@@ -30,5 +30,7 @@ public interface EmpService {
 	
 	// 개인정보 비밀번호 확인
 	public int userConfirm(EmpVO vo);
+	
+	public List<EmpVO> getReceiveUsers(String usersAuthor);
 }
 

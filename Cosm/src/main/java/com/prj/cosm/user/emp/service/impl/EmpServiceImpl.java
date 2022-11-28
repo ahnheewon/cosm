@@ -74,4 +74,9 @@ public class EmpServiceImpl implements EmpService {
 		return result;
 	}
 
+	@Override
+	public List<EmpVO> getReceiveUsers(String usersAuthor) {
+		return mapper.getReceiveUsers(usersAuthor);
+	}
+
 }

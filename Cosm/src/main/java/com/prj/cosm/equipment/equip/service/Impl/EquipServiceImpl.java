@@ -11,22 +11,27 @@ import org.springframework.stereotype.Service;
 import com.prj.cosm.equipment.equip.mapper.EquipMapper;
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
-import com.prj.cosm.produce.instruct.service.InsService;
+import com.prj.cosm.produce.instruct.mapper.InsMapper;
 import com.prj.cosm.produce.instruct.service.InsVO;
-import com.prj.cosm.user.alert.service.AlertService;
+import com.prj.cosm.user.alert.mapper.AlertMapper;
 import com.prj.cosm.user.alert.service.AlertVO;
+import com.prj.cosm.user.emp.mapper.EmpMapper;
+import com.prj.cosm.user.emp.service.EmpVO;
 
 @Service
 public class EquipServiceImpl implements EquipService {
 
 	@Autowired
 	EquipMapper mapper;
-	
+
 	@Autowired
-	AlertService aService;
-	
+	AlertMapper aMapper;
+
 	@Autowired
-	InsService insService;
+	InsMapper insMapper;
+
+	@Autowired
+	EmpMapper eMapper;
 //============================================================================================================================
 
 	// 설비
@@ -85,8 +90,6 @@ public class EquipServiceImpl implements EquipService {
 
 		return mapper.getEquipProcess();
 	}
-	
-	
 
 //============================================================================================================================
 
@@ -142,10 +145,10 @@ public class EquipServiceImpl implements EquipService {
 
 		return mapper.updateDeleteEquipProcess(equipProcess);
 	}
-	
+
 	@Override
 	public EquipVO getMaxEquipNum(int equipProcess) {
-		
+
 		return mapper.getMaxEquipNum(equipProcess);
 	}
 
@@ -154,7 +157,7 @@ public class EquipServiceImpl implements EquipService {
 		EquipVO vo = new EquipVO();
 		List<EquipVO> list = new ArrayList<>();
 		vo = mapper.getDoEquipNo(1);
-		if(vo==null || vo.getEquipNo()==null) {
+		if (vo == null || vo.getEquipNo() == null) {
 			return;
 		}
 		mapper.doWork(vo);
@@ -241,15 +244,16 @@ public class EquipServiceImpl implements EquipService {
 			mapper.stopWork(evo);
 			mapper.updateEquipTime(evo.getEquipNo());
 		}
-		
-		AlertVO aVO = new AlertVO();
-		
-		aVO.setAlertContent("생산이 완료되었습니다");
-		aVO.setAlertSend("D0101");
-		aVO.setAlertReceive("D0101");
-		aService.insertAlert(aVO);
-		
-		insService.updateInsPlay(insVO);
+
+		List<EmpVO> eList = new ArrayList<>();
+		eList = eMapper.getReceiveUsers("D0107");
+		for (EmpVO eVO : eList) {
+			AlertVO aVO = new AlertVO();
+			aVO.setAlertContent("생산이 완료되었습니다");
+			aVO.setAlertReceive(eVO.getUsersNo());
+			aMapper.insertAlert(aVO);
+		}
+		insMapper.updateInsPlay(insVO);
 	}
 
 //===================================================================================================
@@ -372,8 +376,5 @@ public class EquipServiceImpl implements EquipService {
 
 		return mapper.getCompleteTestList();
 	}
-
-
-
 
 }
