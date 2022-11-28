@@ -110,7 +110,7 @@ public class MaterialServiceImpl implements MaterialService {
 		// 발주 대기 등록(카트)
 		int result = 0;
 		for (MaterialVO no : mNo) {
-			no.setMoNum(no.getTotalAmount() - (no.getMStock() + no.getTotalMoNum()));
+			no.setMoNum(no.getTotalPlanedQntt() - (no.getMStock() + no.getTotalMoNum()));
 			result += mMapper.insertMcart(no);
 		}
 		return result;
@@ -184,7 +184,7 @@ public class MaterialServiceImpl implements MaterialService {
 		// 발주 확정하기
 		int result = 0;
 		for(MaterialVO vo : mVO) {
-		result += mMapper.orderStart(mVO);
+		result += mMapper.orderStart(vo);
 		}
 		return result;
 	}

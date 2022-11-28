@@ -315,7 +315,10 @@ img {
          }, {
             header : '단가',
             name : 'mprice',
-            align :'center'
+            align :'center',
+            formatter: function(value) {		        	
+                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+            }
          }, {
             header : '단위',
             name : 'munitCode',
@@ -327,19 +330,36 @@ img {
          },{
         	 header : '현재 재고',
              name : 'mstock',
-             align :'center'
+             align :'center',
+             formatter: function(value) {		        	
+	                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	            }
          },{
         	 header : '필요수량',
-             name : 'totalAmount',
-             align :'center'
+             name : 'totalPlanedQntt',
+             align :'center',
+             formatter: function(value) {		        	
+	                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	            }
          },{
         	 header : '발주중인 수량',
              name : 'totalMoNum',
-             align :'center'
+             align :'center',
+             formatter: function(value) {		        	
+	                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	            }
          },{
         	 header : '부족한 수량',
              name : 'shortage',
-             align :'center'
+             align :'center',
+             validation : {
+                 dataType : 'text',
+                 required : true,
+                 max : 1
+              },
+              formatter: function(value) {		        	
+	                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	            }
          }
          
          
@@ -372,17 +392,17 @@ img {
             name : 'mcategory'
          }, {
             header : '자재명',
-            name : 'mname'
+            name : 'mname',
+            filter : {
+            	type:'text',
+            	showClearBtn: true}
          }, {
             header : '현재 재고',
             name : 'mstock'
          }, {
             header : '증감',
             name : 'increase'
-         }, {
-            header : '최종수정일',
-            name : 'mdate'
-         }, {
+         },  {
             header : '입고일자',
             name : 'mioInputDate'
          }, {
@@ -533,7 +553,7 @@ img {
                   if(result == 0)
                 	  {alert('사용 중인 자재로 삭제가 불가능합니다.') }
             	   console.log(result);
-                  mList();
+                   mList();
 
                },
                error : function(reject) {
@@ -644,7 +664,7 @@ img {
 	    	  const search = document.getElementById("searchFilter") //인풋태그
 	    	  const search2 = document.getElementById("searchFilter_2")
 	    	  
-	    	  const state = [{code: 'contain', value: search.value}];
+	    	  const state = [{code: 'contain', value: search.value.toUpperCase()}];
 	    	           
 	    	        if(search.value == ''){   
 	    	           
@@ -661,17 +681,17 @@ img {
 	      
 	      function filter2(){ 
 
-	    	  const search = document.getElementById("searchFilter_2")
+	    	  const search2 = document.getElementById("searchFilter_2")
 	    	  
-	    	  const state = [{code: 'contain', value: search.value}];
+	    	  const state2 = [{code: 'contain', value: search2.value.toUpperCase()}];
 	    	           
-	    	        if(search.value == ''){   
+	    	        if(search2.value == ''){   
 	    	           
 	    	        	mioGrid.unfilter('mname');
 	    	        
 	    	        }else {
 	    	           
-	    	        	mioGrid.filter('mname', state);
+	    	        	mioGrid.filter('mname', state2);
 	    	        }
 	    	        
 	    	  }
