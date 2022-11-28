@@ -246,7 +246,7 @@ public class EquipServiceImpl implements EquipService {
 		}
 
 		List<EmpVO> eList = new ArrayList<>();
-		eList = eMapper.getReceiveUsers("D0107");
+		eList = eMapper.getReceiveUsers("D0105");
 		for (EmpVO eVO : eList) {
 			AlertVO aVO = new AlertVO();
 			aVO.setAlertContent("생산이 완료되었습니다");

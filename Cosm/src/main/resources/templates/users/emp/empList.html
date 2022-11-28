@@ -272,7 +272,7 @@
 				sortable: true,
 				sortingType: 'asc',
 				width: '150',
-				align: 'right',
+				align: 'left',
 				filter: 'text'
 			}, {
 				header: '이름',
@@ -320,7 +320,7 @@
 				sortable: true,
 				sortingType: 'asc',
 				width: '200',
-				align: 'right',
+				align: 'left',
 				filter: 'text'
 			}, {
 				header: '이름',
@@ -394,6 +394,10 @@
 
 		$('#grid span input:checkbox').remove();
 		$('#grid2 span').remove();
+		addEventListener("resize", (event) => {
+			$('#grid span input:checkbox').remove();
+			$('#grid2 span').remove();
+		});
 
 		function getUserList() {
 
