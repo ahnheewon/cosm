@@ -9,9 +9,9 @@
 	
 	<!-- 부품 전체 리스트 -->
 	<select id="getPartList" resultType="partVO">
-		SELECT *
-		FROM PART
-		ORDER BY PART_NO
+		select * from material
+		where m_category = '부품'
+		order by m_no
 	</select>
 	
 	<!-- 부품 단건 조회 -->

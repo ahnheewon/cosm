@@ -58,8 +58,8 @@
 								         		<input type="radio" name="tStatus0" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD;">전체ㅤ
 												<input type="radio" name="tStatus0" value="미완료" onclick="completeChk()" style="accent-color : #0000CD;">미완료ㅤ
 												<input type="radio" name="tStatus0" value="완료" onclick="completeChk()" style="accent-color :#0000CD;">완료
-											     <input onkeyup="filter()" style="float:right;" type="text" 
-											     id="value" placeholder="Type to Search">
+											    <input onkeyup="filter1()" type="text" style="float: right" id="searchFilter"  placeholder="설비명 입력">
+											    <input onchange="filter2()" type="date" style="float: right" id="searchDateFilter">
 											 </div>
 					      				   			   
 	                                       <div id="testGrid">
@@ -103,7 +103,7 @@
 	                              <td>
 	                                 <div style="clear: both; margin: 15px;">  
 	                                 	<div style="padding: 30px;">  
-	                                      <h5>공사 결재 관리</h5>
+	                                      <h5>공사 관리</h5>
 	                                      <div class="searchbox">
 							              <div class="header">
 							         	  <button type="button" class="btn btn-dark btn-sm margin5"
@@ -111,8 +111,7 @@
 										     <input type="radio" class="radio4" name="tStatus2" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD;">전체ㅤ
 											 <input type="radio" class="radio4" name="tStatus2" value="미승인" onclick="completeChk()" style="accent-color : #0000CD;">미승인ㅤ
 											 <input type="radio" class="radio4" name="tStatus2" value="승인완료" onclick="completeChk()" style="accent-color :#0000CD;">승인완료	     
-										     <input onkeyup="filter()" style="float:right;" 
-										     type="text" id="value" placeholder="Type to Search">
+										     
 										  </div>
 				      				      </div>
 	                                         
@@ -644,6 +643,43 @@
 /* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */
 /* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */	
 
+// 설비명
+function filter1(){
+
+        const search = document.getElementById("searchFilter")
+	
+		const state = [{code: 'contain', value: search.value.toUpperCase()}];
+			
+		if(search.value == ''){	
+			
+			testGrid.unfilter('testEquipName');
+		
+		}else {
+			
+			testGrid.filter('testEquipName', state);
+		}
+		
+}
+//날짜 필터
+function filter2(){
+
+        const search = document.getElementById("searchDateFilter")
+		
+		//const sf = document.querySelector('#searchFilter');
+		
+			
+		const state = [{code: 'contain', value: search.value}];
+			
+		if(search.value == ''){	
+			
+			testGrid.unfilter('testDueDate');
+		
+		}else {
+			
+			testGrid.filter('testDueDate', state);
+		}
+		
+}
 
 /* 숫자만 적으세요 그리고 음수는 안돼요 함수 미사용중 */
 
@@ -731,11 +767,13 @@ function test (id){
 			        header: '설비명',
 			        name: 'testEquipName'
 			        ,align : 'center'
+			        ,filter:'text'
 			    },
 			    {
 			        header: '점검예정일',
 			        name: 'testDueDate'
 			        ,align : 'center'
+			        ,filter:'date'
 			    },
 			    {
 			        header: '점검사유',
@@ -1055,7 +1093,7 @@ function deleteTest() {
 			 .then(res=> res.text())
 		     .then(obj=>{
 				console.log(obj);
-				console.log('삭제완료!');
+				
 				location.reload(true);// 새로고침
 		})
  }
@@ -1193,7 +1231,7 @@ function deleteTest() {
 		        name: 'workPay'
 		        ,align : 'right'
 		        ,formatter: function(value) {
-	                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+' 원'; // 3자리 마다 
+	                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+' ₩'; // 3자리 마다 
 	            }
 		    },
 		    {
@@ -1701,6 +1739,14 @@ function completeChk(){ // 전체, 미완료, 완료 라디오박스
 if(`[[${session.usersAuthor}]]`!='D0107'){
 	insertWBtn.style.display='none';
 }
+
+const filterCon = document.getElementsByClassName('tui-grid-btn-filter');
+console.log(filterCon);
+
+filterCon[0].style.display='none';
+filterCon[1].style.display='none';
+
+
 	
 </script>
 </div>

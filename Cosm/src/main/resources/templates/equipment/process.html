@@ -46,7 +46,7 @@
 							     <div style="padding-right: 50px;">
 						         	<button type="button" class="btn btn-dark btn-sm margin5"
 						         	data-bs-toggle="modal" data-bs-target="#myModal2">등록</button>
-							     	<input onkeyup="filter()" type="text" style="float: right" id="searchFilter" placeholder="설비명을 입력해주세요..">
+							     	<input onkeyup="filter()" type="text" style="float: right" id="searchFilter" placeholder="설비명 입력">
 							     </div>
 	      				   </div>
 	      				   
@@ -113,7 +113,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
 		
-				<form id="insertForm2" action="insertEquip" method="post" onsubmit="return getMaxEquipNum()">
+				<form id="insertForm2" action="insertEquip" method="post">
 				<!-- <sec:csrfInput/> -->
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 				<!-- Modal body -->
@@ -159,7 +159,7 @@
 		
 				<!-- Modal footer -->
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">등록</button>
+						<button type="button" onclick="getMaxEquipNum()" class="btn btn-primary">등록</button>
 						<button type="button" class="btn btn-danger"  data-bs-dismiss="modal">닫기</button>
 					</div>
 			</form>
@@ -335,9 +335,8 @@ function getMaxEquipNum() { //현재 적용 공정에 달려있는 설비 갯수
 	
 	console.log('적용공정 개수 조회 아작스 전송');
 	
-	const header = document.querySelector('meta[name="_csrf_header"]').content;
-    const token = document.querySelector('meta[name="_csrf"]').content;
 	const equipProcess = document.querySelector('#equipProcess').value;
+	const frm = document.querySelector('#insertForm2');
 	
 
 		url="/equipment/getMaxEquipNum/"+equipProcess 
@@ -348,18 +347,15 @@ function getMaxEquipNum() { //현재 적용 공정에 달려있는 설비 갯수
 	    .then(obj=>{
 	      console.log(obj);     
 	      if(obj.equipProcess == 3){
-	    	yn=0;
+	    	
 	    	alert('해당 공정에 설치 가능한 설비 수를 초과했습니다.');
-	    	return false;
 	    	
 	    	}else if (obj.equipProcess < 3)
-	    	yn=1;   
+	    		
+	    	 frm.submit();
 	   })
    
-	   consnole.log(yn);
-	   if(yn==0) {return false;}//최대 설비 초과입니다
-   	   else if(yn==1) {return true;}
- 	   else {return false;}
+	   
 }
 		
 function filter(){
