@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.prj.cosm.equipment.equip.mapper.EquipMapper;
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
+import com.prj.cosm.produce.instruct.service.InsService;
+import com.prj.cosm.produce.instruct.service.InsVO;
 import com.prj.cosm.user.alert.service.AlertService;
 import com.prj.cosm.user.alert.service.AlertVO;
 
@@ -22,6 +24,9 @@ public class EquipServiceImpl implements EquipService {
 	
 	@Autowired
 	AlertService aService;
+	
+	@Autowired
+	InsService insService;
 //============================================================================================================================
 
 	// 설비
@@ -145,10 +150,13 @@ public class EquipServiceImpl implements EquipService {
 	}
 
 	@Override
-	public void doWork(int quan) {
+	public void doWork(InsVO insVO) {
 		EquipVO vo = new EquipVO();
 		List<EquipVO> list = new ArrayList<>();
 		vo = mapper.getDoEquipNo(1);
+		if(vo==null || vo.getEquipNo()==null) {
+			return;
+		}
 		mapper.doWork(vo);
 		mapper.insertEquipTime(vo.getEquipNo());
 		try {
@@ -184,7 +192,7 @@ public class EquipServiceImpl implements EquipService {
 		mapper.doWork(vo);
 		mapper.insertEquipTime(vo.getEquipNo());
 		try {
-			Thread.sleep(quan * 50);
+			Thread.sleep(insVO.getInstructQuantity() / 20);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -240,6 +248,8 @@ public class EquipServiceImpl implements EquipService {
 		aVO.setAlertSend("D0101");
 		aVO.setAlertReceive("D0101");
 		aService.insertAlert(aVO);
+		
+		insService.updateInsPlay(insVO);
 	}
 
 //===================================================================================================
