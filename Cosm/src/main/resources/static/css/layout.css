@@ -35,3 +35,10 @@
 	50%{color:red;}
 	100%{color:white;}
 }
+
+body {
+	-webkit-user-select:none;
+  	-moz-user-select:none;
+  	-ms-user-select:none;
+  	user-select:none;	
+}
