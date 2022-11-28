@@ -2,38 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/layout/layout.html}">
+	layout:decorate="~{/layout/layout}">
 <head>
-<meta name="_csrf" th:content="${_csrf.token}">
-<meta name="_csrf_header" th:content="${_csrf.headerName}">
+
 <meta charset="UTF-8">
 
 <title>발주정보관리</title>
-
-<!-- CSS only -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-	crossorigin="anonymous">
-<!-- JavaScript Bundle with Popper -->
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-	crossorigin="anonymous">
-   
-</script>
-<!--jqeury-->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<!--toast grid-->
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<script
-	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <!--toast date-picker-->
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
@@ -68,33 +42,6 @@
 #btn {
 	float: right;
 	margin-right: 5px;
-}
-
-/* 검색창 스타일 */
-#search {
-	margin-left: 30px;
-	margin-top: 30px;
-	margin-bottom: 10px;
-}
-
-.search {
-	position: relative;
-	width: 360px;
-}
-
-input {
-	width: 100%;
-	border: 1px solid #bbb;
-	padding: 6px 27px 6px 10px;
-	font-size: 14px;
-}
-
-img {
-	position: absolute;
-	width: 17px;
-	top: 10px;
-	right: 12px;
-	margin: 0;
 }
 
 #regdate {
@@ -137,9 +84,9 @@ img {
 						<span>발주일자</span>
 						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
 							style="margin-bottom: 5px; z-index: 1001;">
-							<input id="startpicker-input" type="text" aria-label="Date" name="startDate"
-								style="margin-bottom: 5px; z-index: 1001"> <span
-								class="tui-ico-date"></span>
+							<input id="startpicker-input" type="text" aria-label="Date"
+								name="startDate" style="margin-bottom: 5px; z-index: 1001">
+							<span class="tui-ico-date"></span>
 							<div id="startpicker-container" class="datePicker2"
 								style="z-index: 1001"></div>
 						</div>
@@ -152,16 +99,15 @@ img {
 							<div id="endpicker-container" class="datePicker2"
 								style="margin-bottom: 5px; z-index: 1001"></div>
 						</div>
-						<button type="button" class="btn btn-secondary btn-sm" id="searchBtn">검색</button>
+						<button type="button" class="btn btn-secondary btn-sm"
+							id="searchBtn">검색</button>
 						<div id="btn">
 							<button type="button" class="btn btn-secondary btn-sm"
-								id="regibtn" style="float: right">주문 예약</button>
+								id="execlWord" style="float: right">출력</button>
 							<button type="button" class="btn btn-secondary btn-sm"
-								id="execlWord" style="float: right">주문 출력</button>
+								id="orderbtn" style="float: right" onclick="updateOrderStart()">실행</button>
 							<button type="button" class="btn btn-secondary btn-sm"
-								id="orderbtn" style="float: right">주문 발주</button>
-							<button type="button" class="btn btn-secondary btn-sm"
-								id="odelbtn" style="float: right">주문 삭제</button>
+								id="orderDelbtn" style="float: right" onclick="delOrderCheck()">삭제</button>
 						</div>
 						<div>
 							<div id="grid2"></div>
@@ -223,10 +169,30 @@ img {
 		</div>
 
 
+		<!-- 발주 내역 삭제 모달-->
+		<div class="modal" tabindex="-1" id="orderDelModal"
+			style="z-index: 1300">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">자재 정보 상세내역</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body" style="text-align: left">발주가 완료된 오더는
+						삭제가 불가능합니다.</div>
+					<div class="modal-footer" style="text-align: center">
+						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+						<button type="button" class="btn btn-primary"
+							data-bs-dismiss="modal" style="float: center">확인</button>
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal" style="float: center">취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<script>
-         const header = $("meta[name='_csrf_header']").attr('content');
-         const token = $("meta[name='_csrf']").attr('content');
 
          // 데이터 피커 (발주 날짜로 찾기)
          let today = new Date();
@@ -258,8 +224,8 @@ img {
          mCartGrid = new tui.Grid({
             el : document.getElementById('grid'),
             rowHeaders : [ 'checkbox' ], // 가장 왼쪽 체크박스
-            scrollX : false, // 세로 스크롤 
-            scrollY : false, // 가로 스크롤
+            //scrollX : false, // 세로 스크롤 
+            //scrollY : false, // 가로 스크롤
             columns : // 컬럼명
             [ {
                header : '주문번호',
@@ -303,7 +269,10 @@ img {
 
             {
                header : '단가',
-               name : 'moUnitPrice'
+               name : 'moUnitPrice',
+               formatter: function(value) {
+                   
+                   return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+' 원';
             },
 
             {
@@ -313,9 +282,14 @@ img {
 
             {
                header : '총금액',
-               name : 'moTtPrice'
+               name : 'moTtPrice',
+				formatter: function(value) {   
+                   return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+' 원';
+           	 },
             } ],
+            
             pageOptions : {
+            useClient: true,
                perPage : 10
             }
          })
@@ -348,7 +322,10 @@ img {
 
             {
                header : '총 금액',
-               name : 'moTtPrice'
+               name : 'moTtPrice',
+				formatter: function(value) {
+                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+' 원';
+            },
             },
 
             {
@@ -358,7 +335,9 @@ img {
             }
 
             ],
+            
             pageOptions : {
+            	useClient: true,
                perPage : 10
             }
 
@@ -433,10 +412,7 @@ img {
      	 })
       }
          
-         
-      searchBtnHandler();
-         
-         
+     
 
          /* -------------------------------------------------
            발주 대기목록 수량 업데이트
@@ -445,20 +421,23 @@ img {
            3) 주문 저장 버튼을 클릭해서 발주 테이블로 넘김 => mOrderId, moNum 데이터 전송, ajax 
           ---------------------------------------------------*/
 
-         
-         function getMoNum() {
-			
+  
+         function getMoNum() { 
+        	   
+        	  let updateNum =  mCartGrid.getCheckedRows();
+        	   console.log(updateNum);
+        	   
+        	   
 			$.ajax({
 	               url : "/updateMoNum",
 	               method : "POST",
 	               contentType : "application/json",
-	               data : JSON.stringify(),
+	               data : JSON.stringify(updateNum),
 	               beforeSend : function(xhr) {
 	                  xhr.setRequestHeader(header, token);
 	               },
 	               success : function(result) {
-	                  console.log(result);
-	                  mOrder();
+	                  console.log(result);	                 
 	                 
 	               },
 	               error : function(reject) {
@@ -468,13 +447,14 @@ img {
 	            })
            }	
 		
-           
-         function updateMoNum() {
-
-        	 
-        	 //let updateNum = mCartGrid.getModifiedRows().updatedRows[0].moNum;
+         /*-----------------------------	
+            발주 저장 (발주 대기 -> 발주 확정) 
+         -----------------------------*/
+         function updateMoNum() {        	 
+        	
              let obj = mCartGrid.getCheckedRows();
-
+             getMoNum();
+             
             $.ajax({
                url : "/updateOrder",
                method : "POST",
@@ -510,7 +490,7 @@ img {
         
          
 		// 발주 대기 삭제
-         function checkCartDel() {
+         function checkOrderDel() {
 
             let delmno = [];
             let obj = mCartGrid.getCheckedRows()
@@ -519,9 +499,6 @@ img {
                delmno.push(obj[key].morderId);
 
             }
-            
-            
-
             $.ajax({
                url : "/ajax/delcart",
                method : "Post",
@@ -532,7 +509,7 @@ img {
                },
                success : function(result) {
                   console.log(result);
-                  mCartGrid.resetData(result)
+                  mOrder();
 
                },
                error : function(reject) {
@@ -541,13 +518,137 @@ img {
             })
          }
 
+      	   
+      	 /*======================
+      	  	발주 진행 현황 삭제 (오류 잡아야함)
+      	  ========================*/  
+      	  
+          
+      	  // 발주 완료시 삭제 불가 안내 모달  
+          
+     function delOrderCheck() { 	 
+          		   
+      let yn =0;
+      let check = mOrderGrid.getCheckedRows();		 
+      console.log(check);
+      for(let obj of check){
+    	if(obj.moProgCode=='발주완료'){
+	      yn=1;
+    	  continue;
+    	}  
+      }
+      		if(yn==1){
+      			
+    		let myModalAlternative = new bootstrap.Modal('#orderDelModal');
+            let modalToggle = document.getElementById('#orderDelModal');
+            myModalAlternative.show(modalToggle);
+            mOrderGrid.refreshLayout();
+  			return false;
+      		}
+      /* let progCode = mOrderGrid.getCheckedRows().pop(check[keys]).moProgCode ;
+                
+                 
+           if(progCode =='발주완료'){ 
+      	  		let orderDelbtn = document.getElementById('orderDelbtn');
+      			orderDelbtn.addEventListener('click', function() {
+                let myModalAlternative = new bootstrap.Modal('#orderDelModal');
+                let modalToggle = document.getElementById('#orderDelModal');
+                myModalAlternative.show(modalToggle);
+                mOrderGrid.refreshLayout();
+      			})
+ */       else{
+      		  
+      		 let delmno = [];
+      		 let obj = mOrderGrid.getCheckedRows();
+      		 console.log(obj)
+              for (key in obj) {
+                 delmno.push(obj[key].mgrId);
+
+              }
+              $.ajax({
+                 url : "/delorder",
+                 method : "Post",
+                 contentType : "application/json",
+                 data : JSON.stringify(obj),               
+                 beforeSend : function(xhr) {
+                    xhr.setRequestHeader(header, token);
+                 },
+                 success : function(result) {
+                    console.log(result);
+                    mOrder();
+
+                 },
+                 error : function(reject) {
+                    console.log(reject);
+                 }
+              })
+           }   
+       		   
+      		  
+      	  }   
+
+           
+  	// 발주 대기 삭제
+             function checkCartDel() {
+
+                let delmno = [];
+                let obj = mCartGrid.getCheckedRows()
+                
+               
+                for (key in obj) {
+                   delmno.push(obj[key].morderId);
+
+                }
+                $.ajax({
+                   url : "/ajax/delcart",
+                   method : "Post",
+                   contentType : "application/json",
+                   data : JSON.stringify(obj),               
+                   beforeSend : function(xhr) {
+                      xhr.setRequestHeader(header, token);
+                   },
+                   success : function(result) {
+                      console.log(result);
+                      mOrder();
+
+                   },
+                   error : function(reject) {
+                      console.log(reject);
+                   }
+                })
+             }  
+    		
+             /*-----------------------------
+             // 발주 확정(완료)
+             ---------------------------------*/
+             function updateOrderStart() { 
+            	 
+                 let obj = mOrderGrid.getCheckedRows();
+                 
+                $.ajax({
+                   url : "/orderStart",
+                   method : "POST",
+                   contentType : "application/json",
+                   data : JSON.stringify(obj),
+                   beforeSend : function(xhr) {
+                      xhr.setRequestHeader(header, token);
+                   },
+                   success : function(result) {
+                	 console.log(result);
+                   },
+                   error : function(reject) {
+                      console.log(reject);
+
+                   }
+                })
+                
+                	
+                }
+             
+             
+             
+      	   
          /*-----------------------------
-            ajax 호출 
-            -------------------------------*/
-         mOrder();
-       // getMoNum();
-         
-          /*-----------------------------
          // 엑셀 내보내기
          ---------------------------------*/
          $('#execlWord').on('click',function(){
@@ -557,8 +658,27 @@ img {
                     onlySelected : true,
                     fileName: 'Order List'
                   };
-         	mCartgGrid.export('xlsx', options);
-         });
+            mOrderGrid.export('xlsx', options);
+         });  
+      	   
+         
+         
+         
+         /*-----------------------------
+         	이벤트 핸들러
+         -------------------------------*/
+                  
+         searchBtnHandler();
+          
+            
+      	   
+         /*------------------------
+            ajax 호출 
+         -----------------------*/
+         mOrder();
+        
+         
+         
           
          
        </script>

@@ -22,12 +22,6 @@ public interface MaterialService {
 	// 자재 정보 삭제 - 재고 수량도 삭제됨
 	public int deleteMatrailInfo(List<String> mNo);
 
-	// 날짜로 자재 검색
-
-	// 자재명으로 자재 검색
-
-	// 최종 수정일로 자재 변동 검색
-
 	// 자재 변동 리스트 전체 조회
 	public List<MaterialVO> mioList();
 
@@ -69,5 +63,11 @@ public interface MaterialService {
 
 	// 발주 진행 현황 찾기
 	public List<MaterialVO> getOrderProgress(MaterialVO vo);
+	
+	// 발주 현황 삭제
+	public int deleteOrder(List<MaterialVO> mVo);
+	
+	// 발주 확정(실행)
+	public int orderStart(List<MaterialVO> mVO);
 
 }

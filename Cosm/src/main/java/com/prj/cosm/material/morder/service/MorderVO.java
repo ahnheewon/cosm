@@ -1,6 +1,7 @@
 package com.prj.cosm.material.morder.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,28 +14,18 @@ public class MorderVO {
 
 	// 1. 자재 입출고 - 입,출고된 자재 리스트
 
-	private String mioLotNo;// 입고LOT
-	private String inputId; // 입고번호
-	private String outputId;// 출고번호
-
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date mioInDate;// 입고일자
-
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date mioOutDate;// 출고일자
-
+	private Date mioDate;// 일자
+	
 	private String mioComId;// 거래처번호
 	private String mioComNm;// 거래처이름
-
-	private String mioInMrg;// 입고 담당자이름
-	private String mioOutMrg;// 입고 담당자이름
 
 	private int mioInQntt; // 입고수량
 	private int mioOutQntt; // 출고수량
 
-	private String mioProgcode; // 진행코드
+	private String mioProgress; // 진행코드
 
 	// 2. 발주관리
 	private String mioName; // 자재명
@@ -45,7 +36,7 @@ public class MorderVO {
 	
 	// 3. 품질관리
 	private String mioQuality; // 품질상태
-	private String mioInspection; // 검수결과
+	
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
@@ -67,5 +58,6 @@ public class MorderVO {
 	private String moName; // 자재 이름(m_name)
 	private Integer moTtPrice;// 총금액
 	
+	private List<MorderVO> stanby; // 입고 대기 중인 오더 
 
 }

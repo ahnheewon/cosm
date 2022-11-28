@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.prj.cosm.material.morder.mapper.MorderMapper;
 import com.prj.cosm.material.morder.service.MorderService;
 import com.prj.cosm.material.morder.service.MorderVO;
@@ -33,5 +34,18 @@ public class MorderServiceImpl implements MorderService {
 		// 입고 대기 리스트 조회
 		return moMapper.getStandbyList();
 	}
+
+	@Override
+	public int  insertInputOrder(List<MorderVO> mvo) {
+		// 입고대기 리스트 -> 입고 리스트(입고완료)
+		
+		int result = 0;
+		for (MorderVO vo : mvo) {
+			result += moMapper.insertInputOrder(mvo);
+		}
+		return result;
+		
+	}
+
 
 }

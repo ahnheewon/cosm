@@ -3,61 +3,83 @@
 <mapper
 	namespace="com.prj.cosm.material.morder.mapper.MorderMapper">
 	<!-- 입고 리스트 전체 조회 -->
-	<!-- input_id = Lot 대신 쓰는 개념. 사용자는 lot 번호로 보게됨 -->
+	
 	<select id="mioInputList" resultType="MorderVO">
-		SELECT mio.mio_input_id AS input_id,
-		m.m_no AS mio_no,
-		m.m_name AS
-		mio_name,
-		mio.mio_input_Quantity AS mio_in_qntt,
-		mio.mio_input_date AS mio_in_date,
-		(SELECT code_name
-		 FROM code
-		 WHERE code_no = mio_in_mrg ) AS mio_in_mrg
-		FROM material_io mio, material m
-		WHERE m.m_no = mio.mio_no
-		AND mio_inspection = 'B0105'
+		SELECT mio.mio_no,
+			   mo.mo_name,
+			   mio.mio_input_quantity AS mio_in_qntt,
+			   mio.mio_date
+			  FROM material_io mio JOIN material_order mo
+    		  		ON mo.mo_material_id = mio.mio_no
+   			WHERE mio_progress = 'L0103'
 		<if test="startDate != null and endDate != null">
-			AND TRUNC(mio.mio_input_date) BETWEEN #{startDate} AND #{endDate}
+			AND TRUNC(mio.mio_date) BETWEEN #{startDate} AND #{endDate}
 		</if>
-		ORDER BY mio_input_date
+		ORDER BY mio_date
 	</select>
 
 	<!-- 출고 리스트 전체 조회 -->
 	<select id="mioOutputList" resultType="MorderVO">
-		SELECT mio.mio_output_id
-		AS output_id,
-		m.m_no as mio_no,
-		m.m_name as mio_name,
-		mio.mio_output_Quantity AS mio_out_qntt,
-		mio.mio_output_date AS
-		mio_out_date,
-		(SELECT code_name
-		FROM code
-		WHERE code_no = mio_out_mrg)AS
-		mio_out_mrg
+		SELECT mio_no,
+				m.m_name as mio_name,
+				mio.mio_output_quantity AS mio_out_qntt,
+				mio.mio_date		
 		FROM material_io mio JOIN material m
-		ON m.m_no = mio.mio_no
-		WHERE mio.mio_output_id IS NOT NULL
-		AND mio.mio_output_Quantity != 0
-		AND mio.mio_output_date IS NOT NULL
-		ORDER BY mio_out_date
+			ON m.m_no = mio.mio_no
+		WHERE mio_progress = 'L0104'
+		<if test="startDate != null and endDate != null">
+		AND TRUNC(mio.mio_date) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		ORDER BY mio_date
 	</select>
 
 	<!-- 입고 대기 리스트 전체 조회 -->
 	<select id="getStandbyList" resultType="MorderVO">
-		SELECT mo.mo_material_id,
+	SELECT mo.mo_material_id,
+			   mo.mo_name, 
+			   mc.mc_company_name as mo_com_nm, 
+			   mo.mo_num
+		FROM material_order mo 
+        JOIN material_company mc
+				ON mc.mc_company_id = mo.mo_company_id
+		WHERE mo_progress_code = 'L0102'
+
+	
+	
+		<!--  SELECT mo.mo_material_id,
 			   mo.mo_name, 
 			   mc.mc_company_name as mo_com_nm, 
 			   mo.mo_num,
 			   mio.mio_input_quantity as mio_int_qntt, 
-			   mio_quality, 
-               mio_inspection
+			   mio_quality 
 		FROM material_order mo 
         JOIN material_company mc
 				ON mc.mc_company_id = mo.mo_company_id
 		JOIN material_io mio
-				ON mio.mio_mo_order_id = mo.mo_order_id
+				ON mio.mio_mo_order_id = mo.mo_order_id-->
         
 	</select>
+	
+	<!-- 입고 대기 -> 입고 확정 -->
+	<insert id="insertInputOrder" parameterType="MorderVO">
+		INSERT INTO material_io(mio_no,
+									mio_company_id,
+									mio_company_name,
+									mio_input_quantity,
+									mio_progress,
+									mio_quality)
+		SELECT mo_material_id, 
+			   mo_company_id, 
+			   #{moComNm}, 
+			   #{mioInQntt},
+			   'L0103', 
+			   #{mioQuality}
+		FROM material_order
+		WHERE mo_material_id = #{moMaterialId}							
+									
+									
+		
+							
+	</insert>
+	
 </mapper>

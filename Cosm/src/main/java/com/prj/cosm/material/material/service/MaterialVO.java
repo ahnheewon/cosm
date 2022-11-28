@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -39,11 +40,19 @@ public class MaterialVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date mRegDate; // 등록일자
+	
+	private Integer totalAmount; // 현재 필요한 재고수량
+	private String orderProgress; // 발주 진행 여부
+	private Long shortage; // 부족 수량
+	private Long totalMoNum; // 발주 수량 합계
+	
+	
 
 	// 2. 자재 변동 내역
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date mioInputDate;// 입고일자
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date mioOutputDate;// 출고일자
@@ -59,6 +68,7 @@ public class MaterialVO {
 	private String mioMrgNm; // 담당자명
 	private int mioOrderId; // 발주번호
 	private String mioProgress; // 진행코드
+	
 
 	private List<String> delmno; // 삭제시 매치되는 자재번호...들
 	
@@ -80,13 +90,15 @@ public class MaterialVO {
 	// 5. 발주 관리
 	private String mOrderId; // 발주번호
 	private List<String> moi;
-	private Integer moTtPrice;// 총금액
+	private Long moTtPrice;// 총금액
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date moDate;// 신청일자
 
 	private Integer moUnitPrice;// 발주단가
-	private Integer moNum;// 발주수량
+	private Long moNum;// 발주수량
+	private Long sumMoNum; // 발주수량합계
 	private String moProgCode; // 진행코드
 	
 	private List<String> odMno; // 발주시 매치되는 자재번호...들	
@@ -102,6 +114,7 @@ public class MaterialVO {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 
-	
+	@JsonIgnore // 이 데이터는 json으로 변형시키지 말라는 뜻
+	String picname; //첨부파일, html 파일 name 과 이름 다르게 해야함(타입이 다르므로)
 	
 }
