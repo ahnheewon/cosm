@@ -285,7 +285,18 @@ public class MaterialController {
    @ResponseBody
    @PostMapping("/updateInput")
    public int updateinputOrder(@RequestBody List<MorderVO> mvo) {
-      return moSerivce.insertInputOrder(mvo);	
+	  
+	  
+	   return moSerivce.insertInputOrder(mvo);	
+      
+   }
+
+   
+	// 입고 확정 시 현재 수량 변경
+   @ResponseBody
+   @PostMapping("/updateMStock")
+   public int updateMStock(@RequestBody MorderVO mvo) {
+	   return moSerivce.updateMStock(mvo);
    }
    
 }

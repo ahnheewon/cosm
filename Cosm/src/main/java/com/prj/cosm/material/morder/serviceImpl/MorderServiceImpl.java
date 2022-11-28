@@ -41,11 +41,28 @@ public class MorderServiceImpl implements MorderService {
 		
 		int result = 0;
 		for (MorderVO vo : mvo) {
-			result += moMapper.insertInputOrder(mvo);
+			result += moMapper.insertInputOrder(vo);
+					moMapper.updateCode(vo);
+					vo.setMNo(vo.getMoMaterialId());
+					moMapper.updateMStock(vo);
 		}
 		return result;
 		
 	}
 
+	@Override
+	public int updateCode(MorderVO vo) {
+		// 입고 확정시 발주 코드 업데이트
+		return moMapper.updateCode(vo);
+	}
+
+	@Override
+	public int updateMStock(MorderVO vo) {
+		// 입고 확정시 현재재고 업데이트
+		return moMapper.updateMStock(vo);
+	}
+
+
+	
 
 }

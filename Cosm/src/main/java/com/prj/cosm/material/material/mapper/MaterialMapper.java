@@ -73,6 +73,6 @@ public interface MaterialMapper {
 	public int deleteOrder(MaterialVO mVo);
 	
 	// 발주 확정(실행)
-	public int orderStart(List<MaterialVO> mVO);
+	public int orderStart(MaterialVO mVO);
 
 }

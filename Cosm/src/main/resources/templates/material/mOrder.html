@@ -263,7 +263,9 @@
             	   let num = ev.value
             	   mCartGrid.setValue(ev.rowKey,'moTtPrice', price * num)
             	   console.log(ev);
-               }
+               }, formatter: function(value) {		        	
+	                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	            }
 
             },
 
@@ -273,6 +275,7 @@
                formatter: function(value) {
                    
                    return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+' 원';
+               }
             },
 
             {
@@ -545,18 +548,8 @@
             mOrderGrid.refreshLayout();
   			return false;
       		}
-      /* let progCode = mOrderGrid.getCheckedRows().pop(check[keys]).moProgCode ;
-                
-                 
-           if(progCode =='발주완료'){ 
-      	  		let orderDelbtn = document.getElementById('orderDelbtn');
-      			orderDelbtn.addEventListener('click', function() {
-                let myModalAlternative = new bootstrap.Modal('#orderDelModal');
-                let modalToggle = document.getElementById('#orderDelModal');
-                myModalAlternative.show(modalToggle);
-                mOrderGrid.refreshLayout();
-      			})
- */       else{
+     
+        else{
       		  
       		 let delmno = [];
       		 let obj = mOrderGrid.getCheckedRows();
@@ -635,6 +628,7 @@
                    },
                    success : function(result) {
                 	 console.log(result);
+                	 mOrder();
                    },
                    error : function(reject) {
                       console.log(reject);

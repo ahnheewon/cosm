@@ -17,6 +17,14 @@ public interface MorderService {
 
 	// 입고 대기 -> 입고 목록으로 이동
 	public int insertInputOrder(List<MorderVO> stanby);
+	
+	// 입고 대기 시 코드 상태 변경
+	public int updateCode(MorderVO vo);
+	
+	// 입고 대기 시 현재 재고로 수량 업데이트
+	public int updateMStock(MorderVO vo);
+
+
 
 
 }

@@ -41,10 +41,10 @@ public class MaterialVO {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date mRegDate; // 등록일자
 	
-	private Integer totalAmount; // 현재 필요한 재고수량
+	private Integer totalPlanedQntt; // 생산계획 하 필요 자재수량 합계
 	private String orderProgress; // 발주 진행 여부
 	private Long shortage; // 부족 수량
-	private Long totalMoNum; // 발주 수량 합계
+	private Long totalMoNum; // 현재 발주 진행중인 수량 합계
 	
 	
 

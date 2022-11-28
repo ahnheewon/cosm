@@ -22,8 +22,9 @@ public class MorderVO {
 	private String mioComId;// 거래처번호
 	private String mioComNm;// 거래처이름
 
-	private int mioInQntt; // 입고수량
-	private int mioOutQntt; // 출고수량
+	private int mioQntt; // 입고수량
+	private int mStock; // 현재재고
+	private String mNo; // 현재재고
 
 	private String mioProgress; // 진행코드
 
