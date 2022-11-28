@@ -103,8 +103,7 @@
 
 		<hr style="width: 100%">
 		<h3>검수 완료 리스트(Today)</h3>
-		<button type="button" class="btn btn-dark btn-sm" style="float: right"
-			id="delbtn">완제품 삭제</button>
+		
 		<div id="grid"></div>
 		
 		<button type="button" onclick="location.href='/completeList'"
@@ -140,8 +139,8 @@
 			for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
 				if(i!=`${ev.rowKey}`){
 					grid2.uncheck(i);
-					$('#alertStart').prop('disabled', false);
 				}
+					$('#alertStart').prop('disabled', false);
 			}
 			$('#registError').off();
 			//리스트에 있는 것 등록폼에 뿌려주기
@@ -192,48 +191,61 @@
 		columns: [
 			{
 				header: '생산지시번호',
-				name: 'INSTRUCTNO'
+				name: 'INSTRUCTNO',
+				align : 'center'
 			},
 			{
 				header: '생산최종지시량',
-				name: 'INSTRUCTQUANTITY'
+				name: 'INSTRUCTQUANTITY',
+				align : 'center'
 			},
 			{
 				header: '제품번호',
-				name: 'PLANPRODUCTNO'
+				name: 'PLANPRODUCTNO',
+				align : 'center'
 			},
 			{
 				header: '제품명',
-				name: 'GOODSNAME'
+				name: 'GOODSNAME',
+				align : 'center'
 			},
 			{
 				header: '시작일자',
 				name: 'PLANSTART',
 				sortingType: 'desc',
-				sortable: true
+				sortable: true,
+				align : 'center'
 			},
 			{
 				header: '종료일자',
 				name: 'PLANEND',
 				sortingType: 'desc',
-				sortable: true
+				sortable: true,
+				align : 'center'
 			},
 			{
 				header: '지시일자',
 				name: 'INSTRUCTDATE',
 				sortingType: 'desc',
-				sortable: true
+				sortable: true,
+				align : 'center'
 			},
 			{
 				header: '진행상황',
-				name: 'INSTRUCT_PROGRESS_CODE'
+				name: 'INSTRUCT_PROGRESS_CODE',
+				align : 'center',
+				renderer : {
+					styles: {
+							 fontWeight: 'bold',
+							 color: (props) => props.value == '진행중' ? '#009900' : 'blue'
+						}
+				},
 			},	
 			]
 		});
 	// 완제품 그리드
 	var grid = new tui.Grid({
 			el: document.getElementById('grid'),
-			rowHeaders: ['checkbox'],
 			minBodyHeight: 30,
 			pageOptions: {
 				useClient: true, // front에서만 페이징 하는 속성
@@ -293,7 +305,13 @@
 				{
 					header: '검수여부',
 					name: 'INSPECTION',
-					align : 'center'
+					align : 'center',
+					renderer : {
+					 	styles: {
+							fontWeight: 'bold',
+							color: (props) => props.value == '완료' ? 'blue' :  props.value == '미완료' ? 'red' : 'black'
+						}
+					},
 				},	
 				],
 			
@@ -395,42 +413,6 @@
 	
 
 	
-	// 완제품정보 삭제
-	$().ready(function () {
-        $("#delbtn").click(function () {
-            Swal.fire({
-                title: '선택한 완제품정보를 삭제하시겠습니까?',
-                text: "다시 되돌릴 수 없습니다. 신중하세요.",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: 'black',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '승인',
-                cancelButtonText: '취소'
-            }).then((result) => {
-            	var datas2 = grid.getCheckedRows();
-            	var data1 = datas2[0].REGIST_LOT;
-                if (result.isConfirmed) {
-                	$.ajax({
-            			url : 'produce/registDelete',
-            			type : 'post',
-            			data : {registLOT : data1},
-            			success : function(data){
-            				Swal.fire(
-        		                    '삭제가 완료되었습니다.',
-        		                    '화끈하시네요~!',
-        		                    'success'
-        		                )
-            				registList();
-            			},
-            			error : function(reject){
-            				console.log(reject);
-            			}
-            		});
-                }
-            })
-        });
-    });
 	
 	</script>
 	</div>

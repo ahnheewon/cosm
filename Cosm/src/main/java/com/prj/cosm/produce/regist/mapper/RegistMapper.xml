@@ -24,7 +24,7 @@
 	ORDER BY r.regist_LOT DESC
 </select>
 
-<!-- 전체조회 -->
+<!-- error 전체조회 -->
 <select id="errorList" resultType="map">
 	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, r.code_no, r.inspection
 	FROM produce_instruct i JOIN produce_regist r

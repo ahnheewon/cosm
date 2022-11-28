@@ -53,7 +53,8 @@
 
 					</div>
 		
-		
+		<button type="button" class="btn btn-dark btn-sm" style="float: right"
+			id="delbtn">완제품 삭제</button>
 		
 			
 		<input onkeyup="filter2()" type="text" style="float: right" id="searchFilter2">	
@@ -85,10 +86,27 @@
 		//완제품리스트 가져오기
 		registList();
 		searchBtnHandler();
+		
+		grid.on('check', (ev) => {
+			for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
+				if(i!=`${ev.rowKey}`){
+					grid.uncheck(i);	
+				}
+			}
+			$('#delbtn').prop('disabled', false);
+		});
+		grid.on('uncheck', (ev) => {
+			$('input:text').val('');
+			$('#delbtn').prop('disabled', true);
+		});
+		$('#delbtn').prop('disabled', true);
+		$('#grid span').remove();
+		
 	}
 	var grid = new tui.Grid({
 		el: document.getElementById('grid'),
 		minBodyHeight: 30,
+		rowHeaders: ['checkbox'],
 		pageOptions: {
 			useClient: true, // front에서만 페이징 하는 속성
 			perPage: 10
@@ -149,7 +167,12 @@
 				header: '검수여부',
 				name: 'INSPECTION',
 				align : 'center',
-				filter : 'text'
+				renderer : {
+				 	styles: {
+						fontWeight: 'bold',
+						color: (props) => props.value == '완료' ? 'blue' :  props.value == '미완료' ? 'red' : 'black'
+					}
+				},
 			},	
 			],
 		
@@ -231,6 +254,43 @@ function searchBtnHandler() {
 	})
 
 }
+//완제품정보 삭제
+$().ready(function () {
+    $("#delbtn").click(function () {
+        Swal.fire({
+            title: '선택한 완제품정보를 삭제하시겠습니까?',
+            text: "다시 되돌릴 수 없습니다. 신중하세요.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: 'black',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '승인',
+            cancelButtonText: '취소'
+        }).then((result) => {
+        	var datas2 = grid.getCheckedRows();
+        	var data1 = datas2[0].REGIST_LOT;
+            if (result.isConfirmed) {
+            	$.ajax({
+        			url : '/registDelete',
+        			type : 'get',
+        			data : {registLOT : data1},
+        			success : function(data){
+        				Swal.fire(
+    		                    '삭제가 완료되었습니다.',
+    		                    '화끈하시네요~!',
+    		                    'success'
+    		                )
+        				registList();
+        			},
+        			error : function(reject){
+        				console.log(reject);
+        			}
+        		});
+            }
+        })
+    });
+});
+
 	</script>
 	</div>
 </body>

@@ -218,7 +218,7 @@ public class ProduceController {
 	}
 
 	// 완제품 삭제
-	@GetMapping("produce/registDelete")
+	@GetMapping("/registDelete")
 	@ResponseBody
 	public int deleteRegistInfo(String registLOT, RedirectAttributes ratt) {
 		return registService.deleteRegistInfo(registLOT);
