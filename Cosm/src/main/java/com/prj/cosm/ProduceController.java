@@ -163,7 +163,7 @@ public class ProduceController {
 	@PostMapping("insInsert")
 	public String insertInsInfo(InsVO insVO) {
 		insService.insertInsInfo(insVO);
-		equipService.doWork(insVO.getInstructQuantity());
+		equipService.doWork(insVO);
 		return "redirect:instructList";
 	}
 
