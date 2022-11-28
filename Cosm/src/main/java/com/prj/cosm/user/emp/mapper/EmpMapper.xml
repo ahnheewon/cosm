@@ -129,4 +129,8 @@
 		resultType="String">
 		SELECT users_password FROM users WHERE users_no=#{usersNo}
 	</select>
+	
+	<select id="getReceiveUsers" resultType="EmpVO">
+	SELECT users_no FROM users WHERE users_author=#{usersAuthor}
+	</select>
 </mapper>
