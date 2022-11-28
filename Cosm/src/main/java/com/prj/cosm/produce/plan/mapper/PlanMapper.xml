@@ -4,14 +4,22 @@
 
 <!-- 전체조회 -->
 <select id="getPlanList" resultType="PlanVO">
-	SELECT * 
-	  FROM produce_plan 
-	 ORDER BY plan_no DESC
+	SELECT p.plan_no, p.plan_quantity, p.plan_start, p.plan_end,
+	 	   p.plan_ex, p.plan_product_no, p.plan_bom_no,
+		   p.plan_order_no, code_name as plan_play_code
+	FROM produce_plan p JOIN code 
+					    ON p.plan_play_code = code.code_no
+	ORDER BY p.plan_no DESC
 </select>
 
 <!-- 미완료된것만 보이게 -->
 <select id="completePlanList" resultType="PlanVO">
-	SELECT * FROM produce_plan WHERE plan_play_code = '미완료'
+	SELECT p.plan_no, p.plan_quantity, p.plan_start, 
+		   p.plan_end, p.plan_ex, p.plan_product_no, p.plan_bom_no,
+		   p.plan_order_no, code_name as plan_play_code
+	FROM produce_plan p JOIN code 
+						ON p.plan_play_code = code.code_no
+	WHERE plan_play_code = 'A0101'
 </select>
 
 <!-- 생산계획번호 +1 -->
@@ -113,7 +121,7 @@
 <!-- 생산계획 생산지시시 리스트에서 빠지기 -->
 <update id="updatePlay" parameterType="PlanVO">
 	UPDATE produce_plan 
-	SET plan_play_code = '완료' 
+	SET plan_play_code = 'A0103' 
 	WHERE plan_no = #{planNo}
 </update>
 
