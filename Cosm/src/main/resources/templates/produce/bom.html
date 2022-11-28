@@ -163,7 +163,7 @@
 			</div>
 		</div>
 
-		<!-- 제품정 모달에 모달 -->
+		<!-- 제품정보 모달에 모달 -->
 		<div class="modal fade" id="requestModal4" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-xl">
@@ -375,6 +375,8 @@
 			for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
 				if(i!=`${ev.rowKey}`){
 					grid.uncheck(i);
+					$('#updateBtn').prop('disabled', false);
+					$('#delbtn').prop('disabled', false);
 				}
 			}
 			// bom번호 +1 로 등록
@@ -430,7 +432,11 @@
 			$('input:text').val('');
 			var info = '[[${info.bomNo}]]';
 			$('#inputCity').val(info)	
+			$('#updateBtn').prop('disabled', true);
+			$('#delbtn').prop('disabled', true);
 		});
+		$('#updateBtn').prop('disabled', true);
+		$('#delbtn').prop('disabled', true);
 			
 		$('#grid span').remove();
 		$('#grid6 span').remove();

@@ -125,6 +125,7 @@
 			for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
 				if(i!=`${ev.rowKey}`){
 					grid.uncheck(i);
+					
 				}
 			}
 			for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
@@ -139,6 +140,7 @@
 			for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
 				if(i!=`${ev.rowKey}`){
 					grid2.uncheck(i);
+					$('#alertStart').prop('disabled', false);
 				}
 			}
 			$('#registError').off();
@@ -153,7 +155,7 @@
 			$('#bacodeLabel').val(label)
 			$('#registError').val(0)
 			$('#registError').on('keyup',function(){
-			$('#instructQuantity').val($(grid2.getCheckedRows())[0].INSTRUCTQUANTITY-$('#registError').val());
+				$('#instructQuantity').val($(grid2.getCheckedRows())[0].INSTRUCTQUANTITY-$('#registError').val());
 			})
 			
 			
@@ -162,11 +164,14 @@
 			
 		grid.on('uncheck', (ev) => {
 			$('input:text').val('');
+			
 		});
 			
 		grid2.on('uncheck', (ev) => {
 			$('input:text').val('');
+			$('#alertStart').prop('disabled', true);
 		});
+		$('#alertStart').prop('disabled', true);
 			
 		$('#grid span').remove();
 		$('#grid2 span').remove();

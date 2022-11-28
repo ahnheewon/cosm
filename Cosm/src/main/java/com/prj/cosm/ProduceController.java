@@ -33,7 +33,7 @@ public class ProduceController {
 	@Autowired
 	InsService insService;
 
-	@Autowired 	
+	@Autowired
 	RegistService registService;
 
 	@Autowired
@@ -75,6 +75,13 @@ public class ProduceController {
 		return "redirect:planList";
 	}
 
+	// 생산계획시 bom단건조회
+	@GetMapping("/produce/getBomInfo")
+	@ResponseBody
+	public BomVO getBomInfo(Model model, String bomProductNo) {
+		return bomService.getBomInfo(bomProductNo);
+	}
+
 	// 생산계획 수정
 	@PostMapping("planUpdate")
 	public String updatePlanInfo(PlanVO planVO, RedirectAttributes ratt) {
@@ -107,6 +114,15 @@ public class ProduceController {
 	public List<PlanVO> completePlan() {
 		return planService.completePlanList();
 	}
+
+	// 주문서 리스트
+	@GetMapping("/selectOrderList")
+	@ResponseBody
+	public List<PlanVO> selectOrderList() {
+		return planService.selectOrderList();
+	}
+
+	
 
 	// 생산지시 list에 ajax주는 것
 	@GetMapping("/instruct")
@@ -343,7 +359,7 @@ public class ProduceController {
 		return registService.completeList(vo);
 	}
 
-	//불량관리 페이지 이동
+	// 불량관리 페이지 이동
 	@GetMapping("/errorPage")
 	public String errorPage(Model model) {
 

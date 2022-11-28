@@ -21,4 +21,7 @@ public interface BomMapper {
 
 	// 제품번호 리스트
 	public List<BomVO> getGoodsNoList();
+	
+	// 단건조회
+	public BomVO getBomInfo(String goodsNo);
 }

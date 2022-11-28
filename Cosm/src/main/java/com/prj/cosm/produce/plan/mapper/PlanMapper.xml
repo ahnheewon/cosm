@@ -6,7 +6,7 @@
 <select id="getPlanList" resultType="PlanVO">
 	SELECT * 
 	  FROM produce_plan 
-	 ORDER BY plan_play_code
+	 ORDER BY plan_no DESC
 </select>
 
 <!-- 미완료된것만 보이게 -->
@@ -116,4 +116,17 @@
 	SET plan_play_code = '완료' 
 	WHERE plan_no = #{planNo}
 </update>
+
+<!-- 주문서 전체조회 -->
+<select id="selectOrderList" resultType="PlanVO">
+	SELECT o.order_no, o.goods_no, o.order_date, o.delivery_date, o.total_num,
+		   o.note, g.goods_name, b.bom_no, code_name as order_progress_code
+	FROM produce_goods g JOIN orders o ON g.goods_no = o.goods_no 
+                     	 JOIN produce_bom b ON g.goods_no = b.bom_product_no
+                     	 JOIN code ON o.order_progress_code = code.code_no
+    WHERE o.order_progress_code = 'B0101'
+</select>
+
+
+
 </mapper>
