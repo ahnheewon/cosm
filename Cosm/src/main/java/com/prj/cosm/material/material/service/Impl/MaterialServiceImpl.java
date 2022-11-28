@@ -49,11 +49,11 @@ public class MaterialServiceImpl implements MaterialService {
 	@Override
 	public int deleteMatrailInfo(List<String> mNo) {
 		// 자재 정보 삭제 - 재고 수량도 삭제됨
-		//if(사용여부 == null)
+		// if(사용여부 == null)
 		int result = 0;
 		for (String no : mNo) {
 			result += mMapper.deleteMatrailInfo(no);
-		}		
+		}
 		return result;
 	}
 
@@ -110,7 +110,7 @@ public class MaterialServiceImpl implements MaterialService {
 		// 발주 대기 등록(카트)
 		int result = 0;
 		for (MaterialVO no : mNo) {
-			no.setMoNum(1);
+			no.setMoNum(no.getTotalAmount() - (no.getMStock() + no.getTotalMoNum()));
 			result += mMapper.insertMcart(no);
 		}
 		return result;
@@ -128,40 +128,40 @@ public class MaterialServiceImpl implements MaterialService {
 
 	@Override
 	public MaterialVO getGrId() {
-		// 그룹번호 찾기 
+		// 그룹번호 찾기
 		return mMapper.getGrId();
 	}
 
-	 @Override
-	   public int updateOrderGo(List<MaterialVO> mVO) {
-	      // 발주 대기 -> 발주 등록(그룹)
+	@Override
+	public int updateOrderGo(List<MaterialVO> mVO) {
+		// 발주 대기 -> 발주 등록(그룹)
 
-	      int result = 0;
-	      MaterialVO mvo = new MaterialVO();
-	      String GrNo = mMapper.getGrId().getMoGrNo();
-	      List<String> strary = new ArrayList<String>();
-	      
-	      for(MaterialVO vo :mVO) {
-	    	  strary.add(vo.getMOrderId());
-	      }
-	      
-	      mvo.setMoGrNo(GrNo);
-	      mvo.setMoi(strary);
-	      result = mMapper.updateOrderGo(mvo);
-	      System.out.println(result+"=====================");
-	      return result;
-	   }
+		int result = 0;
+		MaterialVO mvo = new MaterialVO();
+		String GrNo = mMapper.getGrId().getMoGrNo();
+		List<String> strary = new ArrayList<String>();
 
-	   @Override
-	   public int deleteCartOrder(List<MaterialVO> mVo) {
-	      // 발주 대기 삭제하기
-	      // 자재 정보 삭제 - 재고 수량도 삭제됨
-	      int result = 0;
-	      for (MaterialVO vo : mVo) {
-	         result += mMapper.deleteCartOrder(vo);
-	      }
-	      return result;
-	   }
+		for (MaterialVO vo : mVO) {
+			strary.add(vo.getMOrderId());
+		}
+
+		mvo.setMoGrNo(GrNo);
+		mvo.setMoi(strary);
+		result = mMapper.updateOrderGo(mvo);
+		System.out.println(result + "=====================");
+		return result;
+	}
+
+	@Override
+	public int deleteCartOrder(List<MaterialVO> mVo) {
+		// 발주 대기 삭제하기
+		// 자재 정보 삭제 - 재고 수량도 삭제됨
+		int result = 0;
+		for (MaterialVO vo : mVo) {
+			result += mMapper.deleteCartOrder(vo);
+		}
+		return result;
+	}
 
 	@Override
 	public List<MaterialVO> getOrderProgress(MaterialVO vo) {
@@ -169,7 +169,23 @@ public class MaterialServiceImpl implements MaterialService {
 		return mMapper.getOrderProgress(vo);
 	}
 
+	@Override
+	public int deleteOrder(List<MaterialVO> mVo) {
+		// 발주현황 삭제하기
+		int result = 0;
+		for (MaterialVO vo : mVo) {
+			result += mMapper.deleteOrder(vo);
+		}
+		return result;
 	}
 
-
-
+	@Override
+	public int orderStart(List<MaterialVO> mVO) {
+		// 발주 확정하기
+		int result = 0;
+		for(MaterialVO vo : mVO) {
+		result += mMapper.orderStart(mVO);
+		}
+		return result;
+	}
+}

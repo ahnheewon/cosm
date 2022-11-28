@@ -3,6 +3,8 @@
 
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>Insert title here</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
@@ -539,7 +541,7 @@
 
 			if (`[[${session.usersAuthor}]]` != null) {
 				getAlertList();
-				setInterval(getAlertList, 1000);
+				//setInterval(getAlertList, 1000);
 			}
 
 			function getAlertList() {

@@ -3,8 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{/layout/layout}">
 <head>
-<meta name="_csrf" th:content="${_csrf.token}">
-<meta name="_csrf_header" th:content="${_csrf.headerName}">
+
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -109,63 +108,37 @@ img {
 
 			<div class="row">
 				<div class="column">
-					<h2>자재 정보 관리</h2>
 					<div id="wrap">
-						<form>
-							<div id="search_wrap">
-								<div class="search">
-									<span>자재명</span> <input style="width: 170px;" name="keyword">
-									<button type="button" class="btn btn-secondary"
-										onclick="getSearchList()">검색</button>
-								</div>
-							</div>
-
-							<div id="regdate" style="z-index: 1005">
-								<span>등록일자</span>
-								<div
-									class="tui-datepicker-input tui-datetime-input tui-has-focus"
-									style="z-index: 1005">
-									<input id="startpicker-input" type="text" aria-label="Date"
-										style="z-index: 1005"> <span class="tui-ico-date"></span>
-									<div id="startpicker-container" class="datePicker"
-										style="z-index: 1005"></div>
-								</div>
-								<span>~</span>
-								<div
-									class="tui-datepicker-input tui-datetime-input tui-has-focus"
-									style="z-index: 1001">
-									<input id="endpicker-input" type="text" aria-label="Date"
-										style="z-index: 1001"> <span class="tui-ico-date"></span>
-									<div id="endpicker-container" class="datePicker"
-										style="z-index: 1001"></div>
-								</div>
+						<div id="search_wrap">
+							<div class="search" style="float: right;">
+								<span>자재명</span> <input type="text" id = "searchFilter" style="width: 170px;" 
+								onkeyup="filter()" placeholder="자재명 입력">								
 								<button type="button" class="btn btn-secondary btn-sm"
-										id="searchBtn">검색</button>
-								<div id="btn">
-									<button type="button" class="btn btn-secondary btn-sm"
-										id="delbtn" style="float: right">정보 삭제</button>
-									<button type="button" class="btn btn-secondary btn-sm"
-										id="updatebtn" onclick="mInfoUpdate()" style="float: right">정보
-										수정</button>
-									<button type="button" class="btn btn-secondary btn-sm"
-										id="insertbtn" onclick="mInfoInsert()" style="float: right">정보
-										등록</button>
-									<button type="button" class="btn btn-secondary btn-sm"
-										id="regbtn" onclick="mCartInsert()" style="float: right">자재
-										발주</button>
-								</div>
+									id="delbtn">삭제</button>
+								<button type="button" class="btn btn-secondary btn-sm"
+									id="updatebtn" onclick="mInfoUpdate()">수정</button>
+								<button type="button" class="btn btn-secondary btn-sm"
+									id="insertbtn" onclick="mInfoInsert()">등록</button>
+								<button type="button" class="btn btn-secondary btn-sm"
+									id="regbtn" onclick="mCartInsert()">자재 발주</button>
 							</div>
-						</form>
+						</div>
+
 						<div>
 							<div id="grid"></div>
 						</div>
 					</div>
 				</div>
 				<div class="column">
-					<h2>자재 변동 현황</h2>
-
+					<h2>자재 변동 내역</h2>
+					<div style="margin-left: 10px;margin-bottom: 5pxp;">
+					<span>자재 명 </span>
+					 <input type="text" id ="searchFilter_2" style="width: 170px;" 
+								onkeyup="filter2()" placeholder="자재명 입력">	
+					</div>
 					<div id="mdate" style="margin-left: 10px; z-index: 1001;">
 						<span>수정일자</span>
+						
 						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
 							style="margin-bottom: 5px; z-index: 1001;">
 							<input id="startpicker-input2" type="text" aria-label="Date"
@@ -184,7 +157,7 @@ img {
 								style="margin-bottom: 5px; z-index: 1001"></div>
 						</div>
 						<button type="button" class="btn btn-secondary btn-sm"
-										id="findBtn" >검색</button>
+							id="findBtn">검색</button>
 						<div>
 							<div id="grid2"></div>
 						</div>
@@ -280,39 +253,10 @@ img {
 
 		<script>
 		
-		const header = $("meta[name='_csrf_header']").attr('content');
-		const token = $("meta[name='_csrf']").attr('content');
-		
-      // 데이터 피커 ( 자재 날짜로 찾기)
-      let today = new Date();
-      let picker = new tui.DatePicker.createRangePicker({
-         startpicker : {
-            date : today,
-            input : '#startpicker-input',
-            container : '#startpicker-container',
-            
-         },
-         endpicker : {
-            date : today,
-            input : '#endpicker-input',
-            container : '#endpicker-container',
-            
-         },
-         selectableRanges : [ [
-				new Date(today.getFullYear() - 5, today.getMonth(),
-						today.getDate()),
-				new Date(today.getFullYear() + 5, today.getMonth(),
-						today.getDate()) ] ],
-
-                     
-      });   
-      
-      
-      
-      
-
+				
       //데이터 피커(자재 변동 최종 수정일자로 찾기)
       // 데이터 피커 ( 자재 날짜로 찾기)
+      let today = new Date();
       let picker2 = new tui.DatePicker.createRangePicker({
          startpicker : {
             date : today,
@@ -351,26 +295,55 @@ img {
          columns : // 컬럼명
          [ {
             header : '자재번호',
-            name : 'mno'
+            name : 'mno',
+            align :'center'
          }, {
             header : '거래처번호',
-            name : 'mcompanyId'
+            name : 'mcompanyId',
+            align :'center'
          }, {
             header : '자재명',
-            name : 'mname'
+            name : 'mname',
+            align :'center',
+            filter : {
+            	type:'text',
+            	showClearBtn: true}
          }, {
             header : '거래처명',
-            name : 'mcompanyNm'
+            name : 'mcompanyNm',
+            align :'center'
          }, {
             header : '단가',
-            name : 'mprice'
+            name : 'mprice',
+            align :'center'
          }, {
             header : '단위',
-            name : 'munitCode'
+            name : 'munitCode',
+            align :'center'
          }, {
             header : '분류',
-            name : 'mcategory'
-         } ],
+            name : 'mcategory',
+            align :'center'
+         },{
+        	 header : '현재 재고',
+             name : 'mstock',
+             align :'center'
+         },{
+        	 header : '필요수량',
+             name : 'totalAmount',
+             align :'center'
+         },{
+        	 header : '발주중인 수량',
+             name : 'totalMoNum',
+             align :'center'
+         },{
+        	 header : '부족한 수량',
+             name : 'shortage',
+             align :'center'
+         }
+         
+         
+         ],
          pageOptions : {
             perPage : 10
          },
@@ -557,7 +530,9 @@ img {
                   xhr.setRequestHeader(header, token);
                },
                success : function(result) {
-                  console.log(result);
+                  if(result == 0)
+                	  {alert('사용 중인 자재로 삭제가 불가능합니다.') }
+            	   console.log(result);
                   mList();
 
                },
@@ -660,6 +635,48 @@ img {
 				})
 			}
          
+	      
+	      /*--------------------
+	      검색기능(필터이용 검색함수)
+	      ----------------------*/
+	      function filter(){ // 토스트그리드 
+
+	    	  const search = document.getElementById("searchFilter") //인풋태그
+	    	  const search2 = document.getElementById("searchFilter_2")
+	    	  
+	    	  const state = [{code: 'contain', value: search.value}];
+	    	           
+	    	        if(search.value == ''){   
+	    	           
+	    	        	infoGrid.unfilter('mname');
+	    	        
+	    	        }else {
+	    	           
+	    	        	infoGrid.filter('mname', state);
+	    	        }
+	    	        
+	    	  }
+	      
+	      
+	      
+	      function filter2(){ 
+
+	    	  const search = document.getElementById("searchFilter_2")
+	    	  
+	    	  const state = [{code: 'contain', value: search.value}];
+	    	           
+	    	        if(search.value == ''){   
+	    	           
+	    	        	mioGrid.unfilter('mname');
+	    	        
+	    	        }else {
+	    	           
+	    	        	mioGrid.filter('mname', state);
+	    	        }
+	    	        
+	    	  }
+	      
+	      
 	      /*-----------------------
 	      	이벤트 핸들러
 	      --------------------------*/
