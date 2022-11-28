@@ -291,12 +291,12 @@
 				for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
 					if(i!=`${ev.rowKey}`){
 						grid.uncheck(i);
-						$('#selectBtn').prop('disabled', false);
 					}
 				}
 				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
 					grid2.uncheck(i);
 				}
+						$('#selectBtn').prop('disabled', false);
 				// 생산지시번호 +1 로 등록
 				var info = '[[${info.instructNo}]]';
 				$('#planNoInput').val(info)	

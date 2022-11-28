@@ -116,9 +116,9 @@
 										readonly="readonly">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" data-bs-dismiss="modal"
-										id="selectGoods">제품번호</span> <input id="planProductNo"
-										name="planProductNo" class="form-control" readonly="readonly">
+									<span class="input-group-text">제품번호</span> <input ty
+										data-bs-dismiss="modal" id="selectGoods"
+										name="planProductNo" class="form-control">
 
 								</div>
 								<div class="input-group mb-3">
@@ -455,6 +455,13 @@
             	$('#selectBom').val(datas[0].bomNo);
             
             })
+            $("#setData1").click(function () {
+            	$('#requestModal').modal('toggle');
+            	$('#selectBtn').click();	
+            	var datas = grid6.getCheckedRows();
+            	$('#selectGoods').val(datas[0].goodsNo);
+            
+            })
             
             $("#setData2").click(function () {
             	
@@ -483,7 +490,6 @@
 				for(let i=0;i<$('#grid input:checkbox[name="_checked"]').length;i++){
 					if(i!=`${ev.rowKey}`){
 						grid.uncheck(i);
-						$('#selectBtn').prop('disabled', false);
 					}
 				}
 				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
@@ -492,7 +498,7 @@
 				// 생산계획번호 +1 로 등록
 				var info = '[[${info.planNo}]]';
 				$('#planNoInput').val(info)	
-			
+				$('#selectBtn').prop('disabled', false);
 			});
 
 			grid2.on('check', (ev) => {
@@ -528,6 +534,15 @@
 					}
 				}
 			});
+			
+			grid6.on('check', (ev) => {
+				
+				for(let i=0;i<$('#grid6 input:checkbox[name="_checked"]').length;i++){
+					if(i!=`${ev.rowKey}`){
+						grid6.uncheck(i);
+					}
+				}
+			});
 				
 			grid.on('uncheck', (ev) => {
 				$('input:text').val('');
@@ -550,6 +565,10 @@
 				$('input:text').val('');
 			});
 			
+			grid6.on('uncheck', (ev) => {
+				$('input:text').val('');
+			});
+			
 			grid7.on('uncheck', (ev) => {
 				$('input:text').val('');
 			});
@@ -557,6 +576,7 @@
 			$('#grid span').remove();
 			$('#grid2 span').remove();
 			$('#grid5 span').remove();
+			$('#grid6 span').remove();
 			$('#grid7 span').remove();
 			
 			$(window).on('mouseover',function(){
@@ -566,13 +586,7 @@
 			})
 
 			
-			$('#selectGoods').hover(function(){
-				$(this).css("cursor", "pointer");
-				$(this).css("background-color", "#D3D3D3")
-			})
-			$('#selectGoods').mouseout(function(){
-				$(this).css("background-color", "#E9ECEF")
-			})
+		
 		};
 			
 		
@@ -929,6 +943,7 @@
 			 
 			el: document.getElementById('grid6'),
 			minBodyHeight: 30,
+			rowHeaders: ['checkbox'],
 			pageOptions: {
 				useClient: true, // front에서만 페이징 하는 속성
 				perPage: 10
@@ -1131,7 +1146,7 @@
 			console.log(datas);
 			var test = JSON.stringify(datas);
 			$('#orderNo').val(datas[0].orderNo);
-			$('#planProductNo').val(datas[0].productNo);
+			$('#selectGoods').val(datas[0].goodsNo);
 			$('#orderDate').val(datas[0].orderDate);
 			$('#productName').val(datas[0].productName);
 			$('#deliveryDate').val(datas[0].deliveryDate);
@@ -1180,7 +1195,7 @@
 	                   title: '제품등록이 완료되었습니다.',
 	                   text: 'success~',
 	               }).then(function(){
-	               
+	            	   $('#insertFrm').submit();
 	               });
 	                   return false;	                
 	           });

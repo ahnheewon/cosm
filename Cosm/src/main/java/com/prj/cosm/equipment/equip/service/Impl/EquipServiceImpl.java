@@ -184,7 +184,7 @@ public class EquipServiceImpl implements EquipService {
 		mapper.doWork(vo);
 		mapper.insertEquipTime(vo.getEquipNo());
 		try {
-			Thread.sleep(quan * 50);
+			Thread.sleep(quan / 20);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
