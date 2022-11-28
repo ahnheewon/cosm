@@ -50,20 +50,15 @@
 
 				<hr style="width: 100%">
 
-				<h3>진행중 생산지시 리스트</h3>
-				<button type="button" class="btn btn-dark btn-sm"
-					style="float: right" id="delbtn">생산지시 삭제</button>
-				<button type="button" onclick="updateData();"
-					class="btn btn-dark btn-sm" data-bs-toggle="modal" id="updateBtn"
-					data-bs-target="#requestModala" style="float: right">생산지시
-					수정</button>
+				<h3>완료 생산지시 리스트</h3>
+
 				<div id="grid2"></div>
 
 				<hr style="width: 100%">
 
-				<button type="button" onclick="location.href='/proError'"
+				<button type="button" onclick="location.href='/regist'"
 					class="btn btn-primary btn-m"
-					style="float: right; margin-right: 36px">생산 페이지 이동</button>
+					style="float: right; margin-right: 36px">완제품등록 페이지 이동</button>
 			</div>
 			<div class="tab_content" id="programming_content">
 				<hr style="width: 100%">
@@ -89,6 +84,9 @@
 					</div>
 					<button type="button" class="btn btn-secondary" id="searchBtn">조회</button>
 
+					<button type="button" class="btn btn-dark btn-sm"
+						style="float: right" id="delbtn">생산지시 삭제</button>
+			
 
 				</div>
 				<div id="grid5"></div>
@@ -154,9 +152,9 @@
 
 								<div class="input-group mb-3">
 									<span class="input-group-text">지시일자</span> <input type="date"
-										 class="form-control"
-										placeholder="지시일자" name="instructDate" id="instructDate"
-										aria-label="Username" aria-describedby="basic-addon4">
+										class="form-control" placeholder="지시일자" name="instructDate"
+										id="instructDate" aria-label="Username"
+										aria-describedby="basic-addon4">
 								</div>
 
 
@@ -310,12 +308,19 @@
 				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
 					if(i!=`${ev.rowKey}`){
 						grid2.uncheck(i);
+					}
+				}
+			});
+			
+			grid5.on('check', (ev) => {
+				for(let i=0;i<$('#grid2 input:checkbox[name="_checked"]').length;i++){
+					if(i!=`${ev.rowKey}`){
+						grid5.uncheck(i);
 						$('#updateBtn').prop('disabled', false);
 						$('#delbtn').prop('disabled', false);
 					}
 				}
 			});
-			
 				
 			grid.on('uncheck', (ev) => {
 				$('input:text').val('');
@@ -325,15 +330,19 @@
 				
 			grid2.on('uncheck', (ev) => {
 				$('input:text').val('');
+			});
+			
+			grid5.on('uncheck', (ev) => {
+				$('input:text').val('');
 				$('#updateBtn').prop('disabled', true);
 				$('#delbtn').prop('disabled', true);
 			});
 			$('#updateBtn').prop('disabled', true);
 			$('#delbtn').prop('disabled', true);
-		
 				
 			$('#grid span').remove();
 			$('#grid2 span').remove();
+			$('#grid5 span').remove();
 		
 		
 		};
@@ -355,6 +364,7 @@
 				{
 					header: '생산계획번호',
 					name: 'planNo',
+					align : 'center',
 					filter: {
 					       type: 'select',
 					        showApplyBtn: true,
@@ -364,44 +374,52 @@
 				{
 					header: '주문번호',
 					name: 'planOrderNo',
+					align : 'center'
 				},
 				{
 					header: '생산량',
 					name: 'planQuantity',
+					align : 'center'
 				},
 				{
 					header: '시작일자(desc)',
 					name: 'planStart',
 					sortingType: 'desc',
-					sortable: true
+					sortable: true,
+					align : 'center'
 				},
 				{
 					header: '종료일자(desc)',
 					name: 'planEnd',
 					sortingType: 'desc',
-					sortable: true
+					sortable: true,
+					align : 'center'
 				},
 				{
 					header: 'BOM번호',
 					name: 'planBomNo',
+					align : 'center'
 				},	
 				{
 					header: '제품번호',
 					name: 'planProductNo',
+					align : 'center'
 				},	
 				{
 					header: '진행상황',
 					name: 'planPlayCode',
+					align : 'center',
 					renderer : {
 						styles: {
 								 fontWeight: 'bold',
-								 color: (props) => props.value == '미완료' ? 'red' : 'blue'
+								 color: (props) => props.value == '미실시' ? 'red' : 'blue'
 							}
 					},
 				},	
 				{
 					header: '기타사항',
 					name: 'planEx',
+					align : 'center'
 				},	
 				]
 			
@@ -420,41 +438,48 @@
 			columns: [
 				{
 					header: '생산지시번호',
-					name: 'INSTRUCTNO'
+					name: 'INSTRUCTNO',
+					align : 'center'
 				},
 				{
 					header: '생산최종지시량',
-					name: 'INSTRUCTQUANTITY'
+					name: 'INSTRUCTQUANTITY',
+					align : 'center'
 				},
 				{
 					header: '제품명',
-					name: 'GOODSNAME'
+					name: 'GOODSNAME',
+					align : 'center'
 				},
 				{
 					header: '시작일자',
 					name: 'PLANSTART',
 					sortingType: 'desc',
-					sortable: true
+					sortable: true,
+					align : 'center'
 				},
 				{
 					header: '종료일자',
 					name: 'PLANEND',
 					sortingType: 'desc',
-					sortable: true
+					sortable: true,
+					align : 'center'
 				},
 				{
 					header: '지시일자',
 					name: 'INSTRUCTDATE',
 					sortingType: 'desc',
-					sortable: true
+					sortable: true,
+					align : 'center'
 				},
 				{
 					header: '진행상황',
 					name: 'INSTRUCT_PROGRESS_CODE',
+					align : 'center',
 					renderer : {
 						styles: {
 								 fontWeight: 'bold',
-								 color: (props) => props.value == '진행중' ? '#009900' : 'red'
+								 color: (props) => props.value == '진행중' ? '#009900' : 'blue'
 							}
 					},
 				},	
@@ -577,7 +602,7 @@
 		//생산지시리스트 가져오기
 		function instructList(){
 			$.ajax({
-				url: "/instruct",
+				url: "/complete",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -739,6 +764,11 @@
             						xhr.setRequestHeader(header, token);
             					},
                 				success : function(data){
+                					Swal.fire({
+                	                    icon: 'info',
+                	                    title: '생산중입니다. 잠시만 기다려주세요',
+                	                    text: 'wait~',
+                					})
                 					console.log(data);
                 					$('#insertFrm').submit();
                 				},
@@ -757,7 +787,7 @@
 		
 		// 지시 수정
 		function updateData(){	
-			var datas1 = grid2.getCheckedRows();
+			var datas1 = grid5.getCheckedRows();
 			console.log(datas1);
 			var test = JSON.stringify(datas1);
 			$('#planNo').val(datas1[0].PLANNO);
@@ -799,7 +829,7 @@
                     confirmButtonText: '승인',
                     cancelButtonText: '취소'
                 }).then((result) => {
-                	var datas2 = grid2.getCheckedRows();
+                	var datas2 = grid5.getCheckedRows();
                     if (result.isConfirmed) {
                     	for(instruct of datas2){
                 			$.ajax({
@@ -812,7 +842,7 @@
                 		                    '화끈하시네요~!',
                 		                    'success'
                 		                )
-                					instructList();
+                		                allInstructList();
                 				},
                 				error : function(reject){
                 					console.log(reject);

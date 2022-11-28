@@ -606,44 +606,51 @@
 				{
 					header: '생산계획번호',
 					name: 'planNo',
-					
+					align : 'center'
 				},
 				{
 					header: '주문번호',
 					name: 'planOrderNo',
+					align : 'center'
 				},
 				{
 					header: '생산량',
 					name: 'planQuantity',
-					width : 80
+					width : 80,
+					align : 'center'
 				},
 				{
 					header: '시작일자(desc)',
 					name: 'planStart',
 					sortingType: 'desc',
-					sortable: true
+					sortable: true,
+					align : 'center'
 				},
 				{
 					header: '종료일자(desc)',
 					name: 'planEnd',
 					sortingType: 'desc',
-					sortable: true
+					sortable: true,
+					align : 'center'
 				},
 				{
 					header: 'BOM번호',
 					name: 'planBomNo',
+					align : 'center'
 				},	
 				{
 					header: '제품번호',
 					name: 'planProductNo',
+					align : 'center'
 				},	
 				{
 					header: '진행상황',
 					name: 'planPlayCode',
+					align : 'center',
 					renderer : {
 						styles: {
 								 fontWeight: 'bold',
-								 color: (props) => props.value == '미완료' ? 'red' : 'blue'
+								 color: (props) => props.value == '미실시' ? 'red' : 'blue'
 							}
 					},
 					width : 100
@@ -651,6 +658,7 @@
 				{
 					header: '기타사항',
 					name: 'planEx',
+					align : 'center'
 				},	
 				]
 			});
@@ -730,35 +738,43 @@
 				{
 					header: '제품이름',
 					name: 'goodsName',
+					align : 'center'
 				},
 				{
 					header: '제품기준수량',
 					name: 'goodsStandard',
+					align : 'center'
 				},
 			
 				{
 					header: '자재번호(1)',
 					name: 'bomMaterialNo',
+					align : 'center'
 				},	
 				{
 					header: '자재명(1)',
 					name: 'mname',
+					align : 'center'
 				},	
 				{
 					header: '자재 투입량(1)',
 					name: 'bomQuantity',
+					align : 'center'
 				},
 				{
 					header: '자재번호(2)',
 					name: 'bomMaterialNob',
+					align : 'center'
 				},	
 				{
 					header: '자재명(2)',
 					name: 'mname',
+					align : 'center'
 				},	
 				{
 					header: '자재 투입량(2)',
 					name: 'bomQuantityb',
+					align : 'center'
 				},
 				
 				],
@@ -780,6 +796,7 @@
 				{
 					header: 'BOM번호',
 					name: 'bomNo',
+					align : 'center',
 					filter: {
 					       type: 'select',
 					        showApplyBtn: true,
@@ -789,10 +806,12 @@
 				{
 					header: '투입량',
 					name: 'bomQuantity',
+					align : 'center'
 				},
 				{
 					header: '제품번호',
 					name: 'bomProductNo',
+					align : 'center',
 					renderer : {
 						styles: {
 								 fontWeight: 'bold',
@@ -804,30 +823,37 @@
 				{
 					header: '제품이름',
 					name: 'goodsName',
+					align : 'center'
 				},
 				{
 					header: '제품기준수량',
 					name: 'goodsStandard',
+					align : 'center'
 				},
 				{
 					header: '제품상세정보',
 					name: 'goodsContents',
+					align : 'center'
 				},
 				{
 					header: '자재번호',
 					name: 'bomMaterialNo',
+					align : 'center'
 				},	
 				{
 					header: '자재명',
 					name: 'mname',
+					align : 'center'
 				},	
 				{
 					header: '자재재고량',
 					name: 'mstock',
+					align : 'center'
 				},	
 				{
 					header: '자재상세정보',
 					name: 'minfo',
+					align : 'center'
 				},	
 				],
 			});
@@ -854,43 +880,53 @@
 					        showApplyBtn: true,
 					        showClearBtn: true
 					      },
+					align : 'center'
 				},
 				{
 					header: '투입량',
 					name: 'bomQuantity',
+					align : 'center'
 				},
 				{
 					header: '제품번호',
 					name: 'bomProductNo',
+					align : 'center'
 				},
 				
 				{
 					header: '제품이름',
 					name: 'goodsName',
+					align : 'center'
 				},
 				{
 					header: '제품기준수량',
 					name: 'goodsStandard',
+					align : 'center'
 				},
 				{
 					header: '제품상세정보',
 					name: 'goodsContents',
+					align : 'center'
 				},
 				{
 					header: '자재번호',
 					name: 'bomMaterialNo',
+					align : 'center'
 				},	
 				{
 					header: '자재명',
 					name: 'mname',
+					align : 'center'
 				},	
 				{
 					header: '자재재고량',
 					name: 'mstock',
+					align : 'center'
 				},	
 				{
 					header: '자재상세정보',
 					name: 'minfo',
+					align : 'center'
 				},	
 				],
 			});
@@ -900,7 +936,6 @@
 			 
 			el: document.getElementById('grid4'),
 			minBodyHeight: 30,
-			rowHeaders: ['checkbox'],
 			pageOptions: {
 				useClient: true, // front에서만 페이징 하는 속성
 				perPage: 5
@@ -911,6 +946,7 @@
 			columns : [ {
 				header : '제품번호',
 				name : 'goodsNo',
+				align : 'center',
 				filter : {
 					type : 'select',
 					showApplyBtn : true,
@@ -919,21 +955,27 @@
 			}, {
 				header : '제품명',
 				name : 'goodsName',
+				align : 'center'
 			}, {
 				header : '제품기준수량',
 				name : 'goodsStandard',
+				align : 'center'
 			}, {
 				header : '제품설명',
 				name : 'goodsContents',
+				align : 'center'
 			}, {
 				header : '제품검수기준',
 				name : 'goodsCheck',
+				align : 'center'
 			}, {
 				header : '제작기간',
 				name : 'goodsDate',
+				align : 'center'
 			}, {
 				header : '단위코드',
 				name : 'unitCode',
+				align : 'center'
 			}, ],
 
 			});
@@ -954,6 +996,7 @@
 			columns : [ {
 				header : '제품번호',
 				name : 'goodsNo',
+				align : 'center',
 				filter : {
 					type : 'select',
 					showApplyBtn : true,
@@ -962,21 +1005,27 @@
 			}, {
 				header : '제품명',
 				name : 'goodsName',
+				align : 'center',
 			}, {
 				header : '제품기준수량',
 				name : 'goodsStandard',
+				align : 'center',
 			}, {
 				header : '제품설명',
 				name : 'goodsContents',
+				align : 'center',
 			}, {
 				header : '제품검수기준',
 				name : 'goodsCheck',
+				align : 'center',
 			}, {
 				header : '제작기간',
 				name : 'goodsDate',
+				align : 'center'
 			}, {
 				header : '단위코드',
 				name : 'unitCode',
+				align : 'center'
 			}, ],
 
 			});
