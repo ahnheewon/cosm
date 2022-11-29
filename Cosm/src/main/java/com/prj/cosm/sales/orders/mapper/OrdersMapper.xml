@@ -10,27 +10,44 @@
 	</select>
 
 
-	<!-- 주문 전체조회 -->
+	<!-- 신규주문 전체조회 -->
 	<!-- select o.order_no, o.order_date, o.delivery_date, o.total_num, o.pro_price, 
 		o.surtax, o.note, find_code_no(o.order_code) as order_code , o.delivery_info, 
 		o.io_code, g.goods_no, g.goods_name, c.users_no from orders o JOIN produce_goods 
 		g on o.goods_no = g.goods_no JOIN client c on o.users_no = c.users_no -->
+	<!-- select o.order_no, p.goods_no, o.order_date, o.delivery_date, o.total_num, 
+		o.pro_price, o.note, find_code_no(order_code) as order_code, find_code_no(ORDER_PROGRESS_CODE) 
+		as ORDER_PROGRESS_CODE, find_code_no(DELIVERY_INFO) as DELIVERY_INFO, find_code_no(IO_CODE) 
+		as IO_CODE, o.total_price , c.users_no, o.surtax from orders o, client c, 
+		produce_goods p where o.users_no= c.users_no and o.goods_no = p.goods_no -->
 	<select id="getOrderList" resultType="OrdersVO">
-		select ORDER_NO, 
-				GOODS_NO, 
-				ORDER_DATE, 
-				DELIVERY_DATE, 
-				TOTAL_NUM, 
-				PRO_PRICE,
-				NOTE, 
-				find_code_no(order_code) as order_code, 
-				ORDER_PROGRESS_CODE,
-				DELIVERY_INFO,
-				IO_CODE, 
-				TOTAL_PRICE, 
-				USERS_NO, 
-				SURTAX 
-		from orders
+		select
+		o.order_no,p.goods_no, p.goods_name, o.order_date, o.delivery_date,
+		o.total_num, o.pro_price, o.note, find_code_no(order_code) as
+		order_code,
+		find_code_no(ORDER_PROGRESS_CODE) as ORDER_PROGRESS_CODE,
+		find_code_no(DELIVERY_INFO) as DELIVERY_INFO,
+		find_code_no(IO_CODE) as IO_CODE,
+		o.total_price , o.surtax, c.client_name
+		from orders o, produce_goods p , client c
+		where o.goods_no = p.goods_no
+		and o.client_name = c.users_no
+		and order_code = 'B0106'
+	</select>
+
+	<!-- 접수주문 조회 --> 
+	<select id="getReceiptList" resultType="OrdersVO">
+		select o.order_no,p.goods_no, p.goods_name,
+		o.order_date, o.delivery_date,
+		o.total_num, o.pro_price, o.note, find_code_no(order_code) as order_code,
+		find_code_no(ORDER_PROGRESS_CODE) as ORDER_PROGRESS_CODE,
+		find_code_no(DELIVERY_INFO) as DELIVERY_INFO,
+		find_code_no(IO_CODE) as IO_CODE,
+		o.total_price , o.surtax, c.client_name
+		from orders o, produce_goods p , client c
+		where o.goods_no = p.goods_no
+		and o.client_name = c.users_no
+		and order_code = 'B0107'
 	</select>
 
 
@@ -66,13 +83,13 @@
 		)
 		values (
 		#{orderNo},
-		(select GOODS_NO from produce_goods where GOODS_NAME=#{goodsName}),
-		(select USERS_NO from client where client_name=#{clientName}),
+		(select GOODS_NO from
+		produce_goods where GOODS_NAME=#{goodsName}),
+		#{usersNo},
 		#{deliveryDate},
 		#{totalNum},
 		#{note},
 		#{totalPrice}
-		
 		)
 	</insert>
 
@@ -89,7 +106,7 @@
 		ORDER_NO = #{noList}
 	</delete>
 
-	<!-- 생산 접수 버튼 이벤트 -->
+	<!-- 신규 주문 등록 -->
 	<!-- recNos값 하나만 들고와줘서 주기만 하면됨 -->
 	<update id="recNos">
 		UPDATE orders SET ORDER_CODE = 'B0107' WHERE order_no IN

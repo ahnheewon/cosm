@@ -18,8 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
-import com.prj.cosm.equipment.part.service.PartService;
-import com.prj.cosm.equipment.part.service.PartVO;
+
 import com.prj.cosm.equipment.work.service.WorkService;
 import com.prj.cosm.equipment.work.service.WorkVO;
 
@@ -34,9 +33,7 @@ public class EquipController {
 	@Autowired
 	WorkService wService;
 	
-	@Autowired
-	PartService pService;
-		
+
 		// 첫 화면
 		@RequestMapping("/equipment/main")
 		public String main() {
@@ -368,9 +365,12 @@ public class EquipController {
 		//공사 결재안건 수정 seq+1
 		@PostMapping("/equipment/updateSignSeq")
 		@ResponseBody
-		public int updateSignSeq(WorkVO vo) {
+		public int updateSignSeq(WorkVO vo, RedirectAttributes ratt) {
 			int result = wService.updateSignSeq(vo);
-			result = result + wService.updateWorkCode(vo);
+			
+			if(vo.getSignSeq() == 3) {
+				wService.updateWorkCode(vo);
+			}
 			
 			return result; // "{re:true}"
 		}
@@ -383,14 +383,15 @@ public class EquipController {
 			return vo; // "{re:true}"
 		}
 		
-		// 고장 삭제
+		// 공사 삭제
 		@DeleteMapping("/equipment/deleteWorkNo/{workNo}")
 		@ResponseBody
 		public int deleteWork(@PathVariable int workNo) {
-				int result = wService.deleteWork(workNo);
-					result = result + wService.updateDeleteSignNo(workNo); //삭제 후 번호 정렬
-					result = result + wService.updateDeleteWorkNo(workNo); //삭제 후 번호 정렬
-			return result;	
+				int a = wService.deleteWork(workNo);
+				int b = wService.updateDeleteSignNo(workNo); //삭제 후 번호 정렬
+				int c = wService.updateDeleteWorkNo(workNo); //삭제 후 번호 정렬
+					
+			return a+b+c;	
 		}
 		
 		/*
@@ -416,29 +417,12 @@ public class EquipController {
 		// 부품 전체 리스트 조회
 		@GetMapping("/equipment/partList")
 		@ResponseBody
-		public List<PartVO> part(){
+		public List<WorkVO> part(){
 										
-			return pService.getPartList();
+			return wService.getPartList();
 		}	
 		
-		// 부품변동 전체 리스트 조회
-		@GetMapping("/equipment/partIOList")
-		@ResponseBody
-		public List<PartVO> partIo(){
-										
-		return pService.getPartIOList();
-		}
-		
-		// 부품변동 등록은 부품 수정할때 처리됩니다.
-	
-		// 부품 수정
-		/*
-		 * @PostMapping("/equipment/updatePart")
-		 * 
-		 * @ResponseBody public int updatePart(PartVO vo) { int result =
-		 * pService.updatePart(vo); result = result + pService.insertPartIO(vo); return
-		 * result; // "{re:true}" }
-		 */
+
 		
 //================================================================================================================================	
 		@PostMapping("/equipment/equipControl")

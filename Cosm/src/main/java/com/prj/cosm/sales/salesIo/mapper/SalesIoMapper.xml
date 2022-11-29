@@ -14,19 +14,12 @@
 
 	<!-- 전체조회 -->
 	<select id="getSalesIoList" resultType="SalesIoVO">
-		select
-		SALES_NO,
-		ORDER_DATE,
-		DELIVERY_DATE,
-		STATE,
-		NOTE,
-		find_code_no(CODE_NO) as CODE_NO,
-		CKECK,
-		ORDER_NO,
-		USERS_NO,
-		REGIST_LOT
-		
-		from sales_io
+		select p.regist_LOT,
+		o.ORDER_NO, o.ORDER_DATE,
+		o.DELIVERY_DATE, o.users_no,
+		find_code_no(o.order_code) as order_code
+		from produce_regist p join orders o
+		on p.regist_product_no = o.goods_no
 	</select>
 
 	<!-- 단건조회 -->
@@ -96,7 +89,17 @@
 
 	<!-- 여러조건 삭제 -->
 	<delete id="deleteCheck" parameterType="String">
-		DELETE FROM sales_io where
+		DELETE FROM sales_io
+		where
 		sales_no = #{salesNo}
 	</delete>
+
+	<!-- 출고시 출고대기 -> 완료 -->
+	<update id="updateOutInfo" parameterType="SalesIoVO">
+		UPDATE ORDERS SET ORDER_CODE = 'A0103' WHERE order_no IN
+		<foreach collection="list" item="vo" open="(" close=")"
+			separator=" , ">
+			#{vo.orderNo}
+			 </foreach>
+	</update>
 </mapper>
