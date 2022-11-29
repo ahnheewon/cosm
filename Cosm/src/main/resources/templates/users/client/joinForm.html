@@ -8,8 +8,6 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <meta charset="UTF-8">
-<meta name="_csrf" th:content="${_csrf.token}">
-<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>회원가입</title>
 <style type="text/css">
 th {
@@ -69,7 +67,7 @@ th {
 						<tr>
 							<th>사업자등록증</th>
 							<td><input id="licenseImg" name="licenseImg" type="file">
-							<!-- html의 name과 vo의 필드명 다르게 써야함 --></td>
+								<!-- html의 name과 vo의 필드명 다르게 써야함 --></td>
 							<!-- 
 							 <td><input type="text" id="licenseImg" name="licenseImg" ></td>
 							 -->
@@ -90,8 +88,6 @@ th {
 		</div>
 	</div>
 	<script type="text/javascript">
-		const header = $("meta[name='_csrf_header']").attr('content');
-		const token = $("meta[name='_csrf']").attr('content');
 		const openDate = "";
 		$('#back').click(function () {
 			location.href = "/login"
@@ -145,11 +141,19 @@ th {
 		function checkForm() {
 			console.log($('#usersId').val())
 			if ($('#usersId').val() == "" || $('#usersId').val() == null) {
-				alert('아이디를 입력하세요!');
+				Swal.fire(
+                        '아이디 중복확인',
+                        '아이디를 입력하세요!',
+                        'error'
+                    )
 				return false;
 			}
 			if ($('#checkBtn').val() != "Yes") {
-				alert('아이디 중복 확인을 해주십시오');
+				Swal.fire(
+                        '아이디 중복확인',
+                        '아이디 중복확인을 해주세요',
+                        'error'
+                    )
 				return false;
 			}
 			$('#empInsertForm').submit();
@@ -170,13 +174,24 @@ th {
 				},
 				success: function (data) {
 					if (data == 0 && usersId != "") {
-						alert("사용 할 수 있는 아이디 입니다");
+						Swal.fire(
+		                        '아이디 중복확인',
+		                        '사용 할 수 있는 아이디 입니다',
+		                        'success'
+		                    )
 						$('#checkBtn').val("Yes");
 
 					}else if( usersId==""){
-						alert("아이디를 입력해주세요");
+						Swal.fire(
+		                        '아이디 중복확인',
+		                        '아이디를 입력해주세요'
+		                    )
 					} else {
-						alert("이미 존재하는 아이디 입니다!");
+						Swal.fire(
+		                        '아이디 중복확인',
+		                        '이미 존재하는 아이디입니다',
+		                        'error'
+		                    )
 						$('#usersId').val("");
 						$('#usersId').focus();
 					}
