@@ -1,6 +1,7 @@
 package com.prj.cosm.sales.salesIo.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,7 +22,8 @@ public class SalesIoVO {
 	CKECK,
 	ORDER_NO,
 	USERS_NO,
-	REGIST_LOT
+	REGIST_LOT,
+	ORDER_CODE
 	*/
 	
 	private String salesNo;					//완제품번호
@@ -38,4 +40,7 @@ public class SalesIoVO {
 	private String orderNo;					//주문번호
 	private String usersNo;					//회원번호
 	private String registLot;				//lot_no
+	private String orderCode;
+	//다중 수정 삭제
+	private List<String> sioList;
 }

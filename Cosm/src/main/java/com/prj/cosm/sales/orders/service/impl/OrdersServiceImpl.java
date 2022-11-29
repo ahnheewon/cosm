@@ -25,44 +25,45 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Override
 	public List<OrdersVO> getOrderList() {
-		// 전체조회
+		// 신규주문 조회
 		return mapper.getOrderList();
 	}
 
 	@Override
+	public List<OrdersVO> getReceiptList() {
+		// 접수주문 조회
+		return mapper.getReceiptList();
+	}
+
+	@Override
 	public OrdersVO getOrderInfo(int orderNo) {
-		//단건조회
+		// 단건조회
 		return mapper.getOrderInfo(orderNo);
 	}
 
 	@Override
 	public int insertOrder(OrdersVO vo) {
 		// 등록
-		//int count = mapper.insertOrder(vo);
+		// int count = mapper.insertOrder(vo);
 		return mapper.insertOrder(vo);
 	}
 	/*
-	public Map getResult(int count, OrdersVO vo) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("result", count);
-		result.put("data", vo);
-		return result;
-	}
-	 * */
-	
-	
+	 * public Map getResult(int count, OrdersVO vo) { Map<String, Object> result =
+	 * new HashMap<String, Object>(); result.put("result", count);
+	 * result.put("data", vo); return result; }
+	 */
+
 	@Override
 	public int deleteOrder(int orderNo) {
-		//삭제
+		// 삭제
 		return mapper.deleteOrder(orderNo);
 	}
 
 	@Override
 	public int updateOrder(OrdersVO vo) {
-		//수정
+		// 수정
 		return mapper.updateOrder(vo);
 	}
-	
 
 	@Override
 	public int deleteCheck(List<String> noList) {
@@ -81,7 +82,6 @@ public class OrdersServiceImpl implements OrdersService {
 	@Override
 	public int updatePro(List<OrdersVO> list) {
 		int result = 0;
-		System.out.println("생상지시 상황 : " + list);
 		for (OrdersVO vo : list) {
 			result += mapper.updateOrder(vo);
 		}
@@ -94,6 +94,5 @@ public class OrdersServiceImpl implements OrdersService {
 		int result = mapper.recNos(vo);
 		return result;
 	}
-
 
 }

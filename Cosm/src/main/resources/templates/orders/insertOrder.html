@@ -45,13 +45,10 @@
 					</tbody>
 				</table>
 				<hr>
-				<button type="submit" class="btn btn-primary"
-					onclick="insertOrderForm()">주문</button>
+				<button type="submit" class="btn btn-primary">주문</button>
 				<button type="button" class="btn btn-secondary"
 					onclick="location.href='/top'">취소</button>
 				<input type="hidden" id="usersNo" name="usersNo">
-				<input type="hidden" id="clientName" name="clientName">
-				
 			</form>
 		</div>
 		<hr>
@@ -60,81 +57,13 @@
 
 		<script>
 			$('#usersNo').val('[[${session.usersNo}]]');
-
-			$('#insertOrderForm').on('click', function() {
-				$('#insertFrm').submit();
-			});
-
-			/*
-			var result = 
-			console.log(resutl);
-			$('input[name=uNo]').attr('value'.result);
 			
-			$('#usersNo').change(function() {
-				console.log('#userNo')
-				let result = $('#usersNo').val('[[${session.usersNo}]]');
-				consloe.log("result");
-				$('#uNo').val(result);
-
-			}); */
-
 			/*-----------------
 			주문등록 버튼 클릭이벤트
 			-------------------*/
-
-			//$('#goodsName').change
-			/*-----------------
-			hidden으로 받아올 
-			goodsNo proPrice surtax orderCode 
-			orderProgressCode deliveryInfo ioCode name
-			
-			$('#goodsNo').change(function(){
-			    let str = $('#goodsNo').val();
-			    
-			}) 
-			proPrice 
-			surtax 
-			ioCode 
-			name
-			
-			let goodsNo = document.getElementById('goodsNo');
-			let proPrice = document.getElementById('proPrice');
-			let surtax = document.getElementById('surtax');
-			
-			let orderCode = document.getElementById('orderCode');
-			let orderProgressCode = document
-					.getElementById('orderProgressCode');
-			let deliveryInfo = document.getElementById('deliveryInfo');
-			let ioCode = document.getElementById('ioCode');
-			let name = document.getElementById('name');
+			//moq=100000
 			
 
-			function insertOrder() {
-				
-				$.ajax({
-					url : "/orders/insertOrderAjax",
-					method : "POST",
-					dataType : "JSON",
-					success : function(data) {
-						if (data > 0) {
-							alert("등록완료");
-
-							console.log(data);
-
-						} else {
-							alert("등록실패");
-
-						}
-
-					},
-					error : function(reject) {
-						console.log(reject);
-					}
-				});
-
-			}
-
-			-------------------*/
 		</script>
 	</div>
 </body>

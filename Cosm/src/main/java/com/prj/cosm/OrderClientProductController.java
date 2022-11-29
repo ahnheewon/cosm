@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,23 +22,50 @@ import com.prj.cosm.sales.orders.service.OrdersVO;
 import com.prj.cosm.sales.product.service.ProductService;
 import com.prj.cosm.sales.salesIo.service.SalesIoService;
 import com.prj.cosm.sales.salesIo.service.SalesIoVO;
+import com.prj.cosm.user.alert.service.AlertService;
+import com.prj.cosm.user.emp.service.EmpService;
 
 import groovyjarjarantlr4.v4.parse.GrammarTreeVisitor.mode_return;
 
 @Controller
 @CrossOrigin("*")
 public class OrderClientProductController {
+	/*-----------------
+	  주문 : orders service
+	-----------------*/
 	@Autowired
 	OrdersService oService;
 	
+	/*-----------------
+	  완제품 : salesIo service
+	-----------------*/
 	@Autowired
 	SalesIoService sService;
 
+	/*-----------------
+	  고객 : client service
+	-----------------*/
 	@Autowired
 	ClientService cService;
 
+	/*-----------------
+	  제품 : product service
+	-----------------*/
 	@Autowired
 	ProductService pService;
+	
+	/*-----------------
+	  회원 : emp service
+	-----------------*/
+	@Autowired
+	EmpService service;
+	
+	/*-----------------
+	  알림 : alr service
+	-----------------*/
+	@Autowired
+	AlertService aService;
+	
 
 // 제품페이지=================================================================================================================
 	// 로그인 유무 상관없이 보여짐
@@ -53,21 +81,7 @@ public class OrderClientProductController {
 		return "/client/main";
 	}
 
-	/*
-	@GetMapping("/client/insertOrderInfosssssss") // url
-	public String insertOrder(Model model) {
-		return "/client/insertOrdersssssss"; // resources - insertOrder
-	}
-	주문하기(tab or layout),(회원+고객+주문 조인) 페이지
-	 * */ 
 
-	// 주문 등록시 데이터
-	
-
-	
-	
-	
-	
 	// 주문조회 화면(월별 : 1개월 3개월 6개월 조회 가능)
 	@GetMapping("/client/orderList")
 	@ResponseBody
@@ -75,15 +89,6 @@ public class OrderClientProductController {
 		// model.addAttribute("uno"), cService.getUserNo());
 		return cService.myOrderList();
 	}
-
-	/*
-	@GetMapping("/client/orderListInfo")
-	@RequestMapping
-	public List<ClientVO> orderList() {
-		return cService.myOrderList();
-	}
-	주문조회 데이터
-	 * */ 
 
 	// 마이페이지 화면
 	@RequestMapping("/client/myPage")
@@ -120,14 +125,23 @@ public class OrderClientProductController {
 	}
 	
 
-	// 주문조회 리스트
+	//주문 조회 리스트
 	@ResponseBody
 	@GetMapping("/orders/ajaxOrders") // url
 	public List<OrdersVO> ajaxOrder(Model model) {
 		return oService.getOrderList();
 	}
+	
+	// 접수 조회 데이터
+	@GetMapping("/orders/getReceiptList")
+	@ResponseBody
+	public List<OrdersVO> getReceiptList (Model model){
+		model.addAttribute("id", oService.getOrderNo());
+		return oService.getReceiptList();
+	}
+	
 
-	// 주문조회 데이터
+	// 신규 조회 데이터
 	@GetMapping("/orders/ordersList")
 	@ResponseBody
 	public List<OrdersVO> salesorderList(Model model) {
@@ -135,12 +149,15 @@ public class OrderClientProductController {
 		return oService.getOrderList();
 	}
 	
+	
+	
 	//등록 페이지
 	@RequestMapping("/orders/insertOrder")
 	public String insertOrder (Model model) {
 		//model.addAttribute("no", oService.getOrderNo());
 		return "/orders/insertOrder";
 	}
+	
 	//주문 등록 데이터
 	@PostMapping("/orders/insertOrderData")
 	public String insertOrderPage( OrdersVO ovo) {
@@ -148,20 +165,16 @@ public class OrderClientProductController {
 		oService.insertOrder(ovo);
 		return "redirect:/orders/sMain";
 	}
-	/*
-	//insert Map getResult
-	public Map getResult(int count, OrdersVO vo) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("result", count);
-		result.put("data", vo);
-		return result;
+	
+	//출고내역 삭제
+	@ResponseBody
+	@PostMapping("/orders/ajaxDelOutOrder")
+	public int delOutOrder(@RequestBody SalesIoVO vo) {
+		return sService.delOutOrder(vo.getSioList());
+		//지금 수정해야할 부분 
 	}
-	 * */
 	
-
-	
-	
-	// 체크박스 - 삭제
+	//삭제 - 접수 주문관리
 	@ResponseBody
 	@PostMapping("/orders/ajaxDelcheckOrder") // ajaxDelcheckOrder, requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
 	public int delCheckOrder(@RequestBody OrdersVO vo) {
@@ -177,14 +190,14 @@ public class OrderClientProductController {
 		return result;
 	}
 	
-	//완제품 체크박스 -삭제
-	/*
-	 * @ResponseBody
-	 * 
-	 * @PostMapping("/orders/ajaxSalesOutDelete") public int
-	 * ajaxSalesOutDelete(@RequestMapping SalesIoVO vo) { return
-	 * sService.(vo.getSalesNo()); }
-	 */
+	//출고 버튼 이벤트
+	@ResponseBody
+	@PostMapping("/orders/updateOutInfo")
+	public int updateOutInfo(@RequestBody  List<SalesIoVO> list) {
+		int result = sService.updateOutInfo(list);
+		return result;
+	}
+	
 	
 	// 접수 버튼 이벤트
 	@ResponseBody
