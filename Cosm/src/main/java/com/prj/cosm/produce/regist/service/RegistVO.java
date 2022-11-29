@@ -31,4 +31,6 @@ public class RegistVO {
 	//진행상황,단위코드 리스트
 	public String codeName;
 	
+	private String orderNo;
+	private String orderCode;
 }

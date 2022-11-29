@@ -6,28 +6,7 @@
 <meta charset="UTF-8">
 
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
 
-<script
-	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-
-<!-- modal -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-	crossorigin="anonymous">
-<!-- JavaScript Bundle with Popper -->
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-	crossorigin="anonymous">
-    </script>
 </head>
 <body>
 	<div layout:fragment="content" style="padding-top: 30px">
@@ -37,7 +16,7 @@
 		<h3>생산완료된 생산지시 리스트</h3>
 		<div id="grid2"></div>
 		<hr style="width: 100%">
-		<form action="registInsert" method="post" class="row g-3"
+		<form action="/produce/registInsert" method="post" class="row g-3"
 			style="margin-left: 30px; margin-right: 30px;" id="insertFrm">
 			<!-- <sec:csrfInput/> -->
 			<input type="hidden" th:name="${_csrf.parameterName}"
@@ -87,14 +66,14 @@
 			</div>
 			<div class="col-md-4">
 				<label for="inputState" class="form-label">검수여부</label> <select
-					id="inputState" name="inspection" class="form-select">
+					id="inspection" name="inspection" class="form-select">
 					<option th:each="playNo : ${playNo}">[[${playNo.codeName}]]</option>
 				</select>
 			</div>
 
 
 			<div class="col-12">
-				<button type="button" class="btn btn-dark btn-sm"
+				<button type="button" class="btn btn-secondary btn-sm"
 					style="float: right" id="alertStart">완제품 등록, 검수 완료</button>
 			</div>
 		</form>
@@ -104,8 +83,8 @@
 		
 		<div id="grid"></div>
 		
-		<button type="button" onclick="location.href='/completeList'"
-					class="btn btn-primary btn-m"
+		<button type="button" onclick="location.href='/produce/completeList'"
+					class="btn btn-secondary btn-sm"
 					style="float: right; margin-right: 36px">완제품 리스트 페이지 이동</button>
 
 		<script>
@@ -153,6 +132,10 @@
 			$('#registError').val(0)
 			$('#registError').on('keyup',function(){
 				$('#instructQuantity').val($(grid2.getCheckedRows())[0].INSTRUCTQUANTITY-$('#registError').val());
+			})
+			$('#registError').on('keyup',function(){
+				
+				$('#inspection').val('불량발생');
 			})
 			
 			
@@ -263,6 +246,11 @@
 					align : 'center'
 				},
 				{
+					header: '주문번호',
+					name: 'PLAN_ORDER_NO',
+					align : 'center'
+				},
+				{
 					header: '제품번호',
 					name: 'REGIST_PRODUCT_NO',
 					align : 'center'
@@ -317,7 +305,7 @@
 	// 생산지시 리스트 가져오기
 	function instructList(){
 		$.ajax({
-			url: "/complete",
+			url: "/produce/complete",
 			method: "GET",
 			dataType: "JSON",
 			success: function (result) {
@@ -337,7 +325,7 @@
 	//완제품리스트 가져오기
 	function registList(){
 		$.ajax({
-			url: "/registList",
+			url: "/produce/registList",
 			method: "GET",
 			dataType: "JSON",
 			success: function (result) {
@@ -382,20 +370,26 @@
             	var datas2 = grid2.getCheckedRows();
                 if (result.isConfirmed) {
                 	for(instruct of datas2){
+   						
             			$.ajax({
-            				url : '/updateInsPlay2',
+            				url : '/produce/updateInsPlay2',
             				type : 'post',
             				data : {instructNo : instruct.INSTRUCTNO},
             				beforeSend: function (xhr) {
         						xhr.setRequestHeader(header, token);
         					},
             				success : function(data){
+            					console.log(data);
             					Swal.fire({
             		                icon: 'success',
             		                title: '완제품등록이 완료되었습니다.',
             		                text: 'success~',
             		            }).then(function(){
+            		            	
+            		            	
             		            	$('#insertFrm').submit();
+            		            
+            		            
             		            });
             		                return false;	   
             				},
@@ -408,7 +402,28 @@
             })             
         });
     });
-	
+	 tui.Grid.applyTheme("normal", {
+         cell : {
+            nomal : {
+               background : "#fff",
+               border : "#e0e0e0",
+               showVerticalBorder : false,
+               showHorizontalBorder : true
+            },
+            header : {
+               background : "#eaeaea",
+               border : "#e0e0e0",
+               showHorizontalBorder : true
+            },
+            rowHeader : {
+               background : "#eaeaea",
+               border : "#e0e0e0",
+               showVerticalBorder : false,
+               showHorizontalBorder : true
+            },
+         },
+
+      });
 
 	
 	

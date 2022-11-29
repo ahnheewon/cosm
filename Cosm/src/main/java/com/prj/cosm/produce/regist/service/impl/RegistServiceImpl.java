@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.prj.cosm.produce.instruct.mapper.InsMapper;
+import com.prj.cosm.produce.instruct.service.InsVO;
+import com.prj.cosm.produce.plan.service.PlanVO;
 import com.prj.cosm.produce.regist.mapper.RegistMapper;
 import com.prj.cosm.produce.regist.service.RegistService;
 import com.prj.cosm.produce.regist.service.RegistVO;
@@ -44,6 +46,7 @@ public class RegistServiceImpl implements RegistService {
 
 	@Override
 	public int insertRegistInfo(RegistVO registVO) {
+		
 		List<EmpVO> eList = new ArrayList<>();
 		eList = eMapper.getReceiveUsers("D0109");
 		for (EmpVO eVO : eList) {
@@ -89,6 +92,13 @@ public class RegistServiceImpl implements RegistService {
 	public List<Map<String, Object>> errorList(RegistVO vo) {
 		// TODO Auto-generated method stub
 		return mapper.errorList(vo);
+	}
+
+	@Override
+	public void updateOrderInfo(InsVO insVO) {
+		
+			mapper.updateOrderInfo(insVO);
+		
 	}
 
 }

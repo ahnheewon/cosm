@@ -5,24 +5,9 @@
 	layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
 
-<script
-	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-
-<!--toast date-picker-->
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
-<script
-	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -69,7 +54,7 @@
 
 		const search = document.getElementById("searchFilter2") //인풋태그
 		      
-		const state = [{code: 'eq', value: search.value}];
+		const state = [{code: 'contain', value: search.value}];
 		
 		      if(search.value == ''){   
 		         
@@ -125,6 +110,11 @@
 				align : 'center'
 			},
 			{
+				header: '주문번호',
+				name: 'PLAN_ORDER_NO',
+				align : 'center'
+			},
+			{
 				header: '제품번호',
 				name: 'REGIST_PRODUCT_NO',
 				align : 'center'
@@ -167,6 +157,7 @@
 				header: '검수여부',
 				name: 'INSPECTION',
 				align : 'center',
+				filter : 'text',
 				renderer : {
 				 	styles: {
 						fontWeight: 'bold',
@@ -181,7 +172,7 @@
 	//완제품리스트 가져오기
 	function registList(){
 		$.ajax({
-			url: "/completedList",
+			url: "/produce/completedList",
 			method: "GET",
 			dataType: "JSON",
 			success: function (result) {
@@ -231,7 +222,7 @@ function searchBtnHandler() {
 		console.log(getEndDay);
 
 		$.ajax({
-			url : '/completedList',
+			url : '/produce/completedList',
 			data : {
 				"startDate" : getStartDay,
 				"endDate" : getEndDay
@@ -271,7 +262,7 @@ $().ready(function () {
         	var data1 = datas2[0].REGIST_LOT;
             if (result.isConfirmed) {
             	$.ajax({
-        			url : '/registDelete',
+        			url : '/produce/registDelete',
         			type : 'get',
         			data : {registLOT : data1},
         			success : function(data){
@@ -291,6 +282,28 @@ $().ready(function () {
     });
 });
 
+tui.Grid.applyTheme("normal", {
+    cell : {
+       nomal : {
+          background : "#fff",
+          border : "#e0e0e0",
+          showVerticalBorder : false,
+          showHorizontalBorder : true
+       },
+       header : {
+          background : "#eaeaea",
+          border : "#e0e0e0",
+          showHorizontalBorder : true
+       },
+       rowHeader : {
+          background : "#eaeaea",
+          border : "#e0e0e0",
+          showVerticalBorder : false,
+          showHorizontalBorder : true
+       },
+    },
+
+ });
 	</script>
 	</div>
 </body>

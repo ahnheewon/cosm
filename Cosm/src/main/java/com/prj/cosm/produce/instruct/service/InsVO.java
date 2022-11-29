@@ -36,4 +36,10 @@ public class InsVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 	
+	private String planNo;
+	private String mioNo;
+	private Date mioDate;
+	private int mioQuantity;
+	private String mioProgress;
+	
 }
