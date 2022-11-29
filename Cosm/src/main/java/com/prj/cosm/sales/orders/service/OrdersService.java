@@ -11,8 +11,11 @@ public interface OrdersService {
 	// 주문번호순 정렬 -> xml에서 타입 맞춰줘야함
 	public int getOrderNo();
 
-	// 전체조회
+	// 신규주문 전체조회
 	public List<OrdersVO> getOrderList();
+
+	// 접수주문 전체조회
+	public List<OrdersVO> getReceiptList();
 
 	// 단건조회
 	public OrdersVO getOrderInfo(int orderNo);

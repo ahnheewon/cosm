@@ -60,15 +60,15 @@
 					<div id="wrap">
 						<form>
 
-							<div id="btn">
+							<div id="btn" style="float: right">
 
 								<button type="button" class="btn btn-secondary btn-sm"
-									id="insertbtn" style="float: right" onclick="updateMoNum()">
-									저장</button>
-								<!-- <button type="button" class="btn btn-secondary btn-sm"
-									id="plusbtn" style="float: right" >추가</button> -->
+									id="insertbtn" onclick="updateMoNum()">
+									실행</button>								
 								<button type="button" class="btn btn-secondary btn-sm"
-									id="cdelbtn" style="float: right">삭제</button>
+									id="cdelbtn" >삭제</button>
+									<button type="button" class="btn btn-secondary btn-sm"
+								id="execlWord" >출력</button>
 							</div>
 
 						</form>
@@ -80,39 +80,42 @@
 				<div class="column">
 					<h2>발주 진행 현황</h2>
 
-					<div id="mdate" style="margin-left: 10px; z-index: 1001;">
+					<div id="mdate" >
 						<span>발주일자</span>
 						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-							style="margin-bottom: 5px; z-index: 1001;">
+							style="z-index: 1001;">
 							<input id="startpicker-input" type="text" aria-label="Date"
-								name="startDate" style="margin-bottom: 5px; z-index: 1001">
+								name="startDate" style="z-index: 1001">
 							<span class="tui-ico-date"></span>
 							<div id="startpicker-container" class="datePicker2"
 								style="z-index: 1001"></div>
 						</div>
 						<span>~</span>
 						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-							style="margin-bottom: 5px; z-index: 1001">
+							style="z-index: 1001">
 							<input id="endpicker-input" type="text" aria-label="Date" name=""
-								style="margin-bottom: 5px; z-index: 1001"> <span
+								style="z-index: 1001"> <span
 								class="tui-ico-date"></span>
 							<div id="endpicker-container" class="datePicker2"
-								style="margin-bottom: 5px; z-index: 1001"></div>
+								style="z-index: 1001"></div>
 						</div>
 						<button type="button" class="btn btn-secondary btn-sm"
 							id="searchBtn">검색</button>
-						<div id="btn">
+					<!--  </div> -->
+						<!--  <div id="btn" style="float: right">-->
+						<div class="btn" style="float: right"> 
+						<button type="button" class="btn btn-secondary btn-sm"
+								id="orderbtn" onclick="updateOrderStart()">실행</button>
+							
+						<button type="button" class="btn btn-secondary btn-sm"
+								id="orderDelbtn" onclick="delOrderCheck()">삭제</button>
 							<button type="button" class="btn btn-secondary btn-sm"
-								id="execlWord" style="float: right">출력</button>
-							<button type="button" class="btn btn-secondary btn-sm"
-								id="orderbtn" style="float: right" onclick="updateOrderStart()">실행</button>
-							<button type="button" class="btn btn-secondary btn-sm"
-								id="orderDelbtn" style="float: right" onclick="delOrderCheck()">삭제</button>
+								id="execlWord2" >출력</button>
+								</div>
 						</div>
 						<div>
 							<div id="grid2"></div>
 						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -224,8 +227,8 @@
          mCartGrid = new tui.Grid({
             el : document.getElementById('grid'),
             rowHeaders : [ 'checkbox' ], // 가장 왼쪽 체크박스
-            //scrollX : false, // 세로 스크롤 
-            //scrollY : false, // 가로 스크롤
+            scrollX : false, // 세로 스크롤 
+            scrollY : false, // 가로 스크롤
             columns : // 컬럼명
             [ {
                header : '주문번호',
@@ -372,7 +375,7 @@
          /* 발주 대기목록, 발주현황관리 ajax */
          function mOrder() {
             $.ajax({
-               url : "/ajax/morder",
+               url : "/material/ajax/morder",
                method : "GET",
 
                success : function(result) {
@@ -398,7 +401,7 @@
      		 console.log(getEndDay);
      		 
      	  $.ajax({
-     		  url : '/ajax/morder',
+     		  url : '/material/ajax/morder',
      		  data : {"startDate" : getStartDay, "endDate" : getEndDay},
      		  contentType : "application/json",
 	          dataType : 'json',
@@ -432,7 +435,7 @@
         	   
         	   
 			$.ajax({
-	               url : "/updateMoNum",
+	               url : "/material/updateMoNum",
 	               method : "POST",
 	               contentType : "application/json",
 	               data : JSON.stringify(updateNum),
@@ -459,7 +462,7 @@
              getMoNum();
              
             $.ajax({
-               url : "/updateOrder",
+               url : "/material/updateOrder",
                method : "POST",
                contentType : "application/json",
                data : JSON.stringify(obj),
@@ -503,7 +506,7 @@
 
             }
             $.ajax({
-               url : "/ajax/delcart",
+               url : "/material/ajax/delcart",
                method : "Post",
                contentType : "application/json",
                data : JSON.stringify(obj),               
@@ -559,7 +562,7 @@
 
               }
               $.ajax({
-                 url : "/delorder",
+                 url : "/material/delorder",
                  method : "Post",
                  contentType : "application/json",
                  data : JSON.stringify(obj),               
@@ -593,7 +596,7 @@
 
                 }
                 $.ajax({
-                   url : "/ajax/delcart",
+                   url : "/material/ajax/delcart",
                    method : "Post",
                    contentType : "application/json",
                    data : JSON.stringify(obj),               
@@ -619,7 +622,7 @@
                  let obj = mOrderGrid.getCheckedRows();
                  
                 $.ajax({
-                   url : "/orderStart",
+                   url : "/material/orderStart",
                    method : "POST",
                    contentType : "application/json",
                    data : JSON.stringify(obj),
@@ -650,13 +653,22 @@
                     includeHeader : true,
                     includeHiddenColumns : true,
                     onlySelected : true,
-                    fileName: 'Order List'
+                    fileName: 'Order Stanby List'
                   };
-            mOrderGrid.export('xlsx', options);
+            mCartGrid.export('xlsx', options);
          });  
       	   
          
-         
+         $('#execlWord2').on('click',function(){
+             let options = {
+                     includeHeader : true,
+                     includeHiddenColumns : true,
+                     onlySelected : true,
+                     fileName: 'Order List'
+                   };
+             mOrderGrid.export('xlsx', options);
+          });  
+       	   
          
          /*-----------------------------
          	이벤트 핸들러

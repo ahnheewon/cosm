@@ -63,4 +63,12 @@ public interface WorkService {
 
 	// ===================================================================================================
 
+		// 부품
+
+		// 전체 조회
+		public List<WorkVO> getPartList();
+
+		// 단건 조회
+		public WorkVO getPartInfo(int partNo);
+
 }

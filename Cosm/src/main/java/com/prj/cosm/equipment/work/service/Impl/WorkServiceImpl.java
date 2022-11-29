@@ -108,5 +108,15 @@ public class WorkServiceImpl implements WorkService {
 
 //============================================================================================================================
 	
+	@Override
+	public List<WorkVO> getPartList() {
+		
+		return mapper.getPartList();
+	}
+
+	@Override
+	public WorkVO getPartInfo(int partNo) {
+		return mapper.getPartInfo(partNo);
+	}
 	
 }

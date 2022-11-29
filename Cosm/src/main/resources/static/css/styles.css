@@ -10,6 +10,9 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+ 
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800');
+
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -64,6 +67,7 @@
   --bs-body-bg: #fff;
 }
 
+
 *,
 *::before,
 *::after {
@@ -76,9 +80,11 @@
   }
 }
 
+
+
 body {
   margin: 0;
-  font-family: var(--bs-body-font-family);
+  font-family: 'Nanum Gothic', sans-serif;
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
   line-height: var(--bs-body-line-height);

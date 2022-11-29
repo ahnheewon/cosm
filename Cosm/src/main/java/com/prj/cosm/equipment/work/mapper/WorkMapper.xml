@@ -200,11 +200,7 @@
 	<!-- 공사 승인후 시공대기중으로 코드변경 -->
 	<update id="updateWorkCode" parameterType="workVO">
 	 update work
-		 <set>
-			  <if test="signSeq == 3">
-			     work_code = 'B0101',
-			  </if>
-		 </set>
+	 work_code = 'B0101'
      where work_no = #{workNo}
 	</update>
 	
@@ -239,6 +235,21 @@
 	
 <!-- ############################################################################################  -->
 																		
-
+<!-- 부품 전체 리스트 -->
+	<select id="getPartList" resultType="workVO">
+		    SELECT TO_NUMBER(replace(part_no, 'MP')) as part_no, e.equip_name as part_Equip_Name,p.part_name,p.part_content,p.part_amount,
+                    find_code_no(p.part_code) as part_code
+		FROM PART p, EQUIP e
+		WHERE p.part_equip_no=e.equip_no
+		order by 1
+	</select>
+	
+<!-- 부품 단건 조회 -->
+	<select id="getPartInfo" parameterType="Integer" resultType="workVO">
+		SELECT p.part_no, p.part_name, e.equip_name,p.part_content
+		FROM equip e, part p
+		Where e.equip_no = p.part_no
+		and p.part_no= #{value}
+	</select>
 
 </mapper>

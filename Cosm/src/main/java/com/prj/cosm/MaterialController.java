@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,8 @@ import com.prj.cosm.material.material.service.MaterialService;
 import com.prj.cosm.material.material.service.MaterialVO;
 import com.prj.cosm.material.morder.service.MorderService;
 import com.prj.cosm.material.morder.service.MorderVO;
+import com.prj.cosm.user.alert.mapper.AlertMapper;
+import com.prj.cosm.user.emp.mapper.EmpMapper;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -53,35 +56,34 @@ public class MaterialController {
    @Autowired
    CommonService coService;
 
+
    /* ------------------------------------------------------ */
- 
-	@GetMapping("/userReg") 
-	public void UserRegForm() {
-		
-	}
-		
-	@PostMapping("/minsert") // multipart는 post로 가능, 여러개 파일 등록 필요시 MultipartFile[] 배열로 받으면 됨
-	public String userRegProc(MaterialVO vo, 
-							  MultipartFile pic, 
-							  RedirectAttributes rttr) throws IllegalStateException, IOException {
-		
-		if(pic !=null && pic.getSize()>0) { // 파일이 있다면, 
-		String fname = pic.getOriginalFilename();
-		File dest = new File("C:\\dev\\upload", fname);
-		pic.transferTo(dest); // import할 때 java io로 import 
-		vo.setPicname(fname); // getOriginalFilename : 업로드한 파일 이름
-		mService.insertMatarialInfo(vo);
-		}
-		log.info(vo); 
-		//rttr.addAttribute("page", 1);
-		//rttr.addAttribute("search", "title");
-		rttr.addFlashAttribute("msg", "등록완료"); // 한번 보여지고 나면 사라짐
-		return "redirect:minfo"; 
-	}
+	
+	/*
+	 * @PostMapping("/minsert") // multipart는 post로 가능, 여러개 파일 등록 필요시
+	 * MultipartFile[] 배열로 받으면 됨 public String userRegProc(MaterialVO vo,
+	 * MultipartFile pic, RedirectAttributes rttr) throws IllegalStateException,
+	 * IOException {
+	 * 
+	 * if(pic !=null && pic.getSize()>0) { // 파일이 있다면, String fname =
+	 * pic.getOriginalFilename(); File dest = new File("C:\\dev\\upload", fname);
+	 * pic.transferTo(dest); // import할 때 java io로 import vo.setPicname(fname); //
+	 * getOriginalFilename : 업로드한 파일 이름 mService.insertMatarialInfo(vo); }
+	 * log.info(vo); //rttr.addAttribute("page", 1); //rttr.addAttribute("search",
+	 * "title"); rttr.addFlashAttribute("msg", "등록완료"); // 한번 보여지고 나면 사라짐 return
+	 * "redirect:minfo"; }
+	 */
+   
    
 
+	// 첫 화면
+	@RequestMapping("/material/main")
+	public String main() {
+		return "/material/main";
+	}
+
    // 자재 정보 등록폼 (이동)
-   @GetMapping("minsert")
+   @GetMapping("/material/minsert")
    public String mInsertForm(MaterialVO mVO, Model model) {
       model.addAttribute("category", coService.getCodeList("H01"));
       model.addAttribute("unit", coService.getCodeList("F01"));
@@ -90,22 +92,23 @@ public class MaterialController {
    }
 
    // 자재 정보 등록창 (실행)
-	/*
-	 * @PostMapping("minsert") public String mInsert(MaterialVO mVO, Model model) {
-	 * mService.insertMatarialInfo(mVO);
-	 * 
-	 * return "redirect:minfo"; // 목록으로 돌아가기 }
-	 */
+	
+	  @PostMapping("/material/minsert") public String mInsert(MaterialVO mVO, Model model) {
+	 mService.insertMatarialInfo(mVO);
+	  
+	  return "redirect:minfo"; // 목록으로 돌아가기 
+	  }
+	 
 
    // 거래처 이름 찾기
    @ResponseBody
-   @GetMapping("/ajax/getComNm")
+   @GetMapping("/material/ajax/getComNm")
    public List<MaterialVO> findComNm() {
       return mService.findComNm();
    }
 
    // 신규거래처 등록 페이지 이동
-   @GetMapping("mregcom")
+   @GetMapping("/material/mregcom")
    public String mRegComForm(Model model) {
 	   //등록할 거래처 시퀀스 조회
       model.addAttribute("comId", mService.getComId().getMCompanyId());
@@ -115,7 +118,7 @@ public class MaterialController {
    }
 
    // 신규거래처 등록 실행
-   @PostMapping("mregcom")
+   @PostMapping("/material/mregcom")
    public void mRegCom(MaterialVO mvo, Model model, HttpServletResponse resp) throws IOException {
       // 팝업창 닫기
       try {
@@ -134,7 +137,7 @@ public class MaterialController {
 
    // 자재 정보 리스트, 재고 변동현황
    @ResponseBody
-   @GetMapping("/ajax/minfo")
+   @GetMapping("/material/ajax/minfo")
    public Map mInfoList() {
       Map<String, Object> map = new HashMap();
       map.put("list1", mService.mList()); // 자재정보리스트
@@ -143,20 +146,20 @@ public class MaterialController {
       return map;	
    }
 
-   @GetMapping("minfo")
+   @GetMapping("/material/minfo")
    public String mInfoPage(MaterialVO vo, Model model) {
       return "material/material";
    }
 
    // 자재 정보 상세조회(단건)
    @ResponseBody
-   @GetMapping("/ajax/mInfoView")
+   @GetMapping("/material/mInfoView")
    public MaterialVO selectInfo(MaterialVO vo) {
       return mService.selectInfo(vo); // ajax의 데이터를 보여줘야기때문에 데이터로 return
    }
 
    // 자재 정보 수정(이동)
-   @GetMapping("/mUpdate")
+   @GetMapping("/material/mUpdate")
    public String modifyMatForm(MaterialVO vo, Model model) {
       model.addAttribute("category", mService.getCategoryList());
       model.addAttribute("unit", mService.getUnitList());
@@ -165,16 +168,16 @@ public class MaterialController {
    }
 
    // 자재 정보 수정(처리)
-   @PostMapping("/mUpdate")
+   @PostMapping("/material/mUpdate")
    public String modifyMat(MaterialVO vo) {
       mService.updateMatrailInfo(vo);
-      return "redirect:minfo";
+      return "redirect:/material/minfo";
 
    }
 
    // 자재 정보 삭제 => 동시에 삭제됨
    @ResponseBody
-   @PostMapping("/ajax/mdelinfo") // requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
+   @PostMapping("/material/mdelinfo") // requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
    public int mDeleteInfo(@RequestBody MaterialVO vo) {
 
       return mService.deleteMatrailInfo(vo.getDelmno());
@@ -188,7 +191,7 @@ public class MaterialController {
    // 발주 대기 리스트 조회, 발주 현황 리스트 조회
 
    @ResponseBody
-   @GetMapping("/ajax/morder")
+   @GetMapping("/material/ajax/morder")
    public Map<String, Object> mCartListAjax(MaterialVO vo) {
       Map<String, Object> map = new HashMap<String, Object>();
       map.put("list1", mService.mCartList()); // 발주 대기 리스트
@@ -200,20 +203,20 @@ public class MaterialController {
    
    // 발주 대기 등록 ajax
    @ResponseBody
-   @PostMapping("/ajax/mcart")
+   @PostMapping("/material/ajax/mcart")
    public int mCartinsert(@RequestBody List<MaterialVO> mvo) {
       return mService.insertMCart(mvo);
    }
    
    // 발주 대기 페이지 이동
-   @GetMapping("mcart")
+   @GetMapping("/material/mcart")
    public String mCartList(MaterialVO vo, Model model) {
       return "material/mOrder";
    }
    
    /* 발주 수량 업데이트 ajax */  
    @ResponseBody
-   @PostMapping("/updateMoNum")
+   @PostMapping("/material/updateMoNum")
    public int updateMnum(@RequestBody List<MaterialVO> mvo) {
       return mService.updateOrderNum(mvo);	
    }
@@ -221,7 +224,7 @@ public class MaterialController {
    
    /* 발주 대기 -> 발주 현황으로 이동 ajax */ 
    @ResponseBody
-   @PostMapping("/updateOrder")
+   @PostMapping("/material/updateOrder")
    public int updateOrderGo(@RequestBody List<MaterialVO> mvo) {
       return mService.updateOrderGo(mvo);	
    }
@@ -229,7 +232,7 @@ public class MaterialController {
 
    // 발주 대기 삭제 ajax
    @ResponseBody
-   @PostMapping("/ajax/delcart") // requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
+   @PostMapping("/material/ajax/delcart") // requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
    public int mDeleteCart(@RequestBody List<MaterialVO> vo) {
 
       return mService.deleteCartOrder(vo);
@@ -238,7 +241,7 @@ public class MaterialController {
    
    // 발주 확정 ajax
    @ResponseBody
-   @PostMapping("/orderStart")
+   @PostMapping("/material/orderStart")
    public int orderStart(@RequestBody List<MaterialVO> vo) {
 	   return mService.orderStart(vo);
 	   
@@ -246,7 +249,7 @@ public class MaterialController {
 
    // 발주현황 삭제 
    @ResponseBody
-   @PostMapping("/delorder") 
+   @PostMapping("/material/delorder") 
    public int delOrderCheck(@RequestBody List<MaterialVO> vo) {
       return mService.deleteOrder(vo);
 
@@ -256,7 +259,7 @@ public class MaterialController {
    
    // 입고, 출고 리스트
    @ResponseBody
-   @GetMapping("/ajax/miolist")
+   @GetMapping("/material/ajax/miolist")
    public Map<String, Object> mioList(MorderVO vo) {
       Map<String, Object> map = new HashMap<String, Object>();
       map.put("list1", moSerivce.mioInputList(vo)); // 입고리스트
@@ -266,7 +269,7 @@ public class MaterialController {
    }
    
    //  입고, 출고 리스트 페이지 
-   @GetMapping("miolist")
+   @GetMapping("/material/miolist")
    public String mioPage(MorderVO mvo, Model model) {
       return "material/mioList";
    }
@@ -274,7 +277,7 @@ public class MaterialController {
    
    // 입고 대기 리스트 
    @ResponseBody
-   @GetMapping("/ajax/stanby")
+   @GetMapping("/material/ajax/stanby")
    public List<MorderVO> stanbyList() {
 	   return moSerivce.getStandbyList();
    }
@@ -283,7 +286,7 @@ public class MaterialController {
    
    /* 입고 대기 -> 입고 목록으로 이동 ajax */ 
    @ResponseBody
-   @PostMapping("/updateInput")
+   @PostMapping("/material/updateInput")
    public int updateinputOrder(@RequestBody List<MorderVO> mvo) {
 	  
 	  
@@ -294,9 +297,10 @@ public class MaterialController {
    
 	// 입고 확정 시 현재 수량 변경
    @ResponseBody
-   @PostMapping("/updateMStock")
+   @PostMapping("/material/updateMStock")
    public int updateMStock(@RequestBody MorderVO mvo) {
 	   return moSerivce.updateMStock(mvo);
    }
    
+  
 }
