@@ -192,6 +192,7 @@ public class OrderClientProductController {
 	public int recNos(@RequestBody List<OrdersVO> vo, RedirectAttributes ratt) {
 		int result = oService.recNos(vo);
 		return result;
+		//  알림설정 필요
 	}
 
 	

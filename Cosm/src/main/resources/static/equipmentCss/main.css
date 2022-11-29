@@ -18,6 +18,10 @@
 	margin: 0 auto;
 }
 
+h2 {
+	padding-top: 20px;
+	text-align: center;
+}
 
 #mySvg {
 	background-color: #d0d0d0;
@@ -74,13 +78,16 @@
  	border-radius: 5px;
  }
  
-  textarea {
+ textarea {
     width: 100%;
     height: 6.25em;
     border: none;
     resize: none;
  
-  }
+}
 
+input::placeholder {
+  font-size: small;
+}
 
 

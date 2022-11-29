@@ -36,9 +36,13 @@
 	100%{color:white;}
 }
 
+  	@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800');
 body {
 	-webkit-user-select:none;
   	-moz-user-select:none;
   	-ms-user-select:none;
-  	user-select:none;	
+  	user-select:none;
+  	font-family: 'Nanum Gothic', sans-serif;
+  	
+  	
 }
