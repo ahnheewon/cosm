@@ -22,12 +22,12 @@
 				th:value="${_csrf.token}" />
 			<button>로그아웃</button>
 		</form>
-	</div>
+	</div>	
 	<div sec:authorize="hasRole('ROLE_D0101')">This content is only shown
 		to administrators.</div>
 	<div sec:authorize="!hasRole('ROLE_D0101')">This content is only
 		shown to users.</div>
-	<h1>톱 페이지입니다.</h1>
+	
 
 </body>
 </html>

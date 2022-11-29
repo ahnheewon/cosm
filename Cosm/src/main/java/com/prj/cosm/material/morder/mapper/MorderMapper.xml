@@ -57,27 +57,26 @@
 
 	<!-- 입고 대기 -> 입고 확정 -->
 	<insert id="insertInputOrder" parameterType="MorderVO">
-		INSERT INTO
-		material_io(mio_no,
-		mio_company_id,
-		mio_company_name,
-		mio_mo_order_id,
-		mio_quantity,
-		mio_progress,
-		mio_quality,
-		mio_date)
+	INSERT INTO	material_io(mio_no,
+							mio_company_id,
+							mio_company_name,
+							mio_mo_order_id,
+							mio_quantity,
+							mio_progress,
+							mio_quality,
+							mio_date)
 		SELECT mo_material_id,
 		mo_company_id,
 		#{moComNm},
 		mo_order_id,
-		#{mioQntt},
+		#{mioQntt},	
 		'L0103',
 		#{mioQuality} as mioQuality,
 		sysdate as mioDate
 		FROM material_order
 		WHERE mo_material_id = #{moMaterialId}
-		and mo_order_id = #{moOrderId}
-		GROUP BY mo_material_id,mo_company_id, mo_order_id
+		and mo_order_id = #{moOrderId}		
+	GROUP BY mo_material_id,mo_company_id, mo_order_id
 
 	</insert>
 	

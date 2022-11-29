@@ -50,7 +50,9 @@ SELECT m.m_no,
        NVL(m.m_stock,0) AS m_stock,
        NVL(total_mo_num,0)AS total_mo_num,
        NVL(total_planed_qntt,0)AS total_planed_qntt,     
-       (NVL(total_planed_qntt,0) - NVL(m.m_stock,0) - NVL(total_mo_num,0)) AS shortage 
+      CASE WHEN (NVL(total_planed_qntt,0) - (NVL(m.m_stock,0) + NVL(total_mo_num,0))) > 0
+      THEN (NVL(total_planed_qntt,0) - (NVL(m.m_stock,0) + NVL(total_mo_num,0)))
+      ELSE 0 END AS shortage 
 FROM Material m 			
 			JOIN MATERIAL_COMPANY mc
                 ON m.m_company_id = mc.mc_company_id
@@ -152,19 +154,23 @@ order by m_no
 
 	<!-- 자재 변동 내역 리스트 -->
 	<select id="mioList" resultType="MaterialVO">
-		SELECT m.m_no, m.m_company_id, m.m_category, m.m_name, m_stock,
-		mio.mio_quantity AS increase,
-		m.m_date, 
-		mio.mio_date
-		FROM Material m
-		JOIN Material_io mio
-		ON m.m_no =
-		mio.mio_no
-		WHERE mio.mio_date is not null
-		<if test="startDate != null and endDate != null">
-			AND TRUNC(mo.mo_date) BETWEEN #{startDate} AND #{endDate}
-		</if>
-		ORDER BY m.m_no
+	SELECT mio_no, 
+		   mio_company_id, 
+		   mio_company_name as mio_company_nm,
+		   m.m_category, 
+		   m.m_name, 
+		   mio_quantity as mioQntt,
+		   mio_date, 
+		   find_code_no(mio.mio_progress)as mio_progress
+	FROM Material m JOIN Material_io mio
+		ON m.m_no = mio.mio_no
+	WHERE mio.mio_date IS NOT NULL
+		AND mio_progress IS NOT NULL
+
+	<if test="startDate != null and endDate != null">
+		AND TRUNC(mo.mo_date) BETWEEN #{startDate} AND #{endDate}
+	</if>
+	order by mio_date DESC
 	</select>
 
 	<!-- 거래처 명 찾기 -->
@@ -270,17 +276,15 @@ order by m_no
 	<!--발주 진행 리스트 -->
 	<select id="mOrderList" resultType="MaterialVO">
 		SELECT mo_date,
-		mo.mo_order_id as m_order_id,
-		mo.mo_name as m_name,
-		mo.mo_num,
-		find_code_name(m.m_unit_code) AS m_unit_code,
-		(mo.mo_unit_price *
-		mo.mo_num) as mo_tt_price,
-		find_code_name(mo.mo_progress_code)AS
-		mo_prog_code
+			   mo.mo_order_id as m_order_id,
+			   mo.mo_name as m_name,
+			   mo.mo_num,
+			   find_code_name(m.m_unit_code) AS m_unit_code,
+			   (mo.mo_unit_price * mo.mo_num) as mo_tt_price,
+			   find_code_name(mo.mo_progress_code)AS
+			   mo_prog_code
 		FROM material m JOIN material_order mo
-		ON mo.mo_material_id
-		= m.m_no
+			ON mo.mo_material_id = m.m_no
 
 
 	</select>
@@ -335,7 +339,8 @@ order by m_no
 				mo_progress_code) AS
 				mo_prog_code
 		FROM material_order
-		WHERE mo_group_num	is not null
+		WHERE mo_group_num	is not null 
+		AND mo_progress_code != 'L0103'	
 		<if test="startDate != null and endDate != null">
 			AND TRUNC(mo_date) BETWEEN #{startDate} AND #{endDate}
 		</if>
