@@ -67,6 +67,7 @@
   --bs-body-bg: #fff;
 }
 
+
 *,
 *::before,
 *::after {
@@ -78,6 +79,8 @@
     scroll-behavior: smooth;
   }
 }
+
+
 
 body {
   margin: 0;
