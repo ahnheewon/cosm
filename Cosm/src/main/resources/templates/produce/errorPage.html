@@ -5,24 +5,9 @@
 	layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
 
-<script
-	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-
-<!--toast date-picker-->
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
-<script
-	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -48,7 +33,7 @@
 				<div id="endpicker-container"
 					style="margin-left: -1px; z-index: 1100"></div>
 			</div>
-			<button type="button" class="btn btn-secondary" id="searchBtn">조회</button>
+			<button type="button" class="btn btn-secondary btn-sm" id="searchBtn">조회</button>
 
 
 		</div>
@@ -147,7 +132,7 @@
 		//완제품리스트 가져오기
 		function registList(){
 			$.ajax({
-				url: "/errorList",
+				url: "/produce/errorList",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -195,7 +180,7 @@
 			console.log(getEndDay);
 
 			$.ajax({
-				url : '/errorList',
+				url : '/produce/errorList',
 				data : {
 					"startDate" : getStartDay,
 					"endDate" : getEndDay
@@ -219,6 +204,28 @@
 
 	}
 		
+	 tui.Grid.applyTheme("normal", {
+         cell : {
+            nomal : {
+               background : "#fff",
+               border : "#e0e0e0",
+               showVerticalBorder : false,
+               showHorizontalBorder : true
+            },
+            header : {
+               background : "#eaeaea",
+               border : "#e0e0e0",
+               showHorizontalBorder : true
+            },
+            rowHeader : {
+               background : "#eaeaea",
+               border : "#e0e0e0",
+               showVerticalBorder : false,
+               showHorizontalBorder : true
+            },
+         },
+
+      });
 		</script>
 
 

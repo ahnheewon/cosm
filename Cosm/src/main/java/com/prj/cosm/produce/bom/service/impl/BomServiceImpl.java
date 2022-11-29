@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.prj.cosm.produce.bom.mapper.BomMapper;
 import com.prj.cosm.produce.bom.service.BomService;
 import com.prj.cosm.produce.bom.service.BomVO;
+import com.prj.cosm.produce.plan.service.PlanVO;
 
 @Service
 public class BomServiceImpl implements BomService {
@@ -61,6 +62,24 @@ public class BomServiceImpl implements BomService {
 	public BomVO getBomInfo(String goodsNo) {
 		// TODO Auto-generated method stub
 		return mapper.getBomInfo(goodsNo);
+	}
+
+	@Override
+	public void insertMaterialInfo(PlanVO planVO) {
+		// TODO Auto-generated method stub
+		 mapper.insertMaterialInfo(planVO);
+	}
+
+	@Override
+	public void insertMaterialInfo2(PlanVO planVO) {
+		// TODO Auto-generated method stub
+		mapper.insertMaterialInfo2(planVO);
+	}
+
+	@Override
+	public List<BomVO> selectMaterialList() {
+		// TODO Auto-generated method stub
+		return mapper.selectMaterialList();
 	}
 
 }

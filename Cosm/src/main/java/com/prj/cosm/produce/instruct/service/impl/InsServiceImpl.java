@@ -6,17 +6,22 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.prj.cosm.equipment.equip.service.EquipService;
-import com.prj.cosm.equipment.work.service.WorkService;
+import com.prj.cosm.produce.bom.mapper.BomMapper;
 import com.prj.cosm.produce.instruct.mapper.InsMapper;
 import com.prj.cosm.produce.instruct.service.InsService;
 import com.prj.cosm.produce.instruct.service.InsVO;
+import com.prj.cosm.produce.regist.mapper.RegistMapper;
 
 @Service
 public class InsServiceImpl implements InsService {
-
+	@Autowired
+	BomMapper bomMapper;
+	
 	@Autowired
 	InsMapper mapper;
+	
+	@Autowired
+	RegistMapper registMapper;
 	
 	@Override
 	public List<Map<String, Object>> selectInsList() {
@@ -31,6 +36,7 @@ public class InsServiceImpl implements InsService {
 
 	@Override
 	public int insertInsInfo(InsVO insVO) {
+		
 		return mapper.insertIns(insVO);
 	}
 
@@ -66,13 +72,13 @@ public class InsServiceImpl implements InsService {
 
 	@Override
 	public int updateInsPlay(InsVO InsVO) {
-		// TODO Auto-generated method stub
+		
 		return mapper.updateInsPlay(InsVO);
 	}
 
 	@Override
 	public int updateInsPlay2(InsVO InsVO) {
-		// TODO Auto-generated method stub
+		registMapper.updateOrderInfo(InsVO);
 		return mapper.updateInsPlay2(InsVO);
 	}
 

@@ -23,6 +23,9 @@ public class PlanVO {
 	//bom
 	private String bomNo;
 	private int bomQuantity;
+	private String bomMaterialNo;
+	private String bomMaterialNob;
+	private int bomQuantityb;
 	
 	//제품
 	private String goodsNo;
@@ -42,4 +45,18 @@ public class PlanVO {
 	private String note;
 	private String codeName;
 	private String orderProgressCode;
+	private String orderCode;
+	
+	private String mioNo;
+	private Date mioDate;
+	private int mioQuantity;
+	private String mioProgress;
+	
+	private String mNo;
+	private int mStock;
+	
+	private int yn1;
+	private int yn2;
+	private String bom1;
+	private String bom2;
 }

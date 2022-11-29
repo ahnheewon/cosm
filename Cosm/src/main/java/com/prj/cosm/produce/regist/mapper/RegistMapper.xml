@@ -6,29 +6,36 @@
 <select id="getRegistList" resultType="map">
 	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, 
            c2.code_name as code_no,
-           c1.code_name as inspection 
+           c1.code_name as inspection,
+           p.plan_order_no
 	FROM produce_instruct i JOIN produce_regist r
                             ON i.instruct_no = r.regist_instruct_no
                             JOIN code c1
                             ON r.inspection = c1.code_no  
                             JOIN code c2
                             ON r.code_no = c2.code_no
-	WHERE TO_DATE(r.regist_date,'rrrr-MM-dd') = TO_DATE(sysdate,'rrrr-MM-dd')
+                            JOIN produce_plan p
+                            ON i.instruct_plan_no = p.plan_no
+    WHERE TO_DATE(r.regist_date,'rrrr-MM-dd') = TO_DATE(sysdate,'rrrr-MM-dd')
 	ORDER BY r.regist_LOT DESC
+	
 </select>
 
 <!-- 전체조회 -->
 <select id="completeList" resultType="map">
 	SELECT i.instruct_quantity, r.regist_quantity, r.regist_LOT, r.regist_label, r.regist_error, r.regist_date, r.regist_product_no, r.regist_instruct_no, 
            c2.code_name as code_no,
-           c1.code_name as inspection 
+           c1.code_name as inspection,
+           p.plan_order_no
 	FROM produce_instruct i JOIN produce_regist r
                             ON i.instruct_no = r.regist_instruct_no
                             JOIN code c1
                             ON r.inspection = c1.code_no  
                             JOIN code c2
                             ON r.code_no = c2.code_no
-	<where>
+                            JOIN produce_plan p
+                            ON i.instruct_plan_no = p.plan_no
+    <where>
 	<if test="startDate != null and endDate != null">
 		TRUNC(r.regist_date) BETWEEN #{startDate} AND #{endDate}
 	</if>
@@ -110,4 +117,16 @@
 	WHERE code_adno = 'F01'
 	ORDER BY code_no
 </select>
+
+<!-- 검수완료시 주문서 업데이트 -->
+<update id="updateOrderInfo" parameterType="InsVO">
+	UPDATE orders
+	SET order_code = 'B0109'
+	WHERE order_no = (SELECT p.plan_order_no
+					  FROM produce_instruct i 
+                        	JOIN produce_plan p
+                        	ON i.instruct_plan_no = p.plan_no
+					  WHERE instruct_no = #{instructNo})
+</update>
+
 </mapper>
