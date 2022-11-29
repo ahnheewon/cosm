@@ -24,7 +24,7 @@
 			        
 			          <div class="searchbox">
 			            <div class="header">
-						     <input onkeyup="filter()" style="float:right;" type="text" id="value" placeholder="Type to Search">
+						     <input onkeyup="filter()" style="float:right; float: right; margin-right: 10px; border: 1px solid #aaa;" type="text" id="searchFilter" placeholder="부품명 입력...">
 						 </div>
       				   </div>
 						  <div id="part">
@@ -34,17 +34,81 @@
 			  </div>
 
 
+<div class="modal fade" id="myModal">
+		
+		<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+	
+			<!-- Modal Header -->
+			<div class="modal-header">
+			<h4 class="modal-title"><span id="whatPno"></span>공정 정보</h4>
+			<button type="button" onclick="cancelUpdateEquip()" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+	
+			<!-- Modal body -->
+			<div id="equipInfo" class="modal-body">
+			<table class="table">
+					
+                    <tr>
+						<td>부품명</td>
+                        <td><input class="form-control " id="selectPartName" name="PartName" type="text" autocomplete="off" readonly></td>              
+                    </tr>
+                    <tr>
+                        <td>부품설명</td>
+                        <td><textarea class="form-control " id="selectPartContent" name="PartContent" rows="5" autocomplete="off" readonly></textarea></td>
+                    </tr> 
+                     <tr>
+                        <td>단위</td>
+                        <td><input class="form-control " id="selectpartCode" name="partCode" rows="5" autocomplete="off" readonly></td>
+                    </tr>
+                     <tr>
+                        <td>적용설비</td>
+                        <td><input class="form-control " id="selectpartEquipName" name="partEquipName" rows="5" autocomplete="off" readonly></td>
+                    </tr>
+   
+                                   
+                </table>
+			</div>
+	
+			<!-- Modal footer -->
+			<div class="modal-footer">
+			
+			</div>
+	
+		</div>
+		</div>
+	</div>
+
 <script type="text/javascript">
 /* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */
 /* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */	
 
+function filter(){
 
-
+        const search = document.getElementById("searchFilter")
+		
+		//const sf = document.querySelector('#searchFilter');
+		
+			
+		const state = [{code: 'contain', value: search.value.toUpperCase()}];
+			
+		if(search.value == ''){	
+			
+			partGrid.unfilter('partName');
+		
+		}else {
+			
+			partGrid.filter('partName', state);
+		}
+		
+}
 
 
 /*  부품 그리드  */	
 	const partGrid = new tui.Grid({
 			    el: document.querySelector('#part'),
+			    scrollX:false,
+			    scrollY:false,
 			    pagination:true,
 				pageOptions: {
 					useClient: true,
@@ -52,16 +116,36 @@
 				},
 			    columns: [
 			    {
-			        header: '부품번호',
-			        name: 'mno'
-			    },
+			        header: 'No.',
+			        name: 'partNo',
+			        width: '100'
+			        ,align : 'center'
+			        
+			    },  
 			    {
 			        header: '부품명',
-			        name: 'mname'
+			        name: 'partName'
+			        ,align : 'center'
+			        ,filter : 'text'
 			    },
 			    {
+			        header: '적용설비',
+			        name: 'partEquipName'
+			        ,align : 'center'
+			       
+			    },  
+			    {
 			        header: '부품수량',
-			        name: 'mstock'
+			        name: 'partAmount'
+			        ,align : 'right'
+			 		,formatter: function(value) {
+			 	                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+			 		}
+			    },
+			    {
+			        header: '부품단위',
+			        name: 'partCode'
+			        ,align : 'center'
 			    }
 			/*  ,{
 			        header: '적용설비',
@@ -69,6 +153,9 @@
 			    } */
 			    ]
 			});
+
+
+
 
 /* 부품 리스트 불러오는 아작스 */
 
@@ -80,39 +167,90 @@
 	    partGrid.resetData(obj);
     
 	})
-	
-/*
-  
- // 변동 그리드  
-		const partBuyGrid = new tui.Grid({
-		    el: document.querySelector('#partBuy'),
-		    pagination:true,
-			pageOptions: {
-				useClient: true,
-				perPage: 4
-			},
-		    columns: [
-		    {
-		        header: '설비명',
-		        name: 'equipName'
-		    },
-		    {
-		        header: '고장발생일',
-		        name: 'failDate'
-		    },
-		    {
-		        header: '고장내역',
-		        name: 'failContent'
-		    },
-		    {
-		        header: '특이사항',
-		        name: 'failPs'
-		    }
-		    ]
-		});
-		
-*/
 
+	tui.Grid.applyTheme("normal", {
+    cell : {
+       nomal : {
+          background : "#fff",
+          border : "#e0e0e0",
+          showVerticalBorder : false,
+          showHorizontalBorder : true
+       },
+       header : {
+          background : "#eaeaea",
+          border : "#e0e0e0",
+          showHorizontalBorder : true
+       },
+       rowHeader : {
+          background : "#eaeaea",
+          border : "#e0e0e0",
+          showVerticalBorder : false,
+          showHorizontalBorder : true
+       },
+    },
+
+ });
+ 
+	tui.Grid.applyTheme('custom', { 
+		  row: { 
+		    hover: { 
+		      background: '#dcdfec' 
+		    }
+		  }
+	});
+	
+	 /* 부품 그리드 셀 클릭-> 모달 팝업 이벤트 */
+	 
+    partGrid.on('click', ev => {
+    	const pnoRow = partGrid.getRow(ev.rowKey); // 행 (객체)
+    	const pno = pnoRow.no; // 행의 공정번호
+    	console.log(pno);
+   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
+    	console.log(ev);
+    	
+    	if(ev.rowKey == pnoRow.rowKey){
+			if(pno != null){
+	    	const myModal = new bootstrap.Modal('#myModal',{backdrop: 'static', keyboard:false})
+	    	// 생성 시 모달 속성을 넣어줍니다.
+	    	const modalToggle = document.getElementById('myModal'); 
+	    			
+	    	myModal.show(modalToggle);
+	    	
+			document.getElementById('whatPno').innerText=pno+"번 ";
+
+			}
+    	}
+	});
+
+	/*  설비 단건조회 불러오는 아작스 함수 */
+
+    function getPart(partNo) {
+	
+    url="/equipment/getPartInfo?partNo="+partNo // get방식이라 ?equipNo=
+    fetch(url) 
+    .then(res=>res.json())
+    .then(obj=>{
+        console.log(obj);
+   
+        document.querySelector('#selectEquipName').value=obj.partName;
+        document.querySelector('#selectEquipName').value=obj.partEquipName;
+        document.querySelector('#selectEquipType').value=obj.equipType;
+        document.querySelector('#selectEquipStdVibe').value=obj.equipStdVibe;
+        document.querySelector('#selectEquipStdTemp').value=obj.equipStdTemp;
+        
+        document.querySelector('#wv-input').value=obj.equipDate;
+        const a = document.querySelector('#ev-start-input').value
+        const b = document.querySelector('#ev-end-input').value
+		if(a == undefined){
+			a.value=''
+			b.value=''
+		}
+        document.querySelector('#selectEquipPurpose').value=obj.equipPurpose;
+    })
+    
+	}
+
+document.querySelector('.tui-grid-btn-filter').style.display='none';
 
 </script>
 </div>
