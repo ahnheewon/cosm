@@ -7,10 +7,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+body {
+        height: 100vh;
+        width: 100vw;
+        background-image: url('/css/cosmMain.png');
+        background-repeat : no-repeat;
+        background-size : cover;
+      }
+</style>
 </head>
 <body layout:fragment="content">
-	[[${session.username}]]
-	<div sec:authorize="isAnonymous()">
+	<!--  <h4 style="color: white;">[[${session.usersAuthor}]], [[${session.usersName}]]님 환영합니다</h4> -->
+	<!-- <div sec:authorize="isAnonymous()">
 		<a href="login">로그인</a>
 	</div>
 	<div sec:authorize="isAuthenticated()">
@@ -22,12 +31,11 @@
 				th:value="${_csrf.token}" />
 			<button>로그아웃</button>
 		</form>
-	</div>
+	</div>	
 	<div sec:authorize="hasRole('ROLE_D0101')">This content is only shown
 		to administrators.</div>
 	<div sec:authorize="!hasRole('ROLE_D0101')">This content is only
 		shown to users.</div>
-	<h1>톱 페이지입니다.</h1>
 
 </body>
 </html>

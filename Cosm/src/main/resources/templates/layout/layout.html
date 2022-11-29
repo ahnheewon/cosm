@@ -7,10 +7,10 @@
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800" rel="stylesheet">
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
 	rel="stylesheet" />
-
 <link href="/css/styles.css" rel="stylesheet" />
 <link href="/css/layout.css" rel="stylesheet" />
 <script
@@ -70,7 +70,7 @@
 	<nav layout:fragment="menu"
 		class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 		<!-- Navbar Brand-->
-		<a class="navbar-brand ps-3" href="/top">CosM</a>
+		<a class="navbar-brand ps-3" style="display: inline-block;" href="/top"><img src="/css/cosmLogo.png" style="width: 60%;"></a>
 
 		<!-- Sidebar Toggle-->
 		<div sec:authorize="!isAnonymous()">
@@ -91,6 +91,7 @@
 
 		</form>
 		<!-- Navbar-->
+			 <h6 th:if="${session.usersId != null }" style="color: white;">[[${session.usersAuthor}]], [[${session.usersName}]]님</h6>
 		<ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
@@ -187,13 +188,12 @@
 						<a class="nav-link" href="/equipment/main">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-tachometer-alt"></i>
-							</div> 설비관리메인
+							</div> 설비 메인
 						</a>
 						<div class="sb-sidenav-menu-heading">Interface</div>
-						<div class="sb-sidenav-menu">
-							&nbsp; &nbsp; [[${session.usersId}]]님
+						<div class="sb-sidenav-menu">	
 							<div class="nav">
-								<div class="sb-sidenav-menu-heading">회원관리</div>
+								
 								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
 									data-bs-target="#collapseLayouts" aria-expanded="false"
 									aria-controls="collapseLayouts">
@@ -303,8 +303,6 @@
 											관리</a> <a class="nav-link" href="/produce/errorPage">불량 관리</a>
 									</nav>
 								</div>
-
-
 							</div>
 						</div>
 					</div>
@@ -402,7 +400,7 @@
 				</div>
 				<div class="sb-sidenav-footer">
 					<div class="small">Logged in as:</div>
-					Start Bootstrap
+					[[${session.usersNo}]]
 				</div>
 			</nav>
 		</div>
@@ -457,14 +455,11 @@
 		</div>
 		<!-- 알림 Script -->
 		<script type="text/javascript">
-			const header = $("meta[name='_csrf_header']").attr('content');
-			const token = $("meta[name='_csrf']").attr('content');
-
 
 			 if (`[[${session.usersAuthor}]]` != null) {
 				getAlertList();
 				//setInterval(getAlertList, 1000);
-			} 
+        }
 
 			 function getAlertList() {
 				let usersNo = `[[${session.usersNo}]]`;

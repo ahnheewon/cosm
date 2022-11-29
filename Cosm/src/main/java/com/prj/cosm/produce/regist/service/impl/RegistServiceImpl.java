@@ -46,9 +46,8 @@ public class RegistServiceImpl implements RegistService {
 
 	@Override
 	public int insertRegistInfo(RegistVO registVO) {
-		
 		List<EmpVO> eList = new ArrayList<>();
-		eList = eMapper.getReceiveUsers("D0109");
+		eList = eMapper.getReceiveUsers("D0109"); //받는사람
 		for (EmpVO eVO : eList) {
 			AlertVO aVO = new AlertVO();
 			aVO.setAlertContent("검수 완료된 제품이 있습니다.");

@@ -51,21 +51,13 @@ public class MaterialVO {
 	// 2. 자재 변동 내역
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date mioInputDate;// 입고일자
+	private Date mioDate;// 입출고 변동일자
+	private Long mioQntt; // 입고, 출고 변동수량
+	private String mioCompanyId; // 자재 거래처번호
+	private String mioCompanyNm; // 자재 거래처이름
+
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date mioOutputDate;// 출고일자
-
-	private int mioInQntt; // 입고수량
-	private int mioOutQntt; // 출고수량
-
-	private String mioInId; // 입고번호
-	private String mioOutId; // 출고번호
-
-	private String mioLOT; // LOT_NO
-
-	private String mioMrgNm; // 담당자명
+	private String mioNo; //  자재번호
 	private int mioOrderId; // 발주번호
 	private String mioProgress; // 진행코드
 	

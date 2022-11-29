@@ -27,10 +27,14 @@ public interface SalesIoMapper {
 	// 삭제
 	public int deleteSales(@Param("salesNo") int salesNo);
 
-	//수정 여러건
-	public int updateSalesInfo(List<SalesIoVO> vo);
+	//출고 - 수정
+	public int updateOutInfo(List<SalesIoVO> list);
 	
-	//여러건 삭제 - 체크박스, 여러조건 일때 vo로 받아야하는지?
-	public int deleteCheck(String noList);
+	//삭제 - 체크박스, 여러조건 일때 vo로 받아야하는지?
+	public int delOutOrder(String sioList);
+	
+	//출고내역 리스트 인데 .. 안쓸거같음 
+	//1.update 2.resetdata 3.resetdate = 정보는 1개 update됨, update된걸 따로 보겠다.
+	public int outList(List<SalesIoVO> vo);
 	
 }

@@ -17,7 +17,7 @@ public class SalesIoServiceImpl implements SalesIoService {
 
 	@Override
 	public int getSalesNo() {
-		//완제품 번호
+		// 완제품 번호
 		return mapper.getSalesNo();
 	}
 
@@ -42,15 +42,45 @@ public class SalesIoServiceImpl implements SalesIoService {
 	@Override
 	public int updateSales(SalesIoVO vo) {
 		// TODO Auto-generated method stub
-		return mapper.updateSales(vo) ;
+		return mapper.updateSales(vo);
 	}
 
 	@Override
 	public int deleteSales(int salesNo) {
 		// TODO Auto-generated method stub
-		return mapper.deleteSales(salesNo) ;
+		return mapper.deleteSales(salesNo);
 	}
-	
 
-	
+	@Override
+	public int updateOutDay(List<SalesIoVO> list) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+//================================================================
+
+	@Override
+	public int updateOutInfo(List<SalesIoVO> list) {
+		// 출고
+		int result = 0;
+		
+			result = mapper.updateOutInfo(list);
+		
+		return result;
+	}
+
+	@Override
+	public int delOutOrder(List<String> sioList) {
+		// 다중삭제
+		int result = 0;
+		for (String no : sioList) {
+			result += mapper.delOutOrder(no);
+		}
+		return result;
+	}
+
+	@Override
+	public int outList(List<SalesIoVO> vo) {
+		return 0;
+	}
+
 }

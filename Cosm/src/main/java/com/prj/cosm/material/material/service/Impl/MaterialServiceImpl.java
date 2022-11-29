@@ -19,6 +19,7 @@ public class MaterialServiceImpl implements MaterialService {
 	@Override
 	public List<MaterialVO> mList() {
 		// 자재정보 전체조회
+		
 		return mMapper.mList();
 	}
 
