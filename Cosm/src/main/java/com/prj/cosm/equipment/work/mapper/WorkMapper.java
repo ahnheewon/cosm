@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.prj.cosm.equipment.equip.service.EquipVO;
 import com.prj.cosm.equipment.work.service.WorkVO;
 
 public interface WorkMapper {
@@ -65,4 +64,13 @@ public interface WorkMapper {
 			
 //===================================================================================================
 	
+	
+	// 부품
+
+	// 전체조회
+	public List<WorkVO> getPartList();
+
+	// 단건조회
+	public WorkVO getPartInfo(int partNo);
+
 }
