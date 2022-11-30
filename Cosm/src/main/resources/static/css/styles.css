@@ -7854,7 +7854,7 @@ textarea.form-control-lg {
 
 .bg-dark {
   --bs-bg-opacity: 1;
-  background-color: #180E56 !important;
+  background-color: #343957 !important;
 }
 
 .bg-black {
@@ -11477,7 +11477,7 @@ body {
 }
 
 .sb-sidenav-dark {
-  background-color: #180E56;
+  background-color: #343957;
   color: #cccce1;
 }
 .sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading {
