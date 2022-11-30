@@ -62,16 +62,16 @@
 			<if test="bomQuantity != null and !bomQuantity.equals('')">
 				bom_quantity = #{bomQuantity},
 			</if>
-			<if test="bomQuantity != null and !bomQuantity.equals('')">
+			<if test="bomProductNo != null and !bomProductNo.equals('')">
 				bom_product_no = #{bomProductNo},
 			</if>
-			<if test="bomQuantity != null and !bomQuantity.equals('')">
+			<if test="bomMaterialNo != null and !bomMaterialNo.equals('')">
 				bom_material_no = #{bomMaterialNo},
 			</if>
-			<if test="bomQuantity != null and !bomQuantity.equals('')">
+			<if test="bomQuantityb != null and !bomQuantityb.equals('')">
 				bom_quantityb = #{bomQuantityb},
 			</if>
-			<if test="bomQuantity != null and !bomQuantity.equals('')">
+			<if test="bomMaterialNob != null and !bomMaterialNob.equals('')">
 				bom_material_nob = #{bomMaterialNob},
 			</if>
 		</set>
@@ -95,6 +95,58 @@
 	SELECT goods_no, goods_name
 	FROM produce_goods
 	ORDER BY goods_no
+</select>
+
+<!-- 생산지시시 자재 insert -->
+<insert id="insertMaterialInfo" parameterType="PlanVO">
+	INSERT INTO material_io (mio_no, mio_date, mio_quantity, mio_progress)
+    				  VALUES( 
+    				 		 (SELECT bom.bom_material_no                                             
+                			  FROM produce_bom bom 
+                			  JOIN produce_plan plan 
+                              ON plan.plan_bom_no = bom.bom_no
+                              JOIN produce_goods goods
+                              ON goods.goods_no = plan.plan_product_no
+                			  WHERE plan_no = #{planNo}),
+                			  sysdate,
+                			 (SELECT (plan.plan_quantity * bom.bom_quantity)/goods.goods_standard as planed_qntt                                             
+                			  FROM produce_bom bom 
+                			  JOIN produce_plan plan 
+                              ON plan.plan_bom_no = bom.bom_no
+                              JOIN produce_goods goods
+                              ON goods.goods_no = plan.plan_product_no
+               				  WHERE plan_no = #{planNo}),
+                		      find_code_name('출고완료'))
+
+</insert>
+
+<!-- 생산지시시 자재2 insert -->
+<insert id="insertMaterialInfo2" parameterType="PlanVO">
+	INSERT INTO material_io (mio_no, mio_date, mio_quantity, mio_progress)
+    				  VALUES( 
+    				 		 (SELECT bom.bom_material_nob                                             
+                			  FROM produce_bom bom 
+                			  JOIN produce_plan plan 
+                              ON plan.plan_bom_no = bom.bom_no
+                              JOIN produce_goods goods
+                              ON goods.goods_no = plan.plan_product_no
+                			  WHERE plan_no = #{planNo}),
+                			  sysdate,
+                			 (SELECT (plan.plan_quantity * bom.bom_quantityb)/goods.goods_standard as planed_qntt                                             
+                			  FROM produce_bom bom 
+                			  JOIN produce_plan plan 
+                              ON plan.plan_bom_no = bom.bom_no
+                              JOIN produce_goods goods
+                              ON goods.goods_no = plan.plan_product_no
+               				  WHERE plan_no = #{planNo}),
+                		      find_code_name('출고완료'))
+
+</insert>
+
+<!-- 자재조회 -->
+<select id="selectMaterialList" resultType="BomVO">
+	SELECT m_no, m_name, m_category, m_stock, find_code_no(m_unit_code) as m_unit_code, m_info
+	FROM material
 </select>
 
 </mapper>

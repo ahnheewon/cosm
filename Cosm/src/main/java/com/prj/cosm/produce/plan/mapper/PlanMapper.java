@@ -40,5 +40,15 @@ public interface PlanMapper {
 		//주문서 전체조회
 		public List<PlanVO> selectOrderList();
 		
+		//주문서 상태 업데이트
+		public int updateOrderInfo(PlanVO planVO);
 		
+		//생산지시시 재고 업데이트
+		public void updateMaterialInfo(PlanVO planVO);
+		
+		// 생산지시시 재고 업데이트2
+		public void updateMaterialInfo2(PlanVO planVO);
+		
+		//생산계획 시 자재부족 select
+		public PlanVO selectMaterialSum(PlanVO planVO);
 }

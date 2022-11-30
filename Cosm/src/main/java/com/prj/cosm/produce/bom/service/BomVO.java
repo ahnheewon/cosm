@@ -1,5 +1,7 @@
 package com.prj.cosm.produce.bom.service;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -13,6 +15,7 @@ public class BomVO {
 	
 	private String mNo;
 	private String mName;
+	private String mCategory;
 	private String mInfo;
 	private String mStock;
 	private String mUnitCode;
@@ -23,5 +26,13 @@ public class BomVO {
 	private String goodsContents;
 	private String unitCode;
 	
+	private String planProductNo;
+	private int planQuantity;
+	private String planBomNo;
+	
+	private String mioNo;
+	private Date mioDate;
+	private int mioQuantity;
+	private String mioProgress;
 	
 }
