@@ -63,9 +63,10 @@ public class EquipController {
 		
 		// 설비 등록 (설비별 가동시간도 함께 등록이 돼요!)
 		@PostMapping("/equipment/insertEquip")
-		public EquipVO insertEquip(EquipVO vo) {
+		public String insertEquip(EquipVO vo) {
 			eService.insertEquip(vo);
-		return vo;
+		return "redirect:/equipment/process";
+		
 		}
 		
 		// 현재 적용 공정에 달려있는 설비 갯수 조회
@@ -104,17 +105,11 @@ public class EquipController {
 		public int deleteEquip(@PathVariable int equipNo) {
 			int result = eService.deleteEquip(equipNo);
 			result = result + eService.deleteEquipTime(equipNo);
+			result = result + eService.updateDeleteEquipNo(equipNo);
+			result = result + eService.updateDeleteTimeEquipNo(equipNo);
 		return result;
 		}
-		
-		// 설비 삭제시 번호 정렬, 설비별 가동시간도 함께 update문 
-		@PostMapping("/equipment/updateDeleteEquipNo/{equipNo}")
-		@ResponseBody
-		public int updateDeleteEquipNo(@PathVariable int equipNo) {
-			int result= eService.updateDeleteEquipNo(equipNo);
-			result = result + eService.updateDeleteTimeEquipNo(equipNo);
-		return result; 
-		}
+
 		
 //================================================================================================================================	
 		
@@ -309,10 +304,9 @@ public class EquipController {
 		
 		// 공사 등록
 		@PostMapping("/equipment/insertWork")
-		public String insertWork(WorkVO vo, RedirectAttributes ratt) {
+		public String insertWork(WorkVO vo) {
 			wService.insertWork(vo);
-			wService.insertWorkSign(vo);
-			ratt.addFlashAttribute("msg","정상적으로 등록되었습니다."); // 휘발성
+			wService.insertWorkSign(vo);	
 		return "redirect:/equipment/maintenance";
 		}
 		
@@ -320,7 +314,7 @@ public class EquipController {
 		@PostMapping("/equipment/updateSignSeq")
 		@ResponseBody
 		public int updateSignSeq(WorkVO vo, RedirectAttributes ratt) {
-			int result = wService.updateSignSeq(vo);
+			int result = wService.updateSignSeq(vo);	
 			
 			if(vo.getSignSeq() == 3) {
 				wService.updateWorkCode(vo);
