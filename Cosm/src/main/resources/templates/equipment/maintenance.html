@@ -299,8 +299,8 @@
 							<td>총괄팀장</td>
 						</tr>
 						<tr class="emp">
-							<td style="text-align: center;"><img th:if="${session.usersAuthor == 'D0107'}" src="/equipmentCss/홍길동인.PNG"></td> <!-- 본인 도장 사진으로 대체 -->
-							<td style="text-align: center;"><img th:if="${session.usersAuthor == 'D0108'}" src="/equipmentCss/설비팀장이석순.PNG"></td> <!-- 본인 도장 사진으로 대체 -->
+							<td style="text-align: center;"><img style=" width : 50px; height: 50px;" th:if="${session.usersAuthor == 'D0107'}" src="/equipmentCss/홍길동인.PNG"></td> <!-- 본인 도장 사진으로 대체 -->
+							<td></td> 
 							<td></td>
 							<td></td>
 						</tr>
@@ -378,8 +378,7 @@
 		
 				<!-- Modal footer -->
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">등록</button>
-						<button type="button" class="btn btn-danger"  data-bs-dismiss="modal">닫기</button>
+						<button type="submit" class="btn btn-primary">등록</button>			
 					</div>
 			</form>
 		
@@ -400,9 +399,7 @@
 					</div>
 		
 				<form id="updateForm3" class="updateForm" method="post" name="equip" onsubmit="return plzNum()">
-				<!-- <sec:csrfInput/> -->
-				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-					
+
 					<!-- Modal body -->
 					<div id="workInfo" class="modal-body">
 							<div class="modal-body" style="padding: 0.3rem;"> 

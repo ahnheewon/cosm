@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
-
 import com.prj.cosm.equipment.work.service.WorkService;
 import com.prj.cosm.equipment.work.service.WorkVO;
 
@@ -243,59 +241,6 @@ public class EquipController {
 		}
 		
 		
-		/*
-		 * //고장
-		 * 
-		 * // 고장 전체 리스트 조회
-		 * 
-		 * @GetMapping("/equipment/failAllList")
-		 * 
-		 * @ResponseBody public List<EquipVO> failAllList(){
-		 * 
-		 * return eService.getFailList(); } // 고장 미완 리스트 조회
-		 * 
-		 * @GetMapping("/equipment/incompleteFailList")
-		 * 
-		 * @ResponseBody public List<EquipVO> incompleteFailList(){
-		 * 
-		 * return eService.getIncompleteFailList(); } // 고장 완료 리스트 조회
-		 * 
-		 * @GetMapping("/equipment/completeFailList")
-		 * 
-		 * @ResponseBody public List<EquipVO> completeFailList(){
-		 * 
-		 * return eService.getCompleteFailList(); }
-		 * 
-		 * // 고장 등록
-		 * 
-		 * @PostMapping("/equipment/insertFail") public String insertFail(EquipVO vo,
-		 * RedirectAttributes ratt) { eService.insertFail(vo); return
-		 * "redirect:/equipment/maintenance"; }
-		 * 
-		 * // 고장 단건 조회
-		 * 
-		 * @GetMapping("/equipment/getFailInfo")
-		 * 
-		 * @ResponseBody public EquipVO getFailInfo(int failNo, int failEquipNo) {
-		 * return eService.getFailInfo(failNo,failEquipNo);
-		 * 
-		 * }
-		 * 
-		 * // 고장 수정
-		 * 
-		 * @PostMapping("/equipment/updateFail")
-		 * 
-		 * @ResponseBody public EquipVO updateFail(EquipVO vo) {
-		 * eService.updateFail(vo); return vo; // "{re:true}" }
-		 * 
-		 * // 고장 삭제
-		 * 
-		 * @DeleteMapping("/equipment/deleteFail/{failNo}")
-		 * 
-		 * @ResponseBody public int deleteFail(@PathVariable int failNo) { int result =
-		 * eService.deleteFail(failNo); return result; }
-		 */
-		
 //================================================================================================================================
 // 공사
 		
@@ -422,6 +367,13 @@ public class EquipController {
 			return wService.getPartList();
 		}	
 		
+		// 부품 단건 조회
+				@GetMapping("/equipment/getPartInfo")
+				@ResponseBody
+				public WorkVO getPartInfo(Model model, int partNo) {
+					return wService.getPartInfo(partNo);
+					
+				}
 
 		
 //================================================================================================================================	
