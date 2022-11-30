@@ -12,14 +12,14 @@
 	ORDER BY p.plan_no DESC
 </select>
 
-<!-- 미완료된것만 보이게 -->
+<!-- 자재입고 완료 된것만 보이게 -->
 <select id="completePlanList" resultType="PlanVO">
 	SELECT p.plan_no, p.plan_quantity, p.plan_start, 
 		   p.plan_end, p.plan_ex, p.plan_product_no, p.plan_bom_no,
 		   p.plan_order_no, code_name as plan_play_code
 	FROM produce_plan p JOIN code 
 						ON p.plan_play_code = code.code_no
-	WHERE plan_play_code = 'A0101'
+	WHERE plan_play_code = 'A0108'
 </select>
 
 <!-- 생산계획번호 +1 -->
@@ -94,106 +94,166 @@
 			<if test="planBomNo != null and !planBomNo.equals('')">
 				,plan_bom_no = #{planBomNo}
 			</if>
-			
+
 		</set>
-	WHERE plan_no = #{planNo}
-</update>
+		WHERE plan_no = #{planNo}
+	</update>
 
-<!-- 생산계획 삭제 -->
-<delete id="deletePlan">
-	DELETE FROM produce_plan WHERE plan_no = #{planNo}
-</delete>
+	<!-- 생산계획 삭제 -->
+	<delete id="deletePlan">
+		DELETE FROM produce_plan WHERE plan_no = #{planNo}
+	</delete>
 
-<!-- 제품번호 리스트 -->
-<select id="getGoodsNoList" resultType="PlanVO">
-	SELECT goods_no
-	FROM produce_goods
-	ORDER BY goods_no
-</select>
+	<!-- 제품번호 리스트 -->
+	<select id="getGoodsNoList" resultType="PlanVO">
+		SELECT goods_no
+		FROM
+		produce_goods
+		ORDER BY goods_no
+	</select>
 
-<!-- BOM번호 리스트 -->
-<select id="getBomNoList" resultType="PlanVO">
-	SELECT bom_no
-	FROM produce_bom
-	ORDER BY bom_no
-</select>
+	<!-- BOM번호 리스트 -->
+	<select id="getBomNoList" resultType="PlanVO">
+		SELECT bom_no
+		FROM
+		produce_bom
+		ORDER BY bom_no
+	</select>
 
-<!-- 생산계획 생산지시시 리스트에서 빠지기 -->
-<update id="updatePlay" parameterType="PlanVO">
-	UPDATE produce_plan 
-	SET plan_play_code = 'A0103' 
-	WHERE plan_no = #{planNo}
-</update>
+	<!-- 생산계획 생산지시시 리스트에서 빠지기 -->
+	<update id="updatePlay" parameterType="PlanVO">
+		UPDATE produce_plan
+		SET
+		plan_play_code = 'A0103'
+		WHERE plan_no = #{planNo}
+	</update>
 
-<!-- 주문서 전체조회 -->
-<select id="selectOrderList" resultType="PlanVO">
-	SELECT o.order_no, o.goods_no, o.order_date, o.delivery_date, o.total_num,
-		   o.note, g.goods_name, b.bom_no, code_name as order_code
-	FROM produce_goods g JOIN orders o ON g.goods_no = o.goods_no 
-                     	 JOIN produce_bom b ON g.goods_no = b.bom_product_no
-                     	 JOIN code ON o.order_code = code.code_no
-    WHERE o.order_code = 'B0107'
-</select>
+	<!-- 주문서 전체조회 -->
+	<select id="selectOrderList" resultType="PlanVO">
+		SELECT o.order_no,
+		o.goods_no, o.order_date, o.delivery_date, o.total_num,
+		o.note,
+		g.goods_name, b.bom_no, code_name as order_code
+		FROM produce_goods g
+		JOIN orders o ON g.goods_no = o.goods_no
+		JOIN produce_bom b ON
+		g.goods_no = b.bom_product_no
+		JOIN code ON o.order_code = code.code_no
+		WHERE o.order_code = 'B0107'
+	</select>
 
-<!-- 생산계획시 주문서 업데이트 -->
-<update id="updateOrderInfo" parameterType="PlanVO">
-	UPDATE orders 
-	SET order_code = 'B0108' 
-	WHERE order_no = #{orderNo}
-</update>
+	<!-- 생산계획시 주문서 업데이트 -->
+	<update id="updateOrderInfo" parameterType="PlanVO">
+		UPDATE orders
+		SET
+		order_code = 'B0108'
+		WHERE order_no = #{orderNo}
+	</update>
 
 
 
-<!-- 생산지시시 재고1 업데이트 -->
-<update id="updateMaterialInfo" parameterType="PlanVO">
-	UPDATE material set m_stock = ( m_stock - (SELECT  (plan.plan_quantity * bom.bom_quantity)/goods.goods_standard as required_material
-                                                 FROM produce_bom bom JOIN produce_plan plan 
-                                                   ON plan.plan_bom_no = bom.bom_no
-                                              	 JOIN produce_goods goods
-                                              	   ON goods.goods_no = plan.plan_product_no 
-                                            	WHERE plan_no = #{planNo}))
-    WHERE m_no = (SELECT bom.bom_material_no
-                  FROM produce_bom bom JOIN produce_plan plan 
-                                         ON plan.plan_bom_no = bom.bom_no
-                                       JOIN produce_goods goods
-                                         ON goods.goods_no = plan.plan_product_no 
-                                      WHERE plan_no = #{planNo})
+	<!-- 생산지시시 재고1 업데이트 -->
+	<update id="updateMaterialInfo" parameterType="PlanVO">
+		UPDATE material
+		set m_stock = ( m_stock - (SELECT (plan.plan_quantity *
+		bom.bom_quantity)/goods.goods_standard as required_material
+		FROM
+		produce_bom bom JOIN produce_plan plan
+		ON plan.plan_bom_no = bom.bom_no
+		JOIN produce_goods goods
+		ON goods.goods_no = plan.plan_product_no
+		WHERE
+		plan_no = #{planNo}))
+		WHERE m_no = (SELECT bom.bom_material_no
+		FROM
+		produce_bom bom JOIN produce_plan plan
+		ON plan.plan_bom_no = bom.bom_no
+		JOIN produce_goods goods
+		ON goods.goods_no = plan.plan_product_no
+		WHERE
+		plan_no = #{planNo})
 
-</update>
+	</update>
 
-<!-- 생산지시시 재고2 업데이트 -->
-<update id="updateMaterialInfo2" parameterType="PlanVO">
-	UPDATE material set m_stock = ( m_stock - (SELECT  (plan.plan_quantity * bom.bom_quantityb)/goods.goods_standard as required_material
-                                                 FROM produce_bom bom JOIN produce_plan plan 
-                                                   ON plan.plan_bom_no = bom.bom_no
-                                              	 JOIN produce_goods goods
-                                              	   ON goods.goods_no = plan.plan_product_no 
-                                            	WHERE plan_no = #{planNo}))
-    WHERE m_no = (SELECT bom.bom_material_nob
-                  FROM produce_bom bom JOIN produce_plan plan 
-                                         ON plan.plan_bom_no = bom.bom_no
-                                       JOIN produce_goods goods
-                                         ON goods.goods_no = plan.plan_product_no 
-                                      WHERE plan_no = #{planNo})
+	<!-- 생산지시시 재고2 업데이트 -->
+	<update id="updateMaterialInfo2" parameterType="PlanVO">
+		UPDATE material
+		set m_stock = ( m_stock - (SELECT (plan.plan_quantity *
+		bom.bom_quantityb)/goods.goods_standard as required_material
+		FROM
+		produce_bom bom JOIN produce_plan plan
+		ON plan.plan_bom_no = bom.bom_no
+		JOIN produce_goods goods
+		ON goods.goods_no = plan.plan_product_no
+		WHERE
+		plan_no = #{planNo}))
+		WHERE m_no = (SELECT bom.bom_material_nob
+		FROM
+		produce_bom bom JOIN produce_plan plan
+		ON plan.plan_bom_no = bom.bom_no
+		JOIN produce_goods goods
+		ON goods.goods_no = plan.plan_product_no
+		WHERE
+		plan_no = #{planNo})
 
-</update>
+	</update>
 
-<!-- 자재부족 알림위해 SELECT -->
+	<!-- 자재부족 알림위해 SELECT -->
 
-<select id="selectMaterialSum" resultType="PlanVO">
-	SELECT bom_material_no as "bom1", SUM(plan_quantity*bom_quantity/goods_standard) as bom1_req_qntt, m1.m_stock as "m1_stock", 
-	        CASE WHEN SUM(plan_quantity*bom_quantity/goods_standard) > m1.m_stock THEN 1 ELSE 0 END as yn1,
-	        bom_material_nob as "bom2", SUM(plan_quantity*bom_quantityb/goods_standard) as bom2_req_qntt, m2.m_stock as "m2_stock", 
-	        CASE WHEN SUM(plan_quantity*bom_quantityb/goods_standard) > m2.m_stock THEN 1 ELSE 0 END as yn2 
-	FROM produce_bom b JOIN produce_goods g 
-						 ON b.bom_product_no = g.goods_no
-					   JOIN produce_plan p
-						 ON p.plan_product_no = g.goods_no
-					   JOIN material m1
-						 ON m1.m_no = b.bom_material_no
-					   JOIN material m2
-						 ON m2.m_no = b.bom_material_nob
-	WHERE bom_product_no = 'PRO_20220001' AND plan_play_code = 'A0101'
-	GROUP BY bom_material_no, m1.m_stock, bom_material_nob, m2.m_stock
-</select>
+	<select id="selectMaterialSum" resultType="PlanVO">
+		SELECT bom_material_no
+		as "bom1",
+		SUM(plan_quantity*bom_quantity/goods_standard) as
+		bom1_req_qntt,
+		m1.m_stock as "m1_stock",
+		CASE WHEN
+		SUM(plan_quantity*bom_quantity/goods_standard) > m1.m_stock THEN
+		1 ELSE
+		0 END as yn1,
+		bom_material_nob as "bom2",
+		SUM(plan_quantity*bom_quantityb/goods_standard) as
+		bom2_req_qntt,
+		m2.m_stock as "m2_stock",
+		CASE WHEN
+		SUM(plan_quantity*bom_quantityb/goods_standard) > m2.m_stock
+		THEN 1
+		ELSE 0 END as yn2
+		FROM produce_bom b JOIN produce_goods g
+		ON
+		b.bom_product_no = g.goods_no
+		JOIN produce_plan p
+		ON p.plan_product_no =
+		g.goods_no
+		JOIN material m1
+		ON m1.m_no = b.bom_material_no
+		JOIN material
+		m2
+		ON m2.m_no = b.bom_material_nob
+		WHERE bom_product_no = 'PRO_20220001'
+		AND plan_play_code = 'A0101'
+		GROUP BY bom_material_no, m1.m_stock,
+		bom_material_nob, m2.m_stock
+	</select>
+
+	<select id="getPlanCompute" resultType="PlanVO">
+		select
+		plan_no,bom_material_no, plan_quantity*bom_quantity/goods_standard as
+		bom_quantity,bom_material_nob,
+		plan_quantity*bom_quantityb/goods_standard as bom_quantityb
+		FROM produce_plan p
+		JOIN produce_goods g
+		ON p.plan_product_no = g.goods_no
+		JOIN produce_bom b
+		ON g.goods_no = b.bom_product_no
+		where plan_play_code = 'A0109' OR plan_play_code = 'A0108' order by plan_play_code,plan_no
+	</select>
+
+	<update id="updateCanIns" parameterType="PlanVO">
+		UPDATE produce_plan SET plan_play_code = 'A0108'
+		IN
+		<foreach collection="resultList" item="vo" close=")" open="("
+			separator=",">
+			#{vo.planNo}
+		</foreach>
+	</update>
 </mapper>

@@ -51,4 +51,8 @@ public interface PlanMapper {
 		
 		//생산계획 시 자재부족 select
 		public PlanVO selectMaterialSum(PlanVO planVO);
+		
+		public List<PlanVO> getPlanCompute();
+		
+		public int updateCanIns(List<PlanVO> resultList);
 }

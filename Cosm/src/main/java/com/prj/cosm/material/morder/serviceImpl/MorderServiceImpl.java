@@ -6,9 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.prj.cosm.material.material.mapper.MaterialMapper;
+import com.prj.cosm.material.material.service.MaterialVO;
 import com.prj.cosm.material.morder.mapper.MorderMapper;
 import com.prj.cosm.material.morder.service.MorderService;
 import com.prj.cosm.material.morder.service.MorderVO;
+import com.prj.cosm.produce.plan.mapper.PlanMapper;
+import com.prj.cosm.produce.plan.service.PlanVO;
 import com.prj.cosm.user.alert.mapper.AlertMapper;
 import com.prj.cosm.user.alert.service.AlertVO;
 import com.prj.cosm.user.emp.mapper.EmpMapper;
@@ -25,6 +29,12 @@ public class MorderServiceImpl implements MorderService {
 
 	@Autowired
 	EmpMapper eMapper;
+
+	@Autowired
+	MaterialMapper maMapper;
+
+	@Autowired
+	PlanMapper pMapper;
 
 	@Override
 	public List<MorderVO> mioInputList(MorderVO vo) {
@@ -48,7 +58,7 @@ public class MorderServiceImpl implements MorderService {
 	public int insertInputOrder(List<MorderVO> mvo) {
 		// 입고대기 리스트 -> 입고 리스트(입고완료)
 		int result = 0;
-		for (MorderVO vo : mvo) {		
+		for (MorderVO vo : mvo) {
 			result += moMapper.insertInputOrder(vo);
 			moMapper.updateCode(vo);
 			vo.setMNo(vo.getMoMaterialId());
@@ -56,16 +66,33 @@ public class MorderServiceImpl implements MorderService {
 			moMapper.updateCode(vo);
 		}	
 		
+		// 현재 재고 들고오는 매퍼
+		List<MaterialVO> mList = maMapper.mList();
+		List<PlanVO> pList = pMapper.getPlanCompute();
+		List<PlanVO> resultList = new ArrayList<>();
+		for (MaterialVO mVO : mList) {
+			int compute = mVO.getMStock();
+			for (PlanVO pVO : pList) {
+				if (mVO.getMNo().equals(pVO.getBomMaterialNo())) {
+					if (compute >= pVO.getBomQuantity()) {
+						compute -= pVO.getBomQuantity();
+						resultList.add(pVO);
+					}
+				}
+			}
+		}
+		pMapper.updateCanIns(resultList);
+    
 		List<EmpVO> eList = new ArrayList<>();
 		eList = eMapper.getReceiveUsers("D0105");
+		AlertVO aVO = new AlertVO();
 		for (EmpVO eVO : eList) {
-			AlertVO aVO = new AlertVO();
 			aVO.setAlertContent("필요 자재가 입고되었습니다.");
 			aVO.setAlertReceive(eVO.getUsersNo());
 			aMapper.insertAlert(aVO);
 		}
 		return result;
-	
+
 	}
 
 	@Override
