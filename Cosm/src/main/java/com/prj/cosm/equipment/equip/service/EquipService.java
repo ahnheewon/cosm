@@ -24,7 +24,7 @@ public interface EquipService {
 				public EquipVO getEquipInfo(@Param("equipNo")int equipNo);
 			
 				// 등록
-				public void insertEquip(EquipVO vo);
+				public int insertEquip(EquipVO vo);
 				
 				// 수정
 				public int updateEquip(EquipVO vo);
@@ -140,5 +140,6 @@ public interface EquipService {
 	
 				public int updateEquipState(int equipNo);
 				
+				public EquipVO getEquipTime(int equipNo);
 				public int controlEquipTime(int equipNo, String type);
 }

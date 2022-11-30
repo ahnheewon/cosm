@@ -246,10 +246,10 @@
 	
 <!-- 부품 단건 조회 -->
 	<select id="getPartInfo" parameterType="Integer" resultType="workVO">
-		SELECT p.part_no, p.part_name, e.equip_name,p.part_content
+		SELECT p.part_no, p.part_name, e.equip_name as part_equip_name,p.part_content,find_code_no(p.part_code) as part_code
 		FROM equip e, part p
-		Where e.equip_no = p.part_no
-		and p.part_no= #{value}
+		Where e.equip_no = p.part_equip_no
+		and part_no = 'MP'||#{value}
 	</select>
 
 </mapper>

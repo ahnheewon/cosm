@@ -19,6 +19,8 @@ public class EquipVO {
 	private Integer equipNo;
 	private String equipName;
 	private Integer equipProcess; // 적용공정
+	private String equipProcessName; // 적용공정명 
+
 	private String equipType;
 	private String equipPurpose;
 	private Integer equipCheckCycle;
