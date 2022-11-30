@@ -19,10 +19,13 @@ public class InsServiceImpl implements InsService {
 	
 	@Autowired
 	InsMapper mapper;
-	
+  
+	@Autowired
+	EquipService equipService;
+
 	@Autowired
 	RegistMapper registMapper;
-	
+  
 	@Override
 	public List<Map<String, Object>> selectInsList() {
 		return mapper.getInsList();
@@ -36,7 +39,7 @@ public class InsServiceImpl implements InsService {
 
 	@Override
 	public int insertInsInfo(InsVO insVO) {
-		
+		equipService.doWork(insVO);
 		return mapper.insertIns(insVO);
 	}
 
@@ -87,6 +90,5 @@ public class InsServiceImpl implements InsService {
 		// TODO Auto-generated method stub
 		return mapper.allInsList(vo);
 	}
-
 
 }
