@@ -230,7 +230,7 @@
 		m2
 		ON m2.m_no = b.bom_material_nob
 		WHERE bom_product_no = 'PRO_20220001'
-		AND plan_play_code = 'A0101'
+		AND plan_play_code = 'A0109'
 		GROUP BY bom_material_no, m1.m_stock,
 		bom_material_nob, m2.m_stock
 	</select>
@@ -250,7 +250,7 @@
 
 	<update id="updateCanIns" parameterType="PlanVO">
 		UPDATE produce_plan SET plan_play_code = 'A0108'
-		IN
+		WHERE plan_no IN
 		<foreach collection="resultList" item="vo" close=")" open="("
 			separator=",">
 			#{vo.planNo}
