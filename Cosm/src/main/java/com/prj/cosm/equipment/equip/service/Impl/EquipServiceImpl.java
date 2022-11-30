@@ -249,7 +249,7 @@ public class EquipServiceImpl implements EquipService {
 		eList = eMapper.getReceiveUsers("D0105");
 		for (EmpVO eVO : eList) {
 			AlertVO aVO = new AlertVO();
-			aVO.setAlertContent("생산이 완료되었습니다");
+			aVO.setAlertContent(insVO.getInstructNo() + " 생산이 완료되었습니다");
 			aVO.setAlertReceive(eVO.getUsersNo());
 			aMapper.insertAlert(aVO);
 		}
