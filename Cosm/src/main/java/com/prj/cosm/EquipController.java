@@ -315,9 +315,11 @@ public class EquipController {
 		@ResponseBody
 		public int updateSignSeq(WorkVO vo, RedirectAttributes ratt) {
 			int result = wService.updateSignSeq(vo);	
+			
 			if(vo.getSignSeq() == 3) {
 				wService.updateWorkCode(vo);
-			}	
+			}
+			
 			return result; // "{re:true}"
 		}
 		
