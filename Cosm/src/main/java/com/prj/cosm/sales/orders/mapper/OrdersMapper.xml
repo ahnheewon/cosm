@@ -83,8 +83,7 @@
 		)
 		values (
 		#{orderNo},
-		(select GOODS_NO from
-		produce_goods where GOODS_NAME=#{goodsName}),
+		(select GOODS_NO from produce_goods where GOODS_NAME=#{goodsName}),
 		#{usersNo},
 		#{deliveryDate},
 		#{totalNum},

@@ -54,17 +54,6 @@ public class OrderClientProductController {
 	@Autowired
 	ProductService pService;
 	
-	/*-----------------
-	  회원 : emp service
-	-----------------*/
-	@Autowired
-	EmpService service;
-	
-	/*-----------------
-	  알림 : alr service
-	-----------------*/
-	@Autowired
-	AlertService aService;
 	
 
 // 제품페이지=================================================================================================================

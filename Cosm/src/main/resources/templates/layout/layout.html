@@ -455,6 +455,8 @@
 		</div>
 		<!-- 알림 Script -->
 		<script type="text/javascript">
+		 const header = $("meta[name='_csrf_header']").attr('content');
+		   const token = $("meta[name='_csrf']").attr('content');
 
 			 if (`[[${session.usersAuthor}]]` != null) {
 				getAlertList();
