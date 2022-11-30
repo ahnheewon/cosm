@@ -16,21 +16,27 @@ th {
 }
 
 body {
-        height: 110vh;
-        width: 100vw;
-        background-image: url('/css/cosmMain.png');
-        background-repeat : no-repeat;
-        background-size : cover;
-      }
+	height: 110vh;
+	width: 100vw;
+	background-image: url('/css/cosmMain.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	
+}
 
 #licenseImg {
 	width: 185px;
+}
+
+#chTd {
+	width: 300px;
+	color: red;
 }
 </style>
 </head>
 
 <body layout:fragment="content">
-	<div align="center">
+	<div align="center" id="jf">
 		<div style="width: 550px; position: relative; top: 50px;">
 			<h2>회원가입</h2>
 			<form action="clientInsert" method="post" id="empInsertForm">
@@ -50,6 +56,11 @@ body {
 							<th>비밀번호</th>
 							<td><input type="password" id="usersPassword"
 								name="usersPassword"></td>
+						</tr>
+						<tr>
+							<th>비밀번호 확인</th>
+							<td><input type="password" id="checkPw"></td>
+							<td id="chTd" style="width: 300px;"></td>
 						</tr>
 						<tr>
 							<th>이름</th>
@@ -94,7 +105,7 @@ body {
 			</form>
 		</div>
 	</div>
-	
+
 	<script type="text/javascript">
 		const openDate = "";
 		$('#back').click(function () {
@@ -144,7 +155,26 @@ body {
 			$('#changeDate').val(result);
 		})
 		
-		
+		$('#checkPw').on('keyup',function(){
+			$('#chTd').text('')
+			if($('#checkPw').val()!=$('#usersPassword').val()){
+				$('#chTd').text('비밀번호가 일치하지 않습니다.').css('color','red');
+			}else if($('#checkPw').val()==''){
+				$('#chTd').text('비밀번호 확인을 입력하세요.').css('color','red');
+			} else{
+				$('#chTd').text('비밀번호가 일치합니다').css('color','green');
+			}
+		})
+		$('#usersPassword').on('keyup',function(){
+			$('#chTd').text('')
+			if($('#checkPw').val()!=$('#usersPassword').val()){
+				$('#chTd').text('비밀번호가 일치하지 않습니다.').css('color','red');
+			}else if($('#checkPw').val()==''){
+				$('#chTd').text('비밀번호 확인을 입력하세요.').css('color','red');
+			} else{
+				$('#chTd').text('비밀번호가 일치합니다').css('color','green');
+			}
+		})
 
 		function checkForm() {
 			console.log($('#usersId').val())
@@ -160,6 +190,14 @@ body {
 				Swal.fire(
                         '아이디 중복확인',
                         '아이디 중복확인을 해주세요',
+                        'error'
+                    )
+				return false;
+			}
+			if($('#checkPw').val()!=$('#usersPassword').val()){
+				Swal.fire(
+                        '비밀번호 확인',
+                        '비밀번호와 비밀번호 확인은 동일해야합니다',
                         'error'
                     )
 				return false;
