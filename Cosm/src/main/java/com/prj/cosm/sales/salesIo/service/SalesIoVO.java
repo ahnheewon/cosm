@@ -41,6 +41,9 @@ public class SalesIoVO {
 	private String usersNo;					//회원번호
 	private String registLot;				//lot_no
 	private String orderCode;
+	private String clientName;
+	private String goodsName;
+	
 	//다중 수정 삭제
 	private List<String> sioList;
 }

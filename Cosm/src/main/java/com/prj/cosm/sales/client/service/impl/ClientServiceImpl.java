@@ -1,5 +1,6 @@
 package com.prj.cosm.sales.client.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,22 @@ import com.prj.cosm.sales.client.mapper.ClientMapper;
 import com.prj.cosm.sales.client.service.ClientService;
 import com.prj.cosm.sales.client.service.ClientVO;
 import com.prj.cosm.sales.orders.service.OrdersVO;
+import com.prj.cosm.user.alert.mapper.AlertMapper;
+import com.prj.cosm.user.alert.service.AlertVO;
+import com.prj.cosm.user.emp.mapper.EmpMapper;
+import com.prj.cosm.user.emp.service.EmpVO;
 
 @Service
 public class ClientServiceImpl implements ClientService  {
 
 	@Autowired
 	ClientMapper mapper;
+	
+	@Autowired
+	AlertMapper aMapper;
+
+	@Autowired
+	EmpMapper eMapper;
 	
 	@Override
 	public int clientIn(ClientVO cvo) {
@@ -49,6 +60,14 @@ public class ClientServiceImpl implements ClientService  {
 	@Override
 	public void insertOrder(ClientVO cvo) {
 		//주문등록
+		List<EmpVO> eList = new ArrayList<>();
+		eList = eMapper.getReceiveUsers("D0109"); // 받는사람
+		for (EmpVO eVO : eList) {
+			AlertVO aVO = new AlertVO();
+			aVO.setAlertContent("신규 주문이 있습니다.");
+			aVO.setAlertReceive(eVO.getUsersNo());
+			aMapper.insertAlert(aVO);
+		}
 		
 	}
 
