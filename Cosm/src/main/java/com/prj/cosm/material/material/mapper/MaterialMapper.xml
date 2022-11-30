@@ -166,7 +166,6 @@ order by m_no
 		ON m.m_no = mio.mio_no
 	WHERE mio.mio_date IS NOT NULL
 		AND mio_progress IS NOT NULL
-
 	<if test="startDate != null and endDate != null">
 		AND TRUNC(mo.mo_date) BETWEEN #{startDate} AND #{endDate}
 	</if>
