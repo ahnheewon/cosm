@@ -35,7 +35,7 @@ public class OrderClientProductController {
 	-----------------*/
 	@Autowired
 	OrdersService oService;
-	
+
 	/*-----------------
 	  완제품 : salesIo service
 	-----------------*/
@@ -53,8 +53,6 @@ public class OrderClientProductController {
 	-----------------*/
 	@Autowired
 	ProductService pService;
-	
-	
 
 // 제품페이지=================================================================================================================
 	// 로그인 유무 상관없이 보여짐
@@ -69,7 +67,6 @@ public class OrderClientProductController {
 	public String main() {
 		return "/client/main";
 	}
-
 
 	// 주문조회 화면(월별 : 1개월 3개월 6개월 조회 가능)
 	@GetMapping("/client/orderList")
@@ -90,6 +87,36 @@ public class OrderClientProductController {
 	public String chat(Model model) {
 		return "/client/chat";
 	}
+	
+	/*// 등록 페이지
+	@RequestMapping("/client/insertOrder")
+	public String insertOrder(Model model) {
+		// model.addAttribute("no", oService.getOrderNo());
+		return "/orders/insertOrder";
+	}
+
+	// 주문 등록 데이터
+	@PostMapping("/client/insertOrderData")
+	public String insertOrderPage(OrdersVO ovo) {
+		System.out.println("insert vo" + ovo);
+		oService.insertOrder(ovo);
+		return "redirect:/orders/sMain";
+	}*/
+
+	// 등록 페이지        
+	@RequestMapping("/client/insertOrder")
+	public String insertOrder(Model model) {
+		// model.addAttribute("no", oService.getOrderNo());
+		return "/client/insertOrder";
+	}
+
+	// 주문 등록 데이터
+	@PostMapping("/client/insertOrderData")
+	public String insertOrderPage(OrdersVO ovo) {
+		System.out.println("insert vo" + ovo);
+		oService.insertOrder(ovo);
+		return "redirect:/client/insertOrder";
+	}
 
 	// 영업=================================================================================================================
 	// 메인페이지 - 주문관리
@@ -98,37 +125,35 @@ public class OrderClientProductController {
 		return "/orders/sMain";
 	}
 
-	//완제품 조회 리스트
+	// 완제품 조회 리스트
 	@ResponseBody
 	@GetMapping("/orders/ajaxSalesList")
-	public List<SalesIoVO> ajaxSalesList(Model model){
+	public List<SalesIoVO> ajaxSalesList(Model model) {
 		return sService.getSalesIoList();
 	}
-	
-	//완제품 조회 데이터
+
+	// 완제품 조회 데이터
 	@ResponseBody
 	@GetMapping("/orders/salesList")
-	public List<SalesIoVO> salesList(Model model){
+	public List<SalesIoVO> salesList(Model model) {
 		model.addAttribute("id", sService.getSalesNo());
 		return sService.getSalesIoList();
 	}
-	
 
-	//주문 조회 리스트
+	// 주문 조회 리스트
 	@ResponseBody
 	@GetMapping("/orders/ajaxOrders") // url
 	public List<OrdersVO> ajaxOrder(Model model) {
 		return oService.getOrderList();
 	}
-	
+
 	// 접수 조회 데이터
 	@GetMapping("/orders/getReceiptList")
 	@ResponseBody
-	public List<OrdersVO> getReceiptList (Model model){
+	public List<OrdersVO> getReceiptList(Model model) {
 		model.addAttribute("id", oService.getOrderNo());
 		return oService.getReceiptList();
 	}
-	
 
 	// 신규 조회 데이터
 	@GetMapping("/orders/ordersList")
@@ -137,33 +162,16 @@ public class OrderClientProductController {
 		model.addAttribute("id", oService.getOrderNo());
 		return oService.getOrderList();
 	}
-	
-	
-	
-	//등록 페이지
-	@RequestMapping("/orders/insertOrder")
-	public String insertOrder (Model model) {
-		//model.addAttribute("no", oService.getOrderNo());
-		return "/orders/insertOrder";
-	}
-	
-	//주문 등록 데이터
-	@PostMapping("/orders/insertOrderData")
-	public String insertOrderPage( OrdersVO ovo) {
-		System.out.println("insert vo" + ovo);
-		oService.insertOrder(ovo);
-		return "redirect:/orders/sMain";
-	}
-	
-	//출고내역 삭제
+
+	// 출고내역 삭제
 	@ResponseBody
 	@PostMapping("/orders/ajaxDelOutOrder")
 	public int delOutOrder(@RequestBody SalesIoVO vo) {
 		return sService.delOutOrder(vo.getSioList());
-		//지금 수정해야할 부분 
+		// 지금 수정해야할 부분
 	}
-	
-	//삭제 - 접수 주문관리
+
+	// 삭제 - 접수 주문관리
 	@ResponseBody
 	@PostMapping("/orders/ajaxDelcheckOrder") // ajaxDelcheckOrder, requestBody 는 웬만한 값 다 넘겨줄수 있음.(여기서는 배열 넘길때 씀)
 	public int delCheckOrder(@RequestBody OrdersVO vo) {
@@ -178,26 +186,24 @@ public class OrderClientProductController {
 
 		return result;
 	}
-	
-	//출고 버튼 이벤트
+
+	// 출고 버튼 이벤트
 	@ResponseBody
 	@PostMapping("/orders/updateOutInfo")
-	public int updateOutInfo(@RequestBody  List<SalesIoVO> list) {
+	public int updateOutInfo(@RequestBody List<SalesIoVO> list) {
 		int result = sService.updateOutInfo(list);
 		return result;
 	}
-	
-	
+
 	// 접수 버튼 이벤트
 	@ResponseBody
 	@PostMapping("/orders/ajaxRecNos")
 	public int recNos(@RequestBody List<OrdersVO> vo, RedirectAttributes ratt) {
 		int result = oService.recNos(vo);
 		return result;
-		//  알림설정 필요
+		// 알림설정 필요
 	}
 
-	
 	// 영업 end =======================================================
 
 }

@@ -12,19 +12,23 @@
 		max(substr(SALES_NO,-4,4)+1) from sales_io
 	</select>
 
-	<!-- 전체조회 -->
+	<!-- 완제품 전체조회 -->
 	<select id="getSalesIoList" resultType="SalesIoVO">
-		select r.regist_LOT,
-		o.ORDER_NO, o.ORDER_DATE,
+		select c.client_name, g.goods_name, r.regist_LOT, o.ORDER_NO, o.ORDER_DATE,
 		o.DELIVERY_DATE, o.users_no,
 		find_code_no(o.order_code) as order_code
-		from produce_regist r 
-		join produce_instruct i
-		on r.regist_instruct_no = i.instruct_no
+		from produce_regist r join produce_instruct i
+		on r.regist_instruct_no =
+		i.instruct_no
 		JOIN produce_plan p
 		ON i.instruct_plan_no = p.plan_no
-		JOIN orders o
-		ON p.plan_order_no = o.order_no;
+		JOIN
+		orders o
+		ON p.plan_order_no = o.order_no
+		JOIN produce_goods g
+		ON o.goods_no = g.goods_no
+		JOIN client c
+		ON o.client_name = c.users_no
 	</select>
 
 	<!-- 단건조회 -->

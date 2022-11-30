@@ -7,10 +7,6 @@
 <head>
 
 <title>Sales main</title>
-<!-- chart grid : 안되면 레이아웃에 넣기 -->
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
-<script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
 </head>
 
 
@@ -32,7 +28,6 @@
 						data-bs-toggle="tab" data-bs-target="#manage" type="button"
 						role="tab" aria-controls="manage" aria-selected="true">주문관리</button>
 				</li>
-				<!--주문관리 tab btn-->
 
 				<!--완제품 검수, 재고, 출고관리 tab 
 				aria-selected - 탭활성화 -->
@@ -41,8 +36,6 @@
 						data-bs-target="#manage2" type="button" role="tab"
 						aria-controls="manage2" aria-selected="true">완제품 관리</button>
 				</li>
-				<!--완제품 검수관리 tab-->
-
 			</ul>
 		</div>
 		<!-- tab btn end -->
@@ -65,29 +58,34 @@
 					<!-- 검색창 end -->
 
 					<hr>
+					<div style="width: 90%;">
+						<div>
+							<h3>신규 주문관리</h3>
+						</div>
+
+						<button style="float: right" id="proPlz"
+							class="btn btn-secondary btn-sm">접수</button>
+						<button style="float: right; margin-right: 8px" id="newPro"
+							type="button" class="btn btn-secondary btn-sm">신규</button>
+
+						<!-- 전체조회 grid filter -->
+						<div id="grid"></div>
+					</div>
 
 					<div>
-						<h3>신규 주문관리</h3>
+						<div>
+							<h3>접수 주문관리</h3>
+						</div>
+						
+						<button style="float: right" id="updatebtn" class="btn btn-secondary btn-sm">수정</button>
+						<button id="delbtn" class="btn btn-secondary btn-sm">삭제</button>
+						<button id="exlBtn" class="btn btn-secondary btn-sm">엑셀</button>
+
+						<div id="grid4"></div>
 					</div>
-					<hr>
-					<button id="newPro" type="button" class="btn btn-secondary btn-sm"
-						 >신규</button>
-					<button id="proPlz" class="btn btn-secondary btn-sm">접수</button>
-
-					<!-- 전체조회 grid filter -->
-					<div id="grid"></div>
-
-					<div>
-						<h3>접수 주문관리</h3>
-					</div>
-					<hr>
-					<button id="updatebtn" class="btn btn-secondary btn-sm">수정</button>
-					<button id="delbtn" class="btn btn-secondary btn-sm">삭제</button>
-					<button id="exlBtn" class="btn btn-secondary btn-sm">엑셀</button>
-
-					<div id="grid4"></div>
 
 					<hr>
+					<!-- chart grid 들어갈 곳 -->
 
 				</div>
 			</div>
@@ -98,29 +96,32 @@
 			<!-- 완제품 관리 탭 start body -->
 			<div class="tab-pane fade " id="manage2" role="tabpanel"
 				aria-labelledby="manage2-tab">
-				<div class="row">
-					<div class="col-6">
-						<div>
-							<h3 align="center">완제품 출고관리</h3>
-						</div>
-						<button id="newPro5" class="btn btn-secondary btn-sm">출고</button>
-						<button id="delbtn2" class="btn btn-secondary btn-sm">삭제</button>
-						<button id="exlBtn2" class="btn btn-secondary btn-sm">엑셀</button>
+				<div style="margin: 15px;">
 
-						<div id="grid2"></div>
+					<div>
+						<h3 align="center">완제품 출고관리</h3>
 					</div>
+					<div>
+						<button id="newPro5" class="btn btn-secondary btn-sm">출고</button>
+						<button id="exlBtn2" class="btn btn-secondary btn-sm">엑셀</button>
+					</div>
+
+					<div id="grid2"></div>
+
 					<!-- 출고/내역 분리 -->
-					<div class="col-6">
-						<div>
-							<h3 align="center">완제품 출고내역</h3>
-						</div>
-						<div align="left">
-							<button id="upbtn3" class="btn btn-secondary btn-sm">수정</button>
-							<button id="delbtn3" class="btn btn-secondary btn-sm">삭제</button>
-							<button id="exlBtn3" class="btn btn-secondary btn-sm">엑셀</button>
-						</div>
-						<div id="grid5"></div>
+					<hr>
+					<div>
+						<h3 align="center">완제품 출고내역</h3>
 					</div>
+					<div align="left">
+						<!-- 
+						 <button id="upbtn3" class="btn btn-secondary btn-sm">수정</button>
+						 -->
+						<button id="delbtn3" class="btn btn-secondary btn-sm">삭제</button>
+						<button id="exlBtn3" class="btn btn-secondary btn-sm">엑셀</button>
+					</div>
+					<div id="grid5"></div>
+
 				</div>
 			</div>
 			<!-- 완제품 관리 탭 end -->
@@ -131,445 +132,441 @@
 
 
 		<script>
-		  
-		/*-----------
+			/*-----------
 		  그리드 스타일
 		-------------*/
-		 tui.Grid.applyTheme("normal", {
-	         cell : {
-	            nomal : {
-	               background : "#fff",
-	               border : "#e0e0e0",
-	               showVerticalBorder : false,
-	               showHorizontalBorder : true
-	            },
-	            header : {
-	               background : "#eaeaea",
-	               border : "#e0e0e0",
-	               showHorizontalBorder : true
-	            },
-	            rowHeader : {
-	               background : "#eaeaea",
-	               border : "#e0e0e0",
-	               showVerticalBorder : false,
-	               showHorizontalBorder : true
-	            },
-	         },
+			tui.Grid.applyTheme("normal", {
+				cell: {
+					nomal: {
+						background: "#fff",
+						border: "#e0e0e0",
+						showVerticalBorder: false,
+						showHorizontalBorder: true
+					},
+					header: {
+						background: "#eaeaea",
+						border: "#e0e0e0",
+						showHorizontalBorder: true
+					},
+					rowHeader: {
+						background: "#eaeaea",
+						border: "#e0e0e0",
+						showVerticalBorder: false,
+						showHorizontalBorder: true
+					},
+				},
 
-	      });
+			});
 			/*데이터피커-보류, 엑셀0, PDF, 수정0, 신규 -> 접수 0, 차트, 삭제전 경고창 - 만들거 11/21*/
 			//데이터 -> 계속 호출, 그리드는 한번 호출하면되니까 굳이 함수로 사용 안해도됨 
-			
+
 			/*------------------------------
 			 그리드 리프레시
 			--------------------------------*/
 			const manage = document.getElementById('manage-tab');
-				manage.addEventListener('shown.bs.tab', function () {
-					grid.refreshLayout(); //신규주문 그리그
-					grid4.refreshLayout(); //접수주문 그리그
-				})
+			manage.addEventListener('shown.bs.tab', function () {
+				grid.refreshLayout(); //신규주문 그리그
+				grid4.refreshLayout(); //접수주문 그리그
+			})
 
 			const manage2 = document.getElementById('manage2-tab');
-				manage2.addEventListener('shown.bs.tab', function () {
-					grid2.refreshLayout();
-					grid5.refreshLayout(); 
-					
-				})
-	
+			manage2.addEventListener('shown.bs.tab', function () {
+				grid2.refreshLayout();
+				grid5.refreshLayout();
+
+			})
+
 			//const Chart = toastui.Chart; //차트그리드
-				
-			
-			
+
+
+
 			/*-------------
 			그리드 모음
 			---------------*/
 			getOrderList(); //주문조회 그리드
-	        getSalesIoList(); //완제품관리 그리드
-	        getReceiptList();
-			
-	        
+			getSalesIoList(); //완제품관리 그리드
+			getReceiptList();
+
+
 			//버튼 이벤트 핸들러
-					//주문관리 탭 버튼 
-					$('#delbtn').on('click', checkDel); // 체크박스 - 삭제버튼 이벤트
-					$('#updatebtn').on('click', updatebtn); //주문 - 수정		
-					$('#newPro').on('click', newPro); //신규주문 클릭 이벤트 -> 체크박스 다중선택 가능
-					$('#exlBtn').on('click', exl); //엑셀버튼 클릭 이벤트
-					$('#proPlz').on('click', proPlz); //요청 클릭 이벤트 - 신규txt->완료로 변환
-					
-					//완제품관리 탭 버튼 
-					$('#newPro5').on('click', newPro5); //출고	
-					//$('#delribtn2').on('click', checkDel2); // 체크박스 선택
-					//$('#delbtn2').on('click', exl2); //삭제	
-					$('#exlBtn2').on('click', exl2); //엑셀	
-					
-					//$('#outbtn3').on('click', updatebtn3); //출고	
-					//$('#delribtn3').on('click', checkDel3); // 체크박스 선택
-					$('#delbtn3').on('click', checkDel3); //삭제	
-					$('#exlBtn3').on('click', exl3); //엑셀	
+			//주문관리 탭 버튼 
+			$('#delbtn').on('click', checkDel); // 체크박스 - 삭제버튼 이벤트
+			$('#updatebtn').on('click', updatebtn); //주문 - 수정		
+			$('#newPro').on('click', newPro); //신규주문 클릭 이벤트 -> 체크박스 다중선택 가능
+			$('#exlBtn').on('click', exl); //엑셀버튼 클릭 이벤트
+			$('#proPlz').on('click', proPlz); //요청 클릭 이벤트 - 신규txt->완료로 변환
+
+			//완제품관리 탭 버튼 
+			$('#newPro5').on('click', newPro5); //출고	
+			$('#exlBtn2').on('click', exl2); //엑셀	
+
+			
+			$('#delbtn3').on('click', checkDel3); //삭제	
+			$('#exlBtn3').on('click', exl3); //엑셀	
 
 
 
 
-				/*----------------------
-				 아작스연결 호출
-				----------------------*/
-				window.onload = function () {
-					getOrderList();		//주문목록
-					getSalesIoList();	//완제품목록
+			/*----------------------
+			 아작스연결 호출
+			----------------------*/
+			window.onload = function () {
+				getOrderList(); //주문목록
+				getSalesIoList(); //완제품목록
+			}
+
+
+
+			/*----------------------
+			신규 주문 그리드 
+			----------------------*/
+			var grid = new tui.Grid({
+
+				el: document.getElementById('grid'),
+				rowHeaders: ['checkbox'], //왼쪽 체크박스
+				minBodyHeight: 30,
+				pageOptions: {
+					useClient: true, // front에서만 페이징 하는 속성
+					perPage: 5
+				},
+				scrollX: false, //세로 스크롤
+				scrollY: false, //가로 스크롤
+				columns: [{
+						header: '주문번호',
+						name: 'orderNo',
+						width: 'auto'
+					}, {
+						header: '거래처명',
+						name: 'clientName',
+					}, {
+						header: '제품번호',
+						name: 'goodsNo'
+					}, {
+						header: '제품명',
+						name: 'goodsName',
+					}, {
+						header: '주문일자',
+						name: 'orderDate'
+					}, {
+						header: '납기일자',
+						name: 'deliveryDate',
+					}, {
+						header: '요청사항',
+						name: 'note',
+
+					}, {
+						header: '주문타입',
+						name: 'orderCode'
+					},
+					{
+						header: '수량',
+						name: 'totalNum',
+					}, {
+						header: '공급가액',
+						name: 'proPrice',
+						formatter: function (value) {
+							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' 원';
+						}
+					}, {
+						header: '부가세',
+						name: 'surtax',
+						formatter: function (value) {
+							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+						}
+
+					}, {
+						header: '총 금액',
+						name: 'totalPrice',
+						formatter: function (value) {
+							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+						}
+					}
+				]
+			});
+
+
+			//접수 주문 그리드 
+			var grid4 = new tui.Grid({
+
+				el: document.getElementById('grid4'),
+				rowHeaders: ['checkbox'], //왼쪽 체크박스
+				minBodyHeight: 30,
+				pageOptions: {
+					useClient: true, // front에서만 페이징 하는 속성
+					perPage: 5
+				},
+				scrollX: false, //세로 스크롤
+				scrollY: false, //가로 스크롤
+				columns: [{
+						header: '주문번호',
+						name: 'orderNo',
+						width: 'auto'
+					}, {
+						header: '거래처명',
+						name: 'clientName',
+					}, {
+						header: '제품번호',
+						name: 'goodsNo'
+					}, {
+						header: '제품명',
+						name: 'goodsName',
+					}, {
+						header: '주문일자',
+						name: 'orderDate'
+					}, {
+						header: '납기일자',
+						name: 'deliveryDate',
+					}, {
+						header: '요청사항',
+						name: 'note',
+
+					}, {
+						header: '주문타입',
+						name: 'orderCode'
+					},
+					{
+						header: '배달상황',
+						name: 'deliveryInfo',
+						/* formatter: 'listItemText',
+						editor: {
+							type: 'select',
+							options: {
+								listItems: [{
+										text: '대기중',
+										value: 'B0101'
+									},
+									{
+										text: '배송중',
+										value: 'B0102'
+									},
+									{
+										text: '배송완료',
+										value: 'B0103'
+									}
+								]
+							}
+						} */
+
+					}, //name: 'ORDER_PROGRESS_CODE',
+					{
+						header: '출납상황',
+						name: 'ioCode',
+						/* formatter: 'listItemText',
+						editor: {
+							type: 'select',
+							options: {
+								listItems: [{
+										text: '대기중',
+										value: 'B0101'
+									},
+									{
+										text: '배송중',
+										value: 'B0102'
+									},
+									{
+										text: '배송완료',
+										value: 'B0103'
+									}
+								]
+							}
+						} */
+
+					}, {
+						header: '수량',
+						name: 'totalNum',
+					}, {
+						header: '공급가액',
+						name: 'proPrice',
+						formatter: function (value) {
+							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' 원';
+						}
+					}, {
+						header: '부가세',
+						name: 'surtax',
+						formatter: function (value) {
+							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+						}
+
+					}, {
+						header: '총 금액',
+						name: 'totalPrice',
+						formatter: function (value) {
+							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+						}
+					}
+				]
+			});
+
+
+
+			/*------------
+			삭제 버튼 클릭(그리드행 삭제)
+
+			// 1. checkbox 선택
+			// 2. 선택된 checkbox의 값에서 no 가져오기  버튼 
+			//-> 함수(onclick -> ajax 실행) -> no 보내주고 삭제
+			// 3. 삭제 실행 (모달창의 확인 클릭)
+			//getCheckedRows -> 배열
+			----------------*/
+
+			function checkDel() {
+				const noList = [];
+				var obj = grid4.getCheckedRows()
+				console.log(obj);
+				for (key of obj) {
+					//읽어낼 컬럼명
+					console.log(key.orderNo);
+					noList.push(key.orderNo); //{}
+				}
+				console.log(noList);
+				$.ajax({
+					url: "/orders/ajaxDelcheckOrder",
+					method: "Post",
+					contentType: "application/json",
+					data: JSON.stringify({
+						"noList": noList
+					}),
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success: function (result) {
+						//삭제된 데이터들 새로고침 
+						//rowKey
+						const delList = [];
+						for (key of obj) {
+							//읽어낼 컬럼명
+							console.log(key.rowKey);
+							delList.push(key.rowKey);
+						}
+						grid4.removeRows(delList)
+
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+			}
+
+
+
+
+			/*------------
+			수정 버튼 클릭(출납, 배송, 생산 셀렉트엔터)
+			----------------*/
+			function updatebtn() {
+				// debugger
+				$.ajax({
+					url: "/orders/ajaxUpOrders",
+					method: "Post",
+					contentType: "application/json",
+					data: JSON.stringify(grid.getModifiedRows().updatedRows),
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success: function (result) {
+						console.log(result);
+
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+			};
+
+
+
+			/*------------
+			신규주문버튼 클릭(체크박스에 다중선택 -> 생산요청(제고연결))
+			----------------*/
+			function newPro() {
+				let data = grid.getColumnValues('orderCode');
+				// console.log(data);
+
+				let newP = grid.findRows({
+					orderCode: '신규'
+				});
+				newP.forEach((row) => {
+					grid.check(row.rowKey);
+				});
+			};
+
+
+			/*------------
+			접수버튼 클릭(신규 -> 접수목록으로 )
+			--------------*/
+			function proPlz() {
+				/*
+				var recNos = ''; // 접수번호 초기화
+				for(let i=0; i<grid.getCheckedRows().length; i++){
+					if(i != 0){
+						recNos += ',';
+					}
+					recNos += grid.getCheckedRows()[i].orderNo
+				}
+				grid.getCheckedRows();
+				console.log(recNos);	
+				*/
+
+				//체크안하고 접수 버튼 클릭시 알림창
+				var rec = grid.getCheckedRows();
+				if (rec == 0) {
+					alert('신규 주문을 선택해 주세요.');
 				}
 
+				$.ajax({
+					url: "/orders/ajaxRecNos",
+					method: "Post",
+					data: JSON.stringify(grid.getCheckedRows()),
+					contentType: "application/json",
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success: function (result) {
+						getOrderList();
+					},
+					error: function (error) {
+						console.log(error);
+					}
+				})
+			}
 
 
-				/*----------------------
-				신규 주문 그리드 
-				----------------------*/
-							var grid = new tui.Grid({
+			/*------------
+			 아작스 연결 - 신규 주문목록
+			----------------*/
+			function getOrderList() {
+				$.ajax({
+					url: "/orders/ajaxOrders",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						console.log('new order: ', result);
+						grid.resetData(result);
+						getReceiptList();
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+			}
 
-								el: document.getElementById('grid'),
-									rowHeaders: ['checkbox'], //왼쪽 체크박스
-									minBodyHeight: 30,
-									pageOptions: {
-										useClient: true, // front에서만 페이징 하는 속성
-										perPage: 5
-									},
-									scrollX: false, //세로 스크롤
-									scrollY: false, //가로 스크롤
-									columns: [{
-											header: '주문번호',
-											name: 'orderNo',
-											width: 'auto'
-										}, {
-											header: '거래처명',
-											name: 'clientName',
-										}, {
-											header: '제품번호',
-											name: 'goodsNo'
-										}, {
-											header: '제품명',
-											name: 'goodsName',
-										},{
-											header: '주문일자',
-											name: 'orderDate'
-										}, {
-											header: '납기일자',
-											name: 'deliveryDate',
-										},  {
-											header: '요청사항',
-											name: 'note',
-
-										}, {
-											header: '주문타입',
-											name: 'orderCode'
-										},
-										{
-											header: '수량',
-											name: 'totalNum',
-										}, {
-											header: '공급가액',
-											name: 'proPrice',
-											formatter: function(value) {
-								                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+' 원';
-											}
-											}, {
-											header: '부가세',
-											name: 'surtax',
-											 formatter: function(value) {		        	
-									                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-									            }
-
-										}, {
-											header: '총 금액',
-											name: 'totalPrice',
-											 formatter: function(value) {		        	
-									                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-									            }
-										}
-									]
-								});
-	                        
-
-							//접수 주문 그리드 
-							var grid4 = new tui.Grid({
-
-								el: document.getElementById('grid4'),
-									rowHeaders: ['checkbox'], //왼쪽 체크박스
-									minBodyHeight: 30,
-									pageOptions: {
-										useClient: true, // front에서만 페이징 하는 속성
-										perPage: 5
-									},
-									scrollX: false, //세로 스크롤
-									scrollY: false, //가로 스크롤
-									columns: [{
-											header: '주문번호',
-											name: 'orderNo',
-											width: 'auto'
-										}, {
-											header: '거래처명',
-											name: 'clientName',
-										}, {
-											header: '제품번호',
-											name: 'goodsNo'
-										}, {
-											header: '제품명',
-											name: 'goodsName',
-										},{
-											header: '주문일자',
-											name: 'orderDate'
-										}, {
-											header: '납기일자',
-											name: 'deliveryDate',
-										},  {
-											header: '요청사항',
-											name: 'note',
-
-										}, {
-											header: '주문타입',
-											name: 'orderCode'
-										},
-										{
-											header: '배달상황',
-											name: 'deliveryInfo',
-											/* formatter: 'listItemText',
-											editor: {
-												type: 'select',
-												options: {
-													listItems: [{
-															text: '대기중',
-															value: 'B0101'
-														},
-														{
-															text: '배송중',
-															value: 'B0102'
-														},
-														{
-															text: '배송완료',
-															value: 'B0103'
-														}
-													]
-												}
-											} */
-
-										}, //name: 'ORDER_PROGRESS_CODE',
-											{
-											header: '출납상황',
-											name: 'ioCode',
-											/* formatter: 'listItemText',
-											editor: {
-												type: 'select',
-												options: {
-													listItems: [{
-															text: '대기중',
-															value: 'B0101'
-														},
-														{
-															text: '배송중',
-															value: 'B0102'
-														},
-														{
-															text: '배송완료',
-															value: 'B0103'
-														}
-													]
-												}
-											} */
-
-										},{
-											header: '수량',
-											name: 'totalNum',
-										}, {
-											header: '공급가액',
-											name: 'proPrice',
-											formatter: function(value) {
-								                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+' 원';
-											}
-											}, {
-											header: '부가세',
-											name: 'surtax',
-											 formatter: function(value) {		        	
-									                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-									            }
-
-										}, {
-											header: '총 금액',
-											name: 'totalPrice',
-											 formatter: function(value) {		        	
-									                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-									            }
-										}
-									]
-								});
-	                        
-
-							
-							/*------------
-							삭제 버튼 클릭(그리드행 삭제)
-
-							// 1. checkbox 선택
-							// 2. 선택된 checkbox의 값에서 no 가져오기  버튼 
-							//-> 함수(onclick -> ajax 실행) -> no 보내주고 삭제
-							// 3. 삭제 실행 (모달창의 확인 클릭)
-							//getCheckedRows -> 배열
-							----------------*/
-
-							function checkDel() {
-								const noList = [];
-								var obj = grid4.getCheckedRows()
-								console.log(obj);
-								for (key of obj) {
-									//읽어낼 컬럼명
-									console.log(key.orderNo);
-									noList.push(key.orderNo); //{}
-								}
-								console.log(noList);
-								$.ajax({
-									url: "/orders/ajaxDelcheckOrder",
-									method: "Post",
-									contentType: "application/json",
-									data: JSON.stringify({
-										"noList": noList
-									}),
-									beforeSend: function (xhr) {
-										xhr.setRequestHeader(header, token);
-									},
-									success: function (result) {
-										//삭제된 데이터들 새로고침 
-										//rowKey
-										const delList = [];
-										for (key of obj) {
-											//읽어낼 컬럼명
-											console.log(key.rowKey);
-											delList.push(key.rowKey);
-										}
-										grid4.removeRows(delList)
-
-									},
-									error: function (reject) {
-										console.log(reject);
-									}
-								});
-							}
-
-
-
-
-							/*------------
-							수정 버튼 클릭(출납, 배송, 생산 셀렉트엔터)
-							----------------*/
-							function updatebtn() {
-								// debugger
-								$.ajax({
-									url: "/orders/ajaxUpOrders",
-									method: "Post",
-									contentType: "application/json",
-									data: JSON.stringify(grid.getModifiedRows().updatedRows),
-									beforeSend: function (xhr) {
-										xhr.setRequestHeader(header, token);
-									},
-									success: function (result) {
-										console.log(result);
-
-									},
-									error: function (reject) {
-										console.log(reject);
-									}
-								});
-							};
-							
-							
-
-							/*------------
-							신규주문버튼 클릭(체크박스에 다중선택 -> 생산요청(제고연결))
-							----------------*/
-							function newPro() {
-								let data = grid.getColumnValues('orderCode');
-								// console.log(data);
-
-								let newP = grid.findRows({
-									orderCode: '신규'
-								});
-								newP.forEach((row) => {
-									grid.check(row.rowKey);
-								});
-							};
-							
-
-							/*------------
-							접수버튼 클릭(신규 -> 접수목록으로 )
-							--------------*/
-							function proPlz() {
-								/*
-								var recNos = ''; // 접수번호 초기화
-								for(let i=0; i<grid.getCheckedRows().length; i++){
-									if(i != 0){
-										recNos += ',';
-									}
-									recNos += grid.getCheckedRows()[i].orderNo
-								}
-								grid.getCheckedRows();
-								console.log(recNos);	
-								*/
-
-								//체크안하고 접수 버튼 클릭시 알림창
-								var rec = grid.getCheckedRows();
-								if (rec == 0) {
-									alert('신규 주문을 선택해 주세요.');
-								}
-
-								$.ajax({
-									url: "/orders/ajaxRecNos",
-									method: "Post",
-									data: JSON.stringify(grid.getCheckedRows()),
-									contentType: "application/json",
-									beforeSend: function (xhr) {
-										xhr.setRequestHeader(header, token);
-									},
-									success: function (result) {
-										getOrderList();
-									},
-									error: function (error) {
-										console.log(error);
-									}
-								})
-							}
-
-
-							/*------------
-							 아작스 연결 - 신규 주문목록
-							----------------*/
-							function getOrderList() {
-								$.ajax({
-									url: "/orders/ajaxOrders",
-									method: "GET",
-									dataType: "JSON",
-									success: function (result) {
-										console.log('new order: ',result);
-										grid.resetData(result);
-										getReceiptList();
-									},
-									error: function (reject) {
-										console.log(reject);
-									}
-								});
-							}
-							
-							/*------------
-							 아작스 연결 - 접수 주문목록
-							----------------*/
-							function getReceiptList() {
-								$.ajax({
-									url: "/orders/getReceiptList",
-									method: "GET",
-									dataType: "JSON",
-									success: function (result) {
-										console.log('receip: ',result);
-										grid4.resetData(result);
-									},
-									error: function (reject) {
-										console.log(reject);
-									}
-								});
-							}
+			/*------------
+			 아작스 연결 - 접수 주문목록
+			----------------*/
+			function getReceiptList() {
+				$.ajax({
+					url: "/orders/getReceiptList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						console.log('receip: ', result);
+						grid4.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+			}
 			// tab1 - 주문 관리 end ===========================================================================
 
 
@@ -578,276 +575,286 @@
 
 
 
-							/*---------------
-							tab2 - 완제품 출고 조회 start 
-							----------------*/
-	                        var grid2 = new tui.Grid({
-									el: document.getElementById('grid2'),
-									rowHeaders: ['checkbox'], //왼쪽 체크박스
-									pageOptions: {
-										useClient: true,
-										perPage: 10
-									},
-									scrollX: false, //세로 스크롤
-									scrollY: false, //가로 스크롤
-									columns: [ {
-											header: 'LOT_NO',
-											name: 'registLot',
-										},{
-											header: '주문번호',
-											name: 'orderNo',
-											width: 'auto'
-										}, {
-											header: '주문일자',
-											name: 'orderDate',
-										}, {
-											header: '납기일자',
-											name: 'deliveryDate'
-										},  {
-											header: '회원번호',
-											name: 'usersNo',
-										}, {
-											header: '현황',
-											name: 'orderCode',
-										}
-									] 
-	                        });
-							
-							/*---------------
-							 아작스 연결 - 완제품목록
-							----------------*/
-							function getSalesIoList() {
-								let g2data = [];
-								let g5data = [];
-								$.ajax({
-									url: "/orders/ajaxSalesList",
-									method: "GET",
-									dataType: "JSON",
-									success: function (result) {
-										console.log('acnfrh11t: ',result);
-										
-										for(let val of result){
-											console.log(val.orderCode);
-											if(val.orderCode == '출고대기'){
-												g2data.push(val);
-											} else if(val.orderCode == '완료'){
-												g5data.push(val);
-											}
-											
-										}
-										grid2.resetData(g2data);
-										grid5.resetData(g5data);
-									},
-									error: function (reject) {
-										console.log(reject);
-									}
-								});
+			/*---------------
+			tab2 - 완제품 출고 조회 start 
+			----------------*/
+			var grid2 = new tui.Grid({
+				el: document.getElementById('grid2'),
+				rowHeaders: ['checkbox'], //왼쪽 체크박스
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				scrollX: false, //세로 스크롤
+				scrollY: false, //가로 스크롤
+				columns: [{
+					header: '제품명',
+					name: 'goodsName'
+				
+				}, {
+					header: 'LOT_NO',
+					name: 'registLot',
+				}, {
+					header: '주문번호',
+					name: 'orderNo'
+				}, {
+					header: '주문일자',
+					name: 'orderDate',
+				}, {
+					header: '납기일자',
+					name: 'deliveryDate'
+				}, {
+					header: '거래처명',
+					name: 'clientName'
+				}, {
+					header: '현황',
+					name: 'orderCode',
+				}]
+			});
+
+			/*---------------
+			 아작스 연결 - 완제품목록
+			----------------*/
+			function getSalesIoList() {
+				let g2data = [];
+				let g5data = [];
+				$.ajax({
+					url: "/orders/ajaxSalesList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						console.log('출고관리 : ', result);
+
+						for (let val of result) {
+							console.log(val.orderCode);
+							if (val.orderCode == '출고대기') {
+								g2data.push(val);
+							} else if (val.orderCode == '완료') {
+								g5data.push(val);
 							}
-							
-							/*---------------
-								삭제 클릭 이벤트
-							----------------*/
-							function checkDel3(){
-								const sioList = [];
-								var obj = grid5.getCheckedRows()
-								console.log(obj);
-								for (key of obj) {
-									//읽어낼 컬럼명
-									console.log(key.orderCode);
-									sioList.push(key.orderCode); //{}
-								}
-								console.log('완료 삭제 : ', sioList);
-								// debugger
-								$.ajax({
-									url: "/orders/ajaxDelOutOrder",
-									method: "Post",
-									contentType: "application/json",
-									data: JSON.stringify({
-										"sioList": sioList
-									}),
-									beforeSend: function (xhr) {
-										xhr.setRequestHeader(header, token);
-									},
-									success: function (result) {
-										//삭제된 데이터들 새로고침 
-										//rowKey
-										const delOutList = [];
-										for (key of obj) {
-											//읽어낼 컬럼명
-											console.log(key.rowKey);
-											delList.push(key.rowKey);
-										}
-										grid5.removeRows(delOutList)
 
-									},
-									error: function (reject) {
-										console.log(reject);
-									}
-								});
+						}
+						grid2.resetData(g2data);
+						grid5.resetData(g5data);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+			}
+
+			/*---------------
+				삭제 클릭 이벤트
+			----------------*/
+				function checkDel3(){
+					const sioList = [];
+					var obj = grid5.getCheckedRows()
+					console.log(obj);
+					for (key of obj) {
+						//읽어낼 컬럼명
+						console.log(key.orderCode);
+						sioList.push(key.orderCode); //{}
+					}
+					console.log('완료 삭제 : ', sioList);
+					// debugger
+					$.ajax({
+						url: "/orders/ajaxDelOutOrder",
+						method: "Post",
+						contentType: "application/json",
+						data: JSON.stringify({
+							"sioList": sioList
+						}),
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token);
+						},
+						success: function (result) {
+							//삭제된 데이터들 새로고침 
+							//rowKey
+							const delOutList = [];
+							for (key of obj) {
+								//읽어낼 컬럼명
+								console.log(key.rowKey);
+								delList.push(key.rowKey);
 							}
-							
-							
-							/*---------------
-							출고대기 내역 
-							----------------*/
-							 var grid5 = new tui.Grid({
-									el: document.getElementById('grid5'),
-									rowHeaders: ['checkbox'], //왼쪽 체크박스
-									pageOptions: {
-										useClient: true,
-										perPage: 10
-									},
-									scrollX: false, //세로 스크롤
-									scrollY: false, //가로 스크롤
-									columns: [ {
-											header: 'LOT_NO',
-											name: 'registLot',
-										},{
-											header: '주문번호',
-											name: 'orderNo',
-											width: 'auto'
-										}, {
-											header: '주문일자',
-											name: 'orderDate',
-										}, {
-											header: '납기일자',
-											name: 'deliveryDate'
-										},  {
-											header: '회원번호',
-											name: 'usersNo',
-										}, {
-											header: '현황',
-											name: 'orderCode',
-										}
-										
-									] 
-	                        });
-							
-							
-							/*------------
-							 아작스 연결 - 출고버튼 클릭 이벤트
-							----------------*/
-								function newPro5() {
-									let data = grid2.getCheckedRows();
-									console.log(data);
-									$.ajax({
-										url: "/orders/updateOutInfo",
-										method: "POST",
-										data : JSON.stringify(data),
-										beforeSend: function (xhr) {
-											xhr.setRequestHeader(header, token);
-										},
-										contentType: "application/json",
-										success: function (result) {
-											getSalesIoList(); //1.정보가지고오기 2.update정보 최신화
-										},
-										error: function (reject) {
-											console.log(reject);
-										}
-									});
-								};
-								
+							grid5.removeRows(delOutList)
 
-								/*------------
-								 
-								--------------*/
-								function proPlz5() {
-									/*
-									var recNos = ''; // 접수번호 초기화
-									for(let i=0; i<grid.getCheckedRows().length; i++){
-										if(i != 0){
-											recNos += ',';
-										}
-										recNos += grid.getCheckedRows()[i].orderNo
-									}
-									grid.getCheckedRows();
-									console.log(recNos);	
-									*/
+						},
+						error: function (reject) {
+							console.log(reject);
+						}
+					});
+				}
+				
 
-									//체크안하고 접수 버튼 클릭시 알림창
-									var rec = grid5.getCheckedRows();
-									if (rec == 0) {
-										alert('신규 주문을 선택해 주세요.');
-									}
+			/*---------------
+			출고대기 내역 
+			----------------*/
+			var grid5 = new tui.Grid({
+				el: document.getElementById('grid5'),
+				rowHeaders: ['checkbox'], //왼쪽 체크박스
+				pageOptions: {
+					useClient: true,
+					perPage: 5
+				},
+				scrollX: false, //세로 스크롤
+				scrollY: false, //가로 스크롤
+				columns: [{
+						header: '제품명',
+						name: 'goodsName'
+					
+					},{
+						header: 'LOT_NO',
+						name: 'registLot',
+					}, {
+						header: '주문번호',
+						name: 'orderNo',
+						width: 'auto'
+					}, {
+						header: '주문일자',
+						name: 'orderDate',
+					}, {
+						header: '납기일자',
+						name: 'deliveryDate'
+					}, {
+						header: '거래처명',
+						name: 'clientName'
+					}, {
+						header: '현황',
+						name: 'orderCode',
+					}
 
-									$.ajax({
-										url: "/orders/ajaxRecNos5",
-										method: "Post",
-										data: JSON.stringify(grid.getCheckedRows()),
-										contentType: "application/json",
-										beforeSend: function (xhr) {
-											xhr.setRequestHeader(header, token);
-										},
-										success: function (result) {
-											getOrderList();
-										},
-										error: function (error) {
-											console.log(error);
-										}
-									})
-								}
+				]
+			});
 
 
-							
-								
-								/*------------
-								 아작스 연결
-								----------------*/
-								function getReceiptList5() {
-									$.ajax({
-										url: "/orders/getReceiptList",
-										method: "GET",
-										dataType: "JSON",
-										success: function (result) {
-											console.log('ajax re: ',result);
-											grid5.resetData(result);
-										},
-										error: function (reject) {
-											console.log(reject);
-										}
-									});
-								}
-					//tab2 - 완제품관리 end
-							
-							
-					/*------------
-					 엑셀 다운받기
-					----------------*/
-							function exl() {
-								let options = {
-									includeHeader: true,
-									includeHiddenColumns: true,
-									onlySelected: true,
-									fileName: 'OrderList'
-								};
-								grid.export('xlsx', options);
-							};
-							/*------------
-							 엑셀2 다운받기
-							----------------*/
-							function exl2() {
-								let options = {
-									includeHeader: true,
-									includeHiddenColumns: true,
-									onlySelected: true,
-									fileName: 'OrderList'
-								};
-								grid2.export('xlsx', options);
-							};
-							/*------------
-							 엑셀3 다운받기
-							----------------*/
-							function exl3() {
-								let options = {
-									includeHeader: true,
-									includeHiddenColumns: true,
-									onlySelected: true,
-									fileName: 'OrderList'
-								};
-								grid3.export('xlsx', options);
-							};
+			/*------------
+			 아작스 연결 - 출고버튼 클릭 이벤트
+			----------------*/
+			function newPro5() {
+				var rec = grid2.getCheckedRows();
+				if (rec == 0) {
+					alert('출고 주문을 선택해 주세요.');
+				}
+				
+				let data = grid2.getCheckedRows();
+				console.log(data);
+				$.ajax({
+					url: "/orders/updateOutInfo",
+					method: "POST",
+					data: JSON.stringify(data),
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					contentType: "application/json",
+					success: function (result) {
+						getSalesIoList(); //1.정보가지고오기 2.update정보 최신화
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+			};
 
-							</script>
+
+			/*------------
+			
+			--------------*/
+			function proPlz5() {
+				/*
+				var recNos = ''; // 접수번호 초기화
+				for(let i=0; i<grid.getCheckedRows().length; i++){
+					if(i != 0){
+						recNos += ',';
+					}
+					recNos += grid.getCheckedRows()[i].orderNo
+				}
+				grid.getCheckedRows();
+				console.log(recNos);	
+				*/
+
+				//체크안하고 접수 버튼 클릭시 알림창
+				var rec = grid5.getCheckedRows();
+				if (rec == 0) {
+					alert('신규 주문을 선택해 주세요.');
+				}
+
+				$.ajax({
+					url: "/orders/ajaxRecNos5",
+					method: "Post",
+					data: JSON.stringify(grid.getCheckedRows()),
+					contentType: "application/json",
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success: function (result) {
+						getOrderList();
+					},
+					error: function (error) {
+						console.log(error);
+					}
+				})
+			}
+
+
+
+
+			/*------------
+			 아작스 연결
+			----------------*/
+			function getReceiptList5() {
+				$.ajax({
+					url: "/orders/getReceiptList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						console.log('ajax re: ', result);
+						grid5.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+			}
+			//tab2 - 완제품관리 end
+
+
+			/*------------
+			 엑셀 다운받기
+			----------------*/
+			function exl() {
+				let options = {
+					includeHeader: true,
+					includeHiddenColumns: true,
+					onlySelected: true,
+					fileName: 'OrderList'
+				};
+				grid.export('xlsx', options);
+			};
+			/*------------
+			 엑셀2 다운받기
+			----------------*/
+			function exl2() {
+				let options = {
+					includeHeader: true,
+					includeHiddenColumns: true,
+					onlySelected: true,
+					fileName: 'OrderList'
+				};
+				grid2.export('xlsx', options);
+			};
+			/*------------
+			 엑셀3 다운받기
+			----------------*/
+			function exl3() {
+				let options = {
+					includeHeader: true,
+					includeHiddenColumns: true,
+					onlySelected: true,
+					fileName: 'OrderList'
+				};
+				grid3.export('xlsx', options);
+			};
+		</script>
 
 
 	</div>
