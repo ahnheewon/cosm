@@ -1,5 +1,6 @@
 package com.prj.cosm.sales.orders.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +11,22 @@ import org.springframework.stereotype.Service;
 import com.prj.cosm.sales.orders.mapper.OrdersMapper;
 import com.prj.cosm.sales.orders.service.OrdersService;
 import com.prj.cosm.sales.orders.service.OrdersVO;
+import com.prj.cosm.user.alert.mapper.AlertMapper;
+import com.prj.cosm.user.alert.service.AlertVO;
+import com.prj.cosm.user.emp.mapper.EmpMapper;
+import com.prj.cosm.user.emp.service.EmpVO;
 
 @Service
 public class OrdersServiceImpl implements OrdersService {
 
 	@Autowired
 	OrdersMapper mapper;
+
+	@Autowired
+	AlertMapper aMapper;
+
+	@Autowired
+	EmpMapper eMapper;
 
 	@Override
 	public int getOrderNo() {
@@ -91,7 +102,18 @@ public class OrdersServiceImpl implements OrdersService {
 	@Override
 	public int recNos(List<OrdersVO> vo) {
 		// 신규 -> 접수
+
 		int result = mapper.recNos(vo);
+		
+		List<EmpVO> eList = new ArrayList<>();
+		eList = eMapper.getReceiveUsers("D0105"); // 받는사람
+		for (EmpVO eVO : eList) {
+			AlertVO aVO = new AlertVO();
+			aVO.setAlertContent("접수 완료된 주문이 있습니다.");
+			aVO.setAlertReceive(eVO.getUsersNo());
+			aMapper.insertAlert(aVO);
+		}
+
 		return result;
 	}
 

@@ -7,14 +7,6 @@
 <head>
 
 <title>Sales main</title>
-<!--toast grid-->
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<script
-	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <!-- chart grid : 안되면 레이아웃에 넣기 -->
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
@@ -79,7 +71,7 @@
 					</div>
 					<hr>
 					<button id="newPro" type="button" class="btn btn-secondary btn-sm"
-						data-bs-toggle="modal" data-bs-target="#pctRequest">신규</button>
+						 >신규</button>
 					<button id="proPlz" class="btn btn-secondary btn-sm">접수</button>
 
 					<!-- 전체조회 grid filter -->
@@ -139,6 +131,7 @@
 
 
 		<script>
+		  
 		/*-----------
 		  그리드 스타일
 		-------------*/
@@ -182,18 +175,7 @@
 					grid5.refreshLayout(); 
 					
 				})
-				
-		/* 	const manage3 = document.getElementById('manage3-tab');
-				manage3.addEventListener('shown.bs.tab', function () {
-					grid5.refreshLayout(); 
-					
-				})
-			
-			const manage4 = document.getElementById('manage4-tab');
-				manage3.addEventListener('shown.bs.tab', function () {
-					grid4.refreshLayout(); //
-				}) */
-
+	
 			//const Chart = toastui.Chart; //차트그리드
 				
 			
