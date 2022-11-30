@@ -63,8 +63,9 @@ public class MorderServiceImpl implements MorderService {
 			moMapper.updateCode(vo);
 			vo.setMNo(vo.getMoMaterialId());
 			moMapper.updateMStock(vo);
-		}
-
+			moMapper.updateCode(vo);
+		}	
+		
 		// 현재 재고 들고오는 매퍼
 		List<MaterialVO> mList = maMapper.mList();
 		List<PlanVO> pList = pMapper.getPlanCompute();
@@ -80,9 +81,8 @@ public class MorderServiceImpl implements MorderService {
 				}
 			}
 		}
-
 		pMapper.updateCanIns(resultList);
-
+    
 		List<EmpVO> eList = new ArrayList<>();
 		eList = eMapper.getReceiveUsers("D0105");
 		AlertVO aVO = new AlertVO();
@@ -105,6 +105,12 @@ public class MorderServiceImpl implements MorderService {
 	public int updateMStock(MorderVO vo) {
 		// 입고 확정시 현재재고 업데이트
 		return moMapper.updateMStock(vo);
+	}
+
+	@Override
+	public int updatePlanCode(MorderVO vo) {
+		// 입고 확정시 생산지시 코드 업데이트 
+		return moMapper.updateCode(vo);
 	}
 
 }

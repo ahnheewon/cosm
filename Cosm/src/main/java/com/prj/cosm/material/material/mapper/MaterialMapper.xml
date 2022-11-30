@@ -31,14 +31,14 @@ WITH material_order_sum AS
                             ON plan.plan_bom_no = bom.bom_no
                      JOIN produce_goods goods
                          ON goods.goods_no = plan.plan_product_no
-                        WHERE plan.plan_play_code = 'A0101'                                             
+                        WHERE plan.plan_play_code = 'A0109'                                             
                                    UNION ALL    
                  SELECT  bom.bom_material_nob,  (plan.plan_quantity *bom.bom_quantityB) / goods.goods_standard as planed_qntt 
                      FROM produce_bom bom JOIN produce_plan plan 
                             ON plan.plan_bom_no = bom.bom_no
                      JOIN produce_goods goods
                          ON goods.goods_no = plan.plan_product_no
-                        WHERE plan.plan_play_code = 'A0101' )            
+                        WHERE plan.plan_play_code = 'A0109' )            
         group by bom_material_no)    
 SELECT m.m_no,
 	   m. m_company_id,
@@ -47,8 +47,8 @@ SELECT m.m_no,
 	   m.m_price,
 	   find_code_no(m_unit_code) As m_unit_code,
 	   m.m_category,
-       NVL(m.m_stock,0) AS m_stock,
-       NVL(total_mo_num,0)AS total_mo_num,
+	   m.m_stock,   
+	   NVL(total_mo_num,0)AS total_mo_num,
        NVL(total_planed_qntt,0)AS total_planed_qntt,     
       CASE WHEN (NVL(total_planed_qntt,0) - (NVL(m.m_stock,0) + NVL(total_mo_num,0))) > 0
       THEN (NVL(total_planed_qntt,0) - (NVL(m.m_stock,0) + NVL(total_mo_num,0)))
@@ -66,7 +66,7 @@ order by m_no
 
 	<!-- 자재정보 단건조회 (상세조회) -->
 	<select id="selectInfo" resultType="MaterialVO">
-		SELECT m_no, m_name, m_info
+		SELECT m_no, m_name, m_info, m_file
 		FROM material
 		WHERE m_no = #{mNo}
 	</select>
@@ -113,14 +113,16 @@ order by m_no
 		m_price,
 		m_company_id,
 		m_unit_code,
-		m_info )
+		m_info,
+		m_file )
 		VALUES (#{mNo},
 		#{mName},
 		#{mCategory},
 		#{mPrice},
 		#{mCompanyId},
 		find_code_name(#{mUnitCode}),
-		#{mInfo}
+		#{mInfo},
+		#{mFile}
 		)
 	</insert>
 
@@ -159,17 +161,18 @@ order by m_no
 		   mio_company_name as mio_company_nm,
 		   m.m_category, 
 		   m.m_name, 
-		   mio_quantity as mioQntt,
+		   mio_quantity as mioQntt,		   
+	  	   m_stock,  
 		   mio_date, 
 		   find_code_no(mio.mio_progress)as mio_progress
 	FROM Material m JOIN Material_io mio
 		ON m.m_no = mio.mio_no
 	WHERE mio.mio_date IS NOT NULL
-		AND mio_progress IS NOT NULL
+		AND mio.mio_progress IS NOT NULL
 	<if test="startDate != null and endDate != null">
-		AND TRUNC(mo.mo_date) BETWEEN #{startDate} AND #{endDate}
+		AND TRUNC(mio.mio_date) BETWEEN #{startDate} AND #{endDate}
 	</if>
-	order by mio_date DESC
+	order by mio.mio_date DESC
 	</select>
 
 	<!-- 거래처 명 찾기 -->

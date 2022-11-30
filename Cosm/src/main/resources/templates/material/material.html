@@ -7,11 +7,7 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>자재정보관리</title>
-   <!--toast date-picker-->
-   <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
-   <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-
-
+   
 
 </head>
 <style>
@@ -93,16 +89,16 @@
                <div id="mdate" style="margin-left: 10px; z-index: 1001; float:right">
                   <div class="tui-datepicker-input tui-datetime-input tui-has-focus"
                      style="margin-bottom: 5px; z-index: 1001;">
-                     <input id="startpicker-input2" type="text" aria-label="Date"
+                     <input id="startpicker-input" type="text" aria-label="Date"
                         style="margin-bottom: 5px; z-index: 1001"> <span class="tui-ico-date"></span>
-                     <div id="startpicker-container2" class="datePicker2" style="z-index: 1001"></div>
+                     <div id="startpicker-container" class="datePicker" style="z-index: 1001"></div>
                   </div>
                   <span>~</span>
                   <div class="tui-datepicker-input tui-datetime-input tui-has-focus"
                      style="margin-bottom: 5px; z-index: 1001">
-                     <input id="endpicker-input2" type="text" aria-label="Date"
+                     <input id="endpicker-input" type="text" aria-label="Date"
                         style="margin-bottom: 5px; z-index: 1001"> <span class="tui-ico-date"></span>
-                     <div id="endpicker-container2" class="datePicker2"
+                     <div id="endpicker-container" class="datePicker"
                         style="margin-bottom: 5px; z-index: 1001"></div>
                   </div>
                   <button type="button" class="btn btn-secondary btn-sm" id="findBtn">검색</button>
@@ -179,6 +175,10 @@
                         <label for="input" class="col-form-label">자재상세정보</label>
                         <textarea class="form-control col-sm-5" rows="5" name="mInfo"></textarea>
                      </div>
+                      <div class="row p-3">
+                        <label for="input" class="col-form-label">이미지</label>
+                        <img name="mFile"></img>
+                     </div>
                   </div>
                   <div class="modal-footer" style="text-align: center">
                      <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
@@ -204,15 +204,15 @@
                startpicker: {
                   date: today,
 
-                  input: '#startpicker-input2',
-                  container: '#startpicker-container2',
+                  input: '#startpicker-input',
+                  container: '#startpicker-container',
 
                },
                endpicker: {
                   date: today,
 
-                  input: '#endpicker-input2',
-                  container: '#endpicker-container2',
+                  input: '#endpicker-input',
+                  container: '#endpicker-container',
 
                },
                selectableRanges : [ [
@@ -419,7 +419,8 @@
                method: "GET",
                success: function (result) {
                   infoGrid.resetData((result.list1));
-                  mioGrid.resetData((result.list2));
+                  mioGrid.resetData((result.list2));               
+                  
                   console.log(result);
 
 
@@ -431,7 +432,7 @@
 
          }
          
-      
+       
          /*----------------------- 
             자재 정보 상세내역
          ------------------------*/
@@ -446,7 +447,15 @@
                   $('[name="mNo"]').val(result.mno);
                   $('[name="mName"]').val(result.mname);
                   $('[name="mInfo"]').val(result.minfo);
-
+            
+                  /* 파일이 존재하면 업로드한 이미지 띄우기, 존재하지 않으면 no Image 띄우기*/ 
+                  if(result.mfile != null){ 
+				  	$('[name="mFile"]').attr("src", "/material/filedown?fname=" +result.mfile);
+				  	$('[name="mFile"]').css("width", "500px");
+                  }else{
+                	$('[name="mFile"]').attr("src", "/assets/img/noImage.jpg" );  
+                	$('[name="mFile"]').css("width", "500px");
+                  }
                },
                error: function (reject) {
                   console.log(reject);
@@ -455,6 +464,7 @@
 
          }
 
+         
 
          
          // 자재 정보 상세조회
@@ -578,20 +588,21 @@
 
          function findBtnHandler() {
             $('#findBtn').on('click', function () {
-               let getStartDay = $('#startpicker-input2').val();
-               let getEndDay = $('#endpicker-input2').val();
+               let getStartDay = $('#startpicker-input').val();
+               let getEndDay = $('#endpicker-input').val();
                console.log(getStartDay);
                console.log(getEndDay);
 
                $.ajax({
                   url: '/material/ajax/minfo',
+                  method: 'GET',
                   data: {
                      "startDate": getStartDay,
                      "endDate": getEndDay
                   },
                   contentType: "application/json",
                   dataType: 'json',
-                  method: 'GET',
+                  
                   success: function (result) {
                      console.log(result);
                      mioGrid.resetData((result.list2));
@@ -641,7 +652,7 @@
 
     
      	
-   		findBtnHandler(); // date picker handler
+     	findBtnHandler(); // date picker handler
    	    mList(); // ajax로 상,하단 페이지 데이터 부르기
 
   	
