@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.produce.bom.mapper.BomMapper;
 import com.prj.cosm.produce.instruct.mapper.InsMapper;
 import com.prj.cosm.produce.instruct.service.InsService;
