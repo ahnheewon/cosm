@@ -13,6 +13,8 @@
 	rel="stylesheet" />
 <link href="/css/styles.css" rel="stylesheet" />
 <link href="/css/layout.css" rel="stylesheet" />
+
+<script src="https://d3js.org/d3.v6.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
 	crossorigin="anonymous">
@@ -70,7 +72,10 @@
 	<nav layout:fragment="menu"
 		class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 		<!-- Navbar Brand-->
-		<a class="navbar-brand ps-3" style="display: inline-block;" href="/top"><img src="/css/cosmLogo.png" style="width: 60%;"></a>
+		<div style="width: 206px; height: 100px" align="center">
+			<a class="navbar-brand ps-3" href="/top"><img
+				style="padding-top:20px ;width: 78%;" src="/assets/img/logo.PNG"></a>
+		</div>
 
 		<!-- Sidebar Toggle-->
 		<div sec:authorize="!isAnonymous()">
@@ -93,13 +98,11 @@
 		<!-- Navbar-->
 			 <h6 th:if="${session.usersId != null }" style="color: white;">[[${session.usersAuthor}]], [[${session.usersName}]]님</h6>
 		<ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-			<li class="nav-item dropdown"><a
-				class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
-				role="button" data-bs-toggle="dropdown" aria-expanded="false"><i
-					class="fas fa-user fa-fw"></i></a>
-				<ul class="dropdown-menu dropdown-menu-end"
-					aria-labelledby="navbarDropdown">
 
+			<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+					data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+				<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 					<li sec:authorize="!isAnonymous()"><a class="dropdown-item"
 						href="/userInfo">개인정보</a></li>
 					<li><a class="dropdown-item" href="#!">Activity Log</a></li>
@@ -123,9 +126,8 @@
 	</nav>
 	<div layout:fragment="sidebar" id="layoutSidenav">
 		<div id="layoutSidenav_nav">
-			<nav class="sb-sidenav accordion sb-sidenav-dark"
+    <nav class="sb-sidenav accordion sb-sidenav-dark"
 				id="sidenavAccordion">
-
 				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0101')">
 					&nbsp; &nbsp; [[${session.usersId}]]님
 					<div class="nav">
@@ -147,42 +149,20 @@
 								<a class="nav-link" href="/userList">사원조회</a>
 							</nav>
 						</div>
-						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-							data-bs-target="#collapsePages" aria-expanded="false"
-							aria-controls="collapsePages">
-							<div class="sb-nav-link-icon">
-								<i class="fas fa-book-open"></i>
-
-							</div> 고객관리
-							<div class="sb-sidenav-collapse-arrow">
-								<i class="fas fa-angle-down"></i>
-							</div>
-						</a>
-						<div class="collapse" id="collapsePages"
-							aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-							<nav class="sb-sidenav-menu-nested nav accordion"
-								id="sidenavAccordionPages">
-								<a class="nav-link collapsed" href="/clientList"
-									data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-									aria-controls="pagesCollapseAuth"> 고객조회
-									<div class="sb-sidenav-collapse-arrow"></div>
-								</a>
-							</nav>
-						</div>
-						<div class="sb-sidenav-menu-heading">Addons</div>
-						<a class="nav-link" href="charts.html">
-							<div class="sb-nav-link-icon">
-								<i class="fas fa-chart-area"></i>
-							</div> Charts
-						</a> <a class="nav-link" href="tables.html">
-							<div class="sb-nav-link-icon">
-								<i class="fas fa-table"></i>
-							</div> Tables
-						</a>
 					</div>
 				</div>
 				<div class="sb-sidenav-menu"
 					sec:authorize="hasRole('ROLE_D0107')||hasRole('ROLE_D0108')">
+			<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+				
+				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0111')||hasRole('ROLE_D0106')">
+				<div  aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+									<nav class="sb-sidenav-menu-nested nav">
+										<a class="nav-link" href="/equipment/maintenance">설비 관리</a>
+									</nav>
+					</div>	
+				</div>
+				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0107')||hasRole('ROLE_D0108')">
 					<div class="nav">
 						<div class="sb-sidenav-menu-heading">Core</div>
 						<a class="nav-link" href="/equipment/main">
@@ -207,6 +187,7 @@
 								<div class="collapse" id="collapseLayouts"
 									aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 									<nav class="sb-sidenav-menu-nested nav">
+
 										<a class="nav-link" href="/equipment/process">공정관리</a> <a
 											class="nav-link" href="/equipment/maintenance">유지관리</a> <a
 											class="nav-link" href="/equipment/part">부품관리</a>
@@ -276,10 +257,12 @@
 							</div> 생산관리메인
 						</a>
 						<div class="sb-sidenav-menu-heading">Interface</div>
-						<div class="sb-sidenav-menu">
-							&nbsp; &nbsp; [[${session.usersId}]]님
-							<div class="nav">
-								<div class="sb-sidenav-menu-heading">회원관리</div>
+
+						<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0103')">
+							&nbsp; &nbsp;자재팀 [[${session.usersName}]] 님  
+							<div class="nav">							
+							<!-- 자재관리 -->
+								<div class="sb-sidenav-menu-heading" sec:authorize="hasRole('ROLE_D0103')||hasRole('ROLE_D0104')">자재관리</div>
 								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
 									data-bs-target="#collapseLayouts" aria-expanded="false"
 									aria-controls="collapseLayouts">
@@ -290,8 +273,8 @@
 										<i class="fas fa-angle-down"></i>
 									</div>
 								</a>
-								<div class="collapse" id="collapseLayouts"
-									aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+								<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+									data-bs-parent="#sidenavAccordion" sec:authorize="hasRole('ROLE_D0103')||hasRole('ROLE_D0104')" >
 									<nav class="sb-sidenav-menu-nested nav">
 
 										<a class="nav-link" href="/produce/main">생산관리 메인</a> <a
@@ -455,9 +438,9 @@
 		</div>
 		<!-- 알림 Script -->
 		<script type="text/javascript">
-		  const header = $("meta[name='_csrf_header']").attr('content');
-	      const token = $("meta[name='_csrf']").attr('content');
-
+		
+		const header = $("meta[name='_csrf_header']").attr('content');
+		const token = $("meta[name='_csrf']").attr('content');
 			 if (`[[${session.usersAuthor}]]` != null) {
 				getAlertList();
 				//setInterval(getAlertList, 1000);
@@ -558,7 +541,7 @@
 
 			$('#alertTable').click(function () {
 				return false;
-			})
+			})			
 		</script>
 		<div id="layoutSidenav_content">
 			<main>

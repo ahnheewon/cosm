@@ -41,8 +41,6 @@ public class ProduceController {
 
 	@Autowired
 	GoodsService goodsService;
-	@Autowired
-	EquipService equipService;
 
 	// =============================생산관리=======================
 	// 생산계획 list에 ajax주는 것
