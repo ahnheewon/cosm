@@ -1,6 +1,8 @@
 package com.prj.cosm;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,6 +48,7 @@ public class EquipController {
 			model.addAttribute("eno",eService.getEquipNo().getEquipNo()); // 다음 설비 번호 조회
 			model.addAttribute("epl",eService.getProcessList()); // 현재 사용가능한 공정 번호 조회
 			model.addAttribute("ep",eService.getEquipProcess()); // 설비에서 이용중인 공정 번호 조회
+			
 	
 		return "/equipment/process";
 		}	
@@ -60,9 +63,9 @@ public class EquipController {
 		
 		// 설비 등록 (설비별 가동시간도 함께 등록이 돼요!)
 		@PostMapping("/equipment/insertEquip")
-		public String insertEquip(EquipVO vo) {
+		public EquipVO insertEquip(EquipVO vo) {
 			eService.insertEquip(vo);
-		return "redirect:/equipment/process";
+		return vo;
 		}
 		
 		// 현재 적용 공정에 달려있는 설비 갯수 조회
@@ -76,8 +79,14 @@ public class EquipController {
 		// 설비 단건 조회
 		@GetMapping("/equipment/getEquipInfo")
 		@ResponseBody
-		public EquipVO getEquipInfo(Model model, int equipNo) {
-			return eService.getEquipInfo(equipNo);
+		public Map getEquipInfo(Model model, int equipNo) {
+			
+			Map<String, EquipVO> equipMap = new HashMap<String, EquipVO>();
+			
+			equipMap.put("et", eService.getEquipTime(equipNo) );
+			equipMap.put("ei", eService.getEquipInfo(equipNo) );
+	
+			return equipMap;
 			
 		}
 		

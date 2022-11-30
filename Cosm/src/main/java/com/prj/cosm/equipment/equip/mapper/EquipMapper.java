@@ -155,5 +155,5 @@ public interface EquipMapper {
 			
 			public int updateEquipTime(int equipNo);
 			
-			public int getEquipTime(int equipNo);
+			public EquipVO getEquipTime(int equipNo);
 }

@@ -41,7 +41,7 @@
 	
 			<!-- Modal Header -->
 			<div class="modal-header">
-			<h4 class="modal-title"><span id="whatPno"></span>공정 정보</h4>
+			<h4 class="modal-title"><span id="whatPno"></span>부품 정보</h4>
 			<button type="button" onclick="cancelUpdateEquip()" class="btn-close" data-bs-dismiss="modal"></button>
 			</div>
 	
@@ -135,7 +135,7 @@ function filter(){
 			       
 			    },  
 			    {
-			        header: '부품수량',
+			        header: '재고수량',
 			        name: 'partAmount'
 			        ,align : 'right'
 			 		,formatter: function(value) {
@@ -216,6 +216,7 @@ function filter(){
 	    			
 	    	myModal.show(modalToggle);
 	    	
+	    	getPart(pno);
 			document.getElementById('whatPno').innerText=pno+"번 ";
 
 			}
@@ -234,6 +235,8 @@ function filter(){
    
         document.querySelector('#selectPartName').value=obj.partName;
         document.querySelector('#selectPartEquipName').value=obj.partEquipName;
+        document.querySelector('#selectPartContent').value=obj.partContent;
+        document.querySelector('#selectPartCode').value=obj.partCode;
  
     })
     
