@@ -45,13 +45,14 @@ public class EquipServiceImpl implements EquipService {
 	@Override
 	public EquipVO getEquipInfo(int equipNo) {
 		EquipVO eVO = mapper.getEquipInfo(equipNo);
-		eVO.setEquipTime(mapper.getEquipTime(equipNo));
+		eVO.setEquipTime(mapper.getEquipTime(equipNo).getEquipTime());
 		return eVO;
 	}
 
 	@Override
-	public void insertEquip(EquipVO vo) {
-		mapper.insertEquip(vo); // 설비등록
+	public int insertEquip(EquipVO vo) {
+		
+		return mapper.insertEquip(vo);
 	}
 
 	@Override
@@ -376,5 +377,13 @@ public class EquipServiceImpl implements EquipService {
 
 		return mapper.getCompleteTestList();
 	}
+
+	@Override
+	public EquipVO getEquipTime(int equipNo) {
+		
+		return mapper.getEquipTime(equipNo);
+	}
+
+
 
 }

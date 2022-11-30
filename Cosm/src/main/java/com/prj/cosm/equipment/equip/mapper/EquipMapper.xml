@@ -10,10 +10,11 @@
 
 	<!-- 설비 전체 리스트 -->
 	<select id="getEquipList" resultType="equipVO">
-		SELECT *
-		FROM equip
-		ORDER BY
-		EQUIP_NO
+	select e.equip_no, e.equip_process,e.equip_name,e.equip_purpose,e.equip_type
+		   ,p.process_name as equip_process_name,p.process_no,e.equip_state
+	from equip e, process p
+	where e.equip_process=p.process_no
+	order by equip_no	
 	</select>
 
 	<!-- 설비 단건조회 -->
@@ -21,7 +22,7 @@
 		resultType="equipVO">
 		SELECT *
 		FROM equip
-		Where equip_no= #{value}
+		Where equip_no= #{value}	
 	</select>
 
 	<!-- 설비 등록 -->
@@ -471,7 +472,7 @@
 		time_start_date IS NOT NULL
 	</update>
 
-	<select id="getEquipTime" resultType="Integer">
+	<select id="getEquipTime" resultType="equipVO">
 		SELECT
 		NVL(SUM(NVL(ROUND((TO_DATE(time_end_date, 'YYYY-MM-DD HH24:MI:SS')
 		-

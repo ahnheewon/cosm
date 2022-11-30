@@ -106,7 +106,7 @@ public class MaterialVO {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 
-//	@JsonIgnore // 이 데이터는 json으로 변형시키지 말라는 뜻
-//	String picname; //첨부파일, html 파일 name 과 이름 다르게 해야함(타입이 다르므로)
+	private String planPlayCode; // 생산 지시 상태코드 
+	String mFile; //첨부파일, html 파일 name 과 이름 다르게 해야함(타입이 다르므로)
 	
 }

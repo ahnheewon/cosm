@@ -41,7 +41,7 @@
 	
 			<!-- Modal Header -->
 			<div class="modal-header">
-			<h4 class="modal-title"><span id="whatPno"></span>공정 정보</h4>
+			<h4 class="modal-title"><span id="whatPno"></span>부품 정보</h4>
 			<button type="button" onclick="cancelUpdateEquip()" class="btn-close" data-bs-dismiss="modal"></button>
 			</div>
 	
@@ -59,11 +59,11 @@
                     </tr> 
                      <tr>
                         <td>단위</td>
-                        <td><input class="form-control " id="selectpartCode" name="partCode" rows="5" autocomplete="off" readonly></td>
+                        <td><input class="form-control " id="selectPartCode" name="partCode" rows="5" autocomplete="off" readonly></td>
                     </tr>
                      <tr>
                         <td>적용설비</td>
-                        <td><input class="form-control " id="selectpartEquipName" name="partEquipName" rows="5" autocomplete="off" readonly></td>
+                        <td><input class="form-control " id="selectPartEquipName" name="partEquipName" rows="5" autocomplete="off" readonly></td>
                     </tr>
    
                                    
@@ -135,7 +135,7 @@ function filter(){
 			       
 			    },  
 			    {
-			        header: '부품수량',
+			        header: '재고수량',
 			        name: 'partAmount'
 			        ,align : 'right'
 			 		,formatter: function(value) {
@@ -203,7 +203,7 @@ function filter(){
 	 
     partGrid.on('click', ev => {
     	const pnoRow = partGrid.getRow(ev.rowKey); // 행 (객체)
-    	const pno = pnoRow.no; // 행의 공정번호
+    	const pno = pnoRow.partNo; // 행의 공정번호
     	console.log(pno);
    	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
     	console.log(ev);
@@ -216,13 +216,14 @@ function filter(){
 	    			
 	    	myModal.show(modalToggle);
 	    	
+	    	getPart(pno);
 			document.getElementById('whatPno').innerText=pno+"번 ";
 
 			}
     	}
 	});
 
-	/*  설비 단건조회 불러오는 아작스 함수 */
+	/*  부품 단건조회 불러오는 아작스 함수 */
 
     function getPart(partNo) {
 	
@@ -232,20 +233,11 @@ function filter(){
     .then(obj=>{
         console.log(obj);
    
-        document.querySelector('#selectEquipName').value=obj.partName;
-        document.querySelector('#selectEquipName').value=obj.partEquipName;
-        document.querySelector('#selectEquipType').value=obj.equipType;
-        document.querySelector('#selectEquipStdVibe').value=obj.equipStdVibe;
-        document.querySelector('#selectEquipStdTemp').value=obj.equipStdTemp;
-        
-        document.querySelector('#wv-input').value=obj.equipDate;
-        const a = document.querySelector('#ev-start-input').value
-        const b = document.querySelector('#ev-end-input').value
-		if(a == undefined){
-			a.value=''
-			b.value=''
-		}
-        document.querySelector('#selectEquipPurpose').value=obj.equipPurpose;
+        document.querySelector('#selectPartName').value=obj.partName;
+        document.querySelector('#selectPartEquipName').value=obj.partEquipName;
+        document.querySelector('#selectPartContent').value=obj.partContent;
+        document.querySelector('#selectPartCode').value=obj.partCode;
+ 
     })
     
 	}

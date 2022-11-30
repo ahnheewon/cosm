@@ -209,6 +209,7 @@
                     url: "/equipment/equipList",
                     type: "get",
                     success: function (data) {
+                    	
                         var max = 0;
                         runningProcess.equipProcess = [];
                         runningProcess.count = [];
@@ -228,6 +229,7 @@
                             var onOff = [];
                             var nos = [];
                             for (let obj of data) {
+                            	
                                 if (obj['equipProcess'] == i) {
                                     nos.push(obj['equipNo']);
                                     names.push(obj['equipName']);
@@ -244,6 +246,7 @@
                             equip.onOff = onOff;
                             equip.count = names.length;
                             equips.push(equip);
+                           
                         }
                         makeProcess(equips[0], equips[1], equips[2], equips[3], equips[4]);
 
@@ -449,11 +452,11 @@
                             equipNo: equipNo
                         },
                         success: function (data) {
-                            for (let val in data) {
-                                $('#' + val).val(data[val]);
+                            for (let val in data.ei) {
+                                $('#' + val).val(data.ei[val]);
                             }
                             $('#doBtn').off();
-                            if (data.equipState == 'I0101') {
+                            if (data.ei.equipState == 'I0101') {
                                 $('#doBtn').text('중단').click(stopOrStart);
                             } else {
                                 $('#doBtn').text('가동').click(stopOrStart);

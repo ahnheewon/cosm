@@ -48,13 +48,13 @@
 	                     <table style="width: 100%;">                        
 	                           <tr>
 	                              <td colspan="3">
-	                                 <div class="row">
+	                                
 	                                    <div class="column">
 	                                      <h5>점검 내역</h5>                                	
 								            <div class="header">
-								         	<button type="button" id="insertTBtn" class="btn btn-dark btn-sm margin5"
-								         		data-bs-toggle="modal" data-bs-target="#myModal1">등록</button>
-								         		<input type="radio" name="tStatus0" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD;">전체ㅤ
+								         	<button type="button" id="insertTBtn" style="float: left;" class="btn btn-dark btn-sm margin5" 
+								         				data-bs-toggle="modal" data-bs-target="#myModal1">등록</button>
+								         		<input type="radio" name="tStatus0" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD; ">전체ㅤ
 												<input type="radio" name="tStatus0" value="미완료" onclick="completeChk()" style="accent-color : #0000CD;">미완료ㅤ
 												<input type="radio" name="tStatus0" value="완료" onclick="completeChk()" style="accent-color :#0000CD;">완료
 												<button type="button" class="btn btn-dark btn-sm" style="float: right; margin-: 10px;" onclick="setNull();">초기화</button>
@@ -68,6 +68,9 @@
 											 	</div>
 					      				   			   
 	                                       <div id="testGrid">
+	                                       </div>
+	                                       
+	                                        <div id="testCompleteGrid">
 	                                       </div>
 	                                       
 	                                    </div>
@@ -112,7 +115,7 @@
 	                                      <div class="searchbox">
 							              <div class="header">
 							         	  <button type="button" class="btn btn-dark btn-sm margin5"
-							         	  data-bs-toggle="modal" id="insertWBtn" data-bs-target="#myModal5">등록</button>
+							         	  		data-bs-toggle="modal" id="insertWBtn" data-bs-target="#myModal5">등록</button>
 										     <input type="radio" class="radio4" name="tStatus2" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD;">전체ㅤ
 											 <input type="radio" class="radio4" name="tStatus2" value="미승인" onclick="completeChk()" style="accent-color : #0000CD;">미승인ㅤ
 											 <input type="radio" class="radio4" name="tStatus2" value="승인완료" onclick="completeChk()" style="accent-color :#0000CD;">승인완료	     
@@ -299,8 +302,8 @@
 							<td>총괄팀장</td>
 						</tr>
 						<tr class="emp">
-							<td style="text-align: center;"><img th:if="${session.usersAuthor == 'D0107'}" src="/equipmentCss/홍길동인.PNG"></td> <!-- 본인 도장 사진으로 대체 -->
-							<td style="text-align: center;"><img th:if="${session.usersAuthor == 'D0108'}" src="/equipmentCss/설비팀장이석순.PNG"></td> <!-- 본인 도장 사진으로 대체 -->
+							<td style="text-align: center;"><img style=" width : 50px; height: 50px;" th:if="${session.usersAuthor == 'D0107'}" src="/equipmentCss/홍길동인.PNG"></td> <!-- 본인 도장 사진으로 대체 -->
+							<td></td> 
 							<td></td>
 							<td></td>
 						</tr>
@@ -378,8 +381,7 @@
 		
 				<!-- Modal footer -->
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">등록</button>
-						<button type="button" class="btn btn-danger"  data-bs-dismiss="modal">닫기</button>
+						<button type="submit" class="btn btn-primary">등록</button>			
 					</div>
 			</form>
 		
@@ -400,9 +402,7 @@
 					</div>
 		
 				<form id="updateForm3" class="updateForm" method="post" name="equip" onsubmit="return plzNum()">
-				<!-- <sec:csrfInput/> -->
-				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-					
+
 					<!-- Modal body -->
 					<div id="workInfo" class="modal-body">
 							<div class="modal-body" style="padding: 0.3rem;"> 
@@ -516,6 +516,8 @@
 /* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT *//* JAVASCRIPT */	
 
 // 설비명
+
+
 function filter1(){
 
         const search = document.getElementById("searchFilter")
@@ -668,8 +670,55 @@ function test (id){
 			    }
 			    ]
 			});
+			
+/*  점검완료 그리드  */	
+	const testCompleteGrid = new tui.Grid({
+			    el: document.querySelector('#testCompleteGrid'),
+			    scrollX:false,
+			    scrollY:false,
+			    pagination:true,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+			    columns: [
+			    {
+					header:'점검번호',
+					name:'testNo'
+					,align : 'center'
+				},
+			    {
+			        header: '설비명',
+			        name: 'testEquipName'
+			        ,align : 'center'
+			        ,filter:'text'
+			    },
+			    {
+			        header: '점검완료일',
+			        name: 'testDate'
+			        ,align : 'center'
+			        ,filter:'text'
+			    },
+			    {
+			        header: '점검사유',
+			        name: 'testReason'
+			        ,align : 'center'
+			    },
+			    {
+			        header: '점검내역',
+			        name: 'testContent'
+			        ,align : 'center'
+			    },
+			    {
+			        header: '진행상황',
+			        name: 'testCodeName'
+			        ,align : 'center'
+			    }
+			    ]
+			});
 
 /* 점검 전체 리스트 불러오는 아작스 */
+document.querySelector('#testCompleteGrid').style.display='none';
 
 	url="/equipment/testAllList"
 	fetch(url) 
@@ -677,7 +726,7 @@ function test (id){
 	.then(obj=>{
 	    console.log(obj);
 	  testGrid.resetData(obj);
-	})	
+	})
 	
 
 	
@@ -804,8 +853,7 @@ function test (id){
 			        }
 				}
 
-				console.log(tCode);
-				
+				console.log(tCode);		
 				const btn = document.querySelector('#testUbtn')
 				
 				btn.innerHTML='저장';
@@ -897,13 +945,7 @@ function test (id){
 								btn.innerText='수정';
 								btn.removeEventListener('click',updateTest); 
 							  	btn.setAttribute('onclick','updateTBtnClick()');
-							  	
-							  	Swal.fire(
-                                        '수정완료',
-                                        '',
-                                        'success'
-                                    )
-							  	
+							 	
 								if(obj.testCodeName='미실시')
 									 radios[0].checked=true;
 								else if(obj.testCodeName='진행중')
@@ -911,11 +953,22 @@ function test (id){
 								else if(obj.testCodeName='보류')
 									 radios[2].checked=true;
 					 
+							  	Swal.fire({
+							  			  title:'수정완료',
+                                        icon:'success',
+                                        allowOutsideClick: false, // 배경클릭해서 나가는거 방지
+                                        allowEscapeKey: false // 키 눌러서 나가는거 방지
+							  	})
+							  	document.querySelector('.swal2-confirm').addEventListener('click',function(e){
+									location.reload(true);// 새로고침
+								})
+							 
 						    
 				 	})
 					.catch((error) => console.log("error:", error));
 					
-					location.reload(true);// 새로고침
+				
+					
 				}   
 				      		
 			}
@@ -1008,8 +1061,8 @@ function deleteTest() {
 			   
 			},
 		    {
-		        header: '공사명',
-		        name: 'workName'
+		        header: '설비명',
+		        name: 'workEquipName'
 		        ,align : 'center'
 		    },
 		    {
@@ -1169,7 +1222,11 @@ function updateWSBtnClick() {
 					    .then(res=>res.json())
 					    .then(obj=>{
 					        
-						  	alert(`[[${msg}]]`);
+					    	Swal.fire(
+                                    '승인 완료',
+                                    '',
+                                    'success'
+                                )
 							
 						  	location.reload(true);// 새로고침			   		  	
 					  	
@@ -1231,7 +1288,10 @@ function updateWork() {
     const wContent= document.querySelector('#sWorkContent');
     		
     		url="/equipment/updateWork"
-			fetch(url, {method: 'POST', body : data})
+			fetch(url, {method: 'POST'
+						,body: data
+						,headers: {'header' : header,'X-CSRF-Token': token }
+		 	})  
 			    .then(res=>res.json())
 			    .then(obj=>{
 			        console.log(obj);	  
@@ -1246,12 +1306,16 @@ function updateWork() {
 					btn.removeEventListener('click',updateWork); 
 				  	btn.setAttribute('onclick','updateWBtnClick()');
 				  	
-				  	Swal.fire(
-                            '수정완료',
-                            '',
-                            'success'
-                        )
-				  	location.reload(true);// 새로고침    
+				  	Swal.fire({
+			  			  title:'수정완료',
+                      icon:'success',
+                      allowOutsideClick: false, // 배경클릭해서 나가는거 방지
+                      allowEscapeKey: false // 키 눌러서 나가는거 방지
+			  		})
+			  	document.querySelector('.swal2-confirm').addEventListener('click',function(e){
+					location.reload(true);// 새로고침
+				})
+			 
 	 	})
 		.catch((error) => console.log("error:", error));	
 	}   	      		
@@ -1406,24 +1470,25 @@ function completeChk(){ // 전체, 미완료, 완료 라디오박스
 // 점검
 	
 		if(ts == '전체'){
-			//testGrid.clear();
-			//testGrid.refreshLayout();
-			
-			 url="/equipment/testAllList"
+		
+			document.querySelector('#testCompleteGrid').style.display='none';
+			 
+			url="/equipment/testAllList"
 			fetch(url) 
 			.then(res=>res.json())
 			.then(obj=>{
 			    console.log(obj);
-			  testGrid.resetData(obj);
-			 
-			 
-		    
+			 	 testGrid.resetData(obj);
 			})
+				document.querySelector('#testGrid').style.display='block';
+			
 		}else if (ts =='미완료'){
 			
 	/* 점검 미완료 리스트 불러오는 아작스 */
-	 		//testGrid.clear();
-	 		
+		
+		document.querySelector('#testCompleteGrid').style.display='none';
+		
+	
 			url="/equipment/incompleteTestList"
 			fetch(url) 
 			.then(res=>res.json())
@@ -1431,32 +1496,32 @@ function completeChk(){ // 전체, 미완료, 완료 라디오박스
 			    console.log(obj);
 			    testGrid.resetData(obj);
 			   
-		    
-			})
+		})
+			
+		 document.querySelector('#testGrid').style.display='block';
 			
 		}else if (ts=='완료'){
-			
-	/* 점검 완료 리스트 불러오는 아작스 */
-			//testGrid.clear();
+/* 점검 완료 리스트 불러오는 아작스 */
+			document.querySelector('#testCompleteGrid').style.display='block';
+			testCompleteGrid.refreshLayout();
+			document.querySelector('#testGrid').style.display='none';
 			
 			url="/equipment/completeTestList"
 			fetch(url) 
 			.then(res=>res.json())
 			.then(obj=>{
 			    console.log(obj);
-			    testGrid.resetData(obj);
+			    testCompleteGrid.resetData(obj);
 		    
 			})
-		}
-	
+		}	
+		
 	
 ///////////////////////////////////////////////////////////////
 // 공사
 
 		if(ws == '전체'){
-			//testGrid.clear();
-			//testGrid.refreshLayout();
-			
+
 			 url="/equipment/workAllList"
 			fetch(url) 
 			.then(res=>res.json())
@@ -1527,12 +1592,12 @@ function completeChk(){ // 전체, 미완료, 완료 라디오박스
 	}
 	
 // 권한에 따른 버튼 가리개
-if(`[[${session.usersAuthor}]]`!='D0107' || `[[${session.usersAuthor}]]`!='D0108'){
+let ua = `[[${session.usersAuthor}]]`;
+console.log(ua);
+if( ua != 'D0107' && ua != 'D0108'){
 	insertTBtn.style.display='none';
-}
-
-if(`[[${session.usersAuthor}]]`!='D0107'){
-	insertWBtn.style.display='none';
+}else {
+	insertTBtn.style.display='block';
 }
 
 // 필터 깔때기 아이콘 가리기.
@@ -1541,6 +1606,8 @@ console.log(filterCon);
 
 filterCon[0].style.display='none';
 filterCon[1].style.display='none';
+filterCon[2].style.display='none';
+filterCon[3].style.display='none';
 
 tui.Grid.applyTheme("normal", {
     cell : {

@@ -1,6 +1,8 @@
 package com.prj.cosm;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,14 +13,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
-
 import com.prj.cosm.equipment.work.service.WorkService;
 import com.prj.cosm.equipment.work.service.WorkVO;
 
@@ -48,6 +48,7 @@ public class EquipController {
 			model.addAttribute("eno",eService.getEquipNo().getEquipNo()); // 다음 설비 번호 조회
 			model.addAttribute("epl",eService.getProcessList()); // 현재 사용가능한 공정 번호 조회
 			model.addAttribute("ep",eService.getEquipProcess()); // 설비에서 이용중인 공정 번호 조회
+			
 	
 		return "/equipment/process";
 		}	
@@ -62,9 +63,9 @@ public class EquipController {
 		
 		// 설비 등록 (설비별 가동시간도 함께 등록이 돼요!)
 		@PostMapping("/equipment/insertEquip")
-		public String insertEquip(EquipVO vo) {
+		public EquipVO insertEquip(EquipVO vo) {
 			eService.insertEquip(vo);
-		return "redirect:/equipment/process";
+		return vo;
 		}
 		
 		// 현재 적용 공정에 달려있는 설비 갯수 조회
@@ -78,8 +79,14 @@ public class EquipController {
 		// 설비 단건 조회
 		@GetMapping("/equipment/getEquipInfo")
 		@ResponseBody
-		public EquipVO getEquipInfo(Model model, int equipNo) {
-			return eService.getEquipInfo(equipNo);
+		public Map getEquipInfo(Model model, int equipNo) {
+			
+			Map<String, EquipVO> equipMap = new HashMap<String, EquipVO>();
+			
+			equipMap.put("et", eService.getEquipTime(equipNo) );
+			equipMap.put("ei", eService.getEquipInfo(equipNo) );
+	
+			return equipMap;
 			
 		}
 		
@@ -243,59 +250,6 @@ public class EquipController {
 		}
 		
 		
-		/*
-		 * //고장
-		 * 
-		 * // 고장 전체 리스트 조회
-		 * 
-		 * @GetMapping("/equipment/failAllList")
-		 * 
-		 * @ResponseBody public List<EquipVO> failAllList(){
-		 * 
-		 * return eService.getFailList(); } // 고장 미완 리스트 조회
-		 * 
-		 * @GetMapping("/equipment/incompleteFailList")
-		 * 
-		 * @ResponseBody public List<EquipVO> incompleteFailList(){
-		 * 
-		 * return eService.getIncompleteFailList(); } // 고장 완료 리스트 조회
-		 * 
-		 * @GetMapping("/equipment/completeFailList")
-		 * 
-		 * @ResponseBody public List<EquipVO> completeFailList(){
-		 * 
-		 * return eService.getCompleteFailList(); }
-		 * 
-		 * // 고장 등록
-		 * 
-		 * @PostMapping("/equipment/insertFail") public String insertFail(EquipVO vo,
-		 * RedirectAttributes ratt) { eService.insertFail(vo); return
-		 * "redirect:/equipment/maintenance"; }
-		 * 
-		 * // 고장 단건 조회
-		 * 
-		 * @GetMapping("/equipment/getFailInfo")
-		 * 
-		 * @ResponseBody public EquipVO getFailInfo(int failNo, int failEquipNo) {
-		 * return eService.getFailInfo(failNo,failEquipNo);
-		 * 
-		 * }
-		 * 
-		 * // 고장 수정
-		 * 
-		 * @PostMapping("/equipment/updateFail")
-		 * 
-		 * @ResponseBody public EquipVO updateFail(EquipVO vo) {
-		 * eService.updateFail(vo); return vo; // "{re:true}" }
-		 * 
-		 * // 고장 삭제
-		 * 
-		 * @DeleteMapping("/equipment/deleteFail/{failNo}")
-		 * 
-		 * @ResponseBody public int deleteFail(@PathVariable int failNo) { int result =
-		 * eService.deleteFail(failNo); return result; }
-		 */
-		
 //================================================================================================================================
 // 공사
 		
@@ -422,6 +376,13 @@ public class EquipController {
 			return wService.getPartList();
 		}	
 		
+		// 부품 단건 조회
+				@GetMapping("/equipment/getPartInfo")
+				@ResponseBody
+				public WorkVO getPartInfo(Model model, int partNo) {
+					return wService.getPartInfo(partNo);
+					
+				}
 
 		
 //================================================================================================================================	
