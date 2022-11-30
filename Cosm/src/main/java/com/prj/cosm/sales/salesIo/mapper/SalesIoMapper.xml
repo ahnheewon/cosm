@@ -14,12 +14,17 @@
 
 	<!-- 전체조회 -->
 	<select id="getSalesIoList" resultType="SalesIoVO">
-		select p.regist_LOT,
+		select r.regist_LOT,
 		o.ORDER_NO, o.ORDER_DATE,
 		o.DELIVERY_DATE, o.users_no,
 		find_code_no(o.order_code) as order_code
-		from produce_regist p join orders o
-		on p.regist_product_no = o.goods_no
+		from produce_regist r 
+		join produce_instruct i
+		on r.regist_instruct_no = i.instruct_no
+		JOIN produce_plan p
+		ON i.instruct_plan_no = p.plan_no
+		JOIN orders o
+		ON p.plan_order_no = o.order_no;
 	</select>
 
 	<!-- 단건조회 -->
@@ -100,6 +105,6 @@
 		<foreach collection="list" item="vo" open="(" close=")"
 			separator=" , ">
 			#{vo.orderNo}
-			 </foreach>
+		</foreach>
 	</update>
 </mapper>
