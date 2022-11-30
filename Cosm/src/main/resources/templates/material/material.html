@@ -200,7 +200,7 @@
           --------------------------*/
          
             let today = new Date();
-            let picker2 = new tui.DatePicker.createRangePicker({
+            let picker = new tui.DatePicker.createRangePicker({
                startpicker: {
                   date: today,
 
@@ -215,7 +215,11 @@
                   container: '#endpicker-container2',
 
                },
-   
+               selectableRanges : [ [
+					new Date(today.getFullYear() - 5, today.getMonth(),
+							today.getDate()),
+					new Date(today.getFullYear() + 5, today.getMonth(),
+							today.getDate()) ]]
 
             });
 
