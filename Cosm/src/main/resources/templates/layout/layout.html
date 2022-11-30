@@ -227,6 +227,46 @@
 					</div>
 				</div>
 				<!-- jini end -->
+				<!-- jini start -->
+				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0102')">
+					<div class="nav">
+						<div class="sb-sidenav-menu-heading">Core</div>
+						<a class="nav-link" href="/client/main">
+							<div class="sb-nav-link-icon">
+								<i class="fas fa-tachometer-alt"></i>
+							</div> 고객님 메인
+						</a>
+						<div class="sb-sidenav-menu-heading">Interface</div>
+
+						<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0102')">
+							&nbsp; &nbsp;환영합니다 [[${session.usersName}]] 님
+							<div class="nav">
+								<!-- 영업관리 -->
+								<div class="sb-sidenav-menu-heading"
+									sec:authorize="hasRole('ROLE_D0102')">주문하기</div>
+								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+									data-bs-target="#collapseLayouts" aria-expanded="false"
+									aria-controls="collapseLayouts">
+									<div class="sb-nav-link-icon">
+										<i class="fas fa-columns"></i>
+									</div> 주문관리
+									<div class="sb-sidenav-collapse-arrow">
+										<i class="fas fa-angle-down"></i>
+									</div>
+								</a>
+
+								<div class="collapse" id="collapseLayouts"
+									aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion"
+									sec:authorize="hasRole('ROLE_D0102')">
+									<nav class="sb-sidenav-menu-nested nav">
+										<a class="nav-link" href="/client/orderList">주문관리</a>
+									</nav>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- jini end -->
 				<div class="sb-sidenav-menu"
 					sec:authorize="hasRole('ROLE_D0107')||hasRole('ROLE_D0108')">
 					<nav class="sb-sidenav accordion sb-sidenav-dark"
