@@ -59,4 +59,6 @@ public class PlanVO {
 	private int yn2;
 	private String bom1;
 	private String bom2;
+	
+	private int check;
 }

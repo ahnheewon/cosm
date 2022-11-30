@@ -64,25 +64,36 @@ public class MorderServiceImpl implements MorderService {
 			vo.setMNo(vo.getMoMaterialId());
 			moMapper.updateMStock(vo);
 			moMapper.updateCode(vo);
-		}	
-		
+		}
+
 		// 현재 재고 들고오는 매퍼
 		List<MaterialVO> mList = maMapper.mList();
 		List<PlanVO> pList = pMapper.getPlanCompute();
 		List<PlanVO> resultList = new ArrayList<>();
-		for (MaterialVO mVO : mList) {
-			int compute = mVO.getMStock();
-			for (PlanVO pVO : pList) {
+		for (PlanVO pVO : pList) {
+			pVO.setCheck(0);
+			for (MaterialVO mVO : mList) {
+				int compute = mVO.getMStock();
 				if (mVO.getMNo().equals(pVO.getBomMaterialNo())) {
 					if (compute >= pVO.getBomQuantity()) {
 						compute -= pVO.getBomQuantity();
-						resultList.add(pVO);
+						pVO.setCheck(1);
 					}
+				} else if (mVO.getMNo().equals(pVO.getBomMaterialNob())) {
+					if (compute >= pVO.getBomQuantityb()) {
+						compute -= pVO.getBomQuantityb();
+						if (pVO.getCheck() == 1) {
+							pVO.setCheck(2);
+						}
+					}
+				}
+				if (pVO.getCheck() == 2) {
+					resultList.add(pVO);
 				}
 			}
 		}
 		pMapper.updateCanIns(resultList);
-    
+
 		List<EmpVO> eList = new ArrayList<>();
 		eList = eMapper.getReceiveUsers("D0105");
 		AlertVO aVO = new AlertVO();
@@ -109,7 +120,7 @@ public class MorderServiceImpl implements MorderService {
 
 	@Override
 	public int updatePlanCode(MorderVO vo) {
-		// 입고 확정시 생산지시 코드 업데이트 
+		// 입고 확정시 생산지시 코드 업데이트
 		return moMapper.updateCode(vo);
 	}
 
