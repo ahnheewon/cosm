@@ -20,7 +20,7 @@
 			<div class="tab_content" id="all_content">
 				<hr style="width: 100%">
 				<h3>미지시 생산계획 리스트</h3>
-				<button type="button" class="btn btn-secondary btn-sm" id="selectBtn"
+				<button type="button" class="btn btn-dark btn-sm" id="selectBtn"
 					onclick="insertData();" data-bs-toggle="modal"
 					data-bs-target="#requestModal" style="float: right">생산지시
 					작성</button>
@@ -35,7 +35,7 @@
 				<hr style="width: 100%">
 
 				<button type="button" onclick="location.href='/produce/regist'"
-					class="btn btn-secondary btn-sm"
+					class="btn btn-dark btn-sm"
 					style="float: right; margin-right: 36px">완제품등록 페이지 이동</button>
 			</div>
 			<div class="tab_content" id="programming_content">
@@ -62,7 +62,7 @@
 					</div>
 					<button type="button" class="btn btn-secondary btn-sm" id="searchBtn">조회</button>
 
-					<button type="button" class="btn btn-secondary btn-sm"
+					<button type="button" class="btn btn-dark btn-sm"
 						style="float: right" id="delbtn">생산지시 삭제</button>
 			
 
@@ -386,7 +386,7 @@
 					renderer : {
 						styles: {
 								 fontWeight: 'bold',
-								 color: (props) => props.value == '미실시' ? 'red' : 'blue'
+								 color: (props) => props.value == '자재입고완료' ? 'green' : 'blue'
 							}
 					},
 				},	

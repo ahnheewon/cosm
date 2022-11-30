@@ -12,14 +12,14 @@
 	ORDER BY p.plan_no DESC
 </select>
 
-<!-- 미완료된것만 보이게 -->
+<!-- 자재입고 완료 된것만 보이게 -->
 <select id="completePlanList" resultType="PlanVO">
 	SELECT p.plan_no, p.plan_quantity, p.plan_start, 
 		   p.plan_end, p.plan_ex, p.plan_product_no, p.plan_bom_no,
 		   p.plan_order_no, code_name as plan_play_code
 	FROM produce_plan p JOIN code 
 						ON p.plan_play_code = code.code_no
-	WHERE plan_play_code = 'A0101'
+	WHERE plan_play_code = 'A0108'
 </select>
 
 <!-- 생산계획번호 +1 -->
@@ -193,7 +193,7 @@
 						 ON m1.m_no = b.bom_material_no
 					   JOIN material m2
 						 ON m2.m_no = b.bom_material_nob
-	WHERE bom_product_no = 'PRO_20220001' AND plan_play_code = 'A0101'
+	WHERE bom_product_no = 'PRO_20220001' AND plan_play_code = 'A0109'
 	GROUP BY bom_material_no, m1.m_stock, bom_material_nob, m2.m_stock
 </select>
 </mapper>
