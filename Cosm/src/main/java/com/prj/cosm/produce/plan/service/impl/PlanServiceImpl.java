@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.prj.cosm.produce.bom.mapper.BomMapper;
+import com.prj.cosm.produce.instruct.mapper.InsMapper;
 import com.prj.cosm.produce.plan.mapper.PlanMapper;
 import com.prj.cosm.produce.plan.service.PlanService;
 import com.prj.cosm.produce.plan.service.PlanVO;
@@ -32,6 +33,9 @@ public class PlanServiceImpl implements PlanService {
 	
 	@Autowired
 	PlanMapper mapper;
+	
+	@Autowired
+	InsMapper insMapper;
 
 	@Override
 	public List<PlanVO> selectPlanList() {
@@ -114,6 +118,8 @@ public class PlanServiceImpl implements PlanService {
 		//자재재고량 업데이트
 		mapper.updateMaterialInfo(planVO);
 		mapper.updateMaterialInfo2(planVO);
+		
+		
 		//생산지시 시 페이지 빠지기
 		return mapper.updatePlay(planVO);
 	}
