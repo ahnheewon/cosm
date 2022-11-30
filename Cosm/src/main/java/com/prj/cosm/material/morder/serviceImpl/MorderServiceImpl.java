@@ -92,7 +92,9 @@ public class MorderServiceImpl implements MorderService {
 				}
 			}
 		}
-		pMapper.updateCanIns(resultList);
+		if(resultList != null || resultList.size() != 0) {
+			pMapper.updateCanIns(resultList);
+		}
 
 		List<EmpVO> eList = new ArrayList<>();
 		eList = eMapper.getReceiveUsers("D0105");
