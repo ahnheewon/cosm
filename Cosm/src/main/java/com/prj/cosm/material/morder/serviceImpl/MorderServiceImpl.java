@@ -70,22 +70,24 @@ public class MorderServiceImpl implements MorderService {
 		List<MaterialVO> mList = maMapper.mList();
 		List<PlanVO> pList = pMapper.getPlanCompute();
 		List<PlanVO> resultList = new ArrayList<>();
-		for (MaterialVO mVO : mList) {
-			int check = 0;
-			int compute = mVO.getMStock();
-			for (PlanVO pVO : pList) {
+		for (PlanVO pVO : pList) {
+			pVO.setCheck(0);
+			for (MaterialVO mVO : mList) {
+				int compute = mVO.getMStock();
 				if (mVO.getMNo().equals(pVO.getBomMaterialNo())) {
 					if (compute >= pVO.getBomQuantity()) {
 						compute -= pVO.getBomQuantity();
-						check++;
+						pVO.setCheck(1);
 					}
 				} else if (mVO.getMNo().equals(pVO.getBomMaterialNob())) {
 					if (compute >= pVO.getBomQuantityb()) {
 						compute -= pVO.getBomQuantityb();
-						check++;
+						if (pVO.getCheck() == 1) {
+							pVO.setCheck(2);
+						}
 					}
 				}
-				if (check == 2) {
+				if (pVO.getCheck() == 2) {
 					resultList.add(pVO);
 				}
 			}
