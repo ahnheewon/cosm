@@ -80,6 +80,13 @@
 
 	</insert>
 	
+	<!-- 입고 대기 확정시 생산지시 코드 업데이트-->
+	<update id="updatePlanCode" parameterType="MorderVO">
+	update produce_plan
+	set plan_play_code = 'A0108'
+	
+	</update>
+	
 
 	<!-- 입고 대기 시, 코드 변경(입고 완료) -->
 	<update id="updateCode" parameterType="MorderVO">

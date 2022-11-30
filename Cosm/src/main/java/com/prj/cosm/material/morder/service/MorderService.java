@@ -24,6 +24,8 @@ public interface MorderService {
 	// 입고 대기 시 현재 재고로 수량 업데이트
 	public int updateMStock(MorderVO vo);
 
+	// 입고 확정 시 생산지시 코드 업데이트
+	public int updatePlanCode(MorderVO vo);
 
 
 
