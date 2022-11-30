@@ -170,14 +170,26 @@ public class EquipController {
 			model.addAttribute("equip",eService.getEquipList());
 			model.addAttribute("equipFirst",eService.getEquipList().get(0));
 			model.addAttribute("tno",eService.getTestNo().getTestNo());
-			model.addAttribute("fno",eService.getFailNo().getFailNo());
+
 			model.addAttribute("wno",wService.getWorkNo().getWorkNo());
 			
 			return "/equipment/maintenance";
 		}
-
-	
 		
+		
+		// 새로고침없이 다음 글 번호 가져오기위해..
+			@GetMapping("/equipment/maintenanceNo")
+			@ResponseBody
+			public Map maintenanceNo() {
+					
+					Map<String, Integer> maintenanceNo = new HashMap<String, Integer>();
+					
+					maintenanceNo.put("tno",eService.getTestNo().getTestNo());
+					maintenanceNo.put("wno",wService.getWorkNo().getWorkNo());
+			
+					return maintenanceNo;
+					
+				}
 	//점검	
 		
 		// 점검 전체 리스트 조회
@@ -304,10 +316,9 @@ public class EquipController {
 		
 		// 공사 등록
 		@PostMapping("/equipment/insertWork")
-		public String insertWork(WorkVO vo) {
-			wService.insertWork(vo);
-			wService.insertWorkSign(vo);	
-		return "redirect:/equipment/maintenance";
+		public int insertWork(WorkVO vo) {
+			int result =wService.insertWork(vo)+wService.insertWorkSign(vo);		
+			return result;
 		}
 		
 		//공사 결재안건 수정 seq+1

@@ -200,7 +200,7 @@
 	<!-- 공사 승인후 시공대기중으로 코드변경 -->
 	<update id="updateWorkCode" parameterType="workVO">
 	 update work
-	 work_code = 'B0101'
+	 set work_code = 'B0101'
      where work_no = #{workNo}
 	</update>
 	
