@@ -3,6 +3,7 @@ package com.prj.cosm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.produce.bom.service.BomService;
@@ -17,26 +18,8 @@ import com.prj.cosm.sales.client.service.ClientService;
 //@Log4j2
 public class MainController {
 
-	@Autowired
-	EquipService eService;
-
-	@Autowired
-	PlanService planService;
-
-	@Autowired
-	InsService insService;
-
-	@Autowired
-	RegistService registService;
-
-	@Autowired
-	ClientService cService;
-
-	@Autowired
-	BomService bomService;
-
-	@Autowired
-	GoodsService goodsService;
-
-
+@RequestMapping("/")
+public String home() {
+	return "/top";
+}
 }
