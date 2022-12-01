@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.prj.cosm.material.material.service.MaterialVO;
 import com.prj.cosm.sales.client.service.ClientService;
 import com.prj.cosm.sales.client.service.ClientVO;
 import com.prj.cosm.sales.orders.service.OrdersService;
@@ -87,23 +88,22 @@ public class OrderClientProductController {
 	public String chat(Model model) {
 		return "/client/chat";
 	}
-	
-	/*// 등록 페이지
-	@RequestMapping("/client/insertOrder")
-	public String insertOrder(Model model) {
-		// model.addAttribute("no", oService.getOrderNo());
-		return "/orders/insertOrder";
-	}
 
-	// 주문 등록 데이터
-	@PostMapping("/client/insertOrderData")
-	public String insertOrderPage(OrdersVO ovo) {
-		System.out.println("insert vo" + ovo);
-		oService.insertOrder(ovo);
-		return "redirect:/orders/sMain";
-	}*/
+	/*
+	 * // 등록 페이지
+	 * 
+	 * @RequestMapping("/client/insertOrder") public String insertOrder(Model model)
+	 * { // model.addAttribute("no", oService.getOrderNo()); return
+	 * "/orders/insertOrder"; }
+	 * 
+	 * // 주문 등록 데이터
+	 * 
+	 * @PostMapping("/client/insertOrderData") public String
+	 * insertOrderPage(OrdersVO ovo) { System.out.println("insert vo" + ovo);
+	 * oService.insertOrder(ovo); return "redirect:/orders/sMain"; }
+	 */
 
-	// 등록 페이지        
+	// 등록 페이지
 	@RequestMapping("/client/insertOrder")
 	public String insertOrder(Model model) {
 		// model.addAttribute("no", oService.getOrderNo());
@@ -123,6 +123,13 @@ public class OrderClientProductController {
 	@GetMapping("/orders/sMain")
 	public String salesorder(Model model) {
 		return "/orders/sMain";
+	}
+
+	// 자재 정보 상세조회(단건) - 상세정보 데이터
+	@ResponseBody
+	@GetMapping("/orders/getOrderInfo")
+	public OrdersVO getOrderInfo(OrdersVO vo) {
+		return oService.getOrderInfo(vo); // ajax의 데이터를 보여줘야기때문에 데이터로 return
 	}
 
 	// 완제품 조회 리스트
