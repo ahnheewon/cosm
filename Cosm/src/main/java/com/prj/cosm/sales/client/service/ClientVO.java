@@ -19,7 +19,7 @@ public class ClientVO {
 	 */
 
 	private String clientNo; // 거래처번호
-	private String name; // 거래처명
+	private String clientName; // 거래처명
 	private String manager; // 담당자명
 	private String businessNo; // 사업자번호
 	private Date regDate; // 등록일자
