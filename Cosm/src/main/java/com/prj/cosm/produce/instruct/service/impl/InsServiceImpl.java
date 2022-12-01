@@ -40,7 +40,8 @@ public class InsServiceImpl implements InsService {
 
 	@Override
 	public int insertInsInfo(InsVO insVO) {
-		equipService.doWork(insVO);
+//		equipService.doWork(insVO);
+		mapper.updateRTP(insVO);
 		return mapper.insertIns(insVO);
 	}
 

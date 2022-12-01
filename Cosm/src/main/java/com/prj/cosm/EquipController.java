@@ -410,4 +410,10 @@ public class EquipController {
 			}
 			return result;
 		}
+		
+		@GetMapping("/equipment/getProAmt")
+		@ResponseBody
+		public EquipVO getProAmt() {
+			return eService.getProAmt();
+		}
 }

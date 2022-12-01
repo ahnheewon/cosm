@@ -45,6 +45,8 @@ public interface EquipMapper {
 			// 현재 적용 공정에 달려있는 설비 갯수 조회
 			public EquipVO getMaxEquipNum(@Param("equipProcess")int equipProcess);
 			
+			public EquipVO getRTPState();
+			
 //===================================================================================================
 	
 	// 공정 
@@ -74,6 +76,12 @@ public interface EquipMapper {
 			public EquipVO getProcessNo();
 			
 			public void doWork(EquipVO vo);
+			
+			public void setProState();
+			
+			public void updateRTPup();
+			
+			public EquipVO getProAmt();
 			
 			public void stopWork(EquipVO vo);
 			

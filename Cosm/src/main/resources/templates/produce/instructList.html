@@ -723,11 +723,7 @@
             						xhr.setRequestHeader(header, token);
             					},
                 				success : function(data){
-                					Swal.fire({
-                	                    icon: 'warning',
-                	                    title: '생산중입니다. 잠시 기다려주세요',
-                	                    text: 'success~',
-                	                })
+                					
                 					console.log(data);
                     				$('#insertFrm').submit();	
                 				},
