@@ -69,13 +69,20 @@ public class OrderClientProductController {
 		return "/client/main";
 	}
 
-	// 주문조회 화면(월별 : 1개월 3개월 6개월 조회 가능)
+	// 주문조회 페이지(월별 : 1개월 3개월 6개월 조회 가능)
 	@GetMapping("/client/orderList")
-	@ResponseBody
-	public List<ClientVO> cliOrderList(Model model) {
+	public String orderList(Model model) {
 		// model.addAttribute("uno"), cService.getUserNo());
-		return cService.myOrderList();
+		return "/client/orderList";
 	}
+
+	//주문조회 데이터 - userNo,clientName - 1201일단 보류 
+	/*
+	 * @ResponseBody
+	 * 
+	 * @GetMapping("/orders/getOrderList") public List<ClientVO> getOrderList(Model
+	 * model) { return cService.getOrderList(); }
+	 */
 
 	// 마이페이지 화면
 	@RequestMapping("/client/myPage")

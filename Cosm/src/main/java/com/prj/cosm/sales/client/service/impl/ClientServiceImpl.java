@@ -71,4 +71,10 @@ public class ClientServiceImpl implements ClientService  {
 		
 	}
 
+	@Override
+	public List<ClientVO> getOrderList(ClientVO cvo) {
+		// 주문내역조회 
+		return mapper.getOrderList(cvo);
+	}
+
 }

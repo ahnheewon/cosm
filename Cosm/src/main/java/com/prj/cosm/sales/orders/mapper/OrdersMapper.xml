@@ -48,6 +48,7 @@
 		where o.goods_no = p.goods_no
 		and o.client_name = c.users_no
 		and order_code = 'B0107'
+		order by order_no desc
 	</select>
 
 
