@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.equipment.equip.service.EquipService;
@@ -32,6 +34,9 @@ public class EquipController {
 	
 	@Autowired
 	WorkService wService;
+	
+	@Value("${file.path}")
+	String path;
 	
 
 		// 첫 화면
@@ -63,7 +68,9 @@ public class EquipController {
 		
 		// 설비 등록 (설비별 가동시간도 함께 등록이 돼요!)
 		@PostMapping("/equipment/insertEquip")
-		public String insertEquip(EquipVO vo) {
+		public String insertEquip(EquipVO vo,MultipartFile img) {
+			
+			
 			eService.insertEquip(vo);
 		return "redirect:/equipment/process";
 		
@@ -347,10 +354,11 @@ public class EquipController {
 		@ResponseBody
 		public int deleteWork(@PathVariable int workNo) {
 				int a = wService.deleteWork(workNo);
-				int b = wService.updateDeleteSignNo(workNo); //삭제 후 번호 정렬
-				int c = wService.updateDeleteWorkNo(workNo); //삭제 후 번호 정렬
+				int b = wService.deleteSign(workNo);
+				int c = wService.updateDeleteSignNo(workNo); //삭제 후 번호 정렬
+				int d = wService.updateDeleteWorkNo(workNo); //삭제 후 번호 정렬
 					
-			return a+b+c;	
+			return a+b+c+d;	
 		}
 		
 		/*
