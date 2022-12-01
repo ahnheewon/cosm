@@ -28,7 +28,7 @@ public interface MaterialMapper {
 
 
 	// 자재 변동 리스트 전체 조회
-	public List<MaterialVO> mioList();
+	public List<MaterialVO> mioList(MaterialVO mVO);
 
 	// 거래처 명 찾기
 	public List<MaterialVO> findComNm();

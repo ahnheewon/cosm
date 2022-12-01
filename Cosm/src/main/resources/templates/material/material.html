@@ -164,7 +164,7 @@
       <!-- 자재 정보 상세내역 모달-->
       <div class="modal" tabindex="-1" id="mInfoModal" style="z-index: 1300">
          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div class="modal-content">	
                <div class="modal-header">
                   <h5 class="modal-title" style="font-weight: bold;">자재 정보 상세내역</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -172,7 +172,7 @@
                <div class="modal-body" style="text-align: left">
                   
                    <div class="row p-3">
-                        <label for="input" class="col-form-label">이미지</label>
+                        <label for="input" class="col-form-label"></label>
                         <img name="mFile"></img>
                      </div>
                      <div class="row p-3">
@@ -194,7 +194,7 @@
                      <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
                         onclick="location.href='minfo'">확인</button>
-                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
                   </div>
                </div>
             </div>
@@ -461,10 +461,14 @@
                   /* 파일이 존재하면 업로드한 이미지 띄우기, 존재하지 않으면 no Image 띄우기*/ 
                   if(result.mfile != null){ 
 				  	$('[name="mFile"]').attr("src", "/material/filedown?fname=" +result.mfile);
-				  	$('[name="mFile"]').css("width", "400px");
+				  	$('[name="mFile"]').css("width", "500px");
+				  	$('[name="mFile"]').css("display", "block");
+					$('[name="mFile"]').css("margin", "0px auto");
                   }else{
                 	$('[name="mFile"]').attr("src", "/assets/img/noImage.jpg" );  
-                	$('[name="mFile"]').css("width", "400px");
+                	$('[name="mFile"]').css("width", "500px");
+                	$('[name="mFile"]').css("display", "block");
+					$('[name="mFile"]').css("margin", "0px auto");
                   }
                },
                error: function (reject) {
@@ -473,7 +477,7 @@
             })
 
          }
-
+       
          
 
          
@@ -547,7 +551,15 @@
                   xhr.setRequestHeader(header, token);
                },
                success: function (result) {
-                  if (result == 0) { alert('사용 중인 자재로 삭제가 불가능합니다.') }
+                  if (result == 0){
+                	  $().ready(function () {
+                         Swal.fire({
+                                  icon: 'warning',
+                                  title: '삭제가 불가능합니다.',
+                                  text: '사용 중인 자재 입니다.',
+                              });
+                          });                      
+                }
                   console.log(result);
                   mList();
 

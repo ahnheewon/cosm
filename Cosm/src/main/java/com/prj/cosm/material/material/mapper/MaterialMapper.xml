@@ -49,10 +49,12 @@ SELECT m.m_no,
 	   m.m_category,
 	   m.m_stock,   
 	   NVL(total_mo_num,0)AS total_mo_num,
-       NVL(total_planed_qntt,0)AS total_planed_qntt,     
+       NVL(total_planed_qntt,0)AS total_planed_qntt, 
+           
       CASE WHEN (NVL(total_planed_qntt,0) - (NVL(m.m_stock,0) + NVL(total_mo_num,0))) > 0
       THEN (NVL(total_planed_qntt,0) - (NVL(m.m_stock,0) + NVL(total_mo_num,0)))
       ELSE 0 END AS shortage 
+      
 FROM Material m 			
 			JOIN MATERIAL_COMPANY mc
                 ON m.m_company_id = mc.mc_company_id
@@ -113,16 +115,21 @@ order by m_no
 		m_price,
 		m_company_id,
 		m_unit_code,
-		m_info,
-		m_file )
+		m_info
+		<if test="mFile !=null and !mFile.equals('')">
+		,m_file
+		</if>
+		 )
 		VALUES (#{mNo},
 		#{mName},
 		#{mCategory},
 		#{mPrice},
 		#{mCompanyId},
 		find_code_name(#{mUnitCode}),
-		#{mInfo},
-		#{mFile}
+		#{mInfo}
+		<if test="mFile !=null and !mFile.equals('')">
+		,#{mFile}
+		</if>
 		)
 	</insert>
 
@@ -139,7 +146,8 @@ order by m_no
 		m_unit_code =
 		find_code_name(#{mUnitCode}),
 		m_date = TO_DATE(sysdate, 'yyyy-MM-dd'),
-		m_info = #{mInfo}
+		m_info = #{mInfo},
+		m_file = #{mFile}
 		WHERE m_no = #{mNo}
 	</update>
 
@@ -156,6 +164,12 @@ order by m_no
 
 	<!-- 자재 변동 내역 리스트 -->
 	<select id="mioList" resultType="MaterialVO">
+SELECT * 
+  FROM
+  (
+	SELECT ROWNUM AS SEQ, A.*
+    FROM
+      (
 	SELECT mio_no, 
 		   mio_company_id, 
 		   mio_company_name as mio_company_nm,
@@ -173,6 +187,12 @@ order by m_no
 		AND TRUNC(mio.mio_date) BETWEEN #{startDate} AND #{endDate}
 	</if>
 	order by mio.mio_date DESC
+	)  A
+	WHERE SEQ <=  p*s
+)
+	WHERE ROWNUM >= (p-1)*s+1
+	
+	
 	</select>
 
 	<!-- 거래처 명 찾기 -->

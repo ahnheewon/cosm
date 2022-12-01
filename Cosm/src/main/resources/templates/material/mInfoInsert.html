@@ -63,7 +63,7 @@ font-weight: bold
 					</div>
 					<div class="col">
 						<label for="input" class="col-form-label">* 자재명</label> <input
-							type="text" class="form-control" name="mName" placeholder="">
+							type="text" class="form-control" name="mName" placeholder=""  >
 					</div>
 				</div>
 
@@ -72,12 +72,12 @@ font-weight: bold
 				<div class="row p-3">
 					<div class="col">
 						<label for="input" class="col-form-label">* 거래처번호</label> <input
-							type="text" class="form-control" id="selectCno" name="mCompanyId">
+							type="text" class="form-control" id="selectCno" name="mCompanyId" >
 					</div>
 
 					<div class="col">
 						<label for="input" class="col-form-label">* 거래처명</label> <input
-							type="text" class="form-control" name="mCompanyNm">
+							type="text" class="form-control" name="mCompanyNm"  >
 					</div>
 				</div>
 
@@ -88,7 +88,7 @@ font-weight: bold
 							<label for="exampleFormControlSelect1" class="col-form-label">* 자재단위</label>
 							<input type="hidden" class="form-control" id="mUnit" value="L"
 								onchange="mUnitSelect"> <select class="form-control"
-								id="mUnitSelect" name="mUnitCode">
+								id="mUnitSelect" name="mUnitCode"  >
 								<option selected="selected"></option>
 								<th:block th:each="unit : ${unit}">
 									<option th:text="${unit.codeName}"></option>
@@ -99,12 +99,12 @@ font-weight: bold
 					</div>
 					<div class="col">
 						<label for="input" class="col-form-label">* 단가</label> <input
-							type="text" class="form-control" name="mPrice">
+							type="text" class="form-control" name="mPrice"  >
 					</div>
 				</div>
 				<div class="row p-3">
 					<label for="input" class="col-form-label">* 자재상세정보</label>
-					<textarea class="form-control col-sm-5" rows="5" name="mInfo"></textarea>
+					<textarea class="form-control col-sm-5" rows="5" name="mInfo" ></textarea>
 				</div>
 				<div class="form-group">
 					<label for="exampleFormControlFile1">첨부파일</label> <input
@@ -272,7 +272,26 @@ font-weight: bold
 		
 			// 재고 정보 등록
 			$('#saveInfo').on('click', function() {
-				$('#frm').submit();
+				
+				   
+				if($('[name="mCategory"]').val() == ""||
+				   $('[name="mName"]').val() == "" || 
+				   $('[name="mCompanyId"]').val() == "" ||
+				   $('[name="mCompanyNm"]').val()== "" || 
+				   $('[name="mUnitCode"]').val() == ""||
+				   $('[name="mPrice"]').val() == "" || 
+				   $('[name="mInfo"]').val() == "") 
+				  
+					{
+					Swal.fire(
+                            '빈칸이 있습니다.', 
+                            '다시 확인해주세요.'
+                        )
+                   
+					}else{
+						$('#frm').submit();
+					}
+					
 			});
 
 			// 단위코드 선택(변경)
