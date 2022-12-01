@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prj.cosm.equipment.equip.service.EquipService;
@@ -32,6 +34,9 @@ public class EquipController {
 	
 	@Autowired
 	WorkService wService;
+	
+	@Value("${file.path}")
+	String path;
 	
 
 		// 첫 화면
@@ -63,9 +68,12 @@ public class EquipController {
 		
 		// 설비 등록 (설비별 가동시간도 함께 등록이 돼요!)
 		@PostMapping("/equipment/insertEquip")
-		public EquipVO insertEquip(EquipVO vo) {
+		public String insertEquip(EquipVO vo,MultipartFile img) {
+			
+			
 			eService.insertEquip(vo);
-		return vo;
+		return "redirect:/equipment/process";
+		
 		}
 		
 		// 현재 적용 공정에 달려있는 설비 갯수 조회
@@ -104,17 +112,11 @@ public class EquipController {
 		public int deleteEquip(@PathVariable int equipNo) {
 			int result = eService.deleteEquip(equipNo);
 			result = result + eService.deleteEquipTime(equipNo);
+			result = result + eService.updateDeleteEquipNo(equipNo);
+			result = result + eService.updateDeleteTimeEquipNo(equipNo);
 		return result;
 		}
-		
-		// 설비 삭제시 번호 정렬, 설비별 가동시간도 함께 update문 
-		@PostMapping("/equipment/updateDeleteEquipNo/{equipNo}")
-		@ResponseBody
-		public int updateDeleteEquipNo(@PathVariable int equipNo) {
-			int result= eService.updateDeleteEquipNo(equipNo);
-			result = result + eService.updateDeleteTimeEquipNo(equipNo);
-		return result; 
-		}
+
 		
 //================================================================================================================================	
 		
@@ -175,14 +177,26 @@ public class EquipController {
 			model.addAttribute("equip",eService.getEquipList());
 			model.addAttribute("equipFirst",eService.getEquipList().get(0));
 			model.addAttribute("tno",eService.getTestNo().getTestNo());
-			model.addAttribute("fno",eService.getFailNo().getFailNo());
+
 			model.addAttribute("wno",wService.getWorkNo().getWorkNo());
 			
 			return "/equipment/maintenance";
 		}
-
-	
 		
+		
+		// 새로고침없이 다음 글 번호 가져오기위해..
+			@GetMapping("/equipment/maintenanceNo")
+			@ResponseBody
+			public Map maintenanceNo() {
+					
+					Map<String, Integer> maintenanceNo = new HashMap<String, Integer>();
+					
+					maintenanceNo.put("tno",eService.getTestNo().getTestNo());
+					maintenanceNo.put("wno",wService.getWorkNo().getWorkNo());
+			
+					return maintenanceNo;
+					
+				}
 	//점검	
 		
 		// 점검 전체 리스트 조회
@@ -309,18 +323,16 @@ public class EquipController {
 		
 		// 공사 등록
 		@PostMapping("/equipment/insertWork")
-		public String insertWork(WorkVO vo, RedirectAttributes ratt) {
-			wService.insertWork(vo);
-			wService.insertWorkSign(vo);
-			ratt.addFlashAttribute("msg","정상적으로 등록되었습니다."); // 휘발성
-		return "redirect:/equipment/maintenance";
+		public int insertWork(WorkVO vo) {
+			int result =wService.insertWork(vo)+wService.insertWorkSign(vo);		
+			return result;
 		}
 		
 		//공사 결재안건 수정 seq+1
 		@PostMapping("/equipment/updateSignSeq")
 		@ResponseBody
 		public int updateSignSeq(WorkVO vo, RedirectAttributes ratt) {
-			int result = wService.updateSignSeq(vo);
+			int result = wService.updateSignSeq(vo);	
 			
 			if(vo.getSignSeq() == 3) {
 				wService.updateWorkCode(vo);
@@ -342,10 +354,11 @@ public class EquipController {
 		@ResponseBody
 		public int deleteWork(@PathVariable int workNo) {
 				int a = wService.deleteWork(workNo);
-				int b = wService.updateDeleteSignNo(workNo); //삭제 후 번호 정렬
-				int c = wService.updateDeleteWorkNo(workNo); //삭제 후 번호 정렬
+				int b = wService.deleteSign(workNo);
+				int c = wService.updateDeleteSignNo(workNo); //삭제 후 번호 정렬
+				int d = wService.updateDeleteWorkNo(workNo); //삭제 후 번호 정렬
 					
-			return a+b+c;	
+			return a+b+c+d;	
 		}
 		
 		/*

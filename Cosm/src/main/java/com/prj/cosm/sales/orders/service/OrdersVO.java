@@ -50,6 +50,8 @@ public class OrdersVO {
 		private String ioCode;				//출납상황
 		private int totalPrice; 			//총금액
 		private String usersNo;				//회원번호
+		private String oImg;
+		
 		
 		//체크박스 삭제, 셀렉트박스 상태변경, 체큿 생산지시 요청
 		private List<String> noList;

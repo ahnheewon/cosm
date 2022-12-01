@@ -84,7 +84,7 @@ public class UserController {
 		service.userInsert(empVO);
 		return "redirect:userList";
 	}
-
+	
 	//고객가입 데이터
 	@Transactional
 	@RequestMapping("/clientInsert")
@@ -100,13 +100,13 @@ public class UserController {
 		return "redirect:login";
 	}
 
-	@PostMapping("userUpdate")
+	@PostMapping("/userUpdate")
 	public String empUpdate(EmpVO empVO) {
 		service.userUpdate(empVO);
 		return "redirect:userList";
 	}
 
-	@PostMapping("userDelete")
+	@PostMapping("/userDelete")
 	@ResponseBody
 	public int userDelete(EmpVO empVO) {
 		return service.userDelete(empVO);

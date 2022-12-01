@@ -50,22 +50,17 @@
 				aria-labelledby="manage-tab">
 				<div style="margin: 15px;">
 
-					<!-- 검색창 start -->
-					<label for="actCd">검색 <input id="actCd">
-					</label>
 
-					<button class="btn btn-dark btn-sm">찾기</button>
-					<!-- 검색창 end -->
 
 					<hr>
-					<div style="width: 90%;">
+					<div>
 						<div>
 							<h3>신규 주문관리</h3>
 						</div>
 
 						<button style="float: right" id="proPlz"
 							class="btn btn-secondary btn-sm">접수</button>
-						<button style="float: right; margin-right: 8px" id="newPro"
+						<button style="float: right; margin-right: 8px;" id="newPro"
 							type="button" class="btn btn-secondary btn-sm">신규</button>
 
 						<!-- 전체조회 grid filter -->
@@ -76,17 +71,25 @@
 						<div>
 							<h3>접수 주문관리</h3>
 						</div>
-						
-						<button style="float: right" id="updatebtn" class="btn btn-secondary btn-sm">수정</button>
-						<button id="delbtn" class="btn btn-secondary btn-sm">삭제</button>
-						<button id="exlBtn" class="btn btn-secondary btn-sm">엑셀</button>
+						<!-- 검색창 start -->
+						<input onkeyup="filter()" type="text"
+							style="float: left; border: 1px solid #aaa;" id="searchFilter"
+							placeholder="제품명 입력">
+
+						<button style="float: left" class="btn btn-dark btn-sm">검색</button>
+						<!-- 검색창 end -->
+						<button style="float: right;" id="exlBtn"
+							class="btn btn-secondary btn-sm">엑셀</button>
+						<button style="float: right" id="delbtn"
+							class="btn btn-secondary btn-sm">삭제</button>
+						<button style="float: right" id="updatebtn"
+							class="btn btn-secondary btn-sm">수정</button>
 
 						<div id="grid4"></div>
 					</div>
 
 					<hr>
 					<!-- chart grid 들어갈 곳 -->
-
 				</div>
 			</div>
 			<!--주문관리 탭 end -->
@@ -130,6 +133,48 @@
 		<!-- tab 본문 end -->
 
 
+		<!-- 접수주문 상세정보 모달-->
+		<div class="modal" tabindex="-1" id="orderInfo" style="z-index: 1300">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">접수주문 상세내역</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+
+					<div class="modal-body" style="text-align: left">
+						<div class="row p-3">
+							<div class="col">
+								<label for="input" class="col-form-label">주문번호</label> <input
+									type="text" class="form-control" name="orderNo">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">제품명</label> <input
+									type="text" class="form-control" name="goodsName">
+							</div>
+							<div class="row p-3">
+								<label for="input" class="col-form-label">주문일자</label>
+								<textarea class="form-control col-sm-5" rows="5"
+									name="orderDate"></textarea>
+							</div>
+							<div class="row p-3">
+								<label for="input" class="col-form-label">이미지</label> <img
+									name="oImg"></img>
+							</div>
+						</div>
+
+						<div class="modal-footer" style="text-align: center">
+							<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+							<button type="button" class="btn btn-primary"
+								data-bs-dismiss="modal" onclick="location.href='sMain'">확인</button>
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">취소</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<script>
 			/*-----------
@@ -215,7 +260,28 @@
 				getSalesIoList(); //완제품목록
 			}
 
+			/*----------------------
+			 검색 그리드 
+			----------------------*/
+			function filter(){
 
+		        const search = document.getElementById("searchFilter")
+				
+				//const sf = document.querySelector('#searchFilter');
+				
+					
+				const state = [{code: 'contain', value: search.value.toUpperCase()}];
+					
+				if(search.value == ''){	
+					
+					grid4.unfilter('clientName');
+				
+				}else {
+					
+					grid4.filter('clientName', state);
+				}
+				
+		}
 
 			/*----------------------
 			신규 주문 그리드 
@@ -234,10 +300,11 @@
 				columns: [{
 						header: '주문번호',
 						name: 'orderNo',
-						width: 'auto'
+
 					}, {
 						header: '거래처명',
 						name: 'clientName',
+						
 					}, {
 						header: '제품번호',
 						name: 'goodsNo'
@@ -304,6 +371,7 @@
 					}, {
 						header: '거래처명',
 						name: 'clientName',
+						filter: 'text'
 					}, {
 						header: '제품번호',
 						name: 'goodsNo'
@@ -327,7 +395,7 @@
 					{
 						header: '배달상황',
 						name: 'deliveryInfo',
-						/* formatter: 'listItemText',
+						/*formatter: 'listItemText',
 						editor: {
 							type: 'select',
 							options: {
@@ -345,7 +413,7 @@
 									}
 								]
 							}
-						} */
+						}  */
 
 					}, //name: 'ORDER_PROGRESS_CODE',
 					{
@@ -570,6 +638,42 @@
 			// tab1 - 주문 관리 end ===========================================================================
 
 
+  /*----------------------- 
+	           접수주문 상세내역
+	         ------------------------*/
+         
+         function orderInfo(orderNo) {
+            $.ajax({
+               url: "/orders/getOrderInfo",
+               method: "GET",
+               data: { "orderNo": orderNo },
+               success: function (result) {
+                  console.log('모달 아작스 : ', result);
+                 /*  $('[name="orderNo"]').val(result.orderNo);
+                  $('[name="goodsNo"]').val(result.goodsNo);
+                  $('[name="totalNum"]').val(result.totalNum); */
+               },
+               error: function (reject) {
+                  console.log(reject);
+               }
+            })
+
+         }
+         // 접수주문 상세조회
+         grid4.on('click', ev => {
+            if (grid4.getRow(ev.rowKey) != null && ev.columnName != '_checked') { // checkbox 클릭시, 모달 안 뜨게끔
+               console.log('모달 : ', ev);
+
+               if (ev.rowKey >= 0) {
+                  let orderNo = grid4.getRow(ev.rowKey).orderNo;
+                  orderInfo(orderNo);
+               }
+               // 상세 조회 모달 열기
+               let myModalAlternative = new bootstrap.Modal('#orderInfo')
+               let modalToggle = document.getElementById('orderInfo');
+               myModalAlternative.show(modalToggle)
+            }
+         });  
 
 
 

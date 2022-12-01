@@ -51,10 +51,8 @@
 	</select>
 
 
-	<!-- 주문 단건조회 -->
-
-	<select id="getOrderInfo" parameterType="Integer"
-		resultType="ordersVO">
+	<!-- 접수주문 단건조회 -->
+	<select id="getOrderInfo" resultType="ordersVO">
 		SELECT * FROM orders
 		WHERE ORDER_NO = #{orderNo}
 	</select>

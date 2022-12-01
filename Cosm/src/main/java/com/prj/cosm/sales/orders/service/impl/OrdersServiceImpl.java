@@ -1,9 +1,7 @@
 package com.prj.cosm.sales.orders.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,12 +42,6 @@ public class OrdersServiceImpl implements OrdersService {
 	public List<OrdersVO> getReceiptList() {
 		// 접수주문 조회
 		return mapper.getReceiptList();
-	}
-
-	@Override
-	public OrdersVO getOrderInfo(int orderNo) {
-		// 단건조회
-		return mapper.getOrderInfo(orderNo);
 	}
 
 	@Override
@@ -104,7 +96,7 @@ public class OrdersServiceImpl implements OrdersService {
 		// 신규 -> 접수
 
 		int result = mapper.recNos(vo);
-		
+
 		List<EmpVO> eList = new ArrayList<>();
 		eList = eMapper.getReceiveUsers("D0105"); // 받는사람
 		for (EmpVO eVO : eList) {
@@ -115,6 +107,12 @@ public class OrdersServiceImpl implements OrdersService {
 		}
 
 		return result;
+	}
+
+	@Override
+	public OrdersVO getOrderInfo(OrdersVO vo) {
+		//접수주문 단건조회
+		return mapper.getOrderInfo(vo);
 	}
 
 }
