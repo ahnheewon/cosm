@@ -48,7 +48,7 @@ public class SecurityConfig {
 				.antMatchers("/material/**").hasAnyAuthority("ROLE_D0103", "ROLE_D0104")
 				.antMatchers( "/orders/**").hasAnyAuthority("ROLE_D0109", "ROLE_D0101","ROLE_D0110")
 				.antMatchers("/equipment/**")
-				.hasAnyAuthority("ROLE_D0108", "ROLE_D0107", "ROLE_D0101", "ROLE_D0106", "ROLE_D0111")
+				.hasAnyAuthority("ROLE_D0108", "ROLE_D0107", "ROLE_D0101", "ROLE_D0106", "ROLE_D0111", "ROLE_D0105")
 				.antMatchers("/**").hasAuthority("ROLE_D0101").anyRequest().authenticated()).formLogin()
 				.loginPage("/login").usernameParameter("userId").loginProcessingUrl("/login")
 				.successHandler(successHandler()).and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")

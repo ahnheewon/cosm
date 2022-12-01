@@ -1,134 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.prj.cosm.produce.instruct.mapper.InsMapper">
+<mapper
+	namespace="com.prj.cosm.produce.instruct.mapper.InsMapper">
 
-<!-- 모든 생산지시 리스트 -->
-<select id="allInsList" resultType="map">
-	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd, p.plan_product_no as planProductNo,
-		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
-		   i.instruct_date as instructDate, i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
-		   g.goods_name as goodsName,
-           code_name as instruct_progress_code
-	FROM produce_plan p JOIN produce_instruct i
-                        ON p.plan_no = i.instruct_plan_no
-                        JOIN produce_goods g
-                        ON p.plan_product_no = g.goods_no
-                        JOIN code
-                        ON i.instruct_progress_code = code.code_no
-    <where>
-	<if test="startDate != null and endDate != null">
-		TRUNC(i.instruct_date) BETWEEN #{startDate} AND #{endDate}
-	</if>
-	</where>
-	ORDER BY i.instruct_no DESC
-</select>
+	<!-- 모든 생산지시 리스트 -->
+	<select id="allInsList" resultType="map">
+		SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as
+		planEnd, p.plan_product_no as planProductNo,
+		i.instruct_no as instructNo, i.instruct_quantity as instructQuantity,
+		i.instruct_date as instructDate, i.instruct_progress_code as
+		instructProgressCode, i.instruct_ex as instructEx,
+		g.goods_name as goodsName,
+		code_name as instruct_progress_code
+		FROM produce_plan p JOIN produce_instruct i
+		ON p.plan_no = i.instruct_plan_no
+		JOIN produce_goods g
+		ON p.plan_product_no = g.goods_no
+		JOIN code
+		ON i.instruct_progress_code = code.code_no
+		<where>
+			<if test="startDate != null and endDate != null">
+				TRUNC(i.instruct_date) BETWEEN #{startDate} AND #{endDate}
+			</if>
+		</where>
+		ORDER BY i.instruct_no DESC
+	</select>
 
-<!-- 전체조회 진행중인 것 -->
-<select id="getInsList" resultType="map">
-	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd, p.plan_product_no as planProductNo,
-		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
-		   i.instruct_date as instructDate, i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,
-		   g.goods_name as goodsName,
-           code_name as instruct_progress_code
-	FROM produce_plan p JOIN produce_instruct i
-                        ON p.plan_no = i.instruct_plan_no
-                        JOIN produce_goods g
-                        ON p.plan_product_no = g.goods_no
-                        JOIN code
-                        ON i.instruct_progress_code = code.code_no
-	WHERE instruct_progress_code in ('A0101','A0102')
-	ORDER BY i.instruct_no DESC
-</select>
+	<!-- 전체조회 진행중인 것 -->
+	<select id="getInsList" resultType="map">
+		SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as
+		planEnd, p.plan_product_no as planProductNo,
+		i.instruct_no as instructNo, i.instruct_quantity as instructQuantity,
+		i.instruct_date as instructDate, i.instruct_progress_code as
+		instructProgressCode, i.instruct_ex as instructEx,
+		g.goods_name as goodsName,
+		code_name as instruct_progress_code
+		FROM produce_plan p JOIN produce_instruct i
+		ON p.plan_no = i.instruct_plan_no
+		JOIN produce_goods g
+		ON p.plan_product_no = g.goods_no
+		JOIN code
+		ON i.instruct_progress_code = code.code_no
+		WHERE instruct_progress_code in ('A0101','A0102')
+		ORDER BY i.instruct_no DESC
+	</select>
 
-<!-- 생산완료된것 전체조회 -->
-<select id="completeList" resultType="map">
-	SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as planEnd, p.plan_product_no as planProductNo,
-		   i.instruct_no as instructNo, i.instruct_quantity as instructQuantity, 
-		   i.instruct_date as instructDate, i.instruct_progress_code as instructProgressCode, i.instruct_ex as instructEx,   
-           g.goods_name as goodsName,
-           code_name as instruct_progress_code
-	FROM produce_plan p JOIN produce_instruct i
-                        ON p.plan_no = i.instruct_plan_no
-                        JOIN produce_goods g
-                        ON p.plan_product_no = g.goods_no
-                        JOIN code
-                        ON i.instruct_progress_code = code.code_no
-    WHERE instruct_progress_code = 'A0103'
-	ORDER BY i.instruct_no DESC
-</select>
+	<!-- 생산완료된것 전체조회 -->
+	<select id="completeList" resultType="map">
+		SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as
+		planEnd, p.plan_product_no as planProductNo,
+		i.instruct_no as instructNo, i.instruct_quantity as instructQuantity,
+		i.instruct_date as instructDate, i.instruct_progress_code as
+		instructProgressCode, i.instruct_ex as instructEx,
+		g.goods_name as goodsName,
+		code_name as instruct_progress_code
+		FROM produce_plan p JOIN produce_instruct i
+		ON p.plan_no = i.instruct_plan_no
+		JOIN produce_goods g
+		ON p.plan_product_no = g.goods_no
+		JOIN code
+		ON i.instruct_progress_code = code.code_no
+		WHERE instruct_progress_code IN ('A0103','A0102')
+		ORDER BY i.instruct_no DESC
+	</select>
 
 
-<!-- 지시번호 +1 -->
-<select id="getInsNo" resultType="InsVO">
-	SELECT 'COP_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(instruct_no,-4)),0)+1,4,0) as instruct_no
-	FROM produce_instruct WHERE instruct_no LIKE 'COP_'||TO_CHAR(SYSDATE,'rrrr')||'%'
-</select>
+	<!-- 지시번호 +1 -->
+	<select id="getInsNo" resultType="InsVO">
+		SELECT
+		'COP_'||TO_CHAR(SYSDATE,'rrrr')||LPAD(NVL(MAX(SUBSTR(instruct_no,-4)),0)+1,4,0)
+		as instruct_no
+		FROM produce_instruct WHERE instruct_no LIKE
+		'COP_'||TO_CHAR(SYSDATE,'rrrr')||'%'
+	</select>
 
-<!-- 지시 등록 -->
-<insert id="insertIns" parameterType="InsVO">
-	INSERT INTO produce_instruct
-                (instruct_no, 
-                instruct_quantity, 
-                instruct_ex, 
-                instruct_date, 
-                instruct_plan_no
-                ) 
-		VALUES ( #{instructNo}, 
-       			 #{instructQuantity}, 
-        		 #{instructEx}, 
-       			 #{instructDate}, 
-       			 #{instructPlanNo}
-       			 )
-</insert>
+	<!-- 지시 등록 -->
+	<insert id="insertIns" parameterType="InsVO">
+		INSERT INTO produce_instruct
+		(instruct_no,
+		instruct_quantity,
+		instruct_ex,
+		instruct_date,
+		instruct_plan_no
+		)
+		VALUES ( #{instructNo},
+		#{instructQuantity},
+		#{instructEx},
+		#{instructDate},
+		#{instructPlanNo}
+		)
+	</insert>
 
-<!-- 지시 수정 -->
-<update id="updateIns" parameterType="InsVO">
-	UPDATE produce_instruct
+	<!-- 지시 수정 -->
+	<update id="updateIns" parameterType="InsVO">
+		UPDATE produce_instruct
 		<set>
-			<if test="instructQuantity != null and !instructQuantity.equals('')">
+			<if
+				test="instructQuantity != null and !instructQuantity.equals('')">
 				instruct_quantity = #{instructQuantity},
 			</if>
 			<if test="instructEx != null and !instructEx.equals('')">
 				instruct_ex = #{instructEx},
 			</if>
-			<if test="instructProgressCode != null and !instructProgressCode.equals('')">
-				instruct_progress_code = (SELECT code_no FROM code 
-       			  WHERE code_name = #{instructProgressCode})
+			<if
+				test="instructProgressCode != null and !instructProgressCode.equals('')">
+				instruct_progress_code = (SELECT code_no FROM code
+				WHERE code_name = #{instructProgressCode})
 			</if>
 		</set>
-	WHERE instruct_no = #{instructNo}
-</update>
+		WHERE instruct_no = #{instructNo}
+	</update>
 
-<!-- 지시 삭제 -->
-<delete id="deleteIns">
-	DELETE FROM produce_instruct WHERE instruct_no = #{instructNo}
-</delete>
+	<!-- 지시 삭제 -->
+	<delete id="deleteIns">
+		DELETE FROM produce_instruct WHERE instruct_no = #{instructNo}
+	</delete>
 
-<!-- 자재번호 리스트 -->
-<select id="getMaterialNoList" resultType="InsVO">
-	SELECT m_no, m_name
-	FROM material
-	ORDER BY m_no
-</select>
+	<!-- 자재번호 리스트 -->
+	<select id="getMaterialNoList" resultType="InsVO">
+		SELECT m_no, m_name
+		FROM material
+		ORDER BY m_no
+	</select>
 
-<!-- 진행상황 리스트 -->
-<select id="getPlayList" resultType="InsVO">
-	SELECT code_name FROM code
-	WHERE code_adno = 'A01'
-	ORDER BY code_no
-</select>
+	<!-- 진행상황 리스트 -->
+	<select id="getPlayList" resultType="InsVO">
+		SELECT code_name FROM code
+		WHERE code_adno = 'A01'
+		ORDER BY code_no
+	</select>
 
-<!-- 생산지시 진행중인것 완료로 update -->
-<update id="updateInsPlay" parameterType="InsVO">
-	UPDATE produce_instruct
-	SET instruct_progress_code = 'A0103'
-	WHERE instruct_no = #{instructNo}
-</update>
+	<!-- 생산지시 진행중인것 완료로 update -->
+	<update id="updateInsPlay" parameterType="InsVO">
+		UPDATE produce_instruct
+		SET instruct_progress_code = 'A0103'
+		WHERE instruct_no = #{instructNo}
+	</update>
 
-<!-- 생산지시 완료된 것 보관으로 update -->
-<update id="updateInsPlay2" parameterType="InsVO">
-	UPDATE produce_instruct
-	SET instruct_progress_code = 'A0107'
-	WHERE instruct_no = #{instructNo}
-</update>
+	<!-- 생산지시 완료된 것 보관으로 update -->
+	<update id="updateInsPlay2" parameterType="InsVO">
+		UPDATE produce_instruct
+		SET instruct_progress_code = 'A0107'
+		WHERE instruct_no = #{instructNo}
+	</update>
+
+	<!-- Real Time Producing Update -->
+	<update id="updateRTP" parameterType="InsVO">
+		UPDATE rtp SET target_amt = target_amt + #{instructQuantity}
+	</update>
+
+	<update id="resetRTP">
+		UPDATE rtp SET target_amt = 0, now_amt = 0, state = 0
+	</update>
+
+	<update id="updateDoneRTP">
+		UPDATE rtp SET target_amt = target_amt - #{instructQuantity}, now_amt = now_amt - #{instructQuantity}
+	</update>
+	
+
+	<update id="updateEndIns" parameterType="InsVO">
+		UPDATE produce_instruct set instruct_progress_code = 'A0103' WHERE
+		instruct_no = #{instructNo}
+	</update>
+
+	<select id="getRecentQntt" resultType="InsVO">
+		select instruct_no,instruct_quantity from (select rownum as rn, instruct_no,
+		instruct_quantity from produce_instruct where
+		instruct_progress_code='A0102' order by instruct_no) where rn=1
+	</select>
 </mapper>

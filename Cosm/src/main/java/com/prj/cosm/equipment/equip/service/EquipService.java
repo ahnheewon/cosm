@@ -50,7 +50,10 @@ public interface EquipService {
 				// 설비 등록하기 전에 현재 적용 공정에 달려있는 설비 갯수 조회
 				public EquipVO getMaxEquipNum(@Param("equipProcess")int equipProcess);
 				
-				public void doWork(InsVO insVO);
+//				public void doWork(InsVO insVO);
+				public void doWork();
+				
+				public EquipVO getProAmt();
 				
 //===================================================================================================
 	// 공정 

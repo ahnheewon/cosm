@@ -34,4 +34,12 @@ public interface InsMapper {
 
 	// 모든 생산지시 전체조회
 	public List<Map<String, Object>> allInsList(InsVO vo);
+	
+	public void updateRTP(InsVO vo);
+	
+	public InsVO getRecentQntt();
+	
+	public void updateDoneRTP(InsVO vo);
+	
+	public void updateEndIns(InsVO vo);
 }
