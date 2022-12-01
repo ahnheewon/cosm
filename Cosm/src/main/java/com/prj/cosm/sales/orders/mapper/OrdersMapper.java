@@ -18,8 +18,8 @@ public interface OrdersMapper {
 		//접수주문 전체조회
 		public List<OrdersVO> getReceiptList();
 		
-		//단건조회
-		public OrdersVO getOrderInfo(int orderNo);
+		//접수주문 - 단건조회
+		public OrdersVO getOrderInfo(OrdersVO vo);
 		
 		//주문 등록 
 		public int insertOrder(OrdersVO vo);

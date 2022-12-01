@@ -1,7 +1,6 @@
 package com.prj.cosm.sales.orders.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -17,8 +16,8 @@ public interface OrdersService {
 	// 접수주문 전체조회
 	public List<OrdersVO> getReceiptList();
 
-	// 단건조회
-	public OrdersVO getOrderInfo(int orderNo);
+	// 접수주문 - 단건조회
+	public OrdersVO getOrderInfo(OrdersVO vo);
 
 	// 주문 등록
 	public int insertOrder(OrdersVO vo);
@@ -40,6 +39,7 @@ public interface OrdersService {
 	// 신규 -> 접수버튼 -> 접수
 	public int recNos(List<OrdersVO> vo);
 
+	
 	/*
 	 * 데이터 다건 추가시 public class GridData<T> { private List<T> updatedRows; private
 	 * List<T> deletedRows; private List<T> createdRows; }
