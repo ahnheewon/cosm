@@ -177,11 +177,9 @@ order by m_no
 
 	<!-- 거래처 명 찾기 -->
 	<select id="findComNm" resultType="MaterialVO">
-		SELECT mc_company_id as
-		m_company_id ,
-		mc_company_name as m_company_nm,
-		mc_manager_name as
-		m_mng_nm
+		SELECT mc_company_id as	m_company_id ,
+			   mc_company_name as m_company_nm,
+			   mc_manager_name as m_mng_nm
 		FROM material_company
 		ORDER BY mc_company_id
 	</select>

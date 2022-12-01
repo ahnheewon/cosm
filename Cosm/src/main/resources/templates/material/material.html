@@ -44,9 +44,14 @@
 
 <body>
    <div layout:fragment="content">
+   
+		
       <div class="container" style="padding-top : 50px; padding-bottom: 20px">
-         <h3 style="text-align: center; font-weight: bold; ">자재 관리 페이지</h3>
-
+      <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+  		<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
+		</svg> > 자재 정보 관리 </h6>
+         <h3 style="text-align: center; font-weight: bold; ">자재 정보 관리</h3>
+		 <hr>
          <div class="row">
             <div class="column">
                <div id="wrap">
@@ -76,9 +81,12 @@
                   </div>
                </div>
             </div>
-            <div class="column" style="padding-top : 50px;">
-               <h3 style="text-align: center; font-weight: bold; padding-bottom: 20px">자재 변동 내역</h3>
-         <span></span>                 
+            <hr>   
+		
+            <div class="column" style="padding-top : 20px;">
+            
+               <h3 style="text-align: center; font-weight: bold; padding-bottom: 10px">자재 변동 내역</h3>
+       			<hr>                
                    <input type="text" id="searchFilter_2" style="width: 200px; float:left;margin-right:3px" onkeyup="filter2()"
                      placeholder="자재명 입력"> 
                      <button type="button" class="btn btn-secondary btn-sm">
@@ -162,7 +170,12 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
                <div class="modal-body" style="text-align: left">
-                  <div class="row p-3">
+                  
+                   <div class="row p-3">
+                        <label for="input" class="col-form-label">이미지</label>
+                        <img name="mFile"></img>
+                     </div>
+                     <div class="row p-3">
                      <div class="col">
                         <label for="input" class="col-form-label">자재번호</label> <input type="text"
                            class="form-control" name="mNo">
@@ -175,10 +188,7 @@
                         <label for="input" class="col-form-label">자재상세정보</label>
                         <textarea class="form-control col-sm-5" rows="5" name="mInfo"></textarea>
                      </div>
-                      <div class="row p-3">
-                        <label for="input" class="col-form-label">이미지</label>
-                        <img name="mFile"></img>
-                     </div>
+                     
                   </div>
                   <div class="modal-footer" style="text-align: center">
                      <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
@@ -451,10 +461,10 @@
                   /* 파일이 존재하면 업로드한 이미지 띄우기, 존재하지 않으면 no Image 띄우기*/ 
                   if(result.mfile != null){ 
 				  	$('[name="mFile"]').attr("src", "/material/filedown?fname=" +result.mfile);
-				  	$('[name="mFile"]').css("width", "500px");
+				  	$('[name="mFile"]').css("width", "400px");
                   }else{
                 	$('[name="mFile"]').attr("src", "/assets/img/noImage.jpg" );  
-                	$('[name="mFile"]').css("width", "500px");
+                	$('[name="mFile"]').css("width", "400px");
                   }
                },
                error: function (reject) {
@@ -586,7 +596,7 @@
          
 
 
-         function findBtnHandler() {
+          function findBtnHandler(){
             $('#findBtn').on('click', function () {
                let getStartDay = $('#startpicker-input').val();
                let getEndDay = $('#endpicker-input').val();
@@ -600,8 +610,9 @@
                      "startDate": getStartDay,
                      "endDate": getEndDay
                   },
-                  contentType: "application/json",
                   dataType: 'json',
+                  contentType: 'application/json',
+                 
                   
                   success: function (result) {
                      console.log(result);
@@ -613,8 +624,8 @@
                })
 
             })
+         
          }
-
 
          /*--------------------
          검색기능(필터이용 검색함수)
@@ -622,8 +633,7 @@
          function filter() { // 토스트그리드 
 
             const search = document.getElementById("searchFilter") //인풋태그
-            const search2 = document.getElementById("searchFilter_2")
-
+       
             const state = [{ code: 'contain', value: search.value.toUpperCase() }];
 
             if (search.value == '') {

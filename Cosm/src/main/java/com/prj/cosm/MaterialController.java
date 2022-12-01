@@ -88,7 +88,7 @@ public class MaterialController {
 		
 		if(imageFile != null && imageFile.getSize() >0) {
 			//첨부파일 처리
-			String path = "C:\\Dev\\upload"; // 경로
+			
 			String fName = imageFile.getOriginalFilename(); // 이미지 실제 이름
 			
 			File file = new File(path, fName);			

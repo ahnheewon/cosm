@@ -187,10 +187,10 @@
 					</div>
 				</div>
 				<!-- jini start -->
-				<div class="sb-sidenav-menu">
+				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0109')">
 					<div class="nav">
 						<br>
-						<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0109')">
+						<div class="sb-sidenav-menu" >
 							&nbsp; &nbsp;영업팀 [[${session.usersName}]] 님
 							<div class="nav">
 								<!-- 영업관리 -->
@@ -227,10 +227,10 @@
 
 				<!-- jini end -->
 				<!-- jini start -->
-				<div class="sb-sidenav-menu">
+				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0102')">
 					<div class="nav">
 						<br>
-						<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0102')">
+						<div class="sb-sidenav-menu" >
 							&nbsp; &nbsp; 환영합니다! [[${session.usersName}]] 님
 							<div class="nav">
 								<!-- 영업관리 -->
