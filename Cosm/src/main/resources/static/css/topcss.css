@@ -1,0 +1,93 @@
+body{
+	margin:0;
+	user-select: none;
+	
+}
+
+#bgimg>img{
+	width: 100%;
+	animation-iteration-count: 1;
+	animation-name: bgop;
+	animation-duration : 6s;
+	position: relative;
+	z-index: -1;
+	float: left;
+	display: inline-block;
+	position: absolute;
+	
+
+}
+#bgimg,#bgimg>img{
+		float: left;
+		display: inline-block;
+		user-drag: none;
+}
+
+@keyframes bgop {
+  0% {opacity : 0.2;}
+  70% {opacity : 0.2;}
+  100%{opacity : 1;}
+}
+
+@keyframes texton {
+  0% {transform : translate(-1000px,0);}
+  90% {transform : translate(-1000px,0);}
+  100%{transform : translate(0,0);}
+}
+
+.contents{
+	
+}
+.cola{
+	animation-iteration-count: 1;
+	animation-delay: 0;
+	animation-name: gone;
+	animation-duration : 5s;
+	opacity: 0;
+}
+.colb{
+	animation-iteration-count: 1;
+	animation-delay: 0;
+	animation-name: gone;
+	animation-duration : 5s;
+	opacity: 0;
+}
+
+@keyframes gone {
+  0% {opacity : 1;}
+  90% {opacity : 1;}
+  100%{opacity : 0;}
+}
+
+
+#login{
+	display: absolute;
+	animation-iteration-count: 1;
+	animation-delay: 0;
+	animation-name: texton;
+	animation-duration : 6s;
+	width: 100%;
+	text-decoration: none;
+	font-size: 300px;
+}
+@keyframes bton {
+  0% {opacity : 0;}
+  90% {opacity : 00;}
+  100%{opacity : 1;}
+}
+
+h1 {
+  position: relative;
+  text-align: center;
+  color: #353535;
+  font-size: 50px;
+  font-family: "Cormorant Garamond", serif;
+}
+p {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  text-align: center;
+  font-size: 18px;
+  color: #676767;
+}
+
