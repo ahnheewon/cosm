@@ -55,56 +55,57 @@ public class MorderServiceImpl implements MorderService {
 	}
 
 	@Override
-	public int insertInputOrder(List<MorderVO> mvo) {
-		// 입고대기 리스트 -> 입고 리스트(입고완료)
-		int result = 0;
-		for (MorderVO vo : mvo) {
-			result += moMapper.insertInputOrder(vo);
-			moMapper.updateCode(vo);
-			vo.setMNo(vo.getMoMaterialId());
-			moMapper.updateMStock(vo);
-			moMapper.updateCode(vo);
-		}
+	   public int insertInputOrder(List<MorderVO> mvo) {
+	      // 입고대기 리스트 -> 입고 리스트(입고완료)
+	      int result = 0;
+	      for (MorderVO vo : mvo) {
+	         result += moMapper.insertInputOrder(vo);
+	         moMapper.updateCode(vo);
+	         vo.setMNo(vo.getMoMaterialId());
+	         moMapper.updateMStock(vo);	      
+	      }
 
-		// 현재 재고 들고오는 매퍼
-		List<MaterialVO> mList = maMapper.mList();
-		List<PlanVO> pList = pMapper.getPlanCompute();
-		List<PlanVO> resultList = new ArrayList<>();
-		for (PlanVO pVO : pList) {
-			pVO.setCheck(0);
-			for (MaterialVO mVO : mList) {
-				int compute = mVO.getMStock();
-				if (mVO.getMNo().equals(pVO.getBomMaterialNo())) {
-					if (compute >= pVO.getBomQuantity()) {
-						compute -= pVO.getBomQuantity();
-						pVO.setCheck(1);
-					}
-				} else if (mVO.getMNo().equals(pVO.getBomMaterialNob())) {
-					if (compute >= pVO.getBomQuantityb()) {
-						compute -= pVO.getBomQuantityb();
-						if (pVO.getCheck() == 1) {
-							pVO.setCheck(2);
-						}
-					}
-				}
-				if (pVO.getCheck() == 2) {
-					resultList.add(pVO);
-				}
-			}
-		}
-		pMapper.updateCanIns(resultList);
+	      // 현재 재고 들고오는 매퍼
+	      List<MaterialVO> mList = maMapper.mList();
+	      List<PlanVO> pList = pMapper.getPlanCompute();
+	      List<PlanVO> resultList = new ArrayList<>();
+	      for (PlanVO pVO : pList) {
+	         pVO.setCheck(0);
+	         for (MaterialVO mVO : mList) {
+	            int compute = mVO.getMStock();
+	            if (mVO.getMNo().equals(pVO.getBomMaterialNo())) {
+	               if (compute >= pVO.getBomQuantity()) {
+	                  compute -= pVO.getBomQuantity();
+	                  pVO.setCheck(1);
+	               }
+	            } else if (mVO.getMNo().equals(pVO.getBomMaterialNob())) {
+	               if (compute >= pVO.getBomQuantityb()) {
+	                  compute -= pVO.getBomQuantityb();
+	                  if (pVO.getCheck() == 1) {
+	                     pVO.setCheck(2);
+	                  }
+	               }
+	            }
+	            if (pVO.getCheck() == 2) {
+	               resultList.add(pVO);
+	            }
+	         }
+	      }
+	      if(resultList != null || resultList.size() != 0) {
+	         pMapper.updateCanIns(resultList);
+	      }
 
-		List<EmpVO> eList = new ArrayList<>();
-		eList = eMapper.getReceiveUsers("D0105");
-		AlertVO aVO = new AlertVO();
-		for (EmpVO eVO : eList) {
-			aVO.setAlertContent("필요 자재가 입고되었습니다.");
-			aVO.setAlertReceive(eVO.getUsersNo());
-			aMapper.insertAlert(aVO);
-		}
-		return result;
+	      List<EmpVO> eList = new ArrayList<>();
+	      eList = eMapper.getReceiveUsers("D0105");
+	      AlertVO aVO = new AlertVO();
+	      for (EmpVO eVO : eList) {
+	         aVO.setAlertContent("필요 자재가 입고되었습니다.");
+	         aVO.setAlertReceive(eVO.getUsersNo());
+	         aMapper.insertAlert(aVO);
+	      }
+	      return result;
 
-	}
+	   }
 
 	@Override
 	public int updateCode(MorderVO vo) {
