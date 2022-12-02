@@ -51,13 +51,7 @@ public class EquipController {
 			return "/equipment/main";
 		}
 		
-		@GetMapping("/equipment/filedown")
-		public void fileDown (String fname, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		      
-		      FileUtil.fileDownload(path + fname, request, response); // path는 application.properties에 선언되어있음
-	      
-		
-		}
+
 		
 		// 공정관리 페이지 이동, // 매개변수 pno, eno, ep 데이터 뿌리기.
 		@RequestMapping("/equipment/process")
@@ -83,20 +77,19 @@ public class EquipController {
 		
 		// 설비 등록 (설비별 가동시간도 함께 등록이 돼요!)
 		@PostMapping("/equipment/insertEquip")
-		public String insertEquip(EquipVO vo,MultipartFile img) throws IllegalStateException, IOException {
+		public String insertEquip(EquipVO vo, MultipartFile img) throws IllegalStateException, IOException {
 			
-		      if(img != null && img.getSize() >0) {
-		          //첨부파일 처리
+		      if(img != null && img.getSize() > 0) {
+		          //첨부파일 처리        
+		          String fname = img.getOriginalFilename(); // 이미지 실제 이름
 		          
-		          String fName = img.getOriginalFilename(); // 이미지 실제 이름
-		          
-		          File file = new File(path, fName);         
+		          File file = new File(path, fname);         
 		          file = FileRenamePolicy.rename(file); // 파일 중복 검사
 		          
 		          img.transferTo(file); // 파일을 폴더로 옮겨줌
-		          vo.setEFile(fName);
+		          vo.setEFile(file.getName());
 		       }
-			
+		      
 			eService.insertEquip(vo);
 		return "redirect:/equipment/process";
 		
@@ -122,6 +115,14 @@ public class EquipController {
 	
 			return equipMap;
 			
+		}
+		
+		// 파일 다운
+		@GetMapping("/equipment/filedown")
+		public void fileDown (String fname, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		      
+		      FileUtil.fileDownload(path + fname, request, response); // path는 application.properties에 선언되어있음
+
 		}
 		
 		// 설비 수정

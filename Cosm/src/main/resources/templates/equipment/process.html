@@ -63,7 +63,7 @@
 			<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 			</div>
 	
-			<form id="insertForm1" action="/equipment/insertProcess" method="post">
+			<form id="insertForm1" action="/equipment/insertProcess" method="post" >
 			<!-- <sec:csrfInput/> -->
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			<!-- Modal body -->
@@ -110,7 +110,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
 		
-				<form id="insertForm2" action="/equipment/insertEquip" method="post" >
+				<form id="insertForm2" action="/equipment/insertEquip" method="post" enctype="multipart/form-data" >
 				<!-- <sec:csrfInput/> -->
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 				<!-- Modal body -->
@@ -150,6 +150,10 @@
 	                    <tr>
 	                        <td>설비설명</td>
 	                        <td><textarea class="form-control" id="equipPurpose" name="equipPurpose" rows="5"></textarea></td>
+	                    </tr>                  
+	                    <tr>
+	                        <td>첨부파일</td>
+	                        <td><input type="file" id="img" name="img" ></td>
 	                    </tr>                  
 	                </table>
 				</div>
@@ -214,17 +218,18 @@
 		                    <tr>
 		                        <td>설치시기</td>                      
 		                        <td>
-								 	  <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-					                  <input id="wv-input" name="equipDate" autocomplete="off" type="text" aria-label="Date" style="background-color :#E9ECEF;" readonly>
+								 	  <div class="tui-datepicker-input tui-datetime-input tui-has-focus pickerDiv">
+					                  <input id="wv-input" class="picker" name="equipDate" autocomplete="off" type="text" aria-label="Date" style="background-color :#E9ECEF;" readonly>
 					                  <span class="tui-ico-date" ></span>
 					                  <div id="wv-container" style="margin-left: -1px;"></div>
 					               	  </div>            
 								</td>
-								<td  rowspan="2"><img name="eFile"></td>
+								<td  rowspan="2"><img name="eFile" style="border-radius: 10%;"></td>
 							</tr>
 							<tr>
 		                        <td>가동시간</td>
-		                        <td><input class="form-control" id="equipTime" name="equipTime" type="text" readonly
+		                        <td><input class="form-control" id="updateEquipTime" name="updateEquipTime" type="text" readonly>
+		                        <input class="form-control" id="equipTime" name="equipTime" type="hidden" readonly
                                         style="width: 86%; display: inline-block;"></td>  
                                 		                     
 		                    </tr> 
@@ -417,6 +422,7 @@ function filter(){
     .then(res=>res.json())
     .then(obj=>{
   		console.log(obj);
+  		console.log(obj.ei.eFile);
         document.querySelector('#thisNoUD').value=obj.ei.equipNo; // 업데이트때문에 가져온 데이터 값.
         
         document.querySelector('#selectEquipName').value=obj.ei.equipName;
@@ -427,17 +433,18 @@ function filter(){
         document.querySelector('#selectEquipPurpose').value=obj.ei.equipPurpose;
         document.querySelector('#wv-input').value=obj.ei.equipDate;
         
-        document.querySelector('#equipTime').value=obj.et.equipTime+' 시간';
+        document.querySelector('#updateEquipTime').value=obj.et.equipTime+' 시간';
+        document.querySelector('#equipTime').value=obj.et.equipTime;
    	
         /* 파일이 존재하면 업로드한 이미지 띄우기, 존재하지 않으면 no Image 띄우기*/ 
-        if(obj.efile != null){ 
-       $('[name="eFile"]').attr("src", "/equipment/filedown?fname=" +obj.efile);
-       $('[name="eFile"]').css("width", "400px");
+        if(obj.ei.efile != null){ 
+       $('[name="eFile"]').attr("src", "/equipment/filedown?fname=" +obj.ei.efile);
+       $('[name="eFile"]').css("width", "150px");
         }else{
          $('[name="eFile"]').attr("src", "/assets/img/noImage.jpg" );  
-         $('[name="eFile"]').css("width", "400px");
+         $('[name="eFile"]').css("width", "150px");
 
-        
+        }
        
     }
     
@@ -451,20 +458,20 @@ function filter(){
 		for (var i = 0; i< wantUpdate.length; i++) {
             wantUpdate[i].readOnly = false;
             wantUpdate[i].required = true;
-            wantUpdate[i].style.backgroundColor="white";
         }
 		
 		const btn = document.querySelector('#updateBtn')
 		btn.innerText='저장';
 		btn.removeAttribute('onclick'); // 기존 event 제거
 		btn.removeEventListener('click',updateBtnClick);
-		btn.addEventListener('click',updateEquip);
+		btn.setAttribute('onclick','updateBtnClick()');
 			           
 	}
 
 /* 설비 수정 함수 */	
 	function updateEquip() {
-	
+		
+
 		console.log("아작스 전송");
 		 const url="/equipment/updateEquip";
 		 
@@ -484,7 +491,7 @@ function filter(){
 				btn.setAttribute('onclick','updateBtnClick()');
 				
 				Swal.fire({
-		  			  title:'수정완료',
+		  		  title:'수정완료',
                   icon:'success',
                   allowOutsideClick: false, // 배경클릭해서 나가는거 방지
                   allowEscapeKey: false // 키 눌러서 나가는거 방지
