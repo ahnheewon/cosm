@@ -7,37 +7,31 @@
 	<!-- 회원 등록 -->
 	<insert id="clientIn" parameterType="ClientVO">
 		INSERT INTO client(
-		<if test="name!=null or !name.equals('')">
-			NAME
-		</if>
-		<if test="businessNo!=null or !businessNo.equals('')">
-			,BUSINESS_NO
-		</if>
-		<if test="licenseImg!=null or !licenseImg.equals('')">
-			,LICENSE_IMG
-		</if>
-		<if test="userNo!=null or !userNo.equals('')">
-			,USERS_NO
-		</if>
-		<if test="openDate!=null">
-			,OPEN_DATE
-		</if>
+		
+			client_name
+	
+		
+			,business_no
+		
+			,license_img
+		
+			,users_no
+		
+			,open_date
+		
 		) VALUES(
-		<if test="name!=null or !name.equals('')">
-			#{name}
-		</if>
-		<if test="businessNo!=null or !businessNo.equals('')">
+		
+			#{clientName}
+		
 			,#{businessNo}
-		</if>
-		<if test="licenseImg!=null or !licenseImg.equals('')">
+		
 			,#{licenseImg}
-		</if>
-		<if test="userNo!=null or !userNo.equals('')">
+		
 			,#{userNo}
-		</if>
-		<if test="openDate!=null">
+	
+		
 			,#{openDate}
-		</if>
+
 		)
 	</insert>
 
