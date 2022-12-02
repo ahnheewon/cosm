@@ -21,4 +21,6 @@ public interface ClientMapper {
 	// 주문조회
 	public List<ClientVO> getOrderList(ClientVO cvo);
 
+	// 주문등록
+	public int insertOrder(ClientVO cvo);
 }

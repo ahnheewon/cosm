@@ -6,40 +6,75 @@
 	<!-- 주문조회 -->
 	<select id="getOrderList" resultType="ClientVO">
 		select o.order_no,
-		(select goods_name from produce_goods p where p.goods_no = o.goods_no)
-		as product,
+		(select
+		goods_name from produce_goods p where p.goods_no = o.goods_no)
+		as
+		product,
 		o.total_num, o.total_price,
-		(select client_name from client c where c.users_no = o.client_name) as client
+		(select client_name from client c
+		where c.users_no = o.client_name) as client
 		from orders o
 	</select>
+	
+	<!-- 주문 등록 -->
+	<!-- ORDER_CODE - 신규,불량,재주문 추가하기 -->
+	<insert id="insertOrder" parameterType="ClientVO">
+
+		<selectKey order="BEFORE" keyProperty="orderNo"
+			resultType="String">
+			<if test="orderNo == null"> SELECT 'COO_' ||
+				LPAD(NVL(MAX(SUBSTR(order_no,-4)),0)+1,4,0)
+				FROM orders
+			</if>
+		</selectKey>
+		INSERT INTO orders (
+		ORDER_NO,
+		GOODS_NO,
+		CLIENT_NAME,
+		DELIVERY_DATE,
+		TOTAL_NUM,
+		NOTE,
+		TOTAL_PRICE
+		)
+		values (
+		#{orderNo},
+		(select GOODS_NO from produce_goods where GOODS_NAME=#{goodsName}),
+		#{usersNo},
+		#{deliveryDate},
+		#{totalNum},
+		#{note},
+		#{totalPrice}
+		)
+	</insert>
+	
 
 	<!-- 회원 등록 -->
 	<insert id="clientIn" parameterType="ClientVO">
 		INSERT INTO client(
-		
-			client_name
-	
-		
-			,business_no
-		
-			,license_img
-		
-			,users_no
-		
-			,open_date
-		
+
+		client_name
+
+
+		,business_no
+
+		,license_img
+
+		,users_no
+
+		,open_date
+
 		) VALUES(
-		
-			#{clientName}
-		
-			,#{businessNo}
-		
-			,#{licenseImg}
-		
-			,#{userNo}
-	
-		
-			,#{openDate}
+
+		#{clientName}
+
+		,#{businessNo}
+
+		,#{licenseImg}
+
+		,#{userNo}
+
+
+		,#{openDate}
 
 		)
 	</insert>

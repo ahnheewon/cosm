@@ -9,6 +9,16 @@
 	href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
 	rel="stylesheet" />
 <title>insert order</title>
+<!-- date-picker & time-picker -->
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+<script
+	src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<script
+	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+</head>
 <body layout:fragment="content">
 	<section class="vh-100">
 		<div class="card-body p-5 text-center"></div>
@@ -18,22 +28,39 @@
 				<div class="card shadow-2-strong" style="border-radius: 1rem;">
 					<div class="card-body p-5 text-center">
 						<form id="insertFrm" action="/client/insertOrderData"
-							method="post" >
+							method="post">
 							<h4>주문서</h4>
 							<input type="hidden" th:name="${_csrf.parameterName}"
 								th:value="${_csrf.token}" />
-							<table id="table" >
+							<table id="table">
 								<tbody>
 									<tr>
 										<th>제품명</th>
 										<td><input type="text" class="form-control"
-											id="goodsName" name="goodsName" value="TPA502"
+											id="goodsName" name="goodsName" value="TPA"
 											readonly="readonly"></td>
 									</tr>
 									<tr>
 										<th>납기일자</th>
-										<td><input type="date" class="form-control"
-											id=deliveryDate name="deliveryDate"></td>
+										<td>
+											<!-- date picker -->
+											<div
+												class="tui-datepicker-input tui-datetime-input tui-has-focus">
+												
+												<input id="deliveryDate" type="text" name="deliveryDate"
+													aria-label="Date" >
+													
+												<!-- <input type="text" id="datepicker-input"
+													aria-label="Date-Time"> <span class="tui-ico-date"></span>
+											 --></div>
+											<div id="wrapper" style="margin-top: -1px;"></div> 
+											<!-- 	<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+												<input id="deliveryDate" type="text" name="deliveryDate"
+													aria-label="Date" placeholder="날짜 선택" readonly
+													autocomplete="off"> <span class="tui-ico-date"></span>
+												<div id="tf-start-container" style="margin-left: -1px;"> -->
+
+										</td>
 									</tr>
 									<tr>
 										<th>수량</th>
@@ -72,14 +99,46 @@
 	<script>
 		$('#usersNo').val('[[${session.usersNo}]]');
 
+		/*------------------
+		  데이터 피커
+		------------------*/
+		let today = new Date();
+		var datepicker = new tui.DatePicker('#wrapper', {
+			date : today,
+			input : {
+				element : '#deliveryDate',
+				format : 'yyyy-MM-dd',
+			},
+				selectableRanges : [ [ today, new Date(2999, 11, 02) ] ]
+
+			},
+
+		//today.setDate();
+		);
+		$(window).on('click', function(){
+			
+		console.log(datepicker);
+		})
+
+		
+
+		/*------------------
+		주문 제약조건 
+		------------------*/
 		$('#totalNum').on('change', function() {
 			//완제품 1개인경우 
-			if ($('#goodsName').val() == 'TPA502') {
-				$('#totalPrice').val($('#totalNum').val() * 10000);
+			if ($('#goodsName').val() == 'TPA') {
+				$('#totalPrice').val($('#totalNum').val() * 1000);
+			}
+
+			if ($('#deliveryDate').val() == "") {
+				Swal.fire('납기일을 선택해 주세요')
+				return false;
 			}
 
 			if ($('#totalNum').val() <= 9999) {
-				alert('최소 수량보다 작습니다');
+				//alert('최소 수량보다 작습니다');
+				Swal.fire('최소수량은 100000kg입니다!')
 				$('#orderBtn').attr('disabled', true);
 			} else {
 
@@ -88,11 +147,7 @@
 
 		});
 
-		/*-----------------
-		주문등록 버튼 클릭이벤트
-		-------------------*/
-		//moq=100000
 	</script>
-	</div>
+
 </body>
 </html>

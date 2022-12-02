@@ -23,7 +23,7 @@ public interface ClientService {
 	public List<ClientVO> myOrderList();
 
 	// 주문등록
-	public void insertOrder(ClientVO cvo);
+	public int insertOrder(ClientVO cvo);
 
 	// 주문조회
 	public List<ClientVO> getOrderList(ClientVO cvo);
