@@ -188,9 +188,9 @@ SELECT *
 	</if>
 	order by mio.mio_date DESC
 	)  A
-	WHERE SEQ <=  p*s
+	WHERE SEQ <![CDATA[<=]]]>  p*s
 )
-	WHERE ROWNUM >= (p-1)*s+1
+	WHERE ROWNUM <![CDATA[>=]]]> (p-1)*s+1
 	
 	
 	</select>

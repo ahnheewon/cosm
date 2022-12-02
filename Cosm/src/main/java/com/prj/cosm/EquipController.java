@@ -51,7 +51,7 @@ public class EquipController {
 			return "/equipment/main";
 		}
 		
-		@GetMapping("/material/filedown")
+		@GetMapping("/equipment/filedown")
 		public void fileDown (String fname, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		      
 		      FileUtil.fileDownload(path + fname, request, response); // path는 application.properties에 선언되어있음
