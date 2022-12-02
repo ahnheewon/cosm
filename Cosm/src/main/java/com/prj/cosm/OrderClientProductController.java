@@ -66,16 +66,23 @@ public class OrderClientProductController {
 	// 고객 - 로그인 후, 첫 화면 - 주문등록, 이전주문, 주문조회.. 볼 수 있음
 	@RequestMapping("/client/main")
 	public String main() {
-		return "/client/main";
+		return "/client/orderList";
 	}
 
-	// 주문조회 화면(월별 : 1개월 3개월 6개월 조회 가능)
+	// 주문조회 페이지(월별 : 1개월 3개월 6개월 조회 가능)
 	@GetMapping("/client/orderList")
-	@ResponseBody
-	public List<ClientVO> cliOrderList(Model model) {
+	public String orderList(Model model) {
 		// model.addAttribute("uno"), cService.getUserNo());
-		return cService.myOrderList();
+		return "/client/orderList";
 	}
+
+	//주문조회 데이터 - userNo,clientName - 1201일단 보류 
+	/*
+	 * @ResponseBody
+	 * 
+	 * @GetMapping("/orders/getOrderList") public List<ClientVO> getOrderList(Model
+	 * model) { return cService.getOrderList(); }
+	 */
 
 	// 마이페이지 화면
 	@RequestMapping("/client/myPage")

@@ -48,7 +48,7 @@ public class OrdersVO {
 		private String orderProgressCode;	//진행상황
 		private String deliveryInfo; 		//배송상황
 		private String ioCode;				//출납상황
-		private int totalPrice; 			//총금액
+		private long totalPrice; 			//총금액
 		private String usersNo;				//회원번호
 		private String oImg;
 		

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.prj.cosm.equipment.equip.mapper.EquipMapper;
@@ -51,7 +52,7 @@ public class EquipServiceImpl implements EquipService {
 
 	@Override
 	public int insertEquip(EquipVO vo) {
-		
+
 		return mapper.insertEquip(vo);
 	}
 
@@ -153,110 +154,234 @@ public class EquipServiceImpl implements EquipService {
 		return mapper.getMaxEquipNum(equipProcess);
 	}
 
-	@Override
-	public void doWork(InsVO insVO) {
-		EquipVO vo = new EquipVO();
-		List<EquipVO> list = new ArrayList<>();
-		vo = mapper.getDoEquipNo(1);
-		if (vo == null || vo.getEquipNo() == null) {
-			return;
-		}
-		mapper.doWork(vo);
-		mapper.insertEquipTime(vo.getEquipNo());
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		vo = mapper.getDoEquipNo(2);
-		mapper.doWork(vo);
-		mapper.insertEquipTime(vo.getEquipNo());
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		vo = mapper.getDoEquipNo(3);
-		mapper.doWork(vo);
-		mapper.insertEquipTime(vo.getEquipNo());
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		vo = mapper.getDoEquipNo(4);
-		mapper.doWork(vo);
-		mapper.insertEquipTime(vo.getEquipNo());
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		vo = mapper.getDoEquipNo(5);
-		mapper.doWork(vo);
-		mapper.insertEquipTime(vo.getEquipNo());
-		try {
-			Thread.sleep(insVO.getInstructQuantity() / 20);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		list = mapper.getStopEquipNo(1);
-		for (EquipVO evo : list) {
-			mapper.stopWork(evo);
-			mapper.updateEquipTime(evo.getEquipNo());
-		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		list = mapper.getStopEquipNo(2);
-		for (EquipVO evo : list) {
-			mapper.stopWork(evo);
-			mapper.updateEquipTime(evo.getEquipNo());
-		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		list = mapper.getStopEquipNo(3);
-		for (EquipVO evo : list) {
-			mapper.stopWork(evo);
-			mapper.updateEquipTime(evo.getEquipNo());
-		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		list = mapper.getStopEquipNo(4);
-		for (EquipVO evo : list) {
-			mapper.stopWork(evo);
-			mapper.updateEquipTime(evo.getEquipNo());
-		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		list = mapper.getStopEquipNo(5);
-		for (EquipVO evo : list) {
-			mapper.stopWork(evo);
-			mapper.updateEquipTime(evo.getEquipNo());
-		}
-
-		List<EmpVO> eList = new ArrayList<>();
-		eList = eMapper.getReceiveUsers("D0105");
-		for (EmpVO eVO : eList) {
-			AlertVO aVO = new AlertVO();
-			aVO.setAlertContent("생산이 완료되었습니다");
-			aVO.setAlertReceive(eVO.getUsersNo());
-			aMapper.insertAlert(aVO);
-		}
-		insMapper.updateInsPlay(insVO);
+//	@Override
+//	public void doWork(InsVO insVO) {
+//		EquipVO vo = new EquipVO();
+//		List<EquipVO> list = new ArrayList<>();
+//		vo = mapper.getDoEquipNo(1);
+//		if (vo == null || vo.getEquipNo() == null) {
+//			return;
+//		}
+//		mapper.doWork(vo);
+//		mapper.insertEquipTime(vo.getEquipNo());
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		vo = mapper.getDoEquipNo(2);
+//		mapper.doWork(vo);
+//		mapper.insertEquipTime(vo.getEquipNo());
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		vo = mapper.getDoEquipNo(3);
+//		mapper.doWork(vo);
+//		mapper.insertEquipTime(vo.getEquipNo());
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		vo = mapper.getDoEquipNo(4);
+//		mapper.doWork(vo);
+//		mapper.insertEquipTime(vo.getEquipNo());
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		vo = mapper.getDoEquipNo(5);
+//		mapper.doWork(vo);
+//		mapper.insertEquipTime(vo.getEquipNo());
+//		try {
+//			Thread.sleep(insVO.getInstructQuantity() / 20);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		list = mapper.getStopEquipNo(1);
+//		for (EquipVO evo : list) {
+//			mapper.stopWork(evo);
+//			mapper.updateEquipTime(evo.getEquipNo());
+//		}
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		list = mapper.getStopEquipNo(2);
+//		for (EquipVO evo : list) {
+//			mapper.stopWork(evo);
+//			mapper.updateEquipTime(evo.getEquipNo());
+//		}
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		list = mapper.getStopEquipNo(3);
+//		for (EquipVO evo : list) {
+//			mapper.stopWork(evo);
+//			mapper.updateEquipTime(evo.getEquipNo());
+//		}
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		list = mapper.getStopEquipNo(4);
+//		for (EquipVO evo : list) {
+//			mapper.stopWork(evo);
+//			mapper.updateEquipTime(evo.getEquipNo());
+//		}
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		list = mapper.getStopEquipNo(5);
+//		for (EquipVO evo : list) {
+//			mapper.stopWork(evo);
+//			mapper.updateEquipTime(evo.getEquipNo());
+//		}
+//
+//		List<EmpVO> eList = new ArrayList<>();
+//		eList = eMapper.getReceiveUsers("D0105");
+//		for (EmpVO eVO : eList) {
+//			AlertVO aVO = new AlertVO();
+//			aVO.setAlertContent("생산이 완료되었습니다");
+//			aVO.setAlertReceive(eVO.getUsersNo());
+//			aMapper.insertAlert(aVO);
+//		}
+//		insMapper.updateInsPlay(insVO);
+//	}
+	@Scheduled(fixedDelay = 1000)
+	public void updateState() {
+		mapper.setProState();
 	}
 
+	@Scheduled(fixedDelay = 1000)
+	public void doWork() {
+		InsVO ivo = insMapper.getRecentQntt();
+		EquipVO evo = mapper.getRTPState();
+		int state = evo.getState();
+		int targetAmt = evo.getTargetAmt();
+		if (targetAmt == 0) {
+			if (state == 1) {
+				List<EquipVO> list = new ArrayList<>();
+				list = mapper.getStopEquipNo(1);
+				for (EquipVO vo : list) {
+					mapper.stopWork(vo);
+					mapper.updateEquipTime(vo.getEquipNo());
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				list = mapper.getStopEquipNo(2);
+				for (EquipVO vo : list) {
+					mapper.stopWork(vo);
+					mapper.updateEquipTime(vo.getEquipNo());
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				list = mapper.getStopEquipNo(3);
+				for (EquipVO vo : list) {
+					mapper.stopWork(vo);
+					mapper.updateEquipTime(vo.getEquipNo());
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				list = mapper.getStopEquipNo(4);
+				for (EquipVO vo : list) {
+					mapper.stopWork(vo);
+					mapper.updateEquipTime(vo.getEquipNo());
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				list = mapper.getStopEquipNo(5);
+				for (EquipVO vo : list) {
+					mapper.stopWork(vo);
+					mapper.updateEquipTime(vo.getEquipNo());
+				}
+			}
+		} else {
+			if (state == 0) {
+//				ProcessOn
+				EquipVO vo = new EquipVO();
+				vo = mapper.getDoEquipNo(1);
+				if (vo == null || vo.getEquipNo() == null) {
+					return;
+				}
+				mapper.doWork(vo);
+				mapper.insertEquipTime(vo.getEquipNo());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				vo = mapper.getDoEquipNo(2);
+				mapper.doWork(vo);
+				mapper.insertEquipTime(vo.getEquipNo());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				vo = mapper.getDoEquipNo(3);
+				mapper.doWork(vo);
+				mapper.insertEquipTime(vo.getEquipNo());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				vo = mapper.getDoEquipNo(4);
+				mapper.doWork(vo);
+				mapper.insertEquipTime(vo.getEquipNo());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				vo = mapper.getDoEquipNo(5);
+				mapper.doWork(vo);
+				mapper.insertEquipTime(vo.getEquipNo());
+			} else if (state == 1) {
+				if (ivo.getInstructQuantity() <= evo.getNowAmt()) {
+					insMapper.updateDoneRTP(ivo);
+					insMapper.updateEndIns(ivo);
+					List<EmpVO> eList = new ArrayList<>();
+					eList = eMapper.getReceiveUsers("D0105");
+					for (EmpVO eVO : eList) {
+						AlertVO aVO = new AlertVO();
+						aVO.setAlertContent("생산이 완료되었습니다");
+						aVO.setAlertReceive(eVO.getUsersNo());
+						aMapper.insertAlert(aVO);
+					}
+				}
+				if (evo.getTargetAmt() != evo.getNowAmt()) {
+					mapper.updateRTPup();
+				}
+			}
+		}
+	}
+
+	public EquipVO getProAmt() {
+		return mapper.getProAmt();
+	}
 //===================================================================================================
 
 	// 점검
@@ -380,10 +505,8 @@ public class EquipServiceImpl implements EquipService {
 
 	@Override
 	public EquipVO getEquipTime(int equipNo) {
-		
+
 		return mapper.getEquipTime(equipNo);
 	}
-
-
 
 }

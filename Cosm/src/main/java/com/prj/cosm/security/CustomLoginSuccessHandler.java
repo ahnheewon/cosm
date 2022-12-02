@@ -38,6 +38,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			response.sendRedirect(request.getContextPath() + "/orders/sMain");
 		}else if(vo.getUsersAuthor().equals("D0103")) {
 			response.sendRedirect(request.getContextPath() + "/material/main");	
+		}else if(vo.getUsersAuthor().equals("D0105")) {
+			response.sendRedirect(request.getContextPath() + "/produce/main");	
 		}else {
 			response.sendRedirect(request.getContextPath() + "/main");
 		}

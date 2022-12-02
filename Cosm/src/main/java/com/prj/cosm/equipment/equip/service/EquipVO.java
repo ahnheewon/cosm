@@ -35,6 +35,10 @@ public class EquipVO {
 	private String equipState; // ON/OFF 유무 CODE
 	private Integer unitCode;
 	
+	private int state;
+	private int targetAmt;
+	private int nowAmt;
+	
 	// 설비별 가동 시간
 	private Integer timeEquipNo;
 	

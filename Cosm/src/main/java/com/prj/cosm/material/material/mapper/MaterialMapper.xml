@@ -116,7 +116,7 @@ order by m_no
 		m_company_id,
 		m_unit_code,
 		m_info
-		<if test="mFile !=null and !mFile.equals('')">
+		<if test="mFile!=null">
 		,m_file
 		</if>
 		 )
@@ -127,7 +127,7 @@ order by m_no
 		#{mCompanyId},
 		find_code_name(#{mUnitCode}),
 		#{mInfo}
-		<if test="mFile !=null and !mFile.equals('')">
+		<if test="mFile!=null">
 		,#{mFile}
 		</if>
 		)
