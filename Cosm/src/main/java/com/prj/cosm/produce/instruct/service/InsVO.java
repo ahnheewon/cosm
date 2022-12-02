@@ -14,6 +14,7 @@ public class InsVO {
 	private int instructQuantity;
 	private String instructEx;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date instructDate;
 	private String instructPlanNo;
 	private String instructMNo;
@@ -29,15 +30,17 @@ public class InsVO {
 	public String codeName;
 	
 	
-	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date startDate;
-	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date endDate;
 	
 	private String planNo;
 	private String mioNo;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date mioDate;
 	private int mioQuantity;
 	private String mioProgress;

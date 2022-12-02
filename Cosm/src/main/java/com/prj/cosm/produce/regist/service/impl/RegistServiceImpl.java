@@ -50,7 +50,7 @@ public class RegistServiceImpl implements RegistService {
 		eList = eMapper.getReceiveUsers("D0109"); //받는사람
 		for (EmpVO eVO : eList) {
 			AlertVO aVO = new AlertVO();
-			aVO.setAlertContent("검수 완료된 제품이 있습니다.");
+			aVO.setAlertContent("/orders/sMain"+"^"+registVO.getRegistLOT()+"건 검수가 완료되었습니다.");
 			aVO.setAlertReceive(eVO.getUsersNo());
 			aMapper.insertAlert(aVO);
 		}
@@ -98,6 +98,12 @@ public class RegistServiceImpl implements RegistService {
 		
 			mapper.updateOrderInfo(insVO);
 		
+	}
+
+	@Override
+	public List<RegistVO> getQuantity() {
+		// TODO Auto-generated method stub
+		return mapper.getQuantity();
 	}
 
 }

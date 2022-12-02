@@ -36,4 +36,7 @@ public interface RegistService {
 	
 	// 주문서 상태 업데이트
 	public void updateOrderInfo(InsVO insVO);
+	
+	//메인페이지 생산량
+	public List<RegistVO> getQuantity();
 }

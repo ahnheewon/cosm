@@ -2,6 +2,10 @@ package com.prj.cosm.produce.bom.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -31,6 +35,8 @@ public class BomVO {
 	private String planBomNo;
 	
 	private String mioNo;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date mioDate;
 	private int mioQuantity;
 	private String mioProgress;
