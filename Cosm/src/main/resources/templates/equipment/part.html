@@ -120,12 +120,16 @@ function filter(){
 				pageOptions: {
 					perPage: 1
 				},
+				rowHeaders: ['rowNum'],
 			    columns: [
 			    {
-			        header: 'No.',
+			        header: '부품번호',
 			        name: 'partNo',
 			        width: '100'
 			        ,align : 'center'
+			        ,formatter: function(value) {
+				                return 'COSP '+value.value; // 3자리 마다 
+				            }
 			        
 			    },  
 			    {

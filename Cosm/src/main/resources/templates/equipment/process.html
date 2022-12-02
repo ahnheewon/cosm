@@ -188,27 +188,27 @@
 						<table class="table">
 		                    <tr>
 								<td>설비명</td>
-		                        <td><input class="form-control wantUpdate" 
+		                        <td colspan="2"><input class="form-control wantUpdate" 
 		                        	id="selectEquipName" name="equipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->		              
 		                    </tr>
 		                    <tr>
 		                    	<td>설비타입</td>
-		                        <td><input class="form-control wantUpdate" 
+		                        <td colspan="2"><input class="form-control wantUpdate" 
 		                        	id="selectEquipType" name="equipType" type="text" readonly></td>
 		                    </tr>
 		                    <tr>
 		                        <td>정상진동</td>
-		                        <td><input class="form-control wantUpdate" 
+		                        <td colspan="2"><input class="form-control wantUpdate" 
 		                        	id="selectEquipStdVibe" name="equipStdVibe" type="text" readonly></td>		                        
 		                    </tr>
 		                    <tr>
 		                    	<td>정상온도</td>
-		                        <td><input class="form-control wantUpdate" 
+		                        <td colspan="2"><input class="form-control wantUpdate" 
 		                        	id="selectEquipStdTemp" name="equipStdTemp" type="text" readonly></td>
 		                    </tr>
 		                    <tr>
 		                        <td>설비설명</td>
-		                        <td><textarea class="form-control wantUpdate textWidth" 
+		                        <td colspan="2"><textarea class="form-control wantUpdate textWidth" 
 		                        	id="selectEquipPurpose" name="equipPurpose" rows="5" readonly></textarea></td>
 		                    </tr>                  
 		                    <tr>
@@ -220,10 +220,13 @@
 					                  <div id="wv-container" style="margin-left: -1px;"></div>
 					               	  </div>            
 								</td>
+								<td  rowspan="2"><img name="eFile"></td>
+							</tr>
 							<tr>
 		                        <td>가동시간</td>
 		                        <td><input class="form-control" id="equipTime" name="equipTime" type="text" readonly
-                                        style="width: 86%; display: inline-block;">시간</td>  		                     
+                                        style="width: 86%; display: inline-block;"></td>  
+                                		                     
 		                    </tr> 
 		                </table>
 					</div>
@@ -424,8 +427,16 @@ function filter(){
         document.querySelector('#selectEquipPurpose').value=obj.ei.equipPurpose;
         document.querySelector('#wv-input').value=obj.ei.equipDate;
         
-        document.querySelector('#equipTime').value=obj.et.equipTime;
-   
+        document.querySelector('#equipTime').value=obj.et.equipTime+' 시간';
+   	
+        /* 파일이 존재하면 업로드한 이미지 띄우기, 존재하지 않으면 no Image 띄우기*/ 
+        if(obj.efile != null){ 
+       $('[name="eFile"]').attr("src", "/equipment/filedown?fname=" +obj.efile);
+       $('[name="eFile"]').css("width", "400px");
+        }else{
+         $('[name="eFile"]').attr("src", "/assets/img/noImage.jpg" );  
+         $('[name="eFile"]').css("width", "400px");
+
         
        
     })

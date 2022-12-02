@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/equipmentCss/main.css"/>
 
 </head>
-<body><!-- 드래그 방지 -->
+<body>
 
 	<div layout:fragment="content" style="height: 900px; overflow: scroll; margin:15px;">
 			  <h2>설비 보수 관리</h2>
@@ -798,13 +798,14 @@ function test(id){
 					useClient: true,
 					perPage: 12
 				},
+				rowHeaders: ['rowNum'],
 			    columns: [
 			    {
 					header:'점검번호',
 					name:'testNo'
 					,align : 'center'
 					,formatter: function(value) {
-			                return 'COST000'+value.value; // 3자리 마다 
+			                return 'COST '+value.value; // 3자리 마다 
 			        }
 				},
 			    {
@@ -1388,13 +1389,14 @@ function deleteTest() {
 				useClient: true,
 				perPage: 4
 			},
+		rowHeaders: ['rowNum'],
 		    columns: [
 		    {
 			   	header:'공사번호',
 			    name:'workNo'
 			    ,align : 'center'
 			    ,formatter: function(value) {
-		                return 'COSW000'+value.value; // 3자리 마다 
+		                return 'COSW '+value.value; // 3자리 마다 
 		            }
 			   
 			},
