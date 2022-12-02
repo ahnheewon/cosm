@@ -1,8 +1,13 @@
 package com.prj.cosm;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.prj.cosm.common.service.FileRenamePolicy;
+import com.prj.cosm.common.service.FileUtil;
 import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
 import com.prj.cosm.equipment.work.service.WorkService;
@@ -38,11 +45,18 @@ public class EquipController {
 	@Value("${file.path}")
 	String path;
 	
-
 		// 첫 화면
 		@RequestMapping("/equipment/main")
 		public String main() {
 			return "/equipment/main";
+		}
+		
+		@GetMapping("/material/filedown")
+		public void fileDown (String fname, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		      
+		      FileUtil.fileDownload(path + fname, request, response); // path는 application.properties에 선언되어있음
+	      
+		
 		}
 		
 		// 공정관리 페이지 이동, // 매개변수 pno, eno, ep 데이터 뿌리기.
@@ -66,10 +80,22 @@ public class EquipController {
 		return eService.getEquipList();
 		}
 		
+		
 		// 설비 등록 (설비별 가동시간도 함께 등록이 돼요!)
 		@PostMapping("/equipment/insertEquip")
-		public String insertEquip(EquipVO vo,MultipartFile img) {
+		public String insertEquip(EquipVO vo,MultipartFile img) throws IllegalStateException, IOException {
 			
+		      if(img != null && img.getSize() >0) {
+		          //첨부파일 처리
+		          
+		          String fName = img.getOriginalFilename(); // 이미지 실제 이름
+		          
+		          File file = new File(path, fName);         
+		          file = FileRenamePolicy.rename(file); // 파일 중복 검사
+		          
+		          img.transferTo(file); // 파일을 폴더로 옮겨줌
+		          vo.setEFile(fName);
+		       }
 			
 			eService.insertEquip(vo);
 		return "redirect:/equipment/process";
@@ -240,6 +266,7 @@ public class EquipController {
 		// 점검 수정
 					@PostMapping("/equipment/updateTest1") //1이 완료
 					@ResponseBody
+					@Transactional
 					public EquipVO updateTest1(EquipVO vo) {
 						eService.updateTestComplete(vo);
 						return vo; // "{re:true}"

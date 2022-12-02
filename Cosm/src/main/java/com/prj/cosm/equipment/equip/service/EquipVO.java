@@ -29,6 +29,8 @@ public class EquipVO {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date equipDate;
 	
+	private String eFile;
+	
 	private Integer equipRate;
 	private Integer equipStdVibe;
 	private Integer equipStdTemp;

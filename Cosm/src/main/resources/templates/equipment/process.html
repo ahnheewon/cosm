@@ -29,24 +29,21 @@
 			           <div >
 			            <div class="header">
 			         	<button type="button" class="btn btn-dark btn-sm margin5"
-			         	data-bs-toggle="modal" onclick="pno5()" >등록</button>   
+			         	data-bs-toggle="modal" style="float:right; display: inline-block; margin-right: 10px;" onclick="pno5()" >등록</button>   
 						 </div>
       				   </div>
 
 			           <div id="processList">
             	   	   </div>
-            	   	   
 
 		        	</div>
-		
+
 			        <div class="column" style=" padding-top: 50px;">
-			          <h5>설비 관리</h5>
+			          <h5>설비 관리</h5><button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" style="float:right; display: inline-block; margin-right: 10px;" data-bs-target="#myModal2">등록</button>
 			          <div class="searchbox">
 				            <div class="header">
-							     <div style="padding-right: 50px;">
-						         	<button type="button" class="btn btn-dark btn-sm margin5"
-						         	data-bs-toggle="modal" data-bs-target="#myModal2">등록</button>
-							     	<input onkeyup="filter()" type="text" style="float: right; border: 1px solid #aaa;" id="searchFilter" placeholder="설비명 입력">
+							     <div>
+							     	<input onkeyup="filter()" type="text" style="float: right; margin-right: 10px; border: 1px solid #aaa;" id="searchFilter" placeholder="설비명 입력">
 							     </div>
 	      				   </div>
 	      				   
@@ -361,7 +358,7 @@ function getMaxEquipNum() { //현재 적용 공정에 달려있는 설비 갯수
 
 function pno5() { //공정
 	const pno = `[[${pno}]]`;
-	if(pno > 5)Swal.fire('설치 가능한 공정 개수 최대 5개입니다!','','warning' );
+	if(pno > 5)Swal.fire('설치 가능한 공정 개수는\n최대 5개입니다!','','warning' );
 	else{
 		
 		const myModal1 = new bootstrap.Modal('#myModal1',{backdrop: 'static',keyboard:false})

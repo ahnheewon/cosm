@@ -47,18 +47,18 @@
 	                  <div style="margin: 15px;">
 	                     <table style="width: 100%;">                        
 	                           <tr>
+	                                  <h5>점검 내역</h5>                                	
 	                              <td colspan="3">
-	                                
 	                                    <div class="column">
-	                                      <h5>점검 내역</h5>                                	
 								            <div class="header">
 								           	
 									         		<input type="radio" name="tStatus0" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD; ">전체ㅤ
 													<input type="radio" name="tStatus0" value="미완료" onclick="completeChk()" style="accent-color : #0000CD;">미완료ㅤ
 													<input type="radio" name="tStatus0" value="완료" onclick="completeChk()" style="accent-color :#0000CD;">완료
-									         	<button type="button" id="insertTBtn" style="float: right;" class="btn btn-dark btn-sm" 
+													
+									         	<button type="button" id="insertTBtn" style="float:right; display: inline-block; margin-right: 10px;" class="btn btn-dark btn-sm" 
 									         				data-bs-toggle="modal" data-bs-target="#myModal1">등록</button>
-													<button type="button" class="btn btn-dark btn-sm" style="float: right; margin-: 10px;" onclick="setNull();">초기화</button>
+													<button type="button" class="btn btn-dark btn-sm" style="float: right; display: inline-block; margin-right: 10px;" onclick="setNull();">초기화</button>
 												    <input onkeyup="filter1()" type="text" style="float: right; margin-right: 10px; border: 1px solid #aaa;" id="searchFilter" placeholder=" 설비명 입력..">	    
 												    <div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index:1000; margin-right: 10px; float: right;">			
 														<input id="tf-start-input" type="text" name="testDueDate" aria-label="Date" placeholder="날짜 선택" readonly autocomplete="off">
@@ -67,32 +67,14 @@
 													</div>
 												 	</div>
 					      				   		   
-	                                       <div id="testGrid">
+	                                       <div id="testGrid" style="margin-top: 15px;">
 	                                       </div>
 	                                       
-	                                        <div id="testCompleteGrid">
+	                                        <div id="testCompleteGrid" style="margin-top: 15px;">
 	                                       </div>
 	                                       
 	                                    </div>
-	                            
-	                                 <!-- <div class="column">
-	                                      <h5>고장 내역</h5>
-	                                     	<div class="searchbox">
-								            <div class="header">
-								         	<button type="button" class="btn btn-dark btn-sm margin5"
-								         	data-bs-toggle="modal" data-bs-target="#myModal3">등록</button>
-								         		<input type="radio" name="tStatus1" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD;">전체ㅤ
-												<input type="radio" name="tStatus1" onclick="completeChk()" value="미완료" style="accent-color : #0000CD;">미완료ㅤ
-												<input type="radio" name="tStatus1" onclick="completeChk()" value="완료" style="accent-color :#0000CD;">완료
-											     <input onkeyup="filter()" style="float:right;" type="text" 
-											     id="value" placeholder="Type to Search">
-											 </div>
-					      				   </div>
-					      				   
-	                                       <div id="failGrid">
-	                                       </div>    
-	                                    </div>	-->	 
-	                                           		
+                               		
 	                                 </div>
 	                              </td>
 	                           </tr>                       
@@ -109,10 +91,8 @@
 	                     <table style="width: 100%;">
 	                       		<tr>
 	                              <td>
-	                                 <div style="clear: both; margin: 15px;">  
-	                                 	<div >  
-	                                      <h5>공사 관리</h5>
-	                                      <div class="searchbox">
+									 <h5>공사 관리</h5>
+	                                 	<div style="clear: both; margin: 15px;">     
 							              <div class="header">
 							         	  <button type="button" class="btn btn-dark btn-sm"
 							         	  		data-bs-toggle="modal" id="insertWBtn" style="float: right;" data-bs-target="#myModal5">등록</button>
@@ -121,12 +101,11 @@
 											 <input type="radio" class="radio4" name="tStatus2" value="승인완료" onclick="completeChk()" style="accent-color :#0000CD;">승인완료	     
 										     
 										  </div>
-				      				      </div>
-	                                         
-	                                      <div id="workGrid">
+                     
+	                                      <div id="workGrid" style="margin-top: 15px;">
 	                                      </div>
 	                                    </div>			        		
-	                                 </div>
+	                                 
 	                              </td>
 	                           </tr>
 	                     </table>
@@ -367,7 +346,7 @@
                   		</tr>
                         <tr>
 	                        <td>예상비용</td>  
-							<td><input class="form-control" style="text-align: right;" min="1" id="workPay" name="workPay" onkeyup="money(this)"  type="text" required></td>
+							<td><input class="form-control" autocomplete="off" style="text-align: right;" min="1" id="workPay" name="workPay" onkeyup="money(this)"  type="text" required></td>
                         </tr>
                         <tr>
 	                        <td></td>
@@ -599,7 +578,6 @@ function reallyInsertThis() {
 													   
 													})
 												}	
-												
 													url="/equipment/maintenanceNo"
 													fetch(url) 
 													.then(res=>res.json())
@@ -607,6 +585,7 @@ function reallyInsertThis() {
 														document.getElementById('testNo').value=obj.tno											
 													})
 													
+												document.getElementById('insertForm1').reset();
 												Swal.fire('등록되었습니다','', 'success');
 													
 										    }) 
@@ -687,7 +666,6 @@ function reallyInsertThis2() {
 									    
 								})
 						} 
-				      
 					url="/equipment/maintenanceNo"
 						fetch(url) 
 						.then(res=>res.json())
@@ -695,6 +673,7 @@ function reallyInsertThis2() {
 							document.getElementById('testNo').value=obj.wno											
 						})
 						
+				    document.getElementById('insertForm2').reset();
 				    Swal.fire('등록되었습니다','', 'success');
 		    })
 		}
@@ -824,6 +803,9 @@ function test(id){
 					header:'점검번호',
 					name:'testNo'
 					,align : 'center'
+					,formatter: function(value) {
+			                return 'COST000'+value.value; // 3자리 마다 
+			        }
 				},
 			    {
 			        header: '설비명',
@@ -915,7 +897,7 @@ document.querySelector('#testCompleteGrid').style.display='none';
 
 	
 
-/*  점검 단건 조회 불러오는 아작스 함수 */
+/* 점검 단건 조회 불러오는 아작스 함수 */
 
 	function getTestNo(testNo,testEquipNo) {
 			
@@ -963,7 +945,8 @@ document.querySelector('#testCompleteGrid').style.display='none';
 							//.visibility= 'hidden';			
 								
 					} else { // 조회한 글이 미완료라면
-						
+							
+							btn1.setAttribute('type', 'button');
 							btn1.style.display='block';
 							btn2.style.display='block';
 					}	
@@ -1040,7 +1023,7 @@ document.querySelector('#testCompleteGrid').style.display='none';
 			    const tCode = document.querySelector('.radio2:checked');
 				const radios = document.getElementsByClassName('radio2');	// 배열
 				const tContent= document.querySelector('#sTestContent');
-				//onkeydown="resize(this)" 추가
+				const btn = document.querySelector('#testUbtn');	
 				
 					for (var i = 0; i< wu.length; i++) {
 			            wu[i].readOnly = false;
@@ -1058,7 +1041,7 @@ document.querySelector('#testCompleteGrid').style.display='none';
 				}
 
 				console.log(tCode);		
-				const btn = document.querySelector('#testUbtn')
+				
 				
 				btn.innerHTML='저장';
 				btn.removeAttribute("onclick"); // 기존 onclick 제거.
@@ -1077,14 +1060,14 @@ document.querySelector('#testCompleteGrid').style.display='none';
 				const ts = document.querySelector('input[name="tStatus0"]:checked').value; //점검 라디오박스
 				const wu = document.getElementsByClassName('wantUpdate1');
 			    const btn = document.querySelector('#testUbtn');
-			    const radio = document.querySelector('input[name="testCodeName"]:checked').value;
-			    const radios = document.getElementsByClassName('radio2');
+			    const chked = document.querySelector('input[name="testCodeName"]:checked').value;
+			    const radio = document.getElementsByClassName('radio2');
 			    const tContent= document.querySelector('#sTestContent');
 		
 			    // DB에 보낼 코드 값
 				let tcon = tContent.value;
 			    	
-				if( radio == '점검완료'){
+				if( chked == '점검완료'){
 						console.log(tcon);	
 
 						Swal.fire({
@@ -1106,7 +1089,9 @@ document.querySelector('#testCompleteGrid').style.display='none';
 								console.log("최종수정 아작스 전송");
 								
 								
-								 fetch(url1, {method: 'POST', body : data})
+								 fetch(url1, {method: 'POST', body : data, headers: {
+							         			'header' : header,
+								     			'X-CSRF-Token': token }})
 								    .then(res=>res.json())
 								    .then(obj=>{
 								        console.log(obj);
@@ -1116,12 +1101,21 @@ document.querySelector('#testCompleteGrid').style.display='none';
 									 		
 								            wu[i].readOnly =true;
 								            wu[i].required = false;
-								        }
-								
-										 
+								        }	
+								    
+									btn.innerText='수정';
 					    			btn.setAttribute('type', 'hidden'); //수정 이제 못하도록 안보이게
 									btn.removeEventListener('click',updateTest);
 									btn.setAttribute('onclick','updateTBtnClick()');
+									
+									for (var i = 0; i< radio.length; i++) {
+									
+										radio[i].setAttribute("onclick","return false"); 
+										radio[i].style.accentColor='gray';	   			
+							        }
+									
+									radio[3].checked = true; // 그대로 점검완료에 checked
+	  								tContent.value = tcon;
 									
 									if(ts == '전체'){
 										
@@ -1137,8 +1131,7 @@ document.querySelector('#testCompleteGrid').style.display='none';
 										
 									}else if (ts =='미완료'){
 										
-								/* 점검 미완료 리스트 불러오는 아작스 */
-									
+								/* 점검 미완료 리스트 불러오는 아작스 */	
 								
 										url="/equipment/incompleteTestList"
 										fetch(url) 
@@ -1147,25 +1140,17 @@ document.querySelector('#testCompleteGrid').style.display='none';
 										    console.log(obj);
 										    testGrid.resetData(obj);									   
 									})
-									
-															
-									}
-									$('#myModal2').modal('hide');
-									
+														
+								}
+		
+								$('#myModal2').modal('hide');
+								
 									Swal.fire(
 	                                          '점검완료',
 	                                          '',
 	                                          'success'
 	                                      )
-	                               for (var i = 0; i< radios.length; i++) {
-	      									
-	  										radios[i].checked=false; //체크되어있는 항목 모두 해제		
-	  						        	}
-	  									
-	  										radios[3].checked = true; // 그대로 점검완료에 checked
-	  										tContent.value = tcon;
-								     
-								    
+
 									})
 									.catch((error) => console.log("error:", error));
 							}
@@ -1179,7 +1164,9 @@ document.querySelector('#testCompleteGrid').style.display='none';
 					
 						console.log("단순 수정 아작스 전송");
 					
-						fetch(url2, {method: 'POST', body : data})
+						fetch(url2, {method: 'POST', body : data, headers: {
+					         			'header' : header,
+						     			'X-CSRF-Token': token }})
 						    .then(res=>res.json())
 						    .then(obj=>{
 						        console.log(obj);	  
@@ -1197,13 +1184,20 @@ document.querySelector('#testCompleteGrid').style.display='none';
 							  	btn.setAttribute('onclick','updateTBtnClick()');
 							 	
 								if(obj.testCodeName='미실시')
-									 radios[0].checked=true;
+									 radio[0].checked=true;
 								else if(obj.testCodeName='진행중')
-									 radios[1].checked=true;
+									 radio[1].checked=true;
 								else if(obj.testCodeName='보류')
-									 radios[2].checked=true;
+									 radio[2].checked=true;
 								
 								$('#myModal2').modal('hide'); // 모달 끄기
+								
+								for (var i = 0; i< radio.length; i++) {
+									
+								radio[i].setAttribute("onclick","return false"); 
+								radio[i].style.accentColor='gray';	   
+										
+						        }
 								
 								if(ts == '전체'){
 									/* 점검 전체 리스트 불러오는 아작스 */	
@@ -1256,14 +1250,9 @@ document.querySelector('#testCompleteGrid').style.display='none';
 							  	Swal.fire({
 							  			title:'수정완료',
                                         icon:'success',
-                                        allowOutsideClick: false, // 배경클릭해서 나가는거 방지
-                                        allowEscapeKey: false // 키 눌러서 나가는거 방지
+                                      
 							  	})
-							  	
-							  	document.querySelector('.swal2-confirm').addEventListener('click',function(e){
 
-								})
-							 
 						    
 				 	})
 					.catch((error) => console.log("error:", error));
@@ -1296,8 +1285,8 @@ document.querySelector('#testCompleteGrid').style.display='none';
 					            wu[i].required = false;
 					        }							 	
 							 	
+								
 							const radio = document.getElementsByClassName('radio2');
-								// 배열
 							for (var i = 0; i< radio.length; i++) {
 								
 									radio[i].setAttribute("onclick","return false"); // 온클릭 false 해제 => 선택가능
@@ -1404,6 +1393,9 @@ function deleteTest() {
 			   	header:'공사번호',
 			    name:'workNo'
 			    ,align : 'center'
+			    ,formatter: function(value) {
+		                return 'COSW000'+value.value; // 3자리 마다 
+		            }
 			   
 			},
 		    {
@@ -1427,7 +1419,7 @@ function deleteTest() {
 		        name: 'workPay'
 		        ,align : 'right'
 		        ,formatter: function(value) {
-	                return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+' ₩'; // 3자리 마다 
+	                return '₩ ' +value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
 	            }
 		    },
 		    {
