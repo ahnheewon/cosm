@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.prj.cosm.material.material.mapper.MaterialMapper;
 import com.prj.cosm.material.material.service.MaterialService;
 import com.prj.cosm.material.material.service.MaterialVO;
@@ -57,12 +58,7 @@ public class MaterialServiceImpl implements MaterialService {
 		}
 		return result;
 	}
-
-	@Override
-	public List<MaterialVO> mioList(MaterialVO mVO) {
-		// 자재 변동 리스트 전체 조회
-		return mMapper.mioList(mVO);
-	}
+	
 
 	@Override
 	public List<MaterialVO> findComNm() {
@@ -188,5 +184,18 @@ public class MaterialServiceImpl implements MaterialService {
 		result += mMapper.orderStart(vo);
 		}
 		return result;
+	}
+
+	@Override
+	public  List<MaterialVO> mioList(MaterialVO mVO) {
+		// 자재변동 내역 전체 조회
+		return mMapper.mioList(mVO);
+	}
+
+
+	@Override
+	public int mioListCount(MaterialVO mVO) {
+		// 자재변동 내역 전체 조회_카운트
+		return mMapper.mioListCount(mVO);
 	}
 }

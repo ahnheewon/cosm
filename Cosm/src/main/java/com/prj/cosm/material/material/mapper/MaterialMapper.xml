@@ -47,7 +47,7 @@ SELECT m.m_no,
 	   m.m_price,
 	   find_code_no(m_unit_code) As m_unit_code,
 	   m.m_category,
-	   m.m_stock,   
+	    NVL(m.m_stock,0)AS m_stock,   
 	   NVL(total_mo_num,0)AS total_mo_num,
        NVL(total_planed_qntt,0)AS total_planed_qntt, 
            
@@ -161,10 +161,20 @@ order by m_no
 				WHERE MO_MATERIAL_ID = #{mNo})
 
 	</delete>
+	
+	<!-- 날짜 조회 조건 -->
+	<sql id="findDate">
+		<where>		
+	<if test="startDate != null and endDate != null">
+		AND TRUNC(mio.mio_date) BETWEEN #{startDate} AND #{endDate}
+	</if>
+		</where>
+	</sql>
+	
 
 	<!-- 자재 변동 내역 리스트 -->
 	<select id="mioList" resultType="MaterialVO">
-
+SELECT B.* FROM ( SELECT ROWNUM RN, A.* FROM ( 
 	SELECT mio_no, 
 		   mio_company_id, 
 		   mio_company_name as mio_company_nm,
@@ -173,18 +183,27 @@ order by m_no
 		   mio_quantity as mioQntt,		   
 	  	   m_stock,  
 		   mio_date, 
-		   find_code_no(mio.mio_progress)as mio_progress
-	FROM Material m JOIN Material_io mio
-		ON m.m_no = mio.mio_no
-	WHERE mio.mio_date IS NOT NULL
-		AND mio.mio_progress IS NOT NULL
-	<if test="startDate != null and endDate != null">
-		AND TRUNC(mio.mio_date) BETWEEN #{startDate} AND #{endDate}
-	</if>
-	order by mio.mio_date DESC
-	
+		   find_code_no(mio_progress)as mio_progress		
+	  FROM Material m 
+	  JOIN Material_io mio ON m.m_no = mio.mio_no
+ 	 WHERE mio.mio_date IS NOT NULL
+	   AND mio.mio_progress IS NOT NULL	
+	<include refid="findDate"></include>		
+	ORDER BY mio.mio_date DESC
+	) A ) B WHERE RN BETWEEN (#{page} -1) * #{perpage} + 1 and #{page}*#{perpage}
 	
 	</select>
+	
+	<!-- 자재 변동 내역 count -->
+	<select id="mioListCount" resultType="int">
+        SELECT count(*) 
+        FROM 
+        MATERIAL_IO
+        WHERE mio_date IS NOT NULL
+		AND mio_progress IS NOT NULL
+	<include refid="findDate"></include>	
+    </select>
+    
 
 	<!-- 거래처 명 찾기 -->
 	<select id="findComNm" resultType="MaterialVO">
@@ -352,9 +371,7 @@ order by m_no
 		FROM material_order
 		WHERE mo_group_num	is not null 
 		AND mo_progress_code != 'L0103'	
-		<if test="startDate != null and endDate != null">
-			AND TRUNC(mo_date) BETWEEN #{startDate} AND #{endDate}
-		</if>
+		<include refid="findDate"></include>	
 		GROUP BY mo_group_num, mo_date, mo_progress_code
 		ORDER BY mo_date desc
 	</select>

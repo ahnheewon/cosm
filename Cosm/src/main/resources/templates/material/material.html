@@ -272,8 +272,8 @@
                      header: '단가',
                      name: 'mprice',
                      align: 'right',
-                     formatter: function (value) {
-                        return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+                     formatter: function (el) {
+                    	 return formatter(el.value)  
                      }
                   }, {
                      header: '단위',
@@ -287,22 +287,22 @@
                      header: '현재 재고',
                      name: 'mstock',
                      align: 'right',
-                     formatter: function (value) {
-                        return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+                     formatter: function (el) {
+                    	 return formatter(el.value)  
                      }
                   }, {
                      header: '필요수량',
                      name: 'totalPlanedQntt',
                      align: 'right',
-                     formatter: function (value) {
-                        return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+                     formatter: function (el) {
+                    	 return formatter(el.value)  
                      }
                   }, {
                      header: '발주중인 수량',
                      name: 'totalMoNum',
                      align: 'right',
-                     formatter: function (value) {
-                        return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+                     formatter: function (el) {
+                    	 return formatter(el.value)  
                      }
                   }, {
                      header: '부족한 수량',
@@ -313,8 +313,9 @@
                         required: true,
                         max: 1
                      },
-                     formatter: function (value) {
-                        return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+                     formatter: function (el) {
+                    	 return formatter(el.value)
+                    	 
                      }
                   }
 
@@ -329,12 +330,23 @@
 
       
 
+         
+         function formatter(value){
+        	 if(!value) {return 0}
+        	 
+             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+         }
 
          /*-------------------------
                  재고 변동 내역 grid 초기화
              --------------------------*/
 
-         
+             const dataSource = {
+            		  api: {
+            		    readData: { url: '/material/ajax/mioList', method: 'GET', initParams: { param: 'param' } }
+            		  }
+            		};
+              
 
             let mioGrid;
 
@@ -342,6 +354,7 @@
 
                el: document.getElementById('grid2'),
                rowHeaders: ['rowNum'], // 가장 왼쪽 체크박스
+               data : dataSource, 
                scrollX: false, // 세로 스크롤 
                scrollY: false, // 가로 스크롤
                columns: [
@@ -375,8 +388,9 @@
                   header: '변동수량',
                   name: 'mioQntt',
                   align: 'right',
-                  formatter: function (value) {
-                     return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+                  formatter: function (el) {
+                	  console.log(el);
+                	  return formatter(el.value)  
                   }
                }, 
                {
@@ -384,14 +398,13 @@
                   name: 'mioDate',
                   align: 'right'
                }, ],
-               pageOptions: {
-                  useClient: true,
+               pageOptions: {                
                   perPage: 10
                }
 
             })
 
-      
+         
 
 
          //tui.Grid 스타일 주기
@@ -429,7 +442,7 @@
                method: "GET",
                success: function (result) {
                   infoGrid.resetData((result.list1));
-                  mioGrid.resetData((result.list2));               
+                  //mioGrid.resetData((result.list2));               
                   
                   console.log(result);
 
@@ -441,6 +454,7 @@
             })
 
          }
+         
          
        
          /*----------------------- 
@@ -678,6 +692,8 @@
    	    mList(); // ajax로 상,하단 페이지 데이터 부르기
 
   	
+   	       	    
+   	    
       </script>
    </div>
    <!-- end of layout -->

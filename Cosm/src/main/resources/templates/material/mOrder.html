@@ -56,7 +56,7 @@ font-weight: bold;
 		<div class="container" style="padding-top : 50px; padding-bottom: 20px">
 			  <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
   		<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
-		</svg> > 자재 정보 관리 </h6>
+		</svg> > 발주 진행 관리 </h6>
 		<h3 style="text-align: center; font-weight: bold;">발주 대기 관리</h3>
 					<hr>
 			<div class="row">
@@ -106,7 +106,7 @@ font-weight: bold;
 						<!--  <div id="btn" style="float: right">-->
 						<div class="btn" style="float: right"> 
 						<button type="button" class="btn btn-secondary btn-sm"
-								id="orderbtn" onclick="updateOrderStart()">실행</button>
+								id="orderbtn">실행</button>
 							
 						<button type="button" class="btn btn-secondary btn-sm"
 								id="orderDelbtn" onclick="delOrderCheck()">삭제</button>
@@ -448,7 +448,13 @@ font-weight: bold;
 	                 
 	               },
 	               error : function(reject) {
-	                  alert('수량 변경 실패');
+	            	   $().ready(function () {
+	                         Swal.fire({
+	                                  icon: 'warning',
+	                                  title: '발주 진행 실패',
+	                                  text: '체크 확인 해주세요',
+	                              });
+	                          });           
 
 	               }
 	            })
@@ -474,13 +480,47 @@ font-weight: bold;
             	   mOrder();
                },
                error : function(reject) {
-                  alert('수량 변경 실패');
+            	   $().ready(function () {
+                       Swal.fire({
+                                icon: 'warning',
+                                title: '발주 진행 실패',
+                                text: '다시 선택 해주세요',
+                            });
+                        });           
+
 
                }
             })
             
             	
             }
+
+         
+       
+         
+        	 $().ready(function () {
+        		    $("#orderbtn").click(function () {
+        		        Swal.fire({
+        		            title: '발주를 진행하시겠습니까?',
+        		            text: "진행된 발주는 취소가 불가능합니다",
+        		            icon: 'warning',
+        		            showCancelButton: true,
+        		            confirmButtonColor: '#3085d6',
+        		            cancelButtonColor: '#d33',
+        		            confirmButtonText: '승인',
+        		            cancelButtonText: '취소'
+        		        }).then((result) => {
+        		            if (result.isConfirmed) {
+        		            	updateOrderStart();
+        		                Swal.fire(
+        		                    '발주가 완료되었습니다',
+        		                    'success'
+        		                )
+        		            }
+        		        })
+        		    })
+        	    });
+        		
 
          
 

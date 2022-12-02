@@ -1,6 +1,8 @@
 package com.prj.cosm.material.material.service;
 
 import java.util.List;
+import java.util.Map;
+
 
 public interface MaterialService {
 
@@ -22,8 +24,14 @@ public interface MaterialService {
 	// 자재 정보 삭제 - 재고 수량도 삭제됨
 	public int deleteMatrailInfo(List<String> mNo);
 
+
 	// 자재 변동 리스트 전체 조회
-	public List<MaterialVO> mioList(MaterialVO mVO);
+	public List<MaterialVO>mioList (MaterialVO mVO);
+	
+	
+	// 자재 변동 리스트 전체조회_카운트
+    public int mioListCount(MaterialVO mVO);	
+    
 
 	// 거래처 명 찾기
 	public List<MaterialVO> findComNm();
