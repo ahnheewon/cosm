@@ -262,7 +262,7 @@ public class EquipServiceImpl implements EquipService {
 		mapper.setProState();
 	}
 
-	@Scheduled(fixedDelay = 1000)
+	@Scheduled(fixedDelay = 2000)
 	public void doWork() {
 		InsVO ivo = insMapper.getRecentQntt();
 		EquipVO evo = mapper.getRTPState();
@@ -367,7 +367,7 @@ public class EquipServiceImpl implements EquipService {
 					eList = eMapper.getReceiveUsers("D0105");
 					for (EmpVO eVO : eList) {
 						AlertVO aVO = new AlertVO();
-						aVO.setAlertContent("/produce/regist"+"^"+ivo.getInstructNo()+"건 생산이 완료되었습니다");
+						aVO.setAlertContent("/produce/regist"+"^"+ivo.getInstructNo()+" 건 생산이 완료되었습니다");
 						aVO.setAlertReceive(eVO.getUsersNo());
 						aMapper.insertAlert(aVO);
 					}
