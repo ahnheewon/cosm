@@ -14,7 +14,7 @@
 <body id="Context">
 
 	<div layout:fragment="content">
-
+	
 		<!-- tab기능 -->
 		<div class="tabs">
 			<input id="all" type="radio" name="tab_item" checked> <label
@@ -24,7 +24,7 @@
 				name="tab_item"> <label class="tab_item" for="design">제품
 				정보</label>
 
-			<div class="tab_content" id="all_content">
+			<div class="tab_content" id="all_content" style="margin-left: 50px; margin-right: 50px;">
 				<h3>미계획 주문서 리스트</h3>
 				<button type="button" class="btn btn-dark btn-sm"
 					onclick="insertData();" data-bs-toggle="modal" id="selectBtn"
@@ -52,14 +52,14 @@
 					style="float: right; margin-right: 36px">생산지시 페이지 이동</button>
 			</div>
 
-			<div class="tab_content" id="programming_content">
+			<div class="tab_content" id="programming_content" style="margin-left: 50px; margin-right: 50px;">
 				<h3>BOM 정보</h3>
 				<div id="grid3"></div>
 				<button type="button" onclick="location.href='/produce/bom'"
 					class="btn btn-dark btn-sm"
 					style="float: right; margin-right: 36px">BOM 페이지 이동</button>
 			</div>
-			<div class="tab_content" id="design_content">
+			<div class="tab_content" id="design_content" style="margin-left: 50px; margin-right: 50px;">
 				<h3>제품 정보</h3>
 				<div id="grid4"></div>
 				<button type="button" onclick="location.href='/produce/goods'"
@@ -598,7 +598,7 @@
 				{
 					header: '생산량',
 					name: 'planQuantity',
-					width : 80,
+					width : 130,
 					align : 'center'
 				},
 				{
@@ -631,7 +631,7 @@
 								 color: (props) => props.value == '자재입고 대기중' ? 'red' : 'blue'
 							}
 					},
-					width : 100
+					width : 160
 				},	
 				{
 					header: '기타사항',
@@ -706,6 +706,7 @@
 				{
 					header: 'BOM번호',
 					name: 'bomNo',
+					align : 'center',
 					filter: {
 					       type: 'select',
 					        showApplyBtn: true,
@@ -1355,6 +1356,7 @@
 	               showVerticalBorder : false,
 	               showHorizontalBorder : true
 	            },
+	          
 	         },
 
 	      });
