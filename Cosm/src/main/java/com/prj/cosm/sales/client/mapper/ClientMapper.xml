@@ -3,6 +3,15 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.prj.cosm.sales.client.mapper.ClientMapper">
+	<!-- 주문조회 -->
+	<select id="getOrderList" resultType="ClientVO">
+		select o.order_no,
+		(select goods_name from produce_goods p where p.goods_no = o.goods_no)
+		as product,
+		o.total_num, o.total_price,
+		(select client_name from client c where c.users_no = o.client_name) as client
+		from orders o
+	</select>
 
 	<!-- 회원 등록 -->
 	<insert id="clientIn" parameterType="ClientVO">
