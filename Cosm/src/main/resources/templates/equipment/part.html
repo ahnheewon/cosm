@@ -17,22 +17,23 @@
 
 	<div layout:fragment="content" style="height: 900px; overflow: scroll;  margin:15px;">
 			  <h2>부품 관리</h2>
-
+	  		<div class="column">
 			  <div class="row">
 			  
 			        <div class="column">
-			        
+			        <h5>부품 재고 현황</h5>
 			          <div class="searchbox">
 			            <div class="header">
-						     <input onkeyup="filter()" style="float:right; float: right; margin-right: 10px; border: 1px solid #aaa;" type="text" id="searchFilter" placeholder="부품명 입력...">
+						     <input onkeyup="filter()" autocomplete="off" style="float:right; float: right;  margin-right: 10px; border: 1px solid #aaa;" type="text" id="searchFilter" placeholder="부품명 입력...">
 						 </div>
       				   </div>
 						  <div id="part">
 						  </div>
 			        </div>
 			        		
-			  </div>
+			  	</div>
 
+	  		</div>  
 
 <div class="modal fade" id="myModal">
 		
@@ -107,12 +108,17 @@ function filter(){
 /*  부품 그리드  */	
 	const partGrid = new tui.Grid({
 			    el: document.querySelector('#part'),
+			    data: {
+			        api: {
+			          readData: { url: '/equipment/partList', method: 'GET' }
+			        }
+			      },
+			    rowHeaders: ['checkbox'],
 			    scrollX:false,
 			    scrollY:false,
 			    pagination:true,
 				pageOptions: {
-					useClient: true,
-					perPage: 10
+					perPage: 1
 				},
 			    columns: [
 			    {

@@ -21,7 +21,11 @@
 h2 {
 	font-weight:bold;
 	padding-top: 20px;
-	text-align: left
+	text-align: center;
+}
+
+h5 {
+	float: left;
 }
 
 #mySvg {
