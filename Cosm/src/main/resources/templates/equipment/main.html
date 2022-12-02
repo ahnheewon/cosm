@@ -217,7 +217,6 @@
                     url: "/equipment/getProAmt",
                     type: "get",
                     success: function (data) {
-                    	console.log(data);
                     	svg.append("text").text('목표 생산량 : '+ data.targetAmt).attr('x', 0).attr('y', 55).attr('dominant-baseline', 'hanging').attr(
                                 'font-size', '15px');
                         svg.append("text").text('현재 생산량 : '+data.nowAmt).attr('x', 0).attr('y', 85).attr('dominant-baseline', 'hanging').attr(
