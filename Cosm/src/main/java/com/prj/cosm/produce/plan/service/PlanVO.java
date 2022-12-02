@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -11,8 +13,10 @@ public class PlanVO {
 	private String planNo;
 	private int planQuantity;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date planStart;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date planEnd;
 	private String planEx;
 	private String planProductNo;
@@ -38,8 +42,10 @@ public class PlanVO {
 	//주문
 	private String orderNo;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date orderDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date deliveryDate;
 	private int totalNum;
 	private String note;
@@ -48,6 +54,8 @@ public class PlanVO {
 	private String orderCode;
 	
 	private String mioNo;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date mioDate;
 	private int mioQuantity;
 	private String mioProgress;

@@ -16,17 +16,18 @@ public class RegistVO {
 	private int registQuantity;
 	private int registError;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private int registDate;
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date registDate;
 	private String registProductNo;
 	private String registInstructNo;
 	private String codeNo;
 	private String inspection;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date startDate;
-	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date endDate;
 	//진행상황,단위코드 리스트
 	public String codeName;
