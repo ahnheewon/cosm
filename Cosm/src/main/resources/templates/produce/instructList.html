@@ -17,7 +17,7 @@
 				class="tab_item" for="all">생산지시</label> <input id="programming"
 				type="radio" name="tab_item"> <label class="tab_item"
 				for="programming">생산지시 리스트</label>
-			<div class="tab_content" id="all_content">
+			<div class="tab_content" id="all_content" style="margin-left: 50px; margin-right: 50px;">
 				<hr style="width: 100%">
 				<h3>미지시 생산계획 리스트</h3>
 				<button type="button" class="btn btn-dark btn-sm" id="selectBtn"
@@ -38,7 +38,7 @@
 					class="btn btn-dark btn-sm"
 					style="float: right; margin-right: 36px">완제품등록 페이지 이동</button>
 			</div>
-			<div class="tab_content" id="programming_content">
+			<div class="tab_content" id="programming_content" style="margin-left: 50px; margin-right: 50px;">
 				<hr style="width: 100%">
 				<h3 style="text-align: center">전체 생산지시 리스트</h3>
 				<br>
@@ -386,7 +386,7 @@
 					renderer : {
 						styles: {
 								 fontWeight: 'bold',
-								 color: (props) => props.value == '자재입고완료' ? 'green' : 'blue'
+								 color: (props) => props.value == '자재입고완료' ? 'green' : 'red'
 							}
 					},
 				},	
