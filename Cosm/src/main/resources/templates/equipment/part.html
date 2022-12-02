@@ -17,14 +17,20 @@
 
 	<div layout:fragment="content" style="height: 900px; overflow: scroll;  margin:15px;">
 			  <h2>부품 관리</h2>
-	  		<div class="column">
+	  		  <div class="container" style="padding-top : 30px; padding-bottom: 30px">
 			  <div class="row">
 			  
 			        <div class="column">
-			        <h5>부품 재고 현황</h5>
+			        <h5>부품 재고 현황</h5><br>
 			          <div class="searchbox">
 			            <div class="header">
-						     <input onkeyup="filter()" autocomplete="off" style="float:right; float: right;  margin-right: 10px; border: 1px solid #aaa;" type="text" id="searchFilter" placeholder="부품명 입력...">
+						 <button type="button"  style="float:right;" class="btn btn-secondary btn-sm">
+               			 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  						 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+						</svg>
+              			</button>    
+						     <input onkeyup="filter()" autocomplete="off" style="float:right;  margin-right: 5px; border: 1px solid #aaa;" type="text" id="searchFilter" placeholder="부품명 입력...">
+						 
 						 </div>
       				   </div>
 						  <div id="part">
@@ -113,14 +119,9 @@ function filter(){
 			          readData: { url: '/equipment/partList', method: 'GET' }
 			        }
 			      },
-			    rowHeaders: ['checkbox'],
+			    rowHeaders: ['rowNum', 'checkbox'],
 			    scrollX:false,
 			    scrollY:false,
-			    pagination:true,
-				pageOptions: {
-					perPage: 1
-				},
-				rowHeaders: ['rowNum'],
 			    columns: [
 			    {
 			        header: '부품번호',
@@ -214,6 +215,11 @@ function filter(){
     partGrid.on('click', ev => {
     	const pnoRow = partGrid.getRow(ev.rowKey); // 행 (객체)
     	const pno = pnoRow.partNo; // 행의 공정번호
+    	
+    	
+    	 if (partGrid.getRow(ev.rowKey) != null && ev.columnName != '_checked' && ev.columnName != '_number') { // checkbox 클릭시, 모달 안 뜨게끔
+           
+    	
     	console.log(pno);
    	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
     	console.log(ev);
@@ -231,6 +237,7 @@ function filter(){
 
 			}
     	}
+    	 }
 	});
 
 	/*  부품 단건조회 불러오는 아작스 함수 */
