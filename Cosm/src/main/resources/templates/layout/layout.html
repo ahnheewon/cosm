@@ -190,7 +190,7 @@
 				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0109')">
 					<div class="nav">
 						<br>
-						<div class="sb-sidenav-menu" >
+						<div class="sb-sidenav-menu">
 							&nbsp; &nbsp;영업팀 [[${session.usersName}]] 님
 							<div class="nav">
 								<!-- 영업관리 -->
@@ -230,7 +230,7 @@
 				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0102')">
 					<div class="nav">
 						<br>
-						<div class="sb-sidenav-menu" >
+						<div class="sb-sidenav-menu">
 							&nbsp; &nbsp; 환영합니다! [[${session.usersName}]] 님
 							<div class="nav">
 								<!-- 영업관리 -->
@@ -351,7 +351,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 			</nav>
 		</div>
 		<div class="modal fade" id="alertModal" data-backdrop="static"
@@ -438,7 +438,17 @@
 							$('#alertYn').css('animation-name', 'btnColor')
 							for (let val of data) {
 								let send = val['alertSend'];
-								let content = val['alertContent'];
+								let totalContent = val['alertContent'];
+								console.log(totalContent)
+								let content = "";
+								let address = "";
+								if(totalContent.indexOf("^")!=-1){
+									let splited = totalContent.split("^")
+									content = splited[1];
+									address = splited[0];
+								} else{
+									content = totalContent;
+								}
 								let alertNo = val['alertNo'];
 								$('#alertBody').append($('<tr><td class="contents" id="' +
 									alertNo + '">' + content + '</td></tr>'))
@@ -466,7 +476,23 @@
 					},
 					success: function (data) {
 						for (let val in data) {
-							$('#' + val).val(data[val]);
+							console.log(val)
+							let content = "";
+							let address = "";
+							if(val=='alertContent'){
+								if(data[val].indexOf("^")!=-1){
+									let splited = data[val].split("^");
+									content = splited[1];	
+									address =splited[0];
+									$('#checkBtn').val(address);
+								} else {
+									content = data[val];
+									$('#checkBtn').val("#");
+								}
+							$('#alertContent').val(content);
+							} else {
+								$('#' + val).val(data[val]);
+							}
 						}
 						const myModal = new bootstrap.Modal('#alertModal', {
 							backdrop: 'static',
@@ -496,6 +522,9 @@
 					success: function (data) {
 						if (data == 1) {
 							getAlertList();
+						}
+						if($('#checkBtn').val()!="#"){
+							location.href=$('#checkBtn').val();
 						}
 					},
 					error: function (reject) {
