@@ -164,12 +164,7 @@ order by m_no
 
 	<!-- 자재 변동 내역 리스트 -->
 	<select id="mioList" resultType="MaterialVO">
-SELECT * 
-  FROM
-  (
-	SELECT ROWNUM AS SEQ, A.*
-    FROM
-      (
+
 	SELECT mio_no, 
 		   mio_company_id, 
 		   mio_company_name as mio_company_nm,
@@ -187,10 +182,6 @@ SELECT *
 		AND TRUNC(mio.mio_date) BETWEEN #{startDate} AND #{endDate}
 	</if>
 	order by mio.mio_date DESC
-	)  A
-	WHERE SEQ <![CDATA[<=]]]>  p*s
-)
-	WHERE ROWNUM <![CDATA[>=]]]> (p-1)*s+1
 	
 	
 	</select>
