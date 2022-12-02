@@ -20,6 +20,8 @@
 
 	<div layout:fragment="content"
 		style="height: 900px; overflow: scroll; margin: 15px;">
+		
+		<div class="container" style="padding-bottom: 20px">
 
 		<!-- model and view로 보낸 데이터 [[${pno}]] 이런식으로 써야합니다 밖에서 쓰려면. -->
 		<h2 style="padding-bottom: 30px;">공정 관리</h2>
@@ -36,12 +38,16 @@
 					</div>
 				</div>
 
-				<div id="processList"></div>
+				<div id="processList" style="padding-top: 43px;"></div>
 
 			</div>
 
+
 			<div class="column" style="padding-top: 50px;">
-				<h5>설비 관리</h5>
+			<div>
+				<h5 >설비 관리</h5>
+			</div>
+			<hr style="visibility: hidden;">
 				<button type="button" class="btn btn-dark btn-sm"
 					data-bs-toggle="modal"
 					style="float: right; display: inline-block; margin-right: 10px;"
@@ -50,15 +56,21 @@
 					<div class="header">
 						<div>
 							<input onkeyup="filter()" type="text"
-								style="float: right; margin-right: 10px; border: 1px solid #aaa;"
+								style="float: left; margin-right: 5px; border: 1px solid #aaa;"
 								id="searchFilter" placeholder="설비명 입력">
 						</div>
 					</div>
+					 <button type="button"  style="float:left; margin-right: 5px;" class="btn btn-secondary btn-sm">
+               			 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  						 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+						</svg>
+              			</button>
 
-					<div id="equipList" style="padding-top: 10px;"></div>
+					<div id="equipList" style="padding-top: 40px;"></div>
 				</div>
 			</div>
-
+		</div>
+</div>
 			<!-- The Modal 1 공정모달 -->
 			<div class="modal fade" id="myModal1">
 				<div class="modal-dialog modal-dialog-centered">
@@ -980,8 +992,8 @@ function filter(){
 		});
 		
 </script>
-		</div>
-	</div>
-	</div>
+	
+</div>
+	
 </body>
 </html>

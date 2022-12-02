@@ -23,6 +23,9 @@
 <body>
 
 	<div layout:fragment="content" style="height: 900px; overflow: scroll; margin:15px;">
+			
+			
+			
 			  <h2>설비 보수 관리</h2>
 		<div> 
             <!-- 탭 목록(버튼) 설정 -->
@@ -44,33 +47,34 @@
 	               <!-- 보수 탭 -->
 	               <div class="tab-pane fade show active" id="maintenance" role="tabpanel"
 	                  aria-labelledby="maintenance-tab">
-	                  <div style="margin: 15px;">
+	                  <div class="container" style="padding-top : 30px; padding-bottom: 30px">
+	                        <h5>점검 관리</h5>
 	                     <table style="width: 100%;">                        
 	                           <tr>
-	                                  <h5>점검 내역</h5>                                	
+	                                                            	
 	                              <td colspan="3">
-	                                    <div class="column">
+	                                    <div >
 								            <div class="header">
 								           	
 									         		<input type="radio" name="tStatus0" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD; ">전체ㅤ
 													<input type="radio" name="tStatus0" value="미완료" onclick="completeChk()" style="accent-color : #0000CD;">미완료ㅤ
 													<input type="radio" name="tStatus0" value="완료" onclick="completeChk()" style="accent-color :#0000CD;">완료
-													
+											<br>	
 									         	<button type="button" id="insertTBtn" style="float:right; display: inline-block; margin-right: 10px;" class="btn btn-dark btn-sm" 
 									         				data-bs-toggle="modal" data-bs-target="#myModal1">등록</button>
-													<button type="button" class="btn btn-dark btn-sm" style="float: right; display: inline-block; margin-right: 10px;" onclick="setNull();">초기화</button>
-												    <input onkeyup="filter1()" type="text" style="float: right; margin-right: 10px; border: 1px solid #aaa;" id="searchFilter" placeholder=" 설비명 입력..">	    
-												    <div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index:1000; margin-right: 10px; float: right;">			
+												    <input onkeyup="filter1()" type="text" style="float: left; margin-right: 10px; border: 1px solid #aaa;" id="searchFilter" placeholder=" 설비명 입력..">	    
+												    <div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index:1000; margin-right: 10px; float: left;">			
 														<input id="tf-start-input" type="text" name="testDueDate" aria-label="Date" placeholder="날짜 선택" readonly autocomplete="off">
 														<span class="tui-ico-date"></span>
 													<div id="tf-start-container" style="margin-left: -1px;">
 													</div>
 												 	</div>
+													<button type="button" class="btn btn-dark btn-sm" style="float: left; display: inline-block; margin-right: 10px;" onclick="setNull();">초기화</button>
 					      				   		   
-	                                       <div id="testGrid" style="margin-top: 15px;">
+	                                       <div id="testGrid" style="padding-top: 40px;">
 	                                       </div>
 	                                       
-	                                        <div id="testCompleteGrid" style="margin-top: 15px;">
+	                                        <div id="testCompleteGrid" style="padding-top: 40px;">
 	                                       </div>
 	                                       
 	                                    </div>
@@ -87,12 +91,12 @@
 	               <!-- 공사 탭 -->
 	               <div class="tab-pane fade" id="work" role="tabpanel"
 	                  aria-labelledby="work-tab">
-	                  <div style="margin: 15px;">
+	                  <div class="container" style="padding-top : 30px; padding-bottom: 30px">
+									 <h5>공사 관리</h5>
 	                     <table style="width: 100%;">
 	                       		<tr>
 	                              <td>
-									 <h5>공사 관리</h5>
-	                                 	<div style="clear: both; margin: 15px;">     
+	                                 	<div>     
 							              <div class="header">
 							         	  <button type="button" class="btn btn-dark btn-sm"
 							         	  		data-bs-toggle="modal" id="insertWBtn" style="float: right;" data-bs-target="#myModal5">등록</button>
@@ -204,13 +208,13 @@
 						<table class="table">
 		                    <tr>
 								<td>설비명</td>
-		                        <td><input class="form-control" id="sTestEquipName" name="testEquipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->             
+		                        <td><input class="Ttd form-control" id="sTestEquipName" name="testEquipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->             
 		                    </tr>
 		                    <tr>
 		                    <td>점검예정일</td>
 		                        <td>
-		                        	<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-				                    <input id="tv-start-input" type="text" name="testDueDate" 
+		                        	<div class="Tpicker tui-datepicker-input tui-datetime-input tui-has-focus">
+				                    <input id="tv-start-input" class="Tpicker" type="text" name="testDueDate" 
 				                    	aria-label="Date" style="background-color :#E9ECEF;" readonly>
 				                    <span class="tui-ico-date"></span>
 				                    <div id="tv-start-container" style="margin-left: -1px;"></div>				                   
@@ -219,12 +223,12 @@
 		                    </tr>
 		                     <tr>
 		                        <td>점검이유</td>
-		                        <td><input class="form-control" id="sTestReason" name="testReason" 
+		                        <td><input class="Ttd form-control" id="sTestReason" name="testReason" 
 		                       	 	 autocomplete="off" type="text" readonly></td>
 		                     </tr>
 		                     <tr>
 		                        <td>점검내용</td> <!-- 특이사항 -->
-		                        <td><textarea class="form-control wantUpdate1" id="sTestContent" name="testContent"
+		                        <td class="Ttd"><textarea class="Ttd form-control wantUpdate1" id="sTestContent" name="testContent"
 		                        	autocomplete="off" rows="5" readonly="readonly"></textarea></td>
                         	</tr>                  
 		                     <tr>
@@ -274,13 +278,13 @@
 				<!-- Modal body -->
 				<div class="modal-body"> 
 					<table class="emp">
-						<tr class="emp">
+						<tr class="emp signTd">
 							<td>설비담당</td>
 							<td>설비팀장</td>
 							<td>생산팀장</td>
 							<td>총괄팀장</td>
 						</tr>
-						<tr class="emp">
+						<tr class="emp signTd">
 							<td style="text-align: center;"><img style=" width : 50px; height: 50px;" src="/equipmentCss/홍길동인.PNG"></td> <!-- 본인 도장 사진으로 대체 -->
 							<td></td> 
 							<td></td>
@@ -419,15 +423,15 @@
 		                   	<tr>
 	                        	<td>시공일정</td>  
 								<td>
-								 	  <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-					                  <input id="wv-start-input" name="workDate" autocomplete="off" type="text" aria-label="Date" 
+								 	  <div class="tui-datepicker-input Wpicker tui-datetime-input tui-has-focus">
+					                  <input id="wv-start-input" class="Wpicker" name="workDate" autocomplete="off" type="text" aria-label="Date" 
 					                  		style="background-color :#E9ECEF;" readonly>
 					                  <span class="tui-ico-date" ></span>
 					                  <div id="wv-start-container" style="margin-left: -1px;"></div>
 					               	  </div>
 					               <span>-</span>
-					               <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-					                  <input id="wv-end-input" name="workEndDate" autocomplete="off" type="text" aria-label="Date" 
+					               <div class="tui-datepicker-input Wpicker tui-datetime-input tui-has-focus">
+					                  <input id="wv-end-input" class="Wpicker" name="workEndDate" autocomplete="off" type="text" aria-label="Date" 
 					                  		style="background-color :#E9ECEF;" readonly>
 					                  <span class="tui-ico-date"></span>
 					                  <div id="wv-end-container" style="margin-left: -1px;"></div>
@@ -698,10 +702,12 @@ function filter1(){
 		if(search.value == ''){	
 			
 			testGrid.unfilter('testEquipName');
+			testCompleteGrid.unfilter('testEquipName');
 		
 		}else {
 			
 			testGrid.filter('testEquipName', state);
+			testCompleteGrid.filter('testEquipName', state);
 		}
 		
 }
@@ -844,6 +850,7 @@ function test(id){
 			    scrollX:false,
 			    scrollY:false,
 			    pagination:true,
+			    rowHeaders: ['rowNum'],
 				pageOptions: {
 					useClient: true,
 					perPage: 12
@@ -1956,6 +1963,7 @@ function deleteWork() {
 	   function setNull() {
 		   document.getElementById('searchFilter').value='';
 		   tFilterDate.setNull();
+		   completeChk();
 	    	}
  
 let TC = document.querySelector('#sTestContent');
