@@ -35,10 +35,10 @@ public class MaterialVO {
 	private String mInfo; // 상세정보
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date mDate; // 최종수정일
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date mRegDate; // 등록일자
 	
 	private Integer totalPlanedQntt; // 생산계획 하 필요 자재수량 합계
@@ -50,8 +50,9 @@ public class MaterialVO {
 
 	// 2. 자재 변동 내역
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date mioDate;// 입출고 변동일자
+	
 	private Long mioQntt; // 입고, 출고 변동수량
 	private String mioCompanyId; // 자재 거래처번호
 	private String mioCompanyNm; // 자재 거래처이름

@@ -59,9 +59,9 @@ public class MaterialServiceImpl implements MaterialService {
 	}
 
 	@Override
-	public List<MaterialVO> mioList() {
+	public List<MaterialVO> mioList(MaterialVO mVO) {
 		// 자재 변동 리스트 전체 조회
-		return mMapper.mioList();
+		return mMapper.mioList(mVO);
 	}
 
 	@Override

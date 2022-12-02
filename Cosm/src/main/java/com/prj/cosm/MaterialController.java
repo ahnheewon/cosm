@@ -99,8 +99,8 @@ public class MaterialController {
 		}
 		
 		mService.insertMatarialInfo(mVO);
-		
-		return "redirect:minfo"; // 목록으로 돌아가기
+		//  
+		return "redirect:/material/minfo"; // 목록으로 돌아가기
 	}
 
 	// 파일 다운
@@ -147,10 +147,10 @@ public class MaterialController {
 	// 자재 정보 리스트, 재고 변동현황
 	@ResponseBody
 	@GetMapping("/material/ajax/minfo")
-	public Map mInfoList() {
+	public Map mInfoList(MaterialVO mVO) {
 		Map<String, Object> map = new HashMap();
 		map.put("list1", mService.mList()); // 자재정보리스트
-		map.put("list2", mService.mioList()); // 재고 변동 현황
+		map.put("list2", mService.mioList(mVO)); // 재고 변동 현황
 
 		return map;
 	}
@@ -178,7 +178,20 @@ public class MaterialController {
 
 	// 자재 정보 수정(처리)
 	@PostMapping("/material/mUpdate")
-	public String modifyMat(MaterialVO vo) {
+	public String modifyMat(MaterialVO vo, MultipartFile imageFile) throws IllegalStateException, IOException {
+		
+		if(imageFile != null && imageFile.getSize() >0) {
+			//첨부파일 처리
+			
+			String fName = imageFile.getOriginalFilename(); // 이미지 실제 이름
+			
+			File file = new File(path, fName);			
+			file = FileRenamePolicy.rename(file); // 파일 중복 검사
+			
+			imageFile.transferTo(file); // 파일을 폴더로 옮겨줌
+			vo.setMFile(fName);
+		}
+		
 		mService.updateMatrailInfo(vo);
 		return "redirect:/material/minfo";
 
