@@ -10,9 +10,9 @@
 
 	<!-- 설비 전체 리스트 -->
 	<select id="getEquipList" resultType="equipVO">
-		select e.equip_no,
-		e.equip_process,e.equip_name,e.equip_purpose,e.equip_type
-		,p.process_name as equip_process_name,p.process_no,e.equip_state
+		select e.equip_no,e.equip_process,e.equip_name
+			   ,e.equip_purpose,e.equip_type
+			   ,p.process_name as equip_process_name,p.process_no,e.equip_state
 		from
 		equip e, process p
 		where e.equip_process=p.process_no
@@ -38,10 +38,15 @@
 		,equip_process
 		,equip_purpose
 		,equip_date
+		<if test="eFile!=null">
+		,e_file
+		</if>	
 		)
 		values
-		(#{equipNo},#{equipName},#{equipType},#{equipStdVibe},#{equipStdTemp},#{equipProcess},#{equipPurpose},SYSDATE)
-
+		(#{equipNo},#{equipName},#{equipType},#{equipStdVibe},#{equipStdTemp},#{equipProcess},#{equipPurpose},SYSDATE
+		<if test="eFile!=null">
+		,#{eFile}
+		</if>)
 	</insert>
 
 

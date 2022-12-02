@@ -50,7 +50,7 @@ public class SecurityConfig {
 				.antMatchers("/equipment/**")
 				.hasAnyAuthority("ROLE_D0108", "ROLE_D0107", "ROLE_D0101", "ROLE_D0106", "ROLE_D0111", "ROLE_D0105")
 				.antMatchers("/**").hasAuthority("ROLE_D0101").anyRequest().authenticated()).formLogin()
-				.loginPage("/login").usernameParameter("userId").loginProcessingUrl("/login")
+				.loginPage("/login").failureUrl("/login?error=error").usernameParameter("userId").loginProcessingUrl("/login")
 				.successHandler(successHandler()).and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
 				.invalidateHttpSession(true).deleteCookies("JSESSIONID").and().exceptionHandling()
 				.accessDeniedHandler(accessDeniedHandler()).and()

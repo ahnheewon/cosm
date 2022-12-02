@@ -207,7 +207,6 @@
 
 
 		function checkForm() {
-			console.log($('#usersId').val())
 			if ($('#usersId').val() == "" || $('#usersId').val() == null) {
 				Swal.fire(
                         '아이디 중복확인',
@@ -251,7 +250,6 @@
 
 		function checkId() {
 			var usersId = $('#usersId').val();
-			console.log(usersId);
 			$.ajax({
 				url: "/userCheckId",
 				type: "get",
@@ -282,7 +280,6 @@
 						$('#usersId').val("");
 						$('#usersId').focus();
 					}
-					console.log(data);
 				},
 				error: function (reject) {
 					console.log(reject);
@@ -292,9 +289,6 @@
 
 
 		function callUser(no) {
-			console.log(no);
-
-			console.log()
 			$.ajax({
 				url: '/userSelect',
 				type: 'post',
@@ -307,7 +301,6 @@
 				success: function (data) {
 					for (obj in data) {
 						$('#' + obj).val(data[obj])
-						console.log(obj, data[obj])
 					}
 				},
 				error: function (reject) {
@@ -492,12 +485,6 @@
 							i].name);
 						$('#cliSearchType').append(option)
 					}
-					$('#empSearchType').on('change', function () {
-						console.log($('#empSearchType').val());
-					})
-					$('#cliSearchType').on('change', function () {
-						console.log($('#cliSearchType').val());
-					})
 					$('#empFilter').on('click', function () {
 						for (let i = 1; i < grid.gridEl._component.props.store.column.allColumns
 							.length; i++) {
