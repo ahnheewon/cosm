@@ -62,7 +62,7 @@
 
 	<!-- 주문 등록 -->
 	<!-- ORDER_CODE - 신규,불량,재주문 추가하기 -->
-	<insert id="insertOrder" parameterType="OrdersVO">
+	 <insert id="insertOrder" parameterType="OrdersVO">
 
 		<selectKey order="BEFORE" keyProperty="orderNo"
 			resultType="String">

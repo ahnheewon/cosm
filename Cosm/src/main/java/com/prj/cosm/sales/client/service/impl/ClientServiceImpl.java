@@ -9,24 +9,23 @@ import org.springframework.stereotype.Service;
 import com.prj.cosm.sales.client.mapper.ClientMapper;
 import com.prj.cosm.sales.client.service.ClientService;
 import com.prj.cosm.sales.client.service.ClientVO;
-import com.prj.cosm.sales.orders.service.OrdersVO;
 import com.prj.cosm.user.alert.mapper.AlertMapper;
 import com.prj.cosm.user.alert.service.AlertVO;
 import com.prj.cosm.user.emp.mapper.EmpMapper;
 import com.prj.cosm.user.emp.service.EmpVO;
 
 @Service
-public class ClientServiceImpl implements ClientService  {
+public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	ClientMapper mapper;
-	
+
 	@Autowired
 	AlertMapper aMapper;
 
 	@Autowired
 	EmpMapper eMapper;
-	
+
 	@Override
 	public int clientIn(ClientVO cvo) {
 		// 고객 가입
@@ -50,7 +49,7 @@ public class ClientServiceImpl implements ClientService  {
 		// 고객 탈퇴-삭제
 		return 0;
 	}
-	
+
 	@Override
 	public List<ClientVO> myOrderList() {
 		// 내주문조회
@@ -58,22 +57,15 @@ public class ClientServiceImpl implements ClientService  {
 	}
 
 	@Override
-	public void insertOrder(ClientVO cvo) {
-		//주문등록
-		List<EmpVO> eList = new ArrayList<>();
-		eList = eMapper.getReceiveUsers("D0109"); // 받는사람
-		for (EmpVO eVO : eList) {
-			AlertVO aVO = new AlertVO();
-			aVO.setAlertContent("신규 주문이 있습니다.");
-			aVO.setAlertReceive(eVO.getUsersNo());
-			aMapper.insertAlert(aVO);
-		}
+	public int insertOrder(ClientVO cvo) {
+		// 주문등록
 		
+		return mapper.insertOrder(cvo);
 	}
 
 	@Override
 	public List<ClientVO> getOrderList(ClientVO cvo) {
-		// 주문내역조회 
+		// 주문내역조회
 		return mapper.getOrderList(cvo);
 	}
 

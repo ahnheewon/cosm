@@ -48,6 +48,14 @@ public class OrdersServiceImpl implements OrdersService {
 	public int insertOrder(OrdersVO vo) {
 		// 등록
 		// int count = mapper.insertOrder(vo);
+		List<EmpVO> eList = new ArrayList<>();
+		eList = eMapper.getReceiveUsers("D0109"); // 받는사람
+		for (EmpVO eVO : eList) {
+			AlertVO aVO = new AlertVO();
+			aVO.setAlertContent("/orders/sMain"+"^"+vo.getGoodsName()+"의 신규 주문이 있습니다.");
+			aVO.setAlertReceive(eVO.getUsersNo());
+			aMapper.insertAlert(aVO);
+		}
 		return mapper.insertOrder(vo);
 	}
 	/*
@@ -101,7 +109,7 @@ public class OrdersServiceImpl implements OrdersService {
 		eList = eMapper.getReceiveUsers("D0105"); // 받는사람
 		for (EmpVO eVO : eList) {
 			AlertVO aVO = new AlertVO();
-			//aVO.setAlertContent("/produce/planList"+"^"+  +"접수 완료된 주문이 있습니다.");
+			aVO.setAlertContent("/produce/planList"+"^"+"접수 완료된 주문이 있습니다.");
 			aVO.setAlertReceive(eVO.getUsersNo());
 			aMapper.insertAlert(aVO);
 		}

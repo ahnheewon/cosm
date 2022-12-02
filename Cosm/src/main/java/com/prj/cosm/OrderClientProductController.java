@@ -66,7 +66,7 @@ public class OrderClientProductController {
 	// 고객 - 로그인 후, 첫 화면 - 주문등록, 이전주문, 주문조회.. 볼 수 있음
 	@RequestMapping("/client/main")
 	public String main() {
-		return "/client/orderList";
+		return "/client/main";
 	}
 
 	// 주문조회 페이지(월별 : 1개월 3개월 6개월 조회 가능)
@@ -119,10 +119,10 @@ public class OrderClientProductController {
 
 	// 주문 등록 데이터
 	@PostMapping("/client/insertOrderData")
-	public String insertOrderPage(OrdersVO ovo) {
-		System.out.println("insert vo" + ovo);
-		oService.insertOrder(ovo);
-		return "redirect:/client/insertOrder";
+	public String insertOrderPage(OrdersVO cvo) {
+		System.out.println("insert vo" + cvo);
+		oService.insertOrder(cvo);
+		return "redirect:/client/orderList";
 	}
 
 	// 영업=================================================================================================================

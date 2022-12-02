@@ -102,7 +102,7 @@
 							class="btn btn-secondary btn-sm">엑셀</button>
 						<button style="float: right; margin-right: 8px; margin-left: 8px;"
 							id="delbtn" class="btn btn-secondary btn-sm">삭제</button>
-						
+
 
 						<div id="grid4"></div>
 					</div>
@@ -156,7 +156,7 @@
 							class="btn btn-secondary btn-sm">엑셀</button>
 						<button id="delbtn3" style="float: right; margin-right: 8px;"
 							class="btn btn-secondary btn-sm">삭제</button>
-							<button style="float: right;  margin-right: 8px;" id="updatebtn"
+						<button style="float: right; margin-right: 8px;" id="updatebtn"
 							class="btn btn-secondary btn-sm">수정</button>
 					</div>
 					<div id="grid5"></div>
@@ -168,13 +168,14 @@
 		</div>
 		<!-- tab 본문 end -->
 
-		<!-- ==========================================Modal========================================================== -->
-		<!-- 접수주문 상세정보 모달-->
-		<div class="modal" tabindex="-1" id="orderInfo" style="z-index: 1300">
+<!-- ==========================================Modal========================================================== -->
+		<!-- 신규주문 상세정보 모달-->
+		<div class="modal" tabindex="-1" id="newOrderInfo"
+			style="z-index: 1300">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">접수주문 상세내역</h5>
+						<h5 class="modal-title" style="font-weight: bold;">신규주문 상세내역</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
@@ -212,6 +213,52 @@
 			</div>
 		</div>
 
+		<!-- 접수주문 상세정보 모달-->
+		<div class="modal" tabindex="-1" id="orderInfo" style="z-index: 1300">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">접수주문 상세내역</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+
+					<div class="modal-body" style="text-align: left">
+						<div class="row p-3">
+							<div class="col">
+								<label for="input" class="col-form-label">주문번호</label> <input
+									type="text" class="form-control" name="orderNo">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">제품명</label> <input
+									type="text" class="form-control" name="goodsName">
+							</div>
+							<div class="row p-3">
+								<label for="input" class="col-form-label">요청사항</label>
+								<textarea class="form-control col-sm-5" rows="5" name="note"></textarea>
+							</div>
+							<div class="row p-3">
+								<label for="input" class="col-form-label">이미지</label> <img
+									name="oImg"></img>
+							</div>
+						</div>
+
+						<div class="modal-footer" style="text-align: center">
+							<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+							<button type="button" class="btn btn-primary"
+								data-bs-dismiss="modal" onclick="location.href='sMain'">확인</button>
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">취소</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+<!-- ================================================ script ============================================================= -->
 		<script>
 			/*-----------
 		  그리드 스타일
@@ -336,6 +383,7 @@
 				columns: [{
 						header: '주문번호',
 						name: 'orderNo',
+						
 
 					}, {
 						header: '거래처명',
@@ -426,7 +474,13 @@
 
 					}, {
 						header: '주문타입',
-						name: 'orderCode'
+						name: 'orderCode',
+						renderer : {
+							styles: {
+									 fontWeight: 'bold',
+									 color: (props) => props.value == '접수' ? 'green' : 'red'
+								}
+						},
 					},
 					{
 						header: '배달상황',
@@ -671,45 +725,98 @@
 					}
 				});
 			}
-			// tab1 - 주문 관리 end ===========================================================================
 
+// tab1 - 주문 관리 end ==========================================================================================================================
 
-  		/*----------------------- 
-	     접수주문 상세내역
-	    ------------------------*/
-         
-         function orderInfo(orderNo) {
-            $.ajax({
-               url: "/orders/getOrderInfo",
-               method: "GET",
-               data: { "orderNo": orderNo },
-               success: function (result) {
-                  console.log('모달 아작스 : ', result);
-                 /*  $('[name="orderNo"]').val(result.orderNo);
-                  $('[name="goodsNo"]').val(result.goodsNo);
-                  $('[name="totalNum"]').val(result.totalNum); */
-               },
-               error: function (reject) {
-                  console.log(reject);
-               }
-            })
+            /*----------------------- 
+              신규주문 상세내역 - 모달
+            ------------------------*/
+            function newOrderInfo(orderNo) {
+                $.ajax({
+                    url: "/orders/newOrderInfo",
+                    method: "GET",
+                    data: {
+                        "orderNo": orderNo
+                    },
+                    success: function (result) {
+                        console.log('신규주문 모달 아작스 : ', result);
+                        /*
+                        $('[name="orderNo"]').val(result.orderNo);
+                        $('[name="goodsNo"]').val(result.goodsNo);
+                        $('[name="totalNum"]').val(result.totalNum);
+                        $('[name="note"]').val(result.note);
+                        */
+                    },
+                    error: function (reject) {
+                        console.log(reject);
+                    }
+                })
 
-         }
-         // 접수주문 상세조회
-         grid4.on('click', ev => {
-            if (grid4.getRow(ev.rowKey) != null && ev.columnName != '_checked') { // checkbox 클릭시, 모달 안 뜨게끔
-               console.log('모달 : ', ev);
-
-               if (ev.rowKey >= 0) {
-                  let orderNo = grid4.getRow(ev.rowKey).orderNo;
-                  orderInfo(orderNo);
-               }
-               // 상세 조회 모달 열기
-               let myModalAlternative = new bootstrap.Modal('#orderInfo')
-               let modalToggle = document.getElementById('orderInfo');
-               myModalAlternative.show(modalToggle)
             }
-         });  
+            /*----------------------- 
+            	신규주문 상세조회
+         	------------------------*/
+            grid.on('click', ev => {
+                if (grid.getRow(ev.rowKey) != null && ev.columnName != '_checked') { // checkbox 클릭시, 모달 안 뜨게끔
+                    console.log('모달 : ', ev);
+
+                    if (ev.rowKey >= 0) {
+                        let orderNo = grid.getRow(ev.rowKey).orderNo;
+                        orderInfo(orderNo);
+                    }
+                    // 상세 조회 모달 열기
+                    let myModalAlternative = new bootstrap.Modal('#newOrderInfo')
+                    let modalToggle = document.getElementById('newOrderInfo');
+                    myModalAlternative.show(modalToggle)
+                }
+            });
+
+
+            /*----------------------- 
+              접수주문 상세내역 - 모달
+            ------------------------*/
+            function orderInfo(orderNo) {
+                $.ajax({
+                    url: "/orders/getOrderInfo",
+                    method: "GET",
+                    data: {
+                        "orderNo": orderNo
+                    },
+                    success: function (result) {
+                        console.log('모달 아작스 : ', result);
+                        
+                 $('[name="orderNo"]').val(result.orderNo);
+                  $('[name="goodsNo"]').val(result.goodsNo);
+                  $('[name="note"]').val(result.note);
+                    },
+                    error: function (reject) {
+                        console.log(reject);
+                    }
+                })
+
+            }
+
+            /*----------------------- 
+		         접수주문 상세조회
+		      ------------------------*/
+            grid4.on('click', ev => {
+                if (grid4.getRow(ev.rowKey) != null && ev.columnName != '_checked') { // checkbox 클릭시, 모달 안 뜨게끔
+                    console.log('모달 : ', ev);
+
+                    if (ev.rowKey >= 0) {
+                        let orderNo = grid4.getRow(ev.rowKey).orderNo;
+                        orderInfo(orderNo);
+                    }
+                    // 상세 조회 모달 열기
+                    let myModalAlternative = new bootstrap.Modal('#orderInfo')
+                    let modalToggle = document.getElementById('orderInfo');
+                    myModalAlternative.show(modalToggle)
+                }
+            });
+
+
+
+
 
 
 
