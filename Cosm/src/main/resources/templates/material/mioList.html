@@ -19,38 +19,40 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="container">
+		<div class="container" style="padding-top : 50px; padding-bottom: 20px">
 			<div class="row">
 				<div class="column">
-					<h3>입고 리스트</h3>
-					<div id="select_input">
+					<h3 style="text-align: center; font-weight: bold;">입고 리스트</h3>
+					<hr>
+					<div id="select_input" style="float:right; margin-bottom:10px">
 						<span>입고일자</span>
 						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
 							style="margin-left: -1px; z-index: 1009">
 							<input id="startpicker-input" type="text" aria-label="Date"
-								style="z-index: 1100"> <span class="tui-ico-date"></span>
+								style="z-index: 1009"> <span class="tui-ico-date"></span>
 							<div id="startpicker-container"
 								style="margin-left: -1px; z-index: 1009"></div>
 						</div>
 						<span>~</span>
-						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-							style="z-index: 1009">
+						<div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index: 1009">
 							<input id="endpicker-input" type="text" aria-label="Date"
-								style="margin-left: -1px; z-index: 1009"> <span
-								class="tui-ico-date"></span>
-							<div id="endpicker-container"
-								style="margin-left: -1px; z-index: 1009"></div>
+								style=" z-index: 1009"> <span class="tui-ico-date"></span>
+							<div id="endpicker-container" style="margin-left: -1px; z-index: 1009"></div>
 						</div>
-						<button type="button" class="btn btn-secondary" id="searchBtn">조회</button>
-						<button type="button" class="btn btn-secondary" id="inputBtn"
-							onclick="miStanbyList()">검수/등록</button>
-
-					</div>
+						<button type="button" class="btn btn-secondary btn-sm" id="searchBtn">검색</button>
+						</div>
+						<div>
+						<button type="button" class="btn btn-secondary btn-sm" id="inputBtn"
+							onclick="miStanbyList()" style="float: left">자재검수</button>
+						</div>
+					
 					<div id="grid"></div>
 				</div>
+				<hr>
 				<div class="column">
-					<h3>출고 리스트</h3>
-					<div id="select_output" style="z-index: 1100">
+					<h3 style="text-align: center; font-weight: bold; margin-top:10px; margin-bottom : 30px;">출고 리스트</h3>
+					<hr>
+					<div id="select_output" style="float:right; margin-bottom:10px">
 						<span>출고일자</span>
 						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
 							style="z-index: 1001">
@@ -68,7 +70,7 @@
 								style="margin-left: -1px; z-index: 1001"></div>
 						</div>
 
-						<button type="button" class="btn btn-secondary" id="findBtn">
+						<button type="button" class="btn btn-secondary btn-sm" id="findBtn">
 							조회</button>
 					</div>
 					<div id="grid2"></div>

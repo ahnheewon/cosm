@@ -39,29 +39,31 @@
 	clear: both;
 }
 
-#btn {
-	float: right;
-	margin-right: 5px;
-}
 
 #regdate {
 	margin-left: 10px;
+}
+
+h3{
+text-align: center;
+font-weight: bold;
 }
 </style>
 </head>
 
 <body>
-	<div layout:fragment="content">
-		<div class="container">
-
+	<div layout:fragment="content" >
+		<div class="container" style="padding-top : 50px; padding-bottom: 20px">
+			  <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+  		<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
+		</svg> > 자재 정보 관리 </h6>
+		<h3 style="text-align: center; font-weight: bold;">발주 대기 관리</h3>
+					<hr>
 			<div class="row">
 				<div class="column">
-					<h2>발주 대기 관리</h2>
+					
 					<div id="wrap">
-						<form>
-
-							<div id="btn" style="float: right">
-
+							<div id="btn" style="float: right; padding-bottom: 6px">	
 								<button type="button" class="btn btn-secondary btn-sm"
 									id="insertbtn" onclick="updateMoNum()">
 									실행</button>								
@@ -70,18 +72,17 @@
 									<button type="button" class="btn btn-secondary btn-sm"
 								id="execlWord" >출력</button>
 							</div>
-
-						</form>
 						<div>
 							<div id="grid"></div>
 						</div>
 					</div>
 				</div>
-				<div class="column">
-					<h2>발주 진행 현황</h2>
-
+				<hr>
+				<div class="column" style="padding-top : 20px;">
+					<h3 style="text-align: center; font-weight: bold; margin-bottom : 30px;">발주 진행 현황</h3>
+					<hr>
 					<div id="mdate" >
-						<span>발주일자</span>
+						<span>확정일자</span>
 						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
 							style="z-index: 1001;">
 							<input id="startpicker-input" type="text" aria-label="Date"
