@@ -101,7 +101,7 @@ public class OrdersServiceImpl implements OrdersService {
 		eList = eMapper.getReceiveUsers("D0105"); // 받는사람
 		for (EmpVO eVO : eList) {
 			AlertVO aVO = new AlertVO();
-			aVO.setAlertContent("접수 완료된 주문이 있습니다.");
+			//aVO.setAlertContent("/produce/planList"+"^"+  +"접수 완료된 주문이 있습니다.");
 			aVO.setAlertReceive(eVO.getUsersNo());
 			aMapper.insertAlert(aVO);
 		}

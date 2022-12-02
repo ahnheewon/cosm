@@ -8,16 +8,20 @@
 
 <title>Sales main</title>
 <!-- date-picker & time-picker -->
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
-<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+<script
+	src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<script
+	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 
 <!-- 드래그 방지 -->
 <script type="text/javascript">document.oncontextmenu = function(){return false;}</script>
 
 <!-- custom style and js -->
-<link rel="stylesheet" href="/equipmentCss/main.css"/>
+<link rel="stylesheet" href="/equipmentCss/main.css" />
 
 </head>
 
@@ -83,19 +87,22 @@
 						<div>
 							<h3>접수 주문관리</h3>
 						</div>
-						<!-- 검색창 start -->
-						<input onkeyup="filter()" type="text"
-							style="float: left; border: 1px solid #aaa;" id="searchFilter"
-							placeholder="제품명 입력">
-
+						<div>
+							<!-- 검색창 start -->
+							<input onkeyup="filter()" type="text"
+								style="float: left; border: 1px solid #aaa;" id="searchFilter"
+								placeholder="거래처명 입력">
+							<!-- 
 						<button style="float: left" class="btn btn-dark btn-sm">검색</button>
-						<!-- 검색창 end -->
+						 -->
+							<!-- 검색창 end -->
+						</div>
+
 						<button style="float: right;" id="exlBtn"
 							class="btn btn-secondary btn-sm">엑셀</button>
-						<button style="float: right" id="delbtn"
-							class="btn btn-secondary btn-sm">삭제</button>
-						<button style="float: right" id="updatebtn"
-							class="btn btn-secondary btn-sm">수정</button>
+						<button style="float: right; margin-right: 8px; margin-left: 8px;"
+							id="delbtn" class="btn btn-secondary btn-sm">삭제</button>
+						
 
 						<div id="grid4"></div>
 					</div>
@@ -116,9 +123,12 @@
 					<div>
 						<h3 align="center">완제품 출고관리</h3>
 					</div>
+
 					<div>
-						<button id="newPro5" class="btn btn-secondary btn-sm">출고</button>
-						<button id="exlBtn2" class="btn btn-secondary btn-sm">엑셀</button>
+						<button id="exlBtn2" style="float: right;"
+							class="btn btn-secondary btn-sm">엑셀</button>
+						<button id="newPro5" style="float: right; margin-right: 8px;"
+							class="btn btn-secondary btn-sm">출고</button>
 					</div>
 
 					<div id="grid2"></div>
@@ -128,12 +138,26 @@
 					<div>
 						<h3 align="center">완제품 출고내역</h3>
 					</div>
+					<div>
+						<!-- 검색창 start -->
+						<input onkeyup="filter2()" type="text"
+							style="float: left; border: 1px solid #aaa;" id="searchFilter2"
+							placeholder="거래처명 입력">
+						<!-- 
+						<button style="float: left" class="btn btn-dark btn-sm">검색</button>
+						 -->
+						<!-- 검색창 end -->
+					</div>
 					<div align="left">
 						<!-- 
 						 <button id="upbtn3" class="btn btn-secondary btn-sm">수정</button>
 						 -->
-						<button id="delbtn3" class="btn btn-secondary btn-sm">삭제</button>
-						<button id="exlBtn3" class="btn btn-secondary btn-sm">엑셀</button>
+						<button id="exlBtn3" style="float: right;"
+							class="btn btn-secondary btn-sm">엑셀</button>
+						<button id="delbtn3" style="float: right; margin-right: 8px;"
+							class="btn btn-secondary btn-sm">삭제</button>
+							<button style="float: right;  margin-right: 8px;" id="updatebtn"
+							class="btn btn-secondary btn-sm">수정</button>
 					</div>
 					<div id="grid5"></div>
 
@@ -144,7 +168,7 @@
 		</div>
 		<!-- tab 본문 end -->
 
-
+		<!-- ==========================================Modal========================================================== -->
 		<!-- 접수주문 상세정보 모달-->
 		<div class="modal" tabindex="-1" id="orderInfo" style="z-index: 1300">
 			<div class="modal-dialog modal-lg">
@@ -273,7 +297,7 @@
 			}
 
 			/*----------------------
-			 검색 그리드 
+			 접수주문 - 검색 그리드 
 			----------------------*/
 			function filter(){
 
@@ -650,9 +674,9 @@
 			// tab1 - 주문 관리 end ===========================================================================
 
 
-  /*----------------------- 
-	           접수주문 상세내역
-	         ------------------------*/
+  		/*----------------------- 
+	     접수주문 상세내역
+	    ------------------------*/
          
          function orderInfo(orderNo) {
             $.ajax({
@@ -833,7 +857,8 @@
 						name: 'deliveryDate'
 					}, {
 						header: '거래처명',
-						name: 'clientName'
+						name: 'clientName',
+						filter: 'text'
 					}, {
 						header: '현황',
 						name: 'orderCode',
@@ -842,6 +867,29 @@
 				]
 			});
 
+			/*----------------------
+			 출고내역 - 검색 그리드 
+			----------------------*/
+			function filter2(){
+
+		        const search = document.getElementById("searchFilter2")
+				
+				//const sf = document.querySelector('#searchFilter');
+				
+					
+				const state = [{code: 'contain', value: search.value.toUpperCase()}];
+					
+				if(search.value == ''){	
+					
+					grid5.unfilter('clientName');
+				
+				}else {
+					
+					grid5.filter('clientName', state);
+				}
+				
+		}
+			
 
 			/*------------
 			 아작스 연결 - 출고버튼 클릭 이벤트
