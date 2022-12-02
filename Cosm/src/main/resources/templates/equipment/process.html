@@ -522,8 +522,7 @@ function filter(){
 		const btn = document.querySelector('#updateBtn')
 		btn.innerText='저장';
 		btn.removeAttribute('onclick'); // 기존 event 제거
-		btn.removeEventListener('click',updateBtnClick);
-		btn.setAttribute('onclick','updateBtnClick()');
+		btn.setAttribute('onclick','updateEquip()');
 			           
 	}
 
