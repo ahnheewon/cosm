@@ -21,19 +21,22 @@
 			  <div class="row">
 			  
 			        <div class="column">
-			        <h5>부품 재고 현황</h5><br>
+			        <h5>부품 재고 현황</h5>
+			        	<hr style="visibility: hidden;">
 			          <div class="searchbox">
 			            <div class="header">
-						 <button type="button"  style="float:right;" class="btn btn-secondary btn-sm">
+						     <input onkeyup="filter()" autocomplete="off" style="float:left; margin-right : 5px; border: 1px solid #aaa;" type="text" id="searchFilter" placeholder="부품명 입력...">
+						     <button type="button" id="insertTBtn" style="float:right; display: inline-block; margin-right: 10px;" class="btn btn-dark btn-sm">발주요청</button>
+						     <button type="button" id="insertTBtn" style="float:right; display: inline-block; margin-right: 10px;" class="btn btn-dark btn-sm">수정</button>
+						 <button type="button"  style="float:left;" class="btn btn-secondary btn-sm">
                			 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
   						 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
 						</svg>
               			</button>    
-						     <input onkeyup="filter()" autocomplete="off" style="float:right;  margin-right: 5px; border: 1px solid #aaa;" type="text" id="searchFilter" placeholder="부품명 입력...">
 						 
 						 </div>
       				   </div>
-						  <div id="part">
+						  <div id="part" style="padding-top : 40px;">
 						  </div>
 			        </div>
 			        		
