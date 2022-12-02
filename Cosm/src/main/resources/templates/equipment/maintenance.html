@@ -51,8 +51,7 @@
 	                        <h5>점검 관리</h5>
 	                     <table style="width: 100%;">                        
 	                           <tr>
-	                                                            	
-	                              <td colspan="3">
+					           <td colspan="3">
 	                                    <div >
 								            <div class="header">
 								           	
@@ -860,6 +859,9 @@ function test(id){
 					header:'점검번호',
 					name:'testNo'
 					,align : 'center'
+					,formatter: function(value) {
+			                return 'COST '+value.value; // 3자리 마다 
+			        }
 				},
 			    {
 			        header: '설비명',
@@ -1982,12 +1984,14 @@ function completeChk(){ // 전체, 미완료, 완료 라디오박스
 		if(ts == '전체'){
 		
 			document.querySelector('#testCompleteGrid').style.display='none';
-			 
+			
+			
 			url="/equipment/testAllList"
 			fetch(url) 
 			.then(res=>res.json())
 			.then(obj=>{
 			    console.log(obj);
+			    testGrid.refreshLayout();
 			 	 testGrid.resetData(obj);
 			})
 				document.querySelector('#testGrid').style.display='block';
@@ -1997,13 +2001,13 @@ function completeChk(){ // 전체, 미완료, 완료 라디오박스
 	/* 점검 미완료 리스트 불러오는 아작스 */
 		
 		document.querySelector('#testCompleteGrid').style.display='none';
-		
 	
 			url="/equipment/incompleteTestList"
 			fetch(url) 
 			.then(res=>res.json())
 			.then(obj=>{
 			    console.log(obj);
+				testGrid.refreshLayout();
 			    testGrid.resetData(obj);
 			   
 		})
