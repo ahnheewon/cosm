@@ -91,7 +91,7 @@ public class MaterialController {
 			file = FileRenamePolicy.rename(file); // 파일 중복 검사
 			
 			imageFile.transferTo(file); // 파일을 폴더로 옮겨줌
-			mVO.setMFile(fName);
+			mVO.setMatFile(file.getName());
 		}
 		
 		mService.insertMatarialInfo(mVO);
@@ -141,15 +141,39 @@ public class MaterialController {
 	}
 
 	// 자재 정보 리스트, 재고 변동현황
+	
 	@ResponseBody
 	@GetMapping("/material/ajax/minfo")
-	public Map mInfoList(MaterialVO mVO) {
-		Map<String, Object> map = new HashMap();
+	public Map<String, Object> mInfoList(MaterialVO mVO) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list1", mService.mList()); // 자재정보리스트
-		map.put("list2", mService.mioList(mVO)); // 재고 변동 현황
+		
 
 		return map;
 	}
+	
+	// 페이지네이션
+	@ResponseBody
+	@RequestMapping(value="/material/ajax/mioList")
+	public Map<String, Object> mioPageMap(MaterialVO mVO) {
+		Map<String, Object> pagination = new HashMap<String, Object>();
+		pagination.put("page", mVO.getPage());
+		pagination.put("totalCount", mService.mioListCount(mVO)); // 데이터 갯수 세는 쿼리
+		
+		Map<String, Object>  gridData = new HashMap<String, Object>();
+		gridData.put("pagination", pagination); 
+		gridData.put("contents", mService.mioList(mVO));
+		
+		Map<String, Object>  result = new HashMap<String, Object>();
+		result.put("result", true);
+		result.put("data", gridData);
+		
+		return result;
+	}
+	
+	
+	
+	
 
 	@GetMapping("/material/minfo")
 	public String mInfoPage(MaterialVO vo, Model model) {
@@ -185,7 +209,7 @@ public class MaterialController {
 			file = FileRenamePolicy.rename(file); // 파일 중복 검사
 			
 			imageFile.transferTo(file); // 파일을 폴더로 옮겨줌
-			vo.setMFile(fName);
+			vo.setMatFile(fName);
 		}
 		
 		mService.updateMatrailInfo(vo);

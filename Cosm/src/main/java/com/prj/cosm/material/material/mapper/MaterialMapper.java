@@ -1,6 +1,7 @@
 package com.prj.cosm.material.material.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -28,8 +29,11 @@ public interface MaterialMapper {
 
 
 	// 자재 변동 리스트 전체 조회
-	public List<MaterialVO> mioList(MaterialVO mVO);
-
+	public List<MaterialVO> mioList(MaterialVO mVO);	
+	
+	// 자재 변동 리스트 전체조회_카운트
+    public int mioListCount(MaterialVO mVO);	
+	
 	// 거래처 명 찾기
 	public List<MaterialVO> findComNm();
 

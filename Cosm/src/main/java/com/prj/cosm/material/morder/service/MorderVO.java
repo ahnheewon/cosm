@@ -16,7 +16,7 @@ public class MorderVO {
 
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date mioDate;// 일자
 	
 	private String mioComId;// 거래처번호
@@ -40,11 +40,11 @@ public class MorderVO {
 	
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date startDate; // 시작일(날짜조회)
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date endDate; // 마지막일(날짜조회)
 	
 	// 4. 입고대기

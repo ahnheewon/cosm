@@ -20,10 +20,13 @@
 <body>
 	<div layout:fragment="content">
 		<div class="container" style="padding-top : 50px; padding-bottom: 20px">
+		 <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+  		<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
+		</svg> > 입출고 목록 </h6>
+		<h3 style="text-align: center; font-weight: bold;">입고 리스트</h3>
+		<hr>
 			<div class="row">
-				<div class="column">
-					<h3 style="text-align: center; font-weight: bold;">입고 리스트</h3>
-					<hr>
+				<div class="column">				
 					<div id="select_input" style="float:right; margin-bottom:10px">
 						<span>입고일자</span>
 						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
@@ -50,7 +53,7 @@
 				</div>
 				<hr>
 				<div class="column">
-					<h3 style="text-align: center; font-weight: bold; margin-top:10px; margin-bottom : 30px;">출고 리스트</h3>
+					<h3 style="text-align: center; font-weight: bold; margin-top:10px; margin-bottom : 20px;">출고 리스트</h3>
 					<hr>
 					<div id="select_output" style="float:right; margin-bottom:10px">
 						<span>출고일자</span>
@@ -84,7 +87,7 @@
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">입고 대기 리스트</h5>
+						<h5 class="modal-title" style="font-weight: bold;">입고 대기 리스트</h5>						
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
@@ -95,7 +98,7 @@
 						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
 						<button type="button" class="btn btn-primary"
 							onclick="updateInput()" id="orderIOBtn">등록</button>
-						<button type="button" class="btn btn-secondary"
+						<button type="button" class="btn btn-danger"
 							data-bs-dismiss="modal">취소</button>
 					</div>
 				</div>
@@ -118,20 +121,27 @@
 				columns : // 컬럼명
 				[ {
 					header : '발주번호',
-					name : 'moOrderId'
+					name : 'moOrderId',
+					align : 'center'
 				},					
 					{
 					header : '자재번호',
-					name : 'mioNo'
+					name : 'mioNo',
+					align : 'center'
 				}, {
 					header : '자재명',
 					name : 'mioName'
 				}, {
 					header : '입고수량',
-					name : 'mioQntt'
+					name : 'mioQntt',
+					align : 'right',
+					 formatter: function (value) {
+	                        return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	                     }
 				}, {
 					header : '입고날짜',
-					name : 'mioDate'
+					name : 'mioDate',
+					align : 'center'
 				}
 
 				],
@@ -154,16 +164,25 @@
 				scrollY : false, // 가로 스크롤
 				columns : [ {
 					header : '자재번호',
-					name : 'mioNo'
+					name : 'mioNo',
+					align : 'center'
+					
 				}, {
 					header : '자재명',
-					name : 'mioName'
+					name : 'mioName',
+					align : 'left'
 				}, {
 					header : '출고수량',
-					name : 'mioQntt'
+					name : 'mioQntt',
+					 align : 'right',
+					 formatter: function (value) {
+	                        return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	                     }                    
+					 
 				}, {
 					header : '출고날짜',
-					name : 'mioDate'
+					name : 'mioDate',
+					align : 'center'
 				} ],
 
 				pageOptions : {
@@ -235,7 +254,10 @@
 													'mioQntt', moNum) // sweet alert로 cs 변경하기
 
 										}
-									}
+									},
+									 formatter: function (value) {
+					                        return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+					                     }
 								},
 
 								{
