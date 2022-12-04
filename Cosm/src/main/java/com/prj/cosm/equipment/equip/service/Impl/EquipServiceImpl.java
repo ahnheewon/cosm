@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -428,52 +429,6 @@ public class EquipServiceImpl implements EquipService {
 
 //===================================================================================================
 
-	// 고장
-
-	@Override
-	public List<EquipVO> getFailList() {
-		return mapper.getFailList();
-	}
-
-	@Override
-	public List<EquipVO> getIncompleteFailList() {
-		return mapper.getIncompleteFailList();
-	}
-
-	@Override
-	public List<EquipVO> getCompleteFailList() {
-		return mapper.getCompleteFailList();
-	}
-
-	@Override
-	public EquipVO getFailInfo(int failNo, int failEquipNo) {
-		return mapper.getFailInfo(failNo, failEquipNo);
-	}
-
-	@Override
-	public int insertFail(EquipVO vo) {
-		return mapper.insertFail(vo);
-	}
-
-	@Override
-	public int updateFail(EquipVO vo) {
-		return mapper.updateFail(vo);
-	}
-
-	@Override
-	public int deleteFail(int failNo) {
-		return mapper.deleteFail(failNo);
-	}
-
-	@Override
-	public int updateDeleteFailNo(int failNo) {
-		return mapper.updateDeleteFailNo(failNo);
-	}
-
-	@Override
-	public EquipVO getFailNo() {
-		return mapper.getFailNo();
-	}
 
 	@Override
 	public int updateEquipState(int equipNo) {
@@ -507,6 +462,18 @@ public class EquipServiceImpl implements EquipService {
 	public EquipVO getEquipTime(int equipNo) {
 
 		return mapper.getEquipTime(equipNo);
+	}
+
+	@Override
+	public List<EquipVO> getTestListPage(int page,int perPage) {
+		
+		return mapper.getTestListPage(page,perPage);
+	}
+
+	@Override
+	public int testListCount(EquipVO vo) {
+		
+		return mapper.testListCount(vo);
 	}
 
 }

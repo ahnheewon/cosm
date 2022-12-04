@@ -226,6 +226,27 @@
 		t.test_equip_no
 		ORDER BY test_no DESC
 	</select>
+	
+	<!-- 점검 전체 리스트(페이지네이션) -->
+	<select id="getTestListPage"  parameterType="Integer" resultType="equipVO">
+		SELECT B.* 
+		FROM ( SELECT ROWNUM RN, A.* 
+			   FROM ( SELECT t.test_no, test_equip_no, e.equip_name as test_equip_name
+					, t.test_due_date, t.test_reason,NVL(t.test_content,' ') AS test_content
+					, t.test_yn ,t.test_code 
+					,(select code_name from code where code_no = t.test_code ) AS test_code_name
+					FROM equip e, test t
+					where e.equip_no = t.test_equip_no
+					ORDER BY test_no DESC) A ) B 
+    	WHERE RN BETWEEN (#{page} -1) * #{perPage} + 1 and #{page}*#{perPage}
+	</select>
+
+	<!-- 점검 리스트 count (페이지네이션) -->
+	<select id="testListCount" resultType="Integer">
+		SELECT count(t.test_no)
+		FROM equip e, test t
+		where e.equip_no =t.test_equip_no
+    </select>
 
 	<!-- 완료 안된 점검 리스트 조회 -->
 	<select id="getIncompleteTestList" resultType="equipVO">
@@ -346,118 +367,6 @@
 		SELECT NVL(MAX(TEST_no),0) + 1
 		AS TEST_NO
 		FROM TEST
-	</select>
-
-
-
-	<!-- ############################################################################################ -->
-	<!-- 고장 -->
-	<!-- 전체 고장 리스트 -->
-	<select id="getFailList" resultType="equipVO">
-		SELECT f.fail_no,
-		f.fail_equip_no, e.equip_name as fail_equip_name
-		,f.fail_date,
-		f.fail_content, f.fail_repair_yn
-		,(select code_name from code where
-		code_no = f.fail_code) as fail_code
-		FROM
-		equip e, FAIL f
-		where e.equip_no
-		= f.fail_equip_no
-		ORDER BY fail_no DESC
-	</select>
-
-	<!-- 수리 안된 고장 리스트 조회 -->
-	<select id="getIncompleteFailList" resultType="equipVO">
-		SELECT f.fail_no,
-		f.fail_equip_no, e.equip_name as fail_equip_name
-		,f.fail_date,
-		f.fail_content, f.fail_repair_yn
-		,(select code_name from code where
-		code_no = f.fail_code) as fail_code
-		FROM
-		equip e, FAIL f
-		where e.equip_no
-		= f.fail_equip_no
-		and f.fail_repair_yn
-		= 'N'
-		ORDER BY fail_no DESC
-	</select>
-
-	<!-- 수리 완료된 고장 리스트 조회 -->
-	<select id="getCompleteFailList" resultType="equipVO">
-		SELECT f.fail_no,
-		f.fail_equip_no, e.equip_name as fail_equip_name
-		,f.fail_date,
-		f.fail_content, f.fail_repair_yn
-		,(select code_name from code where
-		code_no = f.fail_code) as fail_code
-		FROM
-		equip e, FAIL f
-		where e.equip_no
-		= f.fail_equip_no
-		and f.fail_repair_yn
-		= 'Y'
-		ORDER BY fail_no DESC
-	</select>
-
-	<!-- 고장 단건 조회 -->
-	<select id="getFailInfo" parameterType="Integer"
-		resultType="equipVO">
-		SELECT fail_no, fail_content, fail_date, fail_repair_date
-		,(select equip_name from equip where equip_no = #{failEquipNo}) AS
-		fail_equip_name
-		, fail_repair_yn, find_code_name(fail_code) AS
-		fail_code
-		FROM fail
-		Where fail_no= #{failNo}
-	</select>
-
-	<!-- 고장 등록 -->
-	<insert id="insertFail" parameterType="equipVO">
-		INSERT INTO fail ( fail_no
-		,fail_equip_no
-		,fail_content
-		,fail_date
-		,fail_repair_yn
-		,fail_code
-		)
-		values
-		( #{failNo}
-		,(SELECT equip_no
-		FROM equip
-		WHERE equip_name =
-		#{failEquipName})
-		,#{failContent}
-		,#{failDate}
-		,'N'
-		,'A0101')
-	</insert>
-
-	<!-- 고장 수정 -->
-	<update id="updateFail" parameterType="equipVO">
-	</update>
-
-	<!-- 고장 삭제 -->
-	<delete id="deleteFail" parameterType="Integer">
-		DELETE FAIL
-		WHERE FAIL_NO =
-		#{failNo}
-	</delete>
-
-	<!-- 고장 삭제 시 번호 정렬 update문 -->
-	<update id="updateDeleteFailNo" parameterType="Integer">
-		UPDATE FAIL
-		SET fail_no = fail_no-1
-		WHERE fail_no <![CDATA[>]]>
-		#{failNo}
-	</update>
-
-	<!-- 입력될 고장 번호 조회 -->
-	<select id="getFailNo" resultType="equipVO">
-		SELECT NVL(MAX(fail_no),0) + 1
-		AS FAIL_NO
-		FROM FAIL
 	</select>
 
 	<!-- ############################################################################################ -->
