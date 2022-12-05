@@ -24,7 +24,9 @@ public interface MaterialService {
 	// 자재 정보 삭제 - 재고 수량도 삭제됨
 	public int deleteMatrailInfo(List<String> mNo);
 
-
+	// 자재 변동 리스트 전체 조회 (메인)
+	public List<MaterialVO> mioListMain(MaterialVO mVO);
+	
 	// 자재 변동 리스트 전체 조회
 	public List<MaterialVO>mioList (MaterialVO mVO);
 	

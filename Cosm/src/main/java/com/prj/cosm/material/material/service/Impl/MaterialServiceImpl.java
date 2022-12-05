@@ -198,4 +198,10 @@ public class MaterialServiceImpl implements MaterialService {
 		// 자재변동 내역 전체 조회_카운트
 		return mMapper.mioListCount(mVO);
 	}
+
+	@Override
+	public List<MaterialVO> mioListMain(MaterialVO mVO) {
+		//자재 변동 내역 (메인)_당일 변동 내역
+		return mMapper.mioListMain(mVO);
+	}
 }

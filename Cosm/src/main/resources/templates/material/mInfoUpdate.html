@@ -126,7 +126,8 @@ font-weight: bold
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary">확인</button>
+						<button type="button" class="btn btn-primary"
+							data-bs-dismiss="modal">확인</button>
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">취소</button>
 					</div>
@@ -204,7 +205,7 @@ font-weight: bold
 				// 거래처 명 찾기 ajax
 
 				$.ajax({
-					url : "/material/ajax/minsert",
+					url : "/material/ajax/getComNm",
 					method : "GET",
 					success : function(result) {
 						findComGrid.resetData((result));
@@ -215,6 +216,22 @@ font-weight: bold
 						console.log(reject)
 					}
 				})
+				
+				
+				
+	//거래처 row 선택시 거래처코드, 이름 들어감
+	findComGrid.on('click', ev =>{
+		let rowData = findComGrid.getRow(ev.rowKey)
+		let comId = rowData.mcompanyId
+		let comNm = rowData.mcompanyNm
+		console.log(rowData)
+
+		$('[name="mCompanyId"]').val(comId);
+		$('[name="mCompanyNm"]').val(comNm);		
+		
+		
+	})		
+				
 				
 				 function inputNumberFormat(obj) {
     				 obj.value = comma(uncomma(obj.value));

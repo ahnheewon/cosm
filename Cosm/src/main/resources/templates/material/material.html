@@ -57,7 +57,7 @@
                <div id="wrap">
                   <div id="search_wrap">
                      <div class="search" style="float: left;" >
-                        <span style="font-weight: bold"></span> <input type="text" id="searchFilter" style="width: 200px; float:left; margin-right:3px"
+                        <span style="font-weight: bold"></span> <input type="text" id="searchFilter" style="width: 200px; float:left; margin-right:3px;margin-bottom:5px"
                            onkeyup="filter()" placeholder="자재명 입력">
                            <button type="button" class="btn btn-secondary btn-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -71,8 +71,7 @@
                         <button type="button" class="btn btn-secondary btn-sm" id="updatebtn"
                            onclick="mInfoUpdate()">수정</button>
                         <button type="button" class="btn btn-secondary btn-sm" id="delbtn">삭제</button>
-                        <button type="button" class="btn btn-secondary btn-sm" id="regbtn"
-                           onclick="mCartInsert()">자재 발주</button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="regbtn">자재 발주</button>
                      </div>
                   </div>
 
@@ -87,7 +86,7 @@
             
                <h3 style="text-align: center; font-weight: bold; padding-bottom: 10px">자재 변동 내역</h3>
        			<hr>                
-                   <input type="text" id="searchFilter_2" style="width: 200px; float:left;margin-right:3px" onkeyup="filter2()"
+                   <input type="text" id="searchFilter_2" style="width: 200px; float:left;margin-right:3px;margin-bottom:5px" onkeyup="filter2()"
                      placeholder="자재명 입력"> 
                      <button type="button" class="btn btn-secondary btn-sm">
                 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -116,51 +115,7 @@
          </div>
       </div>
 
-      <!-- 자재번호 모달-->
-      <div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
-         <div class="modal-dialog">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title" style="font-weight: bold;">자재정보삭제</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <div class="modal-body" style="text-align: center">
-                  <h5>자재 정보 삭제 시 ,</h5>
-                  <h5>현재 재고 정보가 삭제됩니다.</h5>
-                  <h5>정말로 삭제하시겠습니까?</h5>
-               </div>
-               <div class="modal-footer" style="text-align: center">
-                  <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                     onclick="checkDel()">확인</button>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-               </div>
-            </div>
-         </div>
-      </div>
-
-      <!-- 발주 확인 모달-->
-      <div class="modal" tabindex="-1" id="regModal" style="z-index: 1500">
-         <div class="modal-dialog">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title" style="font-weight: bold;">발주대기등록</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <div class="modal-body" style="text-align: center">
-                  <h5>발주 대기 페이지로 이동하여,</h5>
-                  <h5>발주를 진행하시겠습니까?</h5>
-               </div>
-               <div class="modal-footer" style="text-align: center">
-                  <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                     onclick="location.href='mcart'">확인</button>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-               </div>
-            </div>
-         </div>
-      </div>
-
+    
       <!-- 자재 정보 상세내역 모달-->
       <div class="modal" tabindex="-1" id="mInfoModal" style="z-index: 1300">
          <div class="modal-dialog modal-lg">
@@ -336,6 +291,8 @@
         	 
              return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
          }
+         
+
 
          /*-------------------------
                  재고 변동 내역 grid 초기화
@@ -389,8 +346,10 @@
                   name: 'mioQntt',
                   align: 'right',
                   formatter: function (el) {
-                	  console.log(el);
-                	  return formatter(el.value)  
+                	 if(el.row.mioProgress=='출고완료'){
+                		  return formatter('-'+el.value)
+                	 }                	 
+                	  return formatter('+' + el.value)  
                   }
                }, 
                {
@@ -431,6 +390,15 @@
 
          });
 
+            
+		// mouse hover
+            tui.Grid.applyTheme('custom', { 
+                row: { 
+                  hover: { 
+                    background: '#dcdfec' 
+                  }
+                }
+           });
 
 
          /*----------------------- 
@@ -454,6 +422,9 @@
             })
 
          }
+         
+         
+         
          
          
        
@@ -529,15 +500,7 @@
             location.href = "mUpdate?mNo=" + infoGrid.getCheckedRows()[0].mno // 하나만 읽음
 
          }
-         // 자재 정보 삭제 모달   
-         let delbtn = document.getElementById('delbtn');
-         delbtn.addEventListener('click', function () {
-            let myModalAlternative = new bootstrap.Modal('#delModal')
-            let modalToggle = document.getElementById('delModal');
-            myModalAlternative.show(modalToggle)
-            mioGrid.refreshLayout()
-
-         })
+  
 
          /* ------------------ 
          자재 삭제
@@ -545,6 +508,27 @@
           2. 선택된 checkbox의 값에서 mno 가져오기  버튼 -> 함수(onclick -> ajax 실행) -> mno 보내주고 삭제
           3. 삭제 실행 (모달창의 확인 클릭)
           --------------------------*/
+          
+       // 삭제    
+      	 $().ready(function () {
+            $("#delbtn").click(function () {
+                Swal.fire({
+                    title: '자재정보를 삭제하시겠습니까?',
+                    text: "삭제된 정보는 복구가 불가능합니다.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '승인',
+                    cancelButtonText: '취소'
+                }).then((result) => {
+               	 checkDel();
+                 
+                })
+               
+            });
+        });
+           
          function checkDel() {
 
             let delmno = [];
@@ -565,14 +549,19 @@
                   xhr.setRequestHeader(header, token);
                },
                success: function (result) {
-                  if (result == 0){
-                	  $().ready(function () {
+            	   console.log('del',result);
+                  if (result == 0){                	
                          Swal.fire({
                                   icon: 'warning',
                                   title: '삭제가 불가능합니다.',
                                   text: '사용 중인 자재 입니다.',
                               });
-                          });                      
+                                            
+                } else {                	
+                	 Swal.fire({
+                         icon: 'info',
+                         title: '삭제가 완료되었습니다.'
+                     });
                 }
                   console.log(result);
                   mList();
@@ -585,35 +574,47 @@
         }
 
 
+      // 발주 대기 이동
+         $().ready(function () {
+             $("#regbtn").click(function () {
+                 Swal.fire({
+                     title: '발주를 진행하시겠습니까?',
+                     text: "발주 대기 페이지로 이동합니다",                      
+                     icon: 'question',
+                     showCancelButton: true,
+                     confirmButtonColor: '#3085d6',
+                     cancelButtonColor: '#d33',
+                     confirmButtonText: '승인',
+                     cancelButtonText: '취소'
+                 }).then(function() {
+               	   
+                     let obj = infoGrid.getCheckedRows();
+                     console.log(obj);
 
+                     $.ajax({
+                        url: "/material/ajax/mcart",
+                        method: "Post",
+                        contentType: "application/json",
+                        data: JSON.stringify(obj),
+                        beforeSend: function (xhr) {
+                           xhr.setRequestHeader(header, token);
+                        },
+                        success: function (result) {
+                          mList();
 
-         /*발주 등록 실행(발주 대기로 이동)*/ 
-         function mCartInsert() {
-            let myModalAlternative = new bootstrap.Modal('#regModal')
-            let modalToggle = document.getElementById('regModal');
-            myModalAlternative.show(modalToggle)
-            
-
-            let obj = infoGrid.getCheckedRows();
-            console.log(obj);
-
-            $.ajax({
-               url: "/material/ajax/mcart",
-               method: "Post",
-               contentType: "application/json",
-               data: JSON.stringify(obj),
-               beforeSend: function (xhr) {
-                  xhr.setRequestHeader(header, token);
-               },
-               success: function (result) {
-                  console.log(result);
-
-               },
-               error: function (reject) {
-                  console.log(reject);
-               }
-            })
-         }
+                        },
+                        error: function (reject) {
+                           console.log(reject);
+                        }
+                     })
+                  
+                 })
+             });
+         });
+         
+ 
+         
+         
 
 
          /*-----------------------
@@ -623,6 +624,10 @@
 
 
           function findBtnHandler(){
+        /* 	  const pagination = mioGrid.getPagination();
+        	   const currentPage = pagination.getCurrentPage();
+        	   const perPage =pagination._options.itemsPerPage; */
+        	 
             $('#findBtn').on('click', function () {
                let getStartDay = $('#startpicker-input').val();
                let getEndDay = $('#endpicker-input').val();
@@ -630,7 +635,8 @@
                console.log(getEndDay);
 
                $.ajax({
-                  url: '/material/ajax/minfo',
+                  url: '/material/ajax/mioList',
+                  
                   method: 'GET',
                   data: {
                      "startDate": getStartDay,
@@ -642,7 +648,8 @@
                   
                   success: function (result) {
                      console.log(result);
-                     mioGrid.resetData((result.list2));
+                     mioGrid.resetData((result.data.contents));
+                    // mioGrid.setPerPage(perPage);
                   },
                   error: function (reject) {
                      console.log(reject);
@@ -689,7 +696,7 @@
     
      	
      	findBtnHandler(); // date picker handler
-   	    mList(); // ajax로 상,하단 페이지 데이터 부르기
+   	    mList(); // ajax로 상단 페이지 데이터 부르기
 
   	
    	       	    

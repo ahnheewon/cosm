@@ -108,7 +108,7 @@ public class MaterialVO {
 	private Date endDate;
 
 	private String planPlayCode; // 생산 지시 상태코드 
-	String matFile; //첨부파일, html 파일 name 과 이름 다르게 해야함(타입이 다르므로)
+	String mFile; //첨부파일, html 파일 name 과 이름 다르게 해야함(타입이 다르므로)
 	
 
 	@JsonIgnore
