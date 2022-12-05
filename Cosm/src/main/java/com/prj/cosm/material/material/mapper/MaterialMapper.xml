@@ -17,7 +17,7 @@
 	
 	<!-- 자재정보 전체조회 -->
 	<select id="mList" resultType="MaterialVO">
-WITH material_order_sum AS
+        WITH material_order_sum AS
 		(select mo_material_id, sum(mo_num) as total_mo_num
 		from material_order 
 		where mo_progress_code IN('L0101','L0102') or mo_progress_code is null 
@@ -26,17 +26,17 @@ WITH material_order_sum AS
 ( select bom_material_no, 
          sum(planed_qntt) as total_planed_qntt
     from ( SELECT bom.bom_material_no, (plan.plan_quantity * bom.bom_quantity)/goods.goods_standard as planed_qntt                                             
-                FROM produce_bom bom JOIN produce_plan plan 
-                            ON plan.plan_bom_no = bom.bom_no
-                     JOIN produce_goods goods
-                         ON goods.goods_no = plan.plan_product_no
+                FROM produce_bom bom JOIN produce_goods goods 
+                         ON goods.goods_no = bom.bom_product_no
+                         JOIN produce_plan plan 
+                             ON goods.goods_no = plan.plan_product_no
                         WHERE plan.plan_play_code = 'A0109'                                             
                                    UNION ALL    
                  SELECT  bom.bom_material_nob,  (plan.plan_quantity *bom.bom_quantityB) / goods.goods_standard as planed_qntt 
-                     FROM produce_bom bom JOIN produce_plan plan 
-                            ON plan.plan_bom_no = bom.bom_no
-                     JOIN produce_goods goods
-                         ON goods.goods_no = plan.plan_product_no
+                       FROM produce_bom bom JOIN produce_goods goods 
+                         ON goods.goods_no = bom.bom_product_no
+                         JOIN produce_plan plan 
+                             ON goods.goods_no = plan.plan_product_no
                         WHERE plan.plan_play_code = 'A0109' )            
         group by bom_material_no)    
 SELECT m.m_no,
@@ -61,7 +61,7 @@ FROM Material m
             ON m.m_no = bom_material_no
         LEFT OUTER JOIN material_order_sum
             ON m.m_no = mo_material_id
-order by m_no 
+order by m_no
 	</select>
 
 

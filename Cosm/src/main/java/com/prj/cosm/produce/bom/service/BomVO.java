@@ -23,6 +23,9 @@ public class BomVO {
 	private String mInfo;
 	private String mStock;
 	private String mUnitCode;
+	private String mNameb;
+	private String mInfob;
+	private String mStockb;
 	
 	private String goodsNo;
 	private String goodsName;
