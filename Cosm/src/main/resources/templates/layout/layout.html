@@ -97,8 +97,8 @@ font-size: large;
 			class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
 		</form>
 		<!-- Navbar-->
-		<h6 th:if="${session.usersId != null }" style="color: white;">[[${session.usersAuthor}]],
-			[[${session.usersName}]]님</h6>
+		<h6 th:if="${session.usersId != null }" style="color: white;">[[${session.usersAuthor}]]
+			[[${session.usersName}]]</h6>
 		<ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
@@ -129,7 +129,7 @@ font-size: large;
 	<div layout:fragment="sidebar" id="layoutSidenav">
 		<div id="layoutSidenav_nav">
 			<nav class="sb-sidenav accordion sb-sidenav-dark"
-				id="sidenavAccordion">
+				id="sidenavAccordion" style="padding-top: 20px;">
 				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0101')">
 					&nbsp; &nbsp; [[${session.usersId}]]님
 					<div class="nav">
@@ -287,8 +287,8 @@ font-size: large;
 						<div class="sb-sidenav-menu"
 							sec:authorize="hasRole('ROLE_D0107')||hasRole('ROLE_D0108')">
 							<div class="nav">
-							&nbsp; &nbsp; 설비팀 [[${session.usersName}]] 님
-								<div class="sb-sidenav-menu-heading">Main</div>
+							<p style="font-size:large; text-align: right;">설비팀 [[${session.usersName}]]님&nbsp;&nbsp;<br>환영합니다!&nbsp;&nbsp;</p>
+								<div class="sb-sidenav-menu-heading" style="padding-top: 0px;">Main</div>
 								<a class="nav-link" href="/equipment/main">
 									<div class="sb-nav-link-icon">
 										<i class="fas fa-tachometer-alt"></i>

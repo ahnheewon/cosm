@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.prj.cosm.equipment.equip.service.EquipVO;
+import com.prj.cosm.material.material.service.MaterialVO;
 
 public interface EquipMapper {
 
@@ -103,6 +104,12 @@ public interface EquipMapper {
 				// 완료조회
 				public List<EquipVO> getCompleteTestList();
 			
+			// 전체조회 페이지네이션
+			public List<EquipVO> getTestListPage(int page, int perPage);
+				
+			// 전체조회_카운트 페이지네이션용
+			public int testListCount(EquipVO vo);
+				
 			// 단건조회
 			public EquipVO getTestInfo(int testNo, int testEquipNo);
 
@@ -124,36 +131,6 @@ public interface EquipMapper {
 					
 			
 //=====================================================================================	
-			
-	// 고장
-			
-			// 전체조회
-			public List<EquipVO> getFailList();
-			
-				// 미완조회
-				public List<EquipVO> getIncompleteFailList();
-				
-				// 완료조회
-				public List<EquipVO> getCompleteFailList();
-		
-			
-			// 단건조회
-			public EquipVO getFailInfo(@Param("failNo")int failNo, @Param("failEquipNo")int failEquipNo);
-
-			// 등록
-			public int insertFail(EquipVO vo);
-			
-			// 수정
-			public int updateFail(EquipVO vo);
-			
-			// 삭제
-			public int deleteFail(@Param("failNo")int failNo); 
-			
-			// 삭제 시 설비 번호 정렬 update문
-			public int updateDeleteFailNo(@Param("failNo")int failNo);
-			
-			// 입력될 번호를 조회
-			public EquipVO getFailNo();
 			
 //=====================================================================================	
 			

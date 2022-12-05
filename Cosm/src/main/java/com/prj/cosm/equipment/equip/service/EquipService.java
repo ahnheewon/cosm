@@ -13,13 +13,7 @@ public interface EquipService {
 	
 				// 전체조회
 				public List<EquipVO> getEquipList();
-				
-					// 미완조회
-					public List<EquipVO> getIncompleteTestList();
-					
-					// 완료조회
-					public List<EquipVO> getCompleteTestList();
-				
+							
 				// 단건조회
 				public EquipVO getEquipInfo(@Param("equipNo")int equipNo);
 			
@@ -89,9 +83,21 @@ public interface EquipService {
 				// 전체조회
 				public List<EquipVO> getTestList();
 				
+					// 미완조회
+					public List<EquipVO> getIncompleteTestList();
+					
+					// 완료조회
+					public List<EquipVO> getCompleteTestList();
+					
+					// 전체조회 페이지네이션
+					public List<EquipVO> getTestListPage(@Param("page")int page, @Param("perPage")int perPage);
+					
+					// 전체조회_카운트 페이지네이션용
+					public int testListCount(EquipVO vo);
+					
 				// 단건조회
 				public EquipVO getTestInfo(@Param("testNo")int testNo, @Param("testEquipNo")int testEquipNo);
-
+							
 				// 등록
 				public int insertTest(EquipVO vo);
 							
@@ -111,35 +117,6 @@ public interface EquipService {
 				
 //=====================================================================================	
 				
-	//고장
-				
-				// 전체조회
-				public List<EquipVO> getFailList();
-				
-					// 미완조회
-					public List<EquipVO> getIncompleteFailList();
-					
-					// 완료조회
-					public List<EquipVO> getCompleteFailList();
-		
-				
-				// 단건조회
-				public EquipVO getFailInfo(@Param("failNo")int failNo, @Param("failEquipNo")int failEquipNo);
-
-				// 등록
-				public int insertFail(EquipVO vo);
-				
-				// 수정
-				public int updateFail(EquipVO vo);
-				
-				// 삭제
-				public int deleteFail(@Param("failNo")int failNo); 
-				
-				// 삭제 시 설비 번호 정렬 update문
-				public int updateDeleteFailNo(@Param("failNo")int failNo);
-				
-				// 입력될 번호를 조회
-				public EquipVO getFailNo();
 	
 				public int updateEquipState(int equipNo);
 				

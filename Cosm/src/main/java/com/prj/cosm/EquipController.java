@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
 import com.prj.cosm.equipment.work.service.WorkService;
 import com.prj.cosm.equipment.work.service.WorkVO;
+import com.prj.cosm.material.material.service.MaterialVO;
 
 @Controller
 @CrossOrigin("*")
@@ -292,6 +294,27 @@ public class EquipController {
 		}
 		
 		
+		// 점검 전체조회 페이지네이션
+		@ResponseBody
+		@GetMapping(value="/equipment/testListPagination")
+		public Map<String, Object> testListPagination(EquipVO vo,@Param("page")int page, @Param("perPage")int perPage) {
+				
+				
+				Map<String, Object> pagination = new HashMap<String, Object>();
+				pagination.put("page", vo.getPage());
+				pagination.put("totalCount", eService.testListCount(vo)); // 데이터 갯수 세는 쿼리
+				
+				Map<String, Object>  gridData = new HashMap<String, Object>();
+				gridData.put("pagination", pagination); 
+				gridData.put("contents", eService.getTestListPage(page,perPage));
+				
+				Map<String, Object>  result = new HashMap<String, Object>();
+				result.put("result", true);
+				result.put("data", gridData);
+				
+			return result;
+		}
+		
 //================================================================================================================================
 // 공사
 		
@@ -406,6 +429,8 @@ public class EquipController {
 		// 부품 관리 페이지 이동화면
 		@RequestMapping("/equipment/part")
 		public String equipmentPart(Model model) {
+			model.addAttribute("equip",eService.getEquipList());
+			
 			return "/equipment/part";
 		}
 		
@@ -418,12 +443,22 @@ public class EquipController {
 		}	
 		
 		// 부품 단건 조회
-				@GetMapping("/equipment/getPartInfo")
-				@ResponseBody
-				public WorkVO getPartInfo(Model model, int partNo) {
-					return wService.getPartInfo(partNo);
+		@GetMapping("/equipment/getPartInfo")
+		@ResponseBody
+		public WorkVO getPartInfo(String partNo) {
+			return wService.getPartInfo(partNo);
 					
-				}
+		}
+		
+		// 부품 수정
+			@PostMapping("/equipment/updatePart")
+			@ResponseBody
+			public int updatePart(WorkVO vo) {
+				
+				int result = wService.updatePart(vo)+ wService.updatePartEquip(vo);
+				
+				return result; //"{re:true}"
+			}
 
 		
 //================================================================================================================================	

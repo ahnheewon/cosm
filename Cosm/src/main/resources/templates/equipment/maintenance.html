@@ -59,16 +59,24 @@
 													<input type="radio" name="tStatus0" value="미완료" onclick="completeChk()" style="accent-color : #0000CD;">미완료ㅤ
 													<input type="radio" name="tStatus0" value="완료" onclick="completeChk()" style="accent-color :#0000CD;">완료
 											<br>	
-									         	<button type="button" id="insertTBtn" style="float:right; display: inline-block; margin-right: 10px;" class="btn btn-dark btn-sm" 
+											<div style="margin-top: 5px;">
+									         		<button type="button" id="insertTBtn" style="float:right; display: inline-block; margin-right: 10px;" class="btn btn-dark btn-sm" 
 									         				data-bs-toggle="modal" data-bs-target="#myModal1">등록</button>
-												    <input onkeyup="filter1()" type="text" style="float: left; margin-right: 10px; border: 1px solid #aaa;" id="searchFilter" placeholder=" 설비명 입력..">	    
-												    <div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index:1000; margin-right: 10px; float: left;">			
+									         		<button type="button" style="float:left;  pointer-events : none; margin-right: 5px;" class="btn btn-secondary btn-sm">
+										               		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+										  					<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+															</svg>
+										            </button>
+												    <input onkeyup="filter1()" type="text" class="filterInput" id="searchFilter" placeholder=" 설비명 입력">	    
+												    <div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index:1000; margin-right: 5px; float: left; height: 31px;">			
 														<input id="tf-start-input" type="text" name="testDueDate" aria-label="Date" placeholder="날짜 선택" readonly autocomplete="off">
 														<span class="tui-ico-date"></span>
 													<div id="tf-start-container" style="margin-left: -1px;">
 													</div>
 												 	</div>
-													<button type="button" class="btn btn-dark btn-sm" style="float: left; display: inline-block; margin-right: 10px;" onclick="setNull();">초기화</button>
+													<button type="button" class="btn btn-secondary btn-sm" style="float: left; 
+													 display: inline-block; margin-right: 10px;" onclick="setNull();">초기화</button>
+											</div>
 					      				   		   
 	                                       <div id="testGrid" style="padding-top: 40px;">
 	                                       </div>
@@ -91,7 +99,7 @@
 	               <div class="tab-pane fade" id="work" role="tabpanel"
 	                  aria-labelledby="work-tab">
 	                  <div class="container" style="padding-top : 30px; padding-bottom: 30px">
-									 <h5>공사 관리</h5>
+									 <h5>공사 결재 관리</h5>
 	                     <table style="width: 100%;">
 	                       		<tr>
 	                              <td>
@@ -133,13 +141,14 @@
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			<!-- Modal body -->
 			<div class="modal-body">
-				<table class="table">
+				<table class="table smallTd">
 				  	<tr>
 						<td>설비명</td>
                         <td>
                         	<input class="form-control" id="testNo" name="testNo" type="hidden" th:value="${tno}">
                         	<input class="form-control" id="testEquipName" name="testEquipName" type="hidden" th:value="${equipFirst.equipName}">
                         	<select class="form-control" id="equipNameSelect1" onchange="changeSelect(this.value,this.id);" required="required" >            							           
+								             <option value="">선택되지 않음</option>
 								           <option th:each="equip : ${equip}" >[[${equip.equipName}]]</option>
 						  	</select>
 						</td>    
@@ -166,8 +175,8 @@
                    </tr>
                     <tr>
                         <td>점검내용</td>
-                        <td><textarea class="form-control " id="testContent" name="testContent" rows="5" readonly="readonly"
-                        	onkeydown="resize(this)" style="color:gray; height :48px;">점검 후 기입 예정</textarea></td>
+                        <td><textarea class="textarea form-control " id="testContent" name="testContent" rows="5" readonly="readonly"
+                        	onkeyup="resize(this)" style="color:gray; height :48px;" placeholder="점검 후 기입 예정"></textarea></td>
                     </tr> 
  				
                	 	</table>
@@ -196,7 +205,7 @@
 					<button type="button" onclick="cancelUpdateTest()" class="btn-close" data-bs-dismiss="modal"></button>
 					</div>
 					
-				<form id="updateForm1" class="/equipment/updateForm" method="post" name="test">
+				<form id="updateForm1" method="post" name="test">
 					<!-- <sec:csrfInput/> -->
 					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 					
@@ -204,10 +213,10 @@
 					<div id="testInfo" class="modal-body">
 						
 					
-						<table class="table">
+						<table class="table smallTd">
 		                    <tr>
 								<td>설비명</td>
-		                        <td><input class="Ttd form-control" id="sTestEquipName" name="testEquipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->             
+		                        <td><input class=" form-control" id="sTestEquipName" name="testEquipName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->             
 		                    </tr>
 		                    <tr>
 		                    <td>점검예정일</td>
@@ -222,17 +231,17 @@
 		                    </tr>
 		                     <tr>
 		                        <td>점검이유</td>
-		                        <td><input class="Ttd form-control" id="sTestReason" name="testReason" 
+		                        <td><input class=" form-control" id="sTestReason" name="testReason" 
 		                       	 	 autocomplete="off" type="text" readonly></td>
 		                     </tr>
 		                     <tr>
 		                        <td>점검내용</td> <!-- 특이사항 -->
-		                        <td class="Ttd"><textarea class="Ttd form-control wantUpdate1" id="sTestContent" name="testContent"
-		                        	autocomplete="off" rows="5" readonly="readonly"></textarea></td>
+		                        <td><textarea class="textarea form-control wantUpdate1" id="sTestContent" name="testContent"
+		                        	autocomplete="off" rows="5" readonly="readonly" placeholder="점검 후 기입해주시기 바랍니다"></textarea></td>
                         	</tr>                  
 		                     <tr>
 		                        <td>진행상황</td> <!-- 특이사항 -->
-		                        <td><input type="radio" class="radio2" name="testCodeName" value="미실시" style="accent-color :gray;" onclick="return(false);">미실시
+		                        <td ><input type="radio" class="radio2" name="testCodeName" value="미실시" style="accent-color :gray;" onclick="return(false);">미실시
 									<input type="radio" class="radio2" name="testCodeName" value="진행중" style="accent-color : gray;" onclick="return(false);">진행중
 									<input type="radio" class="radio2" name="testCodeName" value="보류" style="accent-color :gray;" onclick="return(false);">보류
 									<input type="radio" class="radio2" name="testCodeName" value="점검완료" style="accent-color :gray;" onclick="return(false);">점검완료</td>
@@ -284,7 +293,7 @@
 							<td>총괄팀장</td>
 						</tr>
 						<tr class="emp signTd">
-							<td style="text-align: center;"><img style=" width : 50px; height: 50px;" src="/equipmentCss/홍길동인.PNG"></td> <!-- 본인 도장 사진으로 대체 -->
+							<td><img style=" width : 50px; height: 50px;" src="/equipmentCss/홍길동인.PNG"></td> <!-- 본인 도장 사진으로 대체 -->
 							<td></td> 
 							<td></td>
 							<td></td>
@@ -292,7 +301,7 @@
 					</table>
 					
 					<br>
-					<table class="table">	
+					<table class="table smallTd">	
 	                    <tr>
 	                        <td>공사명</td>
                         	<td><input class="form-control" id="workName" name="workName" autocomplete="off" type="text"></td>	  
@@ -307,6 +316,7 @@
 	                        	<input class="form-control" id="workEquipName"
 	                        			name="workEquipName" type="hidden" th:value="${equipFirst.equipName}" >		
 	                        	<select class="form-control" id="equipNameSelect3" onchange="changeSelect(this.value,this.id);" required="required" >            							           
+									             <option value="">선택되지 않음</option>
 									           <option th:each="equip : ${equip}" >[[${equip.equipName}]]</option>
 							  	</select>
 							</td>
@@ -329,13 +339,13 @@
                         </tr>
 	                    <tr>
 	                        <td>공사내용</td>
-	                        <td><textarea class="form-control" id="workContent" name="workContent"  placeholder="입력하세요.." 
-	                        	onkeydown="resize(this)" style="height :48px;" required autocomplete="off" rows="5"></textarea></td> 
+	                        <td><textarea class="textarea form-control" id="workContent" name="workContent"  placeholder="입력하세요.." 
+	                        	onkeyup="resize(this)" style="height :48px;" required autocomplete="off" rows="5"></textarea></td> 
 	                    </tr>
 	                    <tr>
 	                    	<td>특이사항</td>
-	                        <td><textarea class="form-control" id="workPs" name="workPs"  placeholder="입력하세요.." 
-	                        	onkeydown="resize(this)" style="height :48px;" required autocomplete="off" rows="5"></textarea></td>
+	                        <td><textarea class="textarea form-control" id="workPs" name="workPs"  placeholder="입력하세요.." 
+	                        	onkeyup="resize(this)" style="height :48px;" required autocomplete="off" rows="5"></textarea></td>
 	                    </tr>
 	                    <tr>
 	                        <td>공사업체</td>
@@ -389,23 +399,23 @@
 					<div id="workInfo" class="modal-body">
 							<div class="modal-body" style="padding: 0.3rem;"> 
 					<table class="emp" >
-						<tr class="emp">
-							<td>설비사원</td>
+						<tr >
+							<td>설비담당</td>
 							<td>설비팀장</td>
 							<td>생산팀장</td>
 							<td>총괄팀장</td>
 						</tr>
-						<tr class="emp">
-							<td style="text-align: center; "><img id="seq1" style="visibility: hidden; width : 50px; height: 50px;" src="/equipmentCss/홍길동인.PNG"></td>
-							<td style="text-align: center; "><img id="seq2" style="visibility: hidden; width : 50px; height: 50px;" src="/equipmentCss/설비팀장이석순.PNG"></td>
-							<td style="text-align: center; "><img id="seq3" style="visibility: hidden; width : 50px; height: 50px;" src="/equipmentCss/생산팀장김준규.PNG"></td>
-							<td style="text-align: center; "><img id="seq4" style="visibility: hidden; width : 50px; height: 50px;" src="/equipmentCss/총괄팀장.PNG"></td>
+						<tr>
+							<td><img id="seq1" class="signImage" src="/equipmentCss/홍길동인.PNG"></td>
+							<td><img id="seq2" class="signImage"  src="/equipmentCss/설비팀장이석순.PNG"></td>
+							<td><img id="seq3" class="signImage" src="/equipmentCss/생산팀장김준규.PNG"></td>
+							<td><img id="seq4" class="signImage" src="/equipmentCss/총괄팀장.PNG"></td>
 						</tr>
 					</table>
 					<button type="button" id="updateWSBtn" class="btn btn-primary updateBtn" style="float:right; visibility: hidden;" onclick="updateWSBtnClick()">승인</button><!-- WS : WorkSign -->
 					<br>
 					
-						<table class="table">
+						<table class="table smallTd">
 		                    <tr>
 								<td>공사명</td>
 		                        <td><input class="form-control wantUpdate3" id="sWorkName" name="workName" type="text"  readonly></td> <!-- th:value="${equip.equipName}" -->             
@@ -415,6 +425,7 @@
 		                        <td>
 			                        <input class="form-control" id="sWorkEquipName" name="workEquipName" type="text" readonly>
 			                        <select class="form-control wantUpdate3" id="sEquipNameSelect3" style="display: none;" onchange="changeSelect(this.value,this.id);" required="required" >            							           
+										           <option value="">선택되지 않음</option>
 										           <option th:each="equip : ${equip}" >[[${equip.equipName}]]</option>
 								  	</select>
 		                        </td> <!-- th:value="${equip.equipName}" -->
@@ -440,13 +451,13 @@
 							
 							 <tr>
 		                        <td>공사내용</td>
-		                        <td><input class="form-control wantUpdate3" 
-		                        		style=" height :48px;" id="sWorkContent" name="workContent" type="text" readonly></td>
+		                        <td><textarea class="textarea form-control wantUpdate3" 
+		                        		 id="sWorkContent" name="workContent" type="text" readonly></textarea> </td>
 		                     </tr>
 
 							 <tr>
 		                        <td>특이사항</td>
-								<td><textarea class="form-control wantUpdate3 " id="sWorkPs" name="workPs" rows="5"
+								<td><textarea class="textarea form-control wantUpdate3 " id="sWorkPs" name="workPs" rows="5"
 								 	 style="height :48px;" readonly="readonly"></textarea>
 	                        	</td>
 	                        </tr>
@@ -538,14 +549,8 @@ function reallyInsertThis() {
 											/* 점검 전체 리스트 불러오는 아작스 */	
 													document.querySelector('#testCompleteGrid').style.display='none';
 													 
-													url="/equipment/testAllList"
-													fetch(url) 
-													.then(res=>res.json())
-													.then(obj=>{
-														
-													 	 testGrid.resetData(obj);
-													 	 
-													})
+													testAllListPaging();
+													
 														document.querySelector('#testGrid').style.display='block';
 													
 												}else if (ts =='미완료'){
@@ -761,6 +766,21 @@ function plzNum(){
 function resize(obj) {
   obj.style.height = "28px";
   obj.style.height = (12+obj.scrollHeight)+"px";
+  
+  	var text = obj.value;
+  	var test_length = text.length;
+  	
+  	//최대 글자수 
+  	var max_length = 80;
+  	
+  	if(test_length>max_length){
+  		alert(max_length+"자 이상 작성할 수 없습니다.")
+  		text = text.substr(0, max_length);
+  		obj.value = text;
+  		obj.focus();
+  	}
+    
+  
 }
 
 /* 점검할 또는 고장난 또는 공사할 설비명 선택하게 하는 함수 */ 
@@ -794,15 +814,17 @@ function test(id){
    
 
 /*  점검 그리드  */	
-	const testGrid = new tui.Grid({
+
+            		
+	let testGrid = new tui.Grid({
 			    el: document.querySelector('#testGrid'),
 			    scrollX:false,
 			    scrollY:false,
-			    pagination:true,
-				pageOptions: {
-					useClient: true,
-					perPage: 12
-				},
+			    data:{
+          		  api: {
+          		    readData: { url: '/equipment/testListPagination', method: 'GET' }
+          		  }
+          		},
 				rowHeaders: ['rowNum'],
 			    columns: [
 			    {
@@ -839,9 +861,12 @@ function test(id){
 			        header: '진행상황',
 			        name: 'testCodeName'
 			        ,align : 'center'
-			    }
-			    ]
+			    }],
+			    pageOptions: {
+					perPage: 12
+				}
 			});
+			
 			
 /*  점검 완료 그리드  */	
 	const testCompleteGrid = new tui.Grid({
@@ -894,15 +919,32 @@ function test(id){
 			});
 
 /* 점검 전체 리스트 불러오는 아작스 */
+
+function testAllListPaging() {
+	
+	/* 점검 전체 리스트 불러오는 아작스 */	
+	const pagination = testGrid.getPagination();
+	const currentPage = pagination.getCurrentPage();
+	const perPage =pagination._options.itemsPerPage;
+	
+	url="/equipment/testListPagination?perPage="+perPage+"&page="+currentPage;
+		fetch(url) 
+		.then(res=>res.json())
+		.then(obj=>{
+		    console.log(obj);	 
+		 	 testGrid.resetData(obj.data.contents);
+		 	testGrid.setPerPage(12);
+		})
+}            		
 document.querySelector('#testCompleteGrid').style.display='none';
 
-	url="/equipment/testAllList"
+/*	url="/equipment/testAllList"
 	fetch(url) 
 	.then(res=>res.json())
 	.then(obj=>{
 	    console.log(obj);
 	  testGrid.resetData(obj);
-	})
+	}) */
 	
 
 	
@@ -1129,15 +1171,8 @@ document.querySelector('#testCompleteGrid').style.display='none';
 									
 									if(ts == '전체'){
 										
-							
-										url="/equipment/testAllList"
-										fetch(url) 
-										.then(res=>res.json())
-										.then(obj=>{
-										    console.log(obj);
-										 	 testGrid.resetData(obj);
-										})
-										
+										testAllListPaging();
+						
 										
 									}else if (ts =='미완료'){
 										
@@ -1210,17 +1245,10 @@ document.querySelector('#testCompleteGrid').style.display='none';
 						        }
 								
 								if(ts == '전체'){
-									/* 점검 전체 리스트 불러오는 아작스 */	
 											document.querySelector('#testCompleteGrid').style.display='none';
-											 
-											url="/equipment/testAllList"
-											fetch(url) 
-											.then(res=>res.json())
-											.then(obj=>{
-												
-											 	 testGrid.resetData(obj);
-											 	 
-											})
+											
+											testAllListPaging();
+								
 												document.querySelector('#testGrid').style.display='block';
 											
 										}else if (ts =='미완료'){
@@ -1352,13 +1380,8 @@ function deleteTest() {
 							
 							if(ts == '전체'){
 	 
-								url="/equipment/testAllList"
-								fetch(url) 
-								.then(res=>res.json())
-								.then(obj=>{
-								    console.log(obj);
-								 	 testGrid.resetData(obj);
-								})
+								testAllListPaging();
+							
 	
 							}else if (ts =='미완료'){
 								
@@ -1396,7 +1419,7 @@ function deleteTest() {
 		    pagination:true,
 			pageOptions: {
 				useClient: true,
-				perPage: 4
+				perPage: 8
 			},
 		rowHeaders: ['rowNum'],
 		    columns: [
@@ -1680,8 +1703,8 @@ function updateWBtnClick() {
             wu[i].required = true;
         }
         
-	wu[3].setAttribute('onkeydown','resize(this)');
-	wu[4].setAttribute('onkeydown','resize(this)');
+	wu[2].setAttribute('onkeyup','resize(this)');
+	wu[3].setAttribute('onkeyup','resize(this)');
 	
 	const btn = document.querySelector('.updateBtn3')
 	
@@ -1801,8 +1824,8 @@ function cancelUpdateWork() { // 되감기^^
 		            wu[i].readOnly =true;
 		            wu[i].required = false;
 		    }							 	
-		wu[3].removeAttribute('onkeydown');
-		wu[4].removeAttribute('onkeydown');
+		wu[2].removeAttribute('onkeyup');
+		wu[3].removeAttribute('onkeyup');
 			
 		btn.innerText='수정';
 		btn.removeEventListener('click',updateWork);
@@ -1984,16 +2007,9 @@ function completeChk(){ // 전체, 미완료, 완료 라디오박스
 		if(ts == '전체'){
 		
 			document.querySelector('#testCompleteGrid').style.display='none';
+				
+			testAllListPaging();
 			
-			
-			url="/equipment/testAllList"
-			fetch(url) 
-			.then(res=>res.json())
-			.then(obj=>{
-			    console.log(obj);
-			    testGrid.refreshLayout();
-			 	 testGrid.resetData(obj);
-			})
 				document.querySelector('#testGrid').style.display='block';
 			
 		}else if (ts =='미완료'){
