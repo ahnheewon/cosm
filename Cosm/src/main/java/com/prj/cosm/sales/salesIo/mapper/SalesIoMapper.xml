@@ -97,11 +97,13 @@
 	</delete>
 
 	<!-- 여러조건 삭제 -->
-	<delete id="deleteCheck" parameterType="String">
+	<delete id="delOutOrder" parameterType="String">
 		DELETE FROM sales_io
 		where
 		sales_no = #{salesNo}
 	</delete>
+	
+	
 
 	<!-- 출고시 출고대기 -> 완료 -->
 	<update id="updateOutInfo" parameterType="SalesIoVO">
