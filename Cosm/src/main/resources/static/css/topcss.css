@@ -32,7 +32,7 @@ body{
 @keyframes texton {
   0% {transform : translate(-200%,0);}
   90% {transform : translate(-200%,0);}
-  100%{transform : translate(-25%,5%);}
+  100%{transform : translate(-25%,25%);}
 }
 
 .contents{
@@ -69,7 +69,7 @@ body{
 	width: 100%;
 	text-decoration: none;
 	font-size: 300px;
-	transform : translate(-25%,5%);
+	transform : translate(-25%,25%);
 }
 @keyframes bton {
   0% {opacity : 0;}
