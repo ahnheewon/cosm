@@ -56,6 +56,13 @@
 	<select id="getOrderInfo" resultType="ordersVO">
 		SELECT * FROM orders
 		WHERE ORDER_NO = #{orderNo}
+		<!-- SELECT
+		o.order_no, p.goods_name, c.code_name,
+		o.total_num, o.delivery_date, cl.client_name, o.note
+		from orders o , produce_goods p , code c, client cl
+		where o.goods_no = p.goods_no
+		and o.client_name = cl.users_no
+		and o.order_code = c.code_no -->
 	</select>
 
 

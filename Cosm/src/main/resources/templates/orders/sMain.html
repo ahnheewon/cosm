@@ -100,9 +100,10 @@
 
 						<button style="float: right;" id="exlBtn"
 							class="btn btn-secondary btn-sm">엑셀</button>
-						<button style="float: right; margin-right: 8px; margin-left: 8px;"
-							id="delbtn" class="btn btn-secondary btn-sm">삭제</button>
-
+						<button style="float: right; margin-right: 8px;" id="delbtn"
+							class="btn btn-secondary btn-sm">삭제</button>
+						<button style="float: right; margin-right: 8px;" id="updatebtn"
+							class="btn btn-secondary btn-sm">수정</button>
 
 						<div id="grid4"></div>
 					</div>
@@ -156,7 +157,7 @@
 							class="btn btn-secondary btn-sm">엑셀</button>
 						<button id="delbtn3" style="float: right; margin-right: 8px;"
 							class="btn btn-secondary btn-sm">삭제</button>
-						<button style="float: right; margin-right: 8px;" id="updatebtn"
+						<button style="float: right; margin-right: 8px;" id="updatebtn3"
 							class="btn btn-secondary btn-sm">수정</button>
 					</div>
 					<div id="grid5"></div>
@@ -168,7 +169,7 @@
 		</div>
 		<!-- tab 본문 end -->
 
-<!-- ==========================================Modal========================================================== -->
+		<!-- ==========================================Modal========================================================== -->
 		<!-- 신규주문 상세정보 모달-->
 		<div class="modal" tabindex="-1" id="newOrderInfo"
 			style="z-index: 1300">
@@ -188,17 +189,19 @@
 							</div>
 							<div class="col">
 								<label for="input" class="col-form-label">제품명</label> <input
-									type="text" class="form-control" name="goodsName">
+									type="text" class="form-control" name="goodsNo">
 							</div>
 							<div class="row p-3">
 								<label for="input" class="col-form-label">주문일자</label>
 								<textarea class="form-control col-sm-5" rows="5"
 									name="orderDate"></textarea>
 							</div>
-							<div class="row p-3">
-								<label for="input" class="col-form-label">이미지</label> <img
-									name="oImg"></img>
+							<div class="col">
+								<label for="input" class="col-form-label">주문분류</label> <input
+									type="text" class="form-control" name="orderCode"
+									readonly="readonly">
 							</div>
+
 						</div>
 
 						<div class="modal-footer" style="text-align: center">
@@ -227,20 +230,75 @@
 						<div class="row p-3">
 							<div class="col">
 								<label for="input" class="col-form-label">주문번호</label> <input
-									type="text" class="form-control" name="orderNo">
+									type="text" class="form-control" name="orderNo"
+									readonly="readonly">
 							</div>
 							<div class="col">
-								<label for="input" class="col-form-label">제품명</label> <input
-									type="text" class="form-control" name="goodsName">
+								<label for="input" class="col-form-label">제품번호</label> <input
+									type="text" class="form-control" name="goodsNo"
+									readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">수량</label> <input
+									type="text" class="form-control" name="totalNum"
+									readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">납기일자</label> <input
+									type="text" class="form-control" name="deliveryDate"
+									readonly="readonly">
 							</div>
 							<div class="row p-3">
 								<label for="input" class="col-form-label">요청사항</label>
-								<textarea class="form-control col-sm-5" rows="5" name="note"></textarea>
+								<textarea class="form-control col-sm-5" rows="5" name="note"
+									readonly="readonly"></textarea>
+							</div>
+							<!--  o.order_no, p.goods_name, c.code_name,
+                		o.total_num, o.delivery_date, cl.client_name, o.note -->
+							<!-- <div class="col">
+								<label for="input" class="col-form-label">주문번호</label> <input
+									type="text" class="form-control" name="orderNo"
+									readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">제품번호</label> <input
+									type="text" class="form-control" name="goodsName"
+									readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">주문타입</label> <input
+									type="text" class="form-control" name="codeName"
+									readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">거래처명</label> <input
+									type="text" class="form-control" name="clientName"
+									readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">진행상황</label> <input
+									type="text" class="form-control" name="orderCode"
+									readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">수량</label> <input
+									type="text" class="form-control" name="totalNum"
+									readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">납기일자</label> <input
+									type="text" class="form-control" name="deliveryDate"
+									readonly="readonly">
 							</div>
 							<div class="row p-3">
-								<label for="input" class="col-form-label">이미지</label> <img
-									name="oImg"></img>
-							</div>
+								<label for="input" class="col-form-label">요청사항</label>
+								<textarea class="form-control col-sm-5" rows="5" name="note"
+									readonly="readonly"></textarea>
+							</div> -->
+							<!-- <div class="row p-3">
+		                        <label for="input" class="col-form-label">이미지</label> <img
+		                           name="oImg"></img>
+		                     </div> -->
 						</div>
 
 						<div class="modal-footer" style="text-align: center">
@@ -258,9 +316,9 @@
 
 
 
-<!-- ================================================ script ============================================================= -->
+		<!-- ================================================ script ============================================================= -->
 		<script>
-			/*-----------
+		/*-----------
 		  그리드 스타일
 		-------------*/
 			tui.Grid.applyTheme("normal", {
@@ -285,6 +343,13 @@
 				},
 
 			});
+			tui.Grid.applyTheme('custom', { 
+		           row: { 
+		             hover: { 
+		               background: '#dcdfec' 
+		             }
+		           }
+		      });
 			/*데이터피커-보류, 엑셀0, PDF, 수정0, 신규 -> 접수 0, 차트, 삭제전 경고창 - 만들거 11/21*/
 			//데이터 -> 계속 호출, 그리드는 한번 호출하면되니까 굳이 함수로 사용 안해도됨 
 
@@ -381,57 +446,79 @@
 				scrollX: false, //세로 스크롤
 				scrollY: false, //가로 스크롤
 				columns: [{
-						header: '주문번호',
-						name: 'orderNo',
-						
+	                  header: '주문번호',
+	                  name: 'orderNo',
+	                  align: 'center'
 
-					}, {
-						header: '거래처명',
-						name: 'clientName',
-						
-					}, {
-						header: '제품번호',
-						name: 'goodsNo'
-					}, {
-						header: '제품명',
-						name: 'goodsName',
-					}, {
-						header: '주문일자',
-						name: 'orderDate'
-					}, {
-						header: '납기일자',
-						name: 'deliveryDate',
-					}, {
-						header: '요청사항',
-						name: 'note',
+	               }, {
+	                  header: '거래처명',
+	                  name: 'clientName',
+	                  align: 'center'
+	               }, {
+	                  header: '제품번호',
+	                  name: 'goodsNo'
+	               }, {
+	                  header: '제품명',
+	                  name: 'goodsName',
+	                  align: 'center'
 
-					}, {
-						header: '주문타입',
-						name: 'orderCode'
-					},
-					{
-						header: '수량',
-						name: 'totalNum',
-					}, {
-						header: '공급가액',
-						name: 'proPrice',
-						formatter: function (value) {
-							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' 원';
-						}
-					}, {
-						header: '부가세',
-						name: 'surtax',
-						formatter: function (value) {
-							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-						}
+	               }, {
+	                  header: '주문일자',
+	                  name: 'orderDate',
+	                  align: 'center'
 
-					}, {
-						header: '총 금액',
-						name: 'totalPrice',
-						formatter: function (value) {
-							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-						}
-					}
+	               }, {
+	                  header: '납기일자',
+	                  name: 'deliveryDate',
+	                  align: 'center'
+
+	               }, {
+	                  header: '요청사항',
+	                  name: 'note',
+	                  align: 'left'
+
+	               
+	               }, {
+	                  header: '주문타입',
+	                  name: 'orderCode',
+	                  align: 'center',
+
+	                  renderer : {
+	                     styles: {
+	                            fontWeight: 'bold',
+	                            color: (props) => props.value == '신규' ? 'red' : 'green'
+	                        }
+	                  }
+	               },
+	               {
+	                  header: '수량',
+	                  name: 'totalNum',
+	                  align: 'right'
+
+	               },/*  {
+	                  header: '공급가액',
+	                  name: 'proPrice',
+	                  align: 'right',
+
+	                  formatter: function (value) {
+	                     return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' 원';
+	                  }
+	               }, */ {
+	                  header: '부가세',
+	                  name: 'surtax',
+	                  align: 'right',
+	                  formatter: function (value) {
+	                     return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	                  }
+
+	               }, {
+	                  header: '총 금액',
+	                  name: 'totalPrice',
+	                  align: 'right',
+	                  formatter: function (value) {
+	                     return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	                  }
+	               }
 				]
 			});
 
@@ -449,109 +536,121 @@
 				scrollX: false, //세로 스크롤
 				scrollY: false, //가로 스크롤
 				columns: [{
-						header: '주문번호',
-						name: 'orderNo',
-						width: 'auto'
-					}, {
-						header: '거래처명',
-						name: 'clientName',
-						filter: 'text'
-					}, {
-						header: '제품번호',
-						name: 'goodsNo'
-					}, {
-						header: '제품명',
-						name: 'goodsName',
-					}, {
-						header: '주문일자',
-						name: 'orderDate'
-					}, {
-						header: '납기일자',
-						name: 'deliveryDate',
-					}, {
-						header: '요청사항',
-						name: 'note',
+	                  header: '주문번호',
+	                  name: 'orderNo',
+	                  align: 'center'
+	               }, {
+	                  header: '거래처명',
+	                  name: 'clientName',
+	                  filter: 'text',
+	                  align: 'left'
+	               }, {
+	                  header: '제품번호',
+	                  name: 'goodsNo',
+	                  align: 'center'
+	               }, {
+	                  header: '제품명',
+	                  name: 'goodsName',
+	                  align: 'center'
+	               }, {
+	                  header: '주문일자',
+	                  name: 'orderDate',
+	                  align: 'center'
+	               }, {
+	                  header: '납기일자',
+	                  name: 'deliveryDate',
+	                  align: 'center'
+	               }, {
+	                  header: '요청사항',
+	                  name: 'note',
+	                  align: 'left'
+	               }, {
+	                  header: '주문타입',
+	                  name: 'orderCode',
+	                  align: 'center',
+	                  renderer : {
+	                     styles: {
+	                            fontWeight: 'bold',
+	                            color: (props) => props.value == '접수' ? 'green' : 'red'
+	                        }
+	                  }
+	               },
+	               {
+	                  header: '배달상황',
+	                  name: 'deliveryInfo',
+	                  align: 'center'
+	                  /*formatter: 'listItemText',
+	                  editor: {
+	                     type: 'select',
+	                     options: {
+	                        listItems: [{
+	                              text: '대기중',
+	                              value: 'B0101'
+	                           },
+	                           {
+	                              text: '배송중',
+	                              value: 'B0102'
+	                           },
+	                           {
+	                              text: '배송완료',
+	                              value: 'B0103'
+	                           }
+	                        ]
+	                     }
+	                  }  */
 
-					}, {
-						header: '주문타입',
-						name: 'orderCode',
-						renderer : {
-							styles: {
-									 fontWeight: 'bold',
-									 color: (props) => props.value == '접수' ? 'green' : 'red'
-								}
-						},
-					},
-					{
-						header: '배달상황',
-						name: 'deliveryInfo',
-						/*formatter: 'listItemText',
-						editor: {
-							type: 'select',
-							options: {
-								listItems: [{
-										text: '대기중',
-										value: 'B0101'
-									},
-									{
-										text: '배송중',
-										value: 'B0102'
-									},
-									{
-										text: '배송완료',
-										value: 'B0103'
-									}
-								]
-							}
-						}  */
+	               }, //name: 'ORDER_PROGRESS_CODE',
+	               {
+	                  header: '출납상황',
+	                  name: 'ioCode',
+	                  align: 'center'
+	                  /* formatter: 'listItemText',
+	                  editor: {
+	                     type: 'select',
+	                     options: {
+	                        listItems: [{
+	                              text: '대기중',
+	                              value: 'B0101'
+	                           },
+	                           {
+	                              text: '배송중',
+	                              value: 'B0102'
+	                           },
+	                           {
+	                              text: '배송완료',
+	                              value: 'B0103'
+	                           }
+	                        ]
+	                     }
+	                  } */
 
-					}, //name: 'ORDER_PROGRESS_CODE',
-					{
-						header: '출납상황',
-						name: 'ioCode',
-						/* formatter: 'listItemText',
-						editor: {
-							type: 'select',
-							options: {
-								listItems: [{
-										text: '대기중',
-										value: 'B0101'
-									},
-									{
-										text: '배송중',
-										value: 'B0102'
-									},
-									{
-										text: '배송완료',
-										value: 'B0103'
-									}
-								]
-							}
-						} */
+	               }, {
+	                  header: '수량',
+	                  name: 'totalNum',
+	                  align: 'right'
+	               },  /* {
+	                  header: '공급가액',
+	                  name: 'proPrice',
+	                  align: 'right',
+	                  formatter: function (value) {
+	                     return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' 원';
+	                  }
+	               }, */  {
+	                  header: '부가세',
+	                  name: 'surtax',
+	                  align: 'right',
+	                  formatter: function (value) {
+	                     return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	                  }
 
-					}, {
-						header: '수량',
-						name: 'totalNum',
-					}, {
-						header: '공급가액',
-						name: 'proPrice',
-						formatter: function (value) {
-							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' 원';
-						}
-					}, {
-						header: '부가세',
-						name: 'surtax',
-						formatter: function (value) {
-							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-						}
-
-					}, {
-						header: '총 금액',
-						name: 'totalPrice',
-						formatter: function (value) {
-							return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-						}
-					}
+	               }, {
+	                  header: '총 금액',
+	                  name: 'totalPrice',
+	                  align: 'right',
+	                  formatter: function (value) {
+	                     return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	                  }
+	               }
 				]
 			});
 
@@ -785,9 +884,16 @@
                     success: function (result) {
                         console.log('모달 아작스 : ', result);
                         
-                 $('[name="orderNo"]').val(result.orderNo);
-                  $('[name="goodsNo"]').val(result.goodsNo);
-                  $('[name="note"]').val(result.note);
+                        $('[name="orderNo"]').val(result.orderNo);
+                        $('[name="goodsNo"]').val(result.goodsNo);
+                        $('[name="note"]').val(result.note);
+                        $('[name="totalNum"]').val(result.totalNum);
+                        $('[name="deliveryDate"]').val(result.deliveryDate);
+                       /*  $('[name="codeName"]').val(result.codeName);
+                        $('[name="clientName"]').val(result.clientName); */
+                        
+                       /*  o.order_no, p.goods_name, c.code_name,
+                		o.total_num, o.delivery_date, cl.client_name, o.note */
                     },
                     error: function (reject) {
                         console.log(reject);
@@ -820,6 +926,7 @@
 
 
 
+// tab2 - 완제품 관리 start ==========================================================================================================================
 
 
 			/*---------------
@@ -835,28 +942,41 @@
 				scrollX: false, //세로 스크롤
 				scrollY: false, //가로 스크롤
 				columns: [{
-					header: '제품명',
-					name: 'goodsName'
-				
-				}, {
-					header: 'LOT_NO',
-					name: 'registLot',
-				}, {
-					header: '주문번호',
-					name: 'orderNo'
-				}, {
-					header: '주문일자',
-					name: 'orderDate',
-				}, {
-					header: '납기일자',
-					name: 'deliveryDate'
-				}, {
-					header: '거래처명',
-					name: 'clientName'
-				}, {
-					header: '현황',
-					name: 'orderCode',
-				}]
+		               header: '제품명',
+		               name: 'goodsName',
+		               align: 'center'
+		            
+		            }, {
+		               header: 'LOT_NO',
+		               name: 'registLot',
+		               align: 'center'
+		            }, {
+		               header: '주문번호',
+		               name: 'orderNo',
+		               align: 'center'
+		            }, {
+		               header: '주문일자',
+		               name: 'orderDate',
+		               align: 'center'
+		            }, {
+		               header: '납기일자',
+		               name: 'deliveryDate',
+		               align: 'center'
+		            }, {
+		               header: '거래처명',
+		               name: 'clientName',
+		               align: 'left'
+		            }, {
+		               header: '현황',
+		               name: 'orderCode',
+		               align: 'center',
+		               renderer : {
+		                  styles: {
+		                         fontWeight: 'bold',
+		                         color: (props) => props.value == '출고대기' ? 'red' : 'blue'
+		                     }
+		               }
+		            }]
 			});
 
 			/*---------------
@@ -894,37 +1014,21 @@
 				삭제 클릭 이벤트
 			----------------*/
 				function checkDel3(){
-					const sioList = [];
-					var obj = grid5.getCheckedRows()
-					console.log(obj);
-					for (key of obj) {
-						//읽어낼 컬럼명
-						console.log(key.orderCode);
-						sioList.push(key.orderCode); //{}
-					}
-					console.log('완료 삭제 : ', sioList);
+					var data = grid5.getCheckedRows()
+					console.log(data);
+
+					console.log('완료 삭제 : ', data);
 					// debugger
 					$.ajax({
 						url: "/orders/ajaxDelOutOrder",
 						method: "Post",
 						contentType: "application/json",
-						data: JSON.stringify({
-							"sioList": sioList
-						}),
+						data: JSON.stringify(data),
 						beforeSend: function (xhr) {
 							xhr.setRequestHeader(header, token);
 						},
 						success: function (result) {
-							//삭제된 데이터들 새로고침 
-							//rowKey
-							const delOutList = [];
-							for (key of obj) {
-								//읽어낼 컬럼명
-								console.log(key.rowKey);
-								delList.push(key.rowKey);
-							}
-							grid5.removeRows(delOutList)
-
+							getSalesIoList();
 						},
 						error: function (reject) {
 							console.log(reject);
@@ -934,7 +1038,7 @@
 				
 
 			/*---------------
-			출고대기 내역 
+			출고완료 내역 
 			----------------*/
 			var grid5 = new tui.Grid({
 				el: document.getElementById('grid5'),
@@ -946,31 +1050,42 @@
 				scrollX: false, //세로 스크롤
 				scrollY: false, //가로 스크롤
 				columns: [{
-						header: '제품명',
-						name: 'goodsName'
-					
-					},{
-						header: 'LOT_NO',
-						name: 'registLot',
-					}, {
-						header: '주문번호',
-						name: 'orderNo',
-						width: 'auto'
-					}, {
-						header: '주문일자',
-						name: 'orderDate',
-					}, {
-						header: '납기일자',
-						name: 'deliveryDate'
-					}, {
-						header: '거래처명',
-						name: 'clientName',
-						filter: 'text'
-					}, {
-						header: '현황',
-						name: 'orderCode',
-					}
-
+	                  header: '제품명',
+	                  name: 'goodsName',
+	                  align: 'center'
+	               
+	               },{
+	                  header: 'LOT_NO',
+	                  name: 'registLot',
+	                  align: 'center'
+	               }, {
+	                  header: '주문번호',
+	                  name: 'orderNo',
+	                  align: 'center'
+	               }, {
+	                  header: '주문일자',
+	                  name: 'orderDate',
+	                  align: 'center'
+	               }, {
+	                  header: '납기일자',
+	                  name: 'deliveryDate',
+	                  align: 'center'
+	               }, {
+	                  header: '거래처명',
+	                  name: 'clientName',
+	                  filter: 'text',
+	                  align: 'center'
+	               }, {
+	                  header: '현황',
+	                  name: 'orderCode',
+	                  align: 'center',
+	                  renderer : {
+	                     styles: {
+	                            fontWeight: 'bold',
+	                            color: (props) => props.value == '완료' ? 'green' : 'red'
+	                        }
+	                  }
+	               }
 				]
 			});
 
@@ -1031,18 +1146,6 @@
 			
 			--------------*/
 			function proPlz5() {
-				/*
-				var recNos = ''; // 접수번호 초기화
-				for(let i=0; i<grid.getCheckedRows().length; i++){
-					if(i != 0){
-						recNos += ',';
-					}
-					recNos += grid.getCheckedRows()[i].orderNo
-				}
-				grid.getCheckedRows();
-				console.log(recNos);	
-				*/
-
 				//체크안하고 접수 버튼 클릭시 알림창
 				var rec = grid5.getCheckedRows();
 				if (rec == 0) {

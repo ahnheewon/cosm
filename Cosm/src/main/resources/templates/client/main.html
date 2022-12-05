@@ -3,21 +3,176 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{/layout/layout}">
-
 <head>
-<!-- <style type="text/css">
-.img {
-	width: 100px;
-	height: 100px;
-   
-} -->
+<style type="text/css">
+
+/* <section id=film
+            style="margin-left: 50px; margin-top: 50px; float: left;">
+    */
+img, p, h3 {
+	display: inline;
+}
+
+img {
+	float: left;
+	margin-right: 5px;
+}
+
+.intro {
+	margin-top: 20px;
+	margin-left: 5%;
+	width: 43%;
+	display: inline-block;
+	float: left;
+	margin-left: 6%;
+}
 </style>
 <title>client main</title>
 <body>
 	<div layout:fragment="content">
-		<div>
-			<img class="img" alt="제품사진" src="/css/salesImg/tpa1.png">
-		</div>
+
+		<section>
+			<div id="head" style="margin-left: 50px; margin-top: 50px;">
+				<h2>Introduce TPA</h2>
+				<div class="detail">
+					<p>
+						Cosm의 TPA는 기존의 섬유용에서 포장용이나 오디오, 비디오 TAPE 용 FILM,<br> 일단 PET병,
+						탄산수, 맥주, 우유 등의 포장 용기, 타이어토드용, 자동차 부품용까지 그 수요가 확대되고 있습니다.
+					</p>
+				</div>
+			</div>
+			<hr>
+			<div id="gin">
+				<div class="intro">
+					<div>
+						<img id="silk" class="" alt="제품사진" src="/css/salesImg/silk.png"
+							style="width: 15em; height: 15em;">
+						<div class="info">
+
+							<h3>섬유용(Fibers)</h3>
+							<br> <br>
+							<p>
+								천연섬유(면, Silk)를 능가할 정도의 기능성을 부여하는 기술이 <br>개발되고 있으며 남성 및
+								여성정장, 속내의, 탄성을 부여한 스포츠용<br> 의류, 블라우스, 이불솜, 귀저기, 패드, 인형,
+								내장지, 인조피혁 등에 <br>이용되고 있습니다.
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="intro">
+					<div>
+						<img alt="제품사진" src="/css/salesImg/film.png"
+							style="width: 15em; height: 15em;">
+						<div class="info">
+							<h3>필름용(Film)</h3>
+							<br> <br>
+							<p>
+								제막기술 및 가공기술의 향상으로 농업용, 포장용, CD용, 비디오용, <br> 녹음용, 사진용, 의료용,
+								컴퓨터 디스트용 등이 있습니다.
+							</p>
+						</div>
+						<br>
+					</div>
+				</div>
+				<div class="intro ">
+					<div>
+						<img alt="제품사진" src="/css/salesImg/industrials.png"
+							style="width: 15em; height: 15em;">
+						<div>
+							<h3>산업용(Industrials)</h3>
+							<br> <br>
+							<p>
+								충격강도가 강하고 환경친화적 장점이 있어 토목기초자재용,<br> 건축자재용, 조립식 장난감, 페인트 혼합용
+								등에 이용되고 있습니다.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="intro ">
+					<div>
+						<img alt="제품사진" src="/css/salesImg/engineerPlastic.png"
+							style="width: 15em; height: 15em;">
+						<div>
+							<h3>엔지니어링 플라스틱(Engineering Plastic)</h3>
+							<br>
+							<br>
+							<p>
+								자동차 부품, 전기 전자 제품용 등으로 이용되고 있으며<br> 기계적 강도, 내열, 내한, 내약품,
+								투명성, 치수 안정성이 우수하여<br> 그 용도는 더욱 확대되고 있습니다.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="intro ">
+				<div>
+					<img alt="제품사진" src="/css/salesImg/bottle.png"
+						style="width: 15em; height: 15em;">
+						<div>
+							<h3>보틀용(Bottle)</h3>
+							<br> <br>
+							<p>
+								내열성, 내압성, 가스차단성, 자외선 차단성 향상,<br> 충격강도 강화 다층화 등 기술향상으로 음료수용,
+								소주병용,<br> 물비누용(샴푸) 등에 상용되고 있으며, 환경친화적이고 인체에 무해한<br> 제품을 개발하여
+								김치통, 간장병, 식용유병, 약품병, 젖병, 맥주병 등<br> 성형분야에서도 우리 생활에 밀접하게 접목되고
+								있습니다.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 	</div>
+	<!-- content end -->
+
+	<script type="text/javascript">
+		/*  var silk = document.querySelector("#silk");
+
+		 silk.addEventListener("mouseover", function() { // mouseover 이벤트 처리
+		  silk.style.backgroundColor = "gray"; // myRect 요소의 배경색 
+		  silk
+		   
+		 });
+		 silk.addEventListener("mouseout", function() {
+		    cover.src = "/css/salesImg/silk.png";
+		 }); */
+
+		/* $('#silk').on('mouserover', function() {
+			console.log(this);
+			$(this).html(function (idx, obj){
+				return obj + "섬유용(Fibers)
+		            천연섬유(면, Silk)를 능가할 정도의 기능성을 부여하는 기술이 개발되고 있으며,
+		            남성 및 여성정장, 속내의, 탄성을 부여한 스포츠용 의류, 블라우스, 이불솜, 귀저기,
+		            패드, 인형, 내장지, 인조피혁 등에 이용되고 있습니다.";
+			})
+		}); */
+		/*
+		1. img 태그에 - data-toggle="tooltip"
+		   data-placement="bottom"
+		      title="섬유용(Fibers)
+		            천연섬유(면, Silk)를 능가할 정도의 기능성을 부여하는 기술이 개발되고 있으며,
+		            남성 및 여성정장, 속내의, 탄성을 부여한 스포츠용 의류, 블라우스, 이불솜, 귀저기,
+		            패드, 인형, 내장지, 인조피혁 등에 이용되고 있습니다."
+		추가하고 아래 코드 작성
+		2.
+		   var exampleEl = document.getElementById('silk')
+		   var tooltip = new bootstrap.Tooltip(exampleEl, {
+		      placement : 'bottom'
+		   })
+		   $(document).ready(function() {
+		      $('[data-toggle="tooltip"]').tooltip();
+		   }); */
+
+		/* $().ready(function () {
+		    $('#silk').mouseover(function(){
+		        $("#img").text("섬유용(Fibers)
+		               천연섬유(면, Silk)를 능가할 정도의 기능성을 부여하는 기술이 개발되고 있으며,<br>
+		               남성 및 여성정장, 속내의, 탄성을 부여한 스포츠용 의류, 블라우스, 이불솜, 귀저기,<br>
+		               패드, 인형, 내장지, 인조피혁 등에 이용되고 있습니다.");
+		         
+		    })
+
+		}); */
+	</script>
 </body>
 </html>

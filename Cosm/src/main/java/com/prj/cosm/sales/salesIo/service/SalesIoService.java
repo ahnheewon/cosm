@@ -33,7 +33,7 @@ public interface SalesIoService {
 	public int updateOutInfo(List<SalesIoVO> list);
 
 	// 삭제 - 체크박스, 여러조건 일때 vo로 받아야하는지?
-	public int delOutOrder(List<String> sioList);
+	public int delOutOrder(List<SalesIoVO> vo);
 
 	// 출고 -> 내역
 	// 1.update 2.resetdata 3.resetdate = 정보는 1개 update됨, update된걸 따로 보겠다.

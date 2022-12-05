@@ -506,6 +506,7 @@ background: linear-gradient(0deg, rgba(0,3,255,1) 0%, #0612b7 100%);
 				success: function (result) {
 					console.log('1',result.data[0].valid);
 					console.log('2',result.data);
+					console.log('3',result);
 					/* if(result.data[0].valid == '01' && result.status_code == 'OK'){
 						alert("정상 인증되었습니다.")
 					} else {
@@ -513,7 +514,6 @@ background: linear-gradient(0deg, rgba(0,3,255,1) 0%, #0612b7 100%);
 						$('#businessNo').val('');
 						$('#businessNo').focus();
 					} */
-					console.log('3',result);
 					
 					
 					 if (result.data[0].valid == '01' && result.status_code == 'OK' 
@@ -526,15 +526,13 @@ background: linear-gradient(0deg, rgba(0,3,255,1) 0%, #0612b7 100%);
 		               
 						$('#checkBtn2').val("Yes");
 
-					}else if( result.valid_msg == '확인할 수 없습니다.'){
+					}
+					if( result.valid_msg == '확인할 수 없습니다.'){
 						Swal.fire(
 		                        '사업자번호 인증불가',
 		                        '사업자번호를 다시 입력해주세요'
 		                    )
-					} else { // ($('#licenseImg').val() != '' && )일단보류
-						
-					} 
-					//console.log(data);
+					}
 				},
 				error: function (result) {
 					//console.log('result : ',result);
