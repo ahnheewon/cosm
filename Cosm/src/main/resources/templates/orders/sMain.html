@@ -779,6 +779,10 @@
 						xhr.setRequestHeader(header, token);
 					},
 					success: function (result) {
+						Swal.fire(
+    		                    '접수가 완료되었습니다.',
+    		                    'success'
+    		                )
 						getOrderList();
 					},
 					error: function (error) {
@@ -1119,7 +1123,11 @@
 			function newPro5() {
 				var rec = grid2.getCheckedRows();
 				if (rec == 0) {
-					alert('출고 주문을 선택해 주세요.');
+					Swal.fire(
+							'출고대기 주문을 선택해 주세요.'
+		                   
+		                )
+					//alert('출고 주문을 선택해 주세요.');
 				}
 				
 				let data = grid2.getCheckedRows();
@@ -1133,6 +1141,10 @@
 					},
 					contentType: "application/json",
 					success: function (result) {
+						Swal.fire(
+    		                    '출고가 완료되었습니다.',
+    		                    'success'
+    		                )
 						getSalesIoList(); //1.정보가지고오기 2.update정보 최신화
 					},
 					error: function (reject) {
