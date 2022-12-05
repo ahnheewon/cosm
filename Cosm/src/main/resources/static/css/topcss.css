@@ -108,7 +108,7 @@ h5{
 
 #bbb {
 transform : translate(-50%,-200%);
-font-family: 'Lato', sans-serif;
+
 background-color: navy;
 border-color:navy; 
 border-radius:30%; 
@@ -121,10 +121,6 @@ width:10%;
 	animation-duration : 6s;
 }
 
-#bbb:hover{
-background-color: #000cc0;
-border-color: #000cc0;
-}
 
 p {
   font-family: 'Lato', sans-serif;
