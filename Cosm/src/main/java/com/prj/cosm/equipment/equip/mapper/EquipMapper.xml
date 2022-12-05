@@ -294,7 +294,21 @@
 		test
 		Where test_no= #{testNo}
 	</select>
-
+	
+	<!-- 점검 검색 조회 no paging -->
+	<select id="getTestSearch" parameterType="equipVO" resultType="equipVO">
+		select * from test
+			<where>
+				<if test="testDueDate !=null">
+				and trunc(test_due_date) in to_date(#{testDueDate},'YY/MM/DD')
+				</if>
+				<if test="testEquipName !=null and !testEquipName.equals('')">
+				and test_equip_no IN (select equip_no from equip where equip_name LIKE #{testEquipName}||'%')
+				</if>
+			</where> 
+		order by test_no desc
+	</select>
+	
 	<!-- 점검일정 등록 -->
 	<insert id="insertTest" parameterType="equipVO">
 

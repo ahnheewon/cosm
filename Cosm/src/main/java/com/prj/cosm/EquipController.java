@@ -2,6 +2,7 @@ package com.prj.cosm;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,6 @@ import com.prj.cosm.equipment.equip.service.EquipService;
 import com.prj.cosm.equipment.equip.service.EquipVO;
 import com.prj.cosm.equipment.work.service.WorkService;
 import com.prj.cosm.equipment.work.service.WorkVO;
-import com.prj.cosm.material.material.service.MaterialVO;
 
 @Controller
 @CrossOrigin("*")
@@ -264,6 +264,13 @@ public class EquipController {
 			
 			return eService.getTestInfo(testNo, testEquipNo);
 
+		}
+		// 점검 선택 조회
+		@PostMapping("/equipment/getTestSearch")
+		@ResponseBody
+		public EquipVO getTestSearch(EquipVO vo) {
+
+			return eService.getTestSearch(vo);
 		}
 
 		// 점검 수정

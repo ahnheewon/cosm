@@ -1,5 +1,6 @@
 package com.prj.cosm.equipment.equip.mapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ public interface EquipMapper {
 			
 			// 단건조회
 			public EquipVO getEquipInfo(int equipNo);
+			
 
 			// 등록
 			public int insertEquip(EquipVO vo);
@@ -104,11 +106,14 @@ public interface EquipMapper {
 				// 완료조회
 				public List<EquipVO> getCompleteTestList();
 			
-			// 전체조회 페이지네이션
-			public List<EquipVO> getTestListPage(int page, int perPage);
+				// 전체조회 페이지네이션
+				public List<EquipVO> getTestListPage(int page, int perPage);
+					
+				// 전체조회_카운트 페이지네이션용
+				public int testListCount(EquipVO vo);
 				
-			// 전체조회_카운트 페이지네이션용
-			public int testListCount(EquipVO vo);
+				// 선택조회
+				public EquipVO getTestSearch(EquipVO vo);
 				
 			// 단건조회
 			public EquipVO getTestInfo(int testNo, int testEquipNo);

@@ -67,7 +67,7 @@
 										  					<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
 															</svg>
 										            </button>
-												    <input onkeyup="filter1()" type="text" class="filterInput" id="searchFilter" placeholder=" 설비명 입력">	    
+												    <input onkeyup="filter1()" type="text" class="filterInput" id="searchFilter" autocomplete="off"; placeholder=" 설비명 입력">	    
 												    <div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index:1000; margin-right: 5px; float: left; height: 31px;">			
 														<input id="tf-start-input" type="text" name="testDueDate" aria-label="Date" placeholder="날짜 선택" readonly autocomplete="off">
 														<span class="tui-ico-date"></span>
@@ -167,9 +167,11 @@
 								</tr>
                     <tr>
                         <td>점검이유</td>
-                        <td><input class="form-control" id="testReason" name="testReason" type="hidden" value="정기점검" required>
-                        	<select class="form-control" id="testReasonSelect" onchange="changeSelect(this.value,this.id);" >            
+                        <td><input class="form-control" id="testReason" name="testReason" type="hidden" value="" required>
+                        	<select class="form-control" id="testReasonSelect" onchange="changeSelect(this.value,this.id);" >
+                        				   <option value="">선택되지 않음</option>      
 								           <option>정기점검</option>
+								           <option>기기결함</option>
 								           <option>기타</option>
 						  	</select></td>    
                    </tr>
@@ -704,7 +706,7 @@ function filter1(){
 		const state = [{code: 'contain', value: search.value.toUpperCase()}];
 			
 		if(search.value == ''){	
-			
+			testAllListPaging();
 			testGrid.unfilter('testEquipName');
 			testCompleteGrid.unfilter('testEquipName');
 		
@@ -724,7 +726,7 @@ function filter2(){
 			, value: search.value }];
 			
 		if(search.value == ''){	
-			
+			testAllListPaging();
 			testGrid.unfilter('testDueDate');
 		
 		}else {

@@ -23,13 +23,14 @@
 			        	<hr style="visibility: hidden;">
 			          <div class="searchbox">
 			            <div class="header">
-						     <input onkeyup="filter()" autocomplete="off" class="filterInput" type="text" id="searchFilter" placeholder="부품명 입력...">
-						     <button type="button" id="insertTBtn" style="float:right; display: inline-block; margin-right: 10px;" class="btn btn-dark btn-sm">발주요청</button>
 						 <button type="button"  style="float:left;" class="btn btn-secondary btn-sm">
                			 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
   						 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
 						</svg>
               			</button>    
+						     <input onkeyup="filter()" autocomplete="off" class="filterInput" type="text" id="searchFilter" placeholder="부품명 입력...">
+						    <!--  <button type="button" id="insertTBtn" 
+						     style="float:right; display: inline-block; margin-right: 10px;" class="btn btn-dark btn-sm">발주요청</button> -->
 						 
 						 </div>
       				   </div>
@@ -226,6 +227,7 @@ function updatePart() {
 							        console.log(obj);
 							        $('#myModal').modal('hide');
 							        Swal.fire('수정이 완료 되었습니다','', 'success');
+							        getPartList();
 							        cancelUpdatePart();
 						    
 						    })
@@ -271,7 +273,7 @@ function cancelUpdatePart() { // 되감기^^
 /*  부품 그리드  */	
 	const partGrid = new tui.Grid({
 			    el: document.querySelector('#part'),
-			    rowHeaders: ['rowNum', 'checkbox'],
+			   // rowHeaders: ['rowNum', 'checkbox'],
 			    scrollX:false,
 			    scrollY:false,
 			    columns: [
@@ -292,7 +294,7 @@ function cancelUpdatePart() { // 되감기^^
 			    },
 			    {
 			        header: '적용설비',
-			        name: 'partEquipNo'
+			        name: 'partEquipName'
 			        ,align : 'center'
 			       
 			    },  
@@ -317,8 +319,8 @@ function cancelUpdatePart() { // 되감기^^
 			});
 
 
-
-
+getPartList(); 
+function getPartList() {
 /* 부품 리스트 불러오는 아작스 */
 
 	url="/equipment/partList"
@@ -329,7 +331,7 @@ function cancelUpdatePart() { // 되감기^^
 	    partGrid.resetData(obj);
     
 	})
-
+}
 	tui.Grid.applyTheme("normal", {
     cell : {
        nomal : {
@@ -352,7 +354,7 @@ function cancelUpdatePart() { // 되감기^^
     },
 
  });
- 
+
 	tui.Grid.applyTheme('custom', { 
 		  row: { 
 		    hover: { 
@@ -360,6 +362,7 @@ function cancelUpdatePart() { // 되감기^^
 		    }
 		  }
 	});
+
 	
 	 /* 부품 그리드 셀 클릭-> 모달 팝업 이벤트 */
 	 

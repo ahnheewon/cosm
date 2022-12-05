@@ -1,6 +1,7 @@
 package com.prj.cosm.equipment.equip.service.Impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -474,6 +475,12 @@ public class EquipServiceImpl implements EquipService {
 	public int testListCount(EquipVO vo) {
 		
 		return mapper.testListCount(vo);
+	}
+
+	@Override
+	public EquipVO getTestSearch(EquipVO vo) {
+		
+		return mapper.getTestSearch(vo);
 	}
 
 }

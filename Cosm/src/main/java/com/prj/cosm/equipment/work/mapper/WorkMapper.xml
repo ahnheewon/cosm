@@ -240,6 +240,7 @@
 		SELECT 	p.part_no
 		        ,m.m_name as part_name
 		        ,p.part_equip_no
+		        ,(select equip_name from equip where equip_no = p.part_equip_no) as part_equip_name
 		        , m.m_stock as part_stock
 		        ,m.m_date as part_date
 		        ,m.m_file as part_file

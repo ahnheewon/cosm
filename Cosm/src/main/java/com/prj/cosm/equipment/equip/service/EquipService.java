@@ -1,5 +1,6 @@
 package com.prj.cosm.equipment.equip.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -94,6 +95,9 @@ public interface EquipService {
 					
 					// 전체조회_카운트 페이지네이션용
 					public int testListCount(EquipVO vo);
+					
+					// 선택조회
+					public EquipVO getTestSearch(EquipVO vo);
 					
 				// 단건조회
 				public EquipVO getTestInfo(@Param("testNo")int testNo, @Param("testEquipNo")int testEquipNo);
