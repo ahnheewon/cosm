@@ -103,7 +103,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		
 
 
 		<script>
@@ -135,8 +135,8 @@
 					header : '입고수량',
 					name : 'mioQntt',
 					align : 'right',
-					 formatter: function (value) {
-	                        return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+					 formatter: function (el) {
+						 return formatter(el.value); 
 	                     }
 				}, {
 					header : '입고날짜',
@@ -175,9 +175,9 @@
 					header : '출고수량',
 					name : 'mioQntt',
 					 align : 'right',
-					 formatter: function (value) {
-	                        return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-	                     }                    
+					 formatter: function (el) {
+						 return formatter(el.value); 
+	                     }               
 					 
 				}, {
 					header : '출고날짜',
@@ -207,32 +207,44 @@
 
 							{
 								header : '발주번호', // 이름 어떤 걸로 할지 체크
-								name : 'moOrderId'
+								name : 'moOrderId',
+								align : 'center'
 							},
 
 								{
 									header : '자재번호', // 이름 어떤 걸로 할지 체크
-									name : 'moMaterialId'
+									name : 'moMaterialId',
+									align : 'center'
 								},
 
 								{
 									header : '자재명',
-									name : 'moName'
+									name : 'moName',
+									align : 'left'
 								},
 
 								{
 									header : '거래처명',
-									name : 'moComNm'
+									name : 'moComNm',
+									align : 'left'
 								},
 
 								{
 									header : '발주수량',
-									name : 'moNum'
+									name : 'moNum',
+									align : 'right',
+									 formatter: function (el) {
+										 return formatter(el.value); 
+					                     },
 								},
 
 								{
 									header : '입고수량',
 									name : 'mioQntt',
+									align : 'right',
+									 formatter: function (el) {
+										 return formatter(el.value); 
+					                     },
 									editor : 'text',
 									validation : {
 										dataType : 'text',
@@ -249,20 +261,19 @@
 											stanbyGrid.setValue(ev.rowKey,
 													'mioInQntt', ev.value)
 										} else {
-											alert('입고 수량은 발주 수량보다 클 수 없습니다.')
+											
+											alert('입고 수량은 발주 수량보다 클 수 없습니다.');
 											stanbyGrid.setValue(ev.rowKey,
-													'mioQntt', moNum) // sweet alert로 cs 변경하기
-
+													'mioQntt', moNum)
+											
 										}
-									},
-									 formatter: function (value) {
-					                        return value.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-					                     }
+									}
 								},
 
 								{
 									header : '품질 상태',
 									name : 'mioQuality',
+									align : 'center',
 									editor : {
 										type : 'select',
 										options : {
@@ -300,6 +311,13 @@
 						}
 
 					})
+			
+			//금액, 숫자 자릿수 표기
+			function formatter(value){
+	        	 if(!value) {return 0}
+	        	 
+	             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+	         }
 
 			//tui.Grid 스타일 주기
 			tui.Grid.applyTheme("normal", {
@@ -535,5 +553,6 @@
 			
 		</script>
 	</div>
+
 </body>
 </html>

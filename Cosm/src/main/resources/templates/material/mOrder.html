@@ -109,7 +109,7 @@ font-weight: bold;
 								id="orderbtn">실행</button>
 							
 						<button type="button" class="btn btn-secondary btn-sm"
-								id="orderDelbtn" onclick="delOrderCheck()">삭제</button>
+								id="orderDelbtn">삭제</button>
 							<button type="button" class="btn btn-secondary btn-sm"
 								id="execlWord2" >출력</button>
 								</div>
@@ -117,81 +117,6 @@ font-weight: bold;
 						<div>
 							<div id="grid2"></div>
 						</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- 발주 취소 알림-->
-		<div class="modal" tabindex="-1" id="delModal" style="z-index: 1200">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">발주확정알림</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="text-align: center">
-						<h5>
-							발주 삭제 시,
-							</h>
-							<h>처음부터 진행해야합니다. 
-						</h5>
-						<h5>발주를 삭제하시겠습니까?</h5>
-					</div>
-					<div class="modal-footer" style="text-align: center">
-						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-						<button type="button" class="btn btn-primary"
-							data-bs-dismiss="modal" onclick="checkCartDel()">확인</button>
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- 자재 주문 추가 모달-->
-		<div class="modal" tabindex="-1" id="mInfoModal" style="z-index: 1300">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">자재 정보 상세내역</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="text-align: left">
-						<div id="grid2"></div>
-					</div>
-					<div class="modal-footer" style="text-align: center">
-						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-						<button type="button" class="btn btn-primary"
-							data-bs-dismiss="modal" onclick="">확인</button>
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-
-		<!-- 발주 내역 삭제 모달-->
-		<div class="modal" tabindex="-1" id="orderDelModal"
-			style="z-index: 1300">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">자재 정보 상세내역</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="text-align: left">발주가 완료된 오더는
-						삭제가 불가능합니다.</div>
-					<div class="modal-footer" style="text-align: center">
-						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-						<button type="button" class="btn btn-primary"
-							data-bs-dismiss="modal" style="float: center">확인</button>
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal" style="float: center">취소</button>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -496,7 +421,7 @@ font-weight: bold;
             }
 
          
-       
+      // 발주 진행 알림창
          
         	 $().ready(function () {
         		    $("#orderbtn").click(function () {
@@ -514,7 +439,7 @@ font-weight: bold;
         		            	updateOrderStart();
         		                Swal.fire(
         		                    '발주가 완료되었습니다',
-        		                    'success'
+        		                  
         		                )
         		            }
         		        })
@@ -522,19 +447,10 @@ font-weight: bold;
         	    });
         		
 
-         
-
+ 
        
-      // 발주 대기 삭제 확인 모달   
-         let cartdelbtn = document.getElementById('cdelbtn');
-         cartdelbtn.addEventListener('click', function() {
-            let myModalAlternative = new bootstrap.Modal('#delModal')
-            let modalToggle = document.getElementById('delModal');
-            myModalAlternative.show(modalToggle)
-            mOrderGrid.refreshLayout()
-
-      	   });//end of delmodal
-        
+     
+      	   
          
 		// 발주 대기 삭제
          function checkOrderDel() {
@@ -565,13 +481,28 @@ font-weight: bold;
             })
          }
 
-      	   
-      	 /*======================
-      	  	발주 진행 현황 삭제 (오류 잡아야함)
-      	  ========================*/  
-      	  
-          
-      	  // 발주 완료시 삭제 불가 안내 모달  
+		
+         
+         // 발주 완료시 삭제 불가 
+     	 $().ready(function () {
+     		    $("#orderDelbtn").click(function () {
+     		        Swal.fire({
+     		            title: "발주를 삭제하시겠습니까?",
+     		            text: "삭제건은 처음부터 다시 발주해야합니다.",
+     		            icon: 'warning',
+     		            showCancelButton: true,
+     		            confirmButtonColor: '#3085d6',
+     		            cancelButtonColor: '#d33',
+     		            confirmButtonText: '승인',
+     		            cancelButtonText: '취소'
+     		        }).then((result) => {
+     		        	delOrderCheck();
+     		        })
+     		    })
+     	    });
+     		
+      	
+    // 발주 완료시 삭제 불가 
           
      function delOrderCheck() { 	 
           		   
@@ -586,12 +517,14 @@ font-weight: bold;
       }
       		if(yn==1){
       			
-    		let myModalAlternative = new bootstrap.Modal('#orderDelModal');
-            let modalToggle = document.getElementById('#orderDelModal');
-            myModalAlternative.show(modalToggle);
-            mOrderGrid.refreshLayout();
-  			return false;
-      		}
+      			 $().ready(function () {
+                     Swal.fire({
+                              icon: 'warning',
+                              title: '삭제가 불가능합니다.',
+                              text: '발주가 완료된 자재 입니다.',
+                          });
+                      });    
+    		}
      
         else{
       		  
@@ -655,6 +588,34 @@ font-weight: bold;
                 })
              }  
     		
+  	
+
+             // 발주 대기 삭제 확인 알림창
+          	 $().ready(function () {
+     		    $("#cdelbtn").click(function () {
+     		        Swal.fire({
+     		            title: '발주를 삭제하시겠습니까?',
+     		            text: "처음부터 다시 실행해야합니다.",
+     		            icon: 'warning',
+     		            showCancelButton: true,
+     		            confirmButtonColor: '#3085d6',
+     		            cancelButtonColor: '#d33',
+     		            confirmButtonText: '승인',
+     		            cancelButtonText: '취소'
+     		        }).then((result) => {
+     		            if (result.isConfirmed) {
+     		            	checkOrderDel();
+     		                Swal.fire(
+     		                    '발주 대기 삭제 완료되었습니다',
+     		                  
+     		                )
+     		            }
+     		        })
+     		    })
+     	    });
+          	   
+  	
+  	
              /*-----------------------------
              // 발주 확정(완료)
              ---------------------------------*/
@@ -671,7 +632,14 @@ font-weight: bold;
                       xhr.setRequestHeader(header, token);
                    },
                    success : function(result) {
-                	 console.log(result);
+                	 console.log(result); 
+
+                         Swal.fire({
+                                  icon: 'info',
+                                  title: '발주가 완료 되었습니다.',
+                                  text: '입고 대기 목록에서 확인해주세요',
+                              });
+                         
                 	 mOrder();
                    },
                    error : function(reject) {

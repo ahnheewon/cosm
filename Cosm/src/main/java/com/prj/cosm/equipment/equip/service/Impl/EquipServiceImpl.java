@@ -264,7 +264,7 @@ public class EquipServiceImpl implements EquipService {
 		mapper.setProState();
 	}
 
-	@Scheduled(fixedDelay = 3000)
+	@Scheduled(fixedDelay = 1000)
 	public void doWork() {
 		InsVO ivo = insMapper.getRecentQntt();
 		EquipVO evo = mapper.getRTPState();

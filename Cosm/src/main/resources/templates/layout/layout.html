@@ -327,11 +327,11 @@ font-size: large;
 				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0103')">
 					<div class="nav">						
 						<br>
-							&nbsp; &nbsp; 자재팀 [[${session.usersName}]] 님
-							
+							&nbsp; &nbsp; &nbsp; 자재팀 [[${session.usersName}]] 님
+							<br> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 환영합니다.
 							<div class="nav">
 						<div class="sb-sidenav-menu-heading">Main</div>
-						<a class="nav-link" href="/produce/main">
+						<a class="nav-link" href="/material/main">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-tachometer-alt"></i>
 							</div> 자재관리메인
@@ -424,7 +424,7 @@ font-size: large;
 			const token = $("meta[name='_csrf']").attr('content');
 			if (`[[${session.usersAuthor}]]` != null) {
 				getAlertList();
-				//setInterval(getAlertList, 1000);
+				setInterval(getAlertList, 1000);
 			}
 
 			function getAlertList() {

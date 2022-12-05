@@ -91,7 +91,7 @@ public class MaterialController {
 			file = FileRenamePolicy.rename(file); // 파일 중복 검사
 			
 			imageFile.transferTo(file); // 파일을 폴더로 옮겨줌
-			mVO.setMatFile(file.getName());
+			mVO.setMFile(file.getName());
 		}
 		
 		mService.insertMatarialInfo(mVO);
@@ -118,9 +118,7 @@ public class MaterialController {
 	@GetMapping("/material/mregcom")
 	public String mRegComForm(Model model) {
 		// 등록할 거래처 시퀀스 조회
-		model.addAttribute("comId", mService.getComId().getMCompanyId());
-		// System.out.println("넘기는 값" + model.addAttribute("comId",
-		// mService.getComId().getMCompanyId()));
+		model.addAttribute("comId", mService.getComId().getMCompanyId());	
 		return "material/mRegCom";
 
 	}
@@ -131,7 +129,9 @@ public class MaterialController {
 		// 팝업창 닫기
 		try {
 			mService.registerMCompany(mvo);
-			resp.getWriter().append("<script >\r\n" + "			window.close() // 신규거래처닫기\r\n" + "		</script>");
+			resp.setContentType("text/html");
+			resp.getWriter().append("<script>\r\n" + "	window.close() \r\n" + "</script>");
+			
 		} catch (IOException e) {
 			resp.sendRedirect("minsert"); // 모달용 에러페이지 만들어서 그 페이지로 이동
 
@@ -148,9 +148,19 @@ public class MaterialController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list1", mService.mList()); // 자재정보리스트
 		
-
 		return map;
 	}
+	
+	@ResponseBody
+	@GetMapping("/material/mioMain")
+	public Map<String, Object> mioMain(MaterialVO mvo){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("main", mService.mioListMain(mvo));
+		
+		return map;
+	}
+	
+	
 	
 	// 페이지네이션
 	@ResponseBody
@@ -209,7 +219,7 @@ public class MaterialController {
 			file = FileRenamePolicy.rename(file); // 파일 중복 검사
 			
 			imageFile.transferTo(file); // 파일을 폴더로 옮겨줌
-			vo.setMatFile(fName);
+			vo.setMFile(fName);
 		}
 		
 		mService.updateMatrailInfo(vo);

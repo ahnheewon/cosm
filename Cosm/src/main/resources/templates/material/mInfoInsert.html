@@ -169,7 +169,6 @@ font-weight: bold
 					myModalAlternative.show(modalToggle)
 					findComGrid.refreshLayout() // modal 만들때 한번 더 toast gird 그려달라는 내용
 					
-
 				})
 
 				// 거래처명 찾기 tui grid
@@ -203,7 +202,8 @@ font-weight: bold
 
 					],
 					pageOptions : {
-						perPage : 5
+						perPage : 5,
+						userClient : true
 					}
 
 				})
@@ -306,8 +306,7 @@ font-weight: bold
 	         ----------------------*/
 	         function filter() { // 토스트그리드 
 
-	            const search = document.getElementById("comSearch") //인풋태그
-	         
+	            const search = document.getElementById("comSearch") //인풋태그	         
 	            const state = [{ code: 'contain', value: search.value.toUpperCase() }];
 
 	            if (search.value == '') {
