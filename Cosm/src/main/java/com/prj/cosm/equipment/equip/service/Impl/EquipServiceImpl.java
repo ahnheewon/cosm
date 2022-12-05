@@ -259,12 +259,12 @@ public class EquipServiceImpl implements EquipService {
 //		}
 //		insMapper.updateInsPlay(insVO);
 //	}
-	@Scheduled(fixedDelay = 1000)
+//	@Scheduled(fixedDelay = 1000)
 	public void updateState() {
 		mapper.setProState();
 	}
 
-	@Scheduled(fixedDelay = 1000)
+//	@Scheduled(fixedDelay = 1000)
 	public void doWork() {
 		InsVO ivo = insMapper.getRecentQntt();
 		EquipVO evo = mapper.getRTPState();

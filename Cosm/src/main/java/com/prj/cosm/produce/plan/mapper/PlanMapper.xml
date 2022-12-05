@@ -133,11 +133,9 @@
 		SELECT o.order_no,
 		o.goods_no, o.order_date, o.delivery_date, o.total_num,
 		o.note,
-		g.goods_name, b.bom_no, code_name as order_code
+		g.goods_name, code_name as order_code
 		FROM produce_goods g
 		JOIN orders o ON g.goods_no = o.goods_no
-		JOIN produce_bom b ON
-		g.goods_no = b.bom_product_no
 		JOIN code ON o.order_code = code.code_no
 		WHERE o.order_code = 'B0107'
 	</select>

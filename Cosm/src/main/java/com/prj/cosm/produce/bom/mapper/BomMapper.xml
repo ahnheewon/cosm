@@ -4,13 +4,15 @@
 
 <!-- 전체조회 -->
 <select id="getBomList" resultType="BomVO">
-	SELECT b.bom_no, b.bom_quantity, m.m_name, m.m_info, m.m_stock, p.goods_name, 
+	SELECT b.bom_no, b.bom_quantity, m1.m_name, m1.m_info, m1.m_stock, m2.m_name as m_nameb, m2.m_info as m_infob, m2.m_stock as m_stockb, p.goods_name, 
 		   p.goods_standard, p.goods_contents, b.bom_product_no, b.bom_material_no,
 		   b.bom_quantityb, b.bom_material_nob
 	FROM produce_bom b JOIN produce_goods p
                     	ON b.bom_product_no = p.goods_no
-                   	   JOIN material m
-                    	ON b.bom_material_no = m.m_no
+                   	   JOIN material m1
+                    	ON b.bom_material_no = m1.m_no
+                          JOIN material m2
+                    	ON b.bom_material_nob = m2.m_no
     ORDER BY bom_no DESC
 </select>
 
