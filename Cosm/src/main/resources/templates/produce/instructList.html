@@ -42,31 +42,30 @@
 				<hr style="width: 100%">
 				<h3 style="text-align: center">전체 생산지시 리스트</h3>
 				<br>
-				<div id="select_input">
-					<span>등록일자</span>
-					<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-						style="margin-left: -1px; z-index: 1100">
-						<input id="startpicker-input" type="text" aria-label="Date"
-							style="z-index: 1100"> <span class="tui-ico-date"></span>
-						<div id="startpicker-container"
-							style="margin-left: -1px; z-index: 1100"></div>
-					</div>
-					<span>~</span>
-					<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-						style="z-index: 1100">
-						<input id="endpicker-input" type="text" aria-label="Date"
-							style="margin-left: -1px; z-index: 1100"> <span
-							class="tui-ico-date"></span>
-						<div id="endpicker-container"
-							style="margin-left: -1px; z-index: 1100"></div>
-					</div>
-					<button type="button" class="btn btn-secondary btn-sm" id="searchBtn">조회</button>
+				<div id="select_input" style="float:left; margin-bottom:10px">
+						<span style="padding-bottom: 20px; padding-right: 10px; font-weight: bold">지시일자</span>
+						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
+							style="margin-left: -1px; z-index: 1009">
+							<input id="startpicker-input" type="text" aria-label="Date"
+								style="z-index: 1009; border: 2px solid;"> <span class="tui-ico-date"></span>
+							<div id="startpicker-container"
+								style="margin-left: -1px; z-index: 1009"></div>
+						</div>
+						<span> ~ </span>
+						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
+							style="z-index: 1009">
+							<input id="endpicker-input" type="text" aria-label="Date"
+								style="margin-left: -1px; z-index: 1009; border: 2px solid;"> <span
+								class="tui-ico-date"></span>
+							<div id="endpicker-container"
+								style="margin-left: -1px; z-index: 1009"></div>
+						</div>
+						<button type="button" class="btn btn-secondary" id="searchBtn" style="margin-left: 15px">조회</button>
 
-					<button type="button" class="btn btn-dark btn-sm"
+					</div>
+						<button type="button" class="btn btn-dark btn-sm"
 						style="float: right" id="delbtn">생산지시 삭제</button>
 			
-
-				</div>
 				<div id="grid5"></div>
 			</div>
 		</div>
@@ -517,9 +516,7 @@
 					align : 'center',
 					sortingType: 'desc',
 					sortable: true,
-					formatter: function(e){
-		                return `<a href="/instructList">${e.value} / ${e.value}</a>`; 
-		            },
+					
 					   
 				},
 				{
@@ -831,6 +828,13 @@
 
 	      });
 		
+		 tui.Grid.applyTheme('custom', { 
+	           row: { 
+	             hover: { 
+	               background: '#dcdfec' 
+	             }
+	           }
+	      });
 		</script>
 	</div>
 </body>

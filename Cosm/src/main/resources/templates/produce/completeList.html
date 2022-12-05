@@ -16,25 +16,25 @@
 		<h3 style="text-align: center">완제품 리스트</h3>
 		<br>
 		
-		<div id="select_input">
-						<span>등록일자</span>
+		<div id="select_input" style="float:left; margin-bottom:10px">
+						<span style="padding-bottom: 20px; padding-right: 10px; font-weight: bold">등록일자</span>
 						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-							style="margin-left: -1px; z-index: 1100">
+							style="margin-left: -1px; z-index: 1009">
 							<input id="startpicker-input" type="text" aria-label="Date"
-								style="z-index: 1100"> <span class="tui-ico-date"></span>
+								style="z-index: 1009; border: 2px solid;"> <span class="tui-ico-date"></span>
 							<div id="startpicker-container"
-								style="margin-left: -1px; z-index: 1100"></div>
+								style="margin-left: -1px; z-index: 1009"></div>
 						</div>
-						<span>~</span>
+						<span> ~ </span>
 						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-							style="z-index: 1100">
+							style="z-index: 1009">
 							<input id="endpicker-input" type="text" aria-label="Date"
-								style="margin-left: -1px; z-index: 1100"> <span
+								style="margin-left: -1px; z-index: 1009; border: 2px solid;"> <span
 								class="tui-ico-date"></span>
 							<div id="endpicker-container"
-								style="margin-left: -1px; z-index: 1100"></div>
+								style="margin-left: -1px; z-index: 1009"></div>
 						</div>
-						<button type="button" class="btn btn-secondary" id="searchBtn">조회</button>
+						<button type="button" class="btn btn-secondary" id="searchBtn" style="margin-left: 15px">조회</button>
 						
 
 					</div>
@@ -43,30 +43,14 @@
 			id="delbtn">완제품 삭제</button>
 		
 			
-		<input onkeyup="filter2()" type="text" style="float: right" id="searchFilter2">	
-		<label style="float: right; margin-right: 20px">검수여부 검색</label>
+		
 		<div id="grid" ></div>
 
 
 		<script>
 	
 	
-	function filter2(){ // 토스트그리드 필터이용 검색함수
-
-		const search = document.getElementById("searchFilter2") //인풋태그
-		      
-		const state = [{code: 'contain', value: search.value}];
-		
-		      if(search.value == ''){   
-		         
-		    	  grid.unfilter('INSPECTION');
-		      
-		      }else {
-		          
-		    	  grid.filter(('INSPECTION'), state);
-		      }
-		      
-		}
+	
 	
 	window.onload = function () {
 		//완제품리스트 가져오기
