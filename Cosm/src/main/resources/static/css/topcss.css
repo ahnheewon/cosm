@@ -37,7 +37,7 @@ body{
 @keyframes bbbon {
   0% {transform : translate(200%,0);}
   90% {transform : translate(200%,0);}
-  100%{transform : translate(-50%,-200%);}
+  100%{transform : translate(-50%,-120%);}
 }
 .contents{
 	
@@ -107,7 +107,7 @@ h5{
 }
 
 #bbb {
-transform : translate(-50%,-200%);
+transform : translate(-50%,-120%);
 
 background-color: navy;
 border-color:navy; 
@@ -120,7 +120,6 @@ width:10%;
 	animation-delay: 0;
 	animation-duration : 6s;
 }
-
 
 p {
   font-family: 'Lato', sans-serif;
