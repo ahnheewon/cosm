@@ -237,19 +237,56 @@
 																		
 <!-- 부품 전체 리스트 -->
 	<select id="getPartList" resultType="workVO">
-		    SELECT TO_NUMBER(replace(part_no, 'MP')) as part_no, e.equip_name as part_Equip_Name,p.part_name,p.part_content,p.part_amount,
-                    find_code_no(p.part_code) as part_code
-		FROM PART p, EQUIP e
-		WHERE p.part_equip_no=e.equip_no
-		order by 1
+		SELECT 	p.part_no
+		        ,m.m_name as part_name
+		        ,p.part_equip_no
+		        ,(select equip_name from equip where equip_no = p.part_equip_no) as part_equip_name
+		        , m.m_stock as part_stock
+		        ,m.m_date as part_date
+		        ,m.m_file as part_file
+		        ,find_code_no(m.m_unit_code) as part_code
+		from part p , material m
+		where p.part_no = m.m_no
 	</select>
 	
 <!-- 부품 단건 조회 -->
-	<select id="getPartInfo" parameterType="Integer" resultType="workVO">
-		SELECT p.part_no, p.part_name, e.equip_name as part_equip_name,p.part_content,find_code_no(p.part_code) as part_code
-		FROM equip e, part p
-		Where e.equip_no = p.part_equip_no
-		and part_no = 'MP'||#{value}
+	<select id="getPartInfo" parameterType="String" resultType="workVO">
+		 SELECT p.part_no
+				, m.m_name as part_name
+				, p.part_equip_no
+				, (select equip_name from equip where equip_no = p.part_equip_no) as part_equip_name
+				, m.m_stock as part_stock
+				, m.m_info as part_info
+				, find_code_no(m.m_unit_code) as part_code
+				,m.m_file as part_file				
+		FROM part p, material m
+		where p.part_no = m.m_no
+		and part_no = #{value}
 	</select>
+
+<!-- 부품 수정1 -->
+	<update id="updatePart" parameterType="workVO">
+	UPDATE material
+	<set>								
+		<if test="partStock !=null">
+		m_stock = #{partStock},
+		</if>									
+		<if test="partInfo !=null and !partInfo.equals('')">
+		m_info = #{partInfo},
+		</if>
+		m_date = sysdate																									
+	</set>
+	WHERE m_no = #{partNo}
+	
+	</update>
+	
+<!-- 부품 수정2 -->	
+	<update id="updatePartEquip" parameterType="workVO">
+	UPDATE part
+	
+	set	part_equip_no = (select equip_no from equip where equip_name = #{partEquipName})
+	
+	WHERE part_no = #{partNo}	
+	</update>
 
 </mapper>

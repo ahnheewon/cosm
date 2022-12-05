@@ -71,6 +71,10 @@ public interface WorkMapper {
 	public List<WorkVO> getPartList();
 
 	// 단건조회
-	public WorkVO getPartInfo(int partNo);
+	public WorkVO getPartInfo(String partNo);
+	
+	// 수정
+		public int updatePart(WorkVO vo);
+		public int updatePartEquip(WorkVO vo);
 
 }

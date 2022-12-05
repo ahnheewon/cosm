@@ -73,7 +73,7 @@ public class OrderClientProductController {
 	@GetMapping("/client/orderList")
 	public String orderList(Model model) {
 		// model.addAttribute("uno"), cService.getUserNo());
-		return "/client/orderList";
+		return "/client/main";
 	}
 
 	//주문조회 데이터 - userNo,clientName - 1201일단 보류 
@@ -122,7 +122,7 @@ public class OrderClientProductController {
 	public String insertOrderPage(OrdersVO cvo) {
 		System.out.println("insert vo" + cvo);
 		oService.insertOrder(cvo);
-		return "redirect:/client/orderList";
+		return "redirect:/client/main";
 	}
 
 	// 영업=================================================================================================================
@@ -178,12 +178,12 @@ public class OrderClientProductController {
 	}
 
 	// 출고내역 삭제
-	@ResponseBody
-	@PostMapping("/orders/ajaxDelOutOrder")
-	public int delOutOrder(@RequestBody SalesIoVO vo) {
-		return sService.delOutOrder(vo.getSioList());
-		// 지금 수정해야할 부분
-	}
+	/*
+	 * @ResponseBody
+	 * 
+	 * @PostMapping("/orders/ajaxDelOutOrder") public int delOutOrder(@RequestBody
+	 * SalesIoVO vo) { return sService.delOutOrder(vo); }
+	 */
 
 	// 삭제 - 접수 주문관리
 	@ResponseBody

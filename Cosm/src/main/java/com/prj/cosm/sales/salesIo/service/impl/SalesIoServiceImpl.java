@@ -87,18 +87,20 @@ public class SalesIoServiceImpl implements SalesIoService {
 		return result;
 	}
 
-	@Override
-	public int delOutOrder(List<String> sioList) {
-		// 다중삭제
-		int result = 0;
-		for (String no : sioList) {
-			result += mapper.delOutOrder(no);
-		}
-		return result;
-	}
+	/*
+	 * @Override public int delOutOrder(List<SalesIoVO> vo) { // 다중삭제 int result =
+	 * 0; for (String no : vo) { result += mapper.delOutOrder(vo); } return result;
+	 * }
+	 */
 
 	@Override
 	public int outList(List<SalesIoVO> vo) {
+		return 0;
+	}
+
+	@Override
+	public int delOutOrder(List<SalesIoVO> vo) {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 

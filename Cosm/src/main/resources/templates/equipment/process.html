@@ -48,30 +48,24 @@
 				<h5 >설비 관리</h5>
 			</div>
 			<hr style="visibility: hidden;">
-				<button type="button" class="btn btn-dark btn-sm"
-					data-bs-toggle="modal"
-					style="float: right; display: inline-block; margin-right: 10px;"
-					data-bs-target="#myModal2">등록</button>
-				<div class="searchbox">
 					<div class="header">
-						<div>
-							<input onkeyup="filter()" type="text"
-								style="float: left; margin-right: 5px; border: 1px solid #aaa;"
-								id="searchFilter" placeholder="설비명 입력">
-						</div>
-					</div>
-					 <button type="button"  style="float:left; margin-right: 5px;" class="btn btn-secondary btn-sm">
+				<button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" style="float: right; 
+						display: inline-block; margin-right: 10px;" data-bs-target="#myModal2">등록</button>
+				<button type="button"  style="float:left; pointer-events : none; margin-right: 5px;" class="btn btn-secondary btn-sm">
                			 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
   						 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
 						</svg>
-              			</button>
+               </button>
+						<div>
+							<input onkeyup="filter()" type="text" autocomplete="off"; class="filterInput" id="searchFilter" placeholder="설비명 입력...">
+						</div>
+					</div>
 
-					<div id="equipList" style="padding-top: 40px;"></div>
-				</div>
+				<div id="equipList" style="padding-top: 40px;"></div>
 			</div>
 		</div>
 </div>
-			<!-- The Modal 1 공정모달 -->
+			<!-- The Modal 1 공정 등록 모달 -->
 			<div class="modal fade" id="myModal1">
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
@@ -89,23 +83,23 @@
 								th:value="${_csrf.token}" />
 							<!-- Modal body -->
 							<div class="modal-body">
-								<table class="table">
-									<tr>
+								<table class="table smallTd">
+									<tr class="smallTd">
 										<td>공정번호</td>
 										<td><input class="form-control" id="processNo"
 											name="processNo" th:value="${pno }" type="text" readonly></td>
 									</tr>
-									<tr>
+									<tr class="smallTd">
 										<td>공정명</td>
 										<td><input class="form-control" id="processName"
 											name=processName type="text" autocomplete="off" required></td>
 									</tr>
-									<tr>
+									<tr class="smallTd">
 										<td>공정내용</td>
-										<td><textarea class="form-control" id="processContent"
+										<td><textarea class="textarea form-control" id="processContent"
 												name="processContent" rows="5" autocomplete="off" required></textarea></td>
 									</tr>
-									<tr>
+									<tr class="smallTd">
 										<td>공정순서</td>
 										<td><input class="form-control" id="processSeq"
 											name="processSeq" type="number" autocomplete="off" required></td>
@@ -143,7 +137,7 @@
 								th:value="${_csrf.token}" />
 							<!-- Modal body -->
 							<div class="modal-body">
-								<table class="table">
+								<table class="table smallTd">
 									<tr>
 										<td>설비번호</td>
 										<td><input class="form-control" id="equipNo"
@@ -184,7 +178,7 @@
 									</tr>
 									<tr>
 										<td>설비설명</td>
-										<td><textarea class="form-control" id="equipPurpose"
+										<td><textarea class="textarea form-control" id="equipPurpose"
 												name="equipPurpose" rows="5"></textarea></td>
 									</tr>
 									<tr>
@@ -232,8 +226,8 @@
 							<div id="equipInfo" class="modal-body">
 
 
-								<table class="table">
-									<tr>
+								<table class="table smallTd">
+									<tr >
 										<td>설비명</td>
 										<td colspan="2"><input class="form-control wantUpdate"
 											id="selectEquipName" name="equipName" type="text" readonly></td>
@@ -254,14 +248,18 @@
 										<td>정상온도</td>
 										<td colspan="2"><input class="form-control wantUpdate"
 											id="selectEquipStdTemp" name="equipStdTemp" type="text"
-											readonly></td>
+											readonly>
+										</td>
 									</tr>
 									<tr>
 										<td>설비설명</td>
-										<td colspan="2"><textarea
-												class="form-control wantUpdate textWidth"
-												id="selectEquipPurpose" name="equipPurpose" rows="5"
-												readonly></textarea></td>
+										<td colspan="2">
+											<textarea
+												class="textarea form-control wantUpdate"
+												id="selectEquipPurpose" name="equipPurpose"
+												readonly>
+											</textarea>
+										</td>
 									</tr>
 									<tr>
 										<td>설치시기</td>
@@ -275,8 +273,9 @@
 												<div id="wv-container" style="margin-left: -1px;"></div>
 											</div>
 										</td>
-										<td rowspan="2"><img name="eFile"
-											style="border-radius: 10%;"></td>
+										<td rowspan="2">
+											<img name="eFile" style="border-radius: 10%;">
+										</td>
 									</tr>
 									<tr>
 										<td>가동시간</td>
@@ -284,7 +283,8 @@
 											name="updateEquipTime" type="text" readonly> <input
 											class="form-control" id="equipTime" name="equipTime"
 											type="hidden" readonly
-											style="width: 86%; display: inline-block;"></td>
+											style="width: 86%; display: inline-block;">
+										</td>
 
 									</tr>
 								</table>
@@ -328,7 +328,7 @@
 								th:value="${_csrf.token}" />
 							<!-- Modal body -->
 							<div id="equipInfo" class="modal-body">
-								<table class="table">
+								<table class="table smallTd">
 
 									<tr>
 										<td>공정명</td>
@@ -338,8 +338,8 @@
 									</tr>
 									<tr>
 										<td>공정설명</td>
-										<td><textarea class="form-control wantUpdate2"
-												id="selectProcessContent" name="processContent" rows="5"
+										<td><textarea class="textarea form-control wantUpdate2"
+												id="selectProcessContent" name="processContent"
 												autocomplete="off" readonly></textarea></td>
 									</tr>
 									<tr>

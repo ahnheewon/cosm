@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -109,7 +110,12 @@ public class EquipVO {
 	private String codeName;
 	private String codeAdno;
 
-	
+	//pagination
+
+	@JsonIgnore
+	private int perPage = 12;
+	@JsonIgnore
+	private int page = 1;
 	
 	
 }
