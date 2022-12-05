@@ -17,13 +17,14 @@
 
 	</div>
 	<div class="contents" style="text-align:left" id="login">	
-		<a href="/login" style="text-decoration : none;">
-		<h1 style="font-weight: bold; color:white">내일의 혁신과 가치를 위해</h1>
-		<h1 style="font-weight: bold; color:white">오늘을 만들어 나가는 기업,</h1>
-		<h1 style="font-weight: bold; color:white">COSM chemical</h1></a>
+		
+		 <a href="/login" style="text-decoration : none;">
+		 <h1 class="hi">내일의 혁신과 가치를 위해</h1>
+		 <h1 class="hi" > 오늘을 만들어 나가는 기업,</h1>
+		 <h1 class="hi">COSM chemical</h1>
+		 </a>
 	</div>
-	<a ><img alt="" src="/css/logo.PNG" ></a>
-	</div>
+	
 	<div class="row" align="center">
 		<div class="col-1"></div>
 		<div class="col-5 cola">
@@ -44,11 +45,21 @@
 			</p>
 		</div>
 		<div class="col-5 colb">
-			<img alt="" src="/assets/img/top_tpa_img.jpg" >
+			<img style="border-radius: 5%" alt="" src="/assets/img/tpaMain.png" >
 		</div>
+		<div><button style ="float:right; border-radius:10%; width:20%; font-size:40px; height: 200%;" onclick="goLogin()" class="btn-primary">입장하기</button>
+			
+		</div>
+		
 	</div>
 	<script type="text/javascript">
 	document.querySelectorAll('.button').forEach(button => button.innerHTML = '<div><span>' + button.textContent.trim().split('').join('</span><span>') + '</span></div>');
+	
+	function goLogin(){
+		
+		window.location.href = '/login'
+	}
+	
 	</script>
 </body>
 </html>

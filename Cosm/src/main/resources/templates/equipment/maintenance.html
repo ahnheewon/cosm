@@ -1333,9 +1333,15 @@ document.querySelector('#testCompleteGrid').style.display='none';
 									radio[i].style.accentColor='gray';	   
 									//radio[i].checked=false; //체크되어있는 항목 모두 해제		
 						        }
-							 if(tContent.value == ''){ //점검을 아예 건들지도 않았다면..
-							 	radio[0].checked = true; // 첫 번째만 checked
-							 }
+							
+							let testCode = document.querySelector('#thisTCdUD').value;
+							
+							if(testCode=='A0101') radios[0].checked=true;
+							else if (testCode=='A0102') radios[1].checked=true;
+							else if (testCode=='A0106') radios[2].checked=true;
+							else radios[3].checked = true;
+							
+							
 							btn.innerText='수정';
 							btn.removeEventListener('click',updateTest);
 							btn.setAttribute('onclick','updateTBtnClick()');
