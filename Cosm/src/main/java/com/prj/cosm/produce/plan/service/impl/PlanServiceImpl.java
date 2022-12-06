@@ -71,7 +71,7 @@ public class PlanServiceImpl implements PlanService {
 		} else {
 			for (EmpVO eVO : eList) {
 				AlertVO aVO = new AlertVO();
-				aVO.setAlertContent("생산 1건이 계획되었습니다.");
+				aVO.setAlertContent("/material/minfo" + "^" +"생산 1건이 계획되었습니다.");
 				aVO.setAlertReceive(eVO.getUsersNo());
 				aMapper.insertAlert(aVO);
 			}
