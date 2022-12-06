@@ -59,21 +59,21 @@ public class OrderClientProductController {
 	// 로그인 유무 상관없이 보여짐
 	@RequestMapping("/client/productList")
 	public String productList(Model model) {
-		return "/client/productList";
+		return "client/productList";
 	}
 
 // 고객=================================================================================================================
 	// 고객 - 로그인 후, 첫 화면 - 주문등록, 이전주문, 주문조회.. 볼 수 있음
 	@RequestMapping("/client/main")
 	public String main() {
-		return "/client/main";
+		return "client/main";
 	}
 
 	// 주문조회 페이지(월별 : 1개월 3개월 6개월 조회 가능)
 	@GetMapping("/client/orderList")
 	public String orderList(Model model) {
 		// model.addAttribute("uno"), cService.getUserNo());
-		return "/client/main";
+		return "client/main";
 	}
 
 	//주문조회 데이터 - userNo,clientName - 1201일단 보류 
@@ -87,13 +87,13 @@ public class OrderClientProductController {
 	// 마이페이지 화면
 	@RequestMapping("/client/myPage")
 	public String myPage(Model model) {
-		return "/client/myPage";
+		return "client/myPage";
 	}
 
 	// 문의하기 페이지
 	@RequestMapping("/client/chat")
 	public String chat(Model model) {
-		return "/client/chat";
+		return "client/chat";
 	}
 
 	/*
@@ -114,7 +114,7 @@ public class OrderClientProductController {
 	@RequestMapping("/client/insertOrder")
 	public String insertOrder(Model model) {
 		// model.addAttribute("no", oService.getOrderNo());
-		return "/client/insertOrder";
+		return "client/insertOrder";
 	}
 
 	// 주문 등록 데이터
@@ -129,7 +129,7 @@ public class OrderClientProductController {
 	// 메인페이지 - 주문관리
 	@GetMapping("/orders/sMain")
 	public String salesorder(Model model) {
-		return "/orders/sMain";
+		return "orders/sMain";
 	}
 
 	// 자재 정보 상세조회(단건) - 상세정보 데이터

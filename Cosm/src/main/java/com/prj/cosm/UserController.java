@@ -36,35 +36,35 @@ public class UserController {
 	// 첫 화면
 	@GetMapping("/main")
 	public String main(Model model) {
-		return "/index";
+		return "index";
 	}
 
 	@GetMapping("/login")
 	public String login() {
-		return "/login";
+		return "login";
 	}
 
 	//고객가입 폼
 	@GetMapping("/joinForm")
 	public String joinForm() {
-		return "/users/client/joinForm";
+		return "users/client/joinForm";
 	}
 
 	@GetMapping("/top")
 	public String top() {
-		return "/top";
+		return "top";
 	}
 
 	@GetMapping("/userList")
 	public String empList(Model model) {
 		model.addAttribute("authorList", service.getAuthorList());
-		return "/users/emp/empList";
+		return "users/emp/empList";
 	}
 
 	@GetMapping("/clientList")
 	public String clientList(Model model) {
 		model.addAttribute("authorList", service.getAuthorList());
-		return "/users/emp/empList";
+		return "users/emp/empList";
 	}
 
 	@GetMapping("/getUserList")
@@ -114,7 +114,7 @@ public class UserController {
 
 	@GetMapping("/userInfo")
 	public String userInfo() {
-		return "/users/userInfo";
+		return "users/userInfo";
 	}
 
 //	@RequestMapping(value = "/checkId", method = RequestMethod.POST)

@@ -59,7 +59,7 @@ public class ProduceController {
 		model.addAttribute("info", planService.selectPlanNo());
 		model.addAttribute("goodsNo", planService.getGoodsNoList());
 		model.addAttribute("bomNo", planService.getBomNoList());
-		return "/produce/planList";
+		return "produce/planList";
 	}
 
 	// 생산계획 단건 조회
@@ -149,7 +149,7 @@ public class ProduceController {
 		model.addAttribute("info", insService.selectInsNo());
 		model.addAttribute("mNo", insService.getMaterialNoList());
 		model.addAttribute("playNo", insService.getPlayList());
-		return "/produce/instructList";
+		return "produce/instructList";
 	}
 
 	// 모든 생산지시 리스트
@@ -204,7 +204,7 @@ public class ProduceController {
 		model.addAttribute("label", registService.selectRegistLabel());
 		model.addAttribute("playNo", registService.getPlayList());
 		model.addAttribute("unit", registService.getUnitList());
-		return "/produce/regist";
+		return "produce/regist";
 	}
 
 	// 생산 진행중, 완료된 생산지시 list ajax
@@ -248,7 +248,7 @@ public class ProduceController {
 		model.addAttribute("info", bomService.selectBomNo());
 		model.addAttribute("mNo", bomService.getMaterialNoList());
 		model.addAttribute("goodsNo", bomService.getGoodsNoList());
-		return "/produce/bom";
+		return "produce/bom";
 	}
 
 	// BOM list에 ajax
@@ -289,7 +289,7 @@ public class ProduceController {
 	public String Goods(Model model) {
 		model.addAttribute("info", goodsService.selectGoodNo());
 		model.addAttribute("unit", goodsService.getUnitList());
-		return "/produce/goods";
+		return "produce/goods";
 	}
 
 	// 제품 list에 ajax
@@ -329,7 +329,7 @@ public class ProduceController {
 	@GetMapping("/produce/proError")
 	public String proError(Model model) {
 
-		return "/produce/proError";
+		return "produce/proError";
 	}
 
 	// 생산지시 진행중 완료로 전환
@@ -360,14 +360,14 @@ public class ProduceController {
 	@GetMapping("/produce/main")
 	public String produceMain(Model model) {
 
-		return "/produce/main";
+		return "produce/main";
 	}
 
 	// 완제품 리스트 페이지 이동
 	@GetMapping("/produce/completeList")
 	public String completeList(Model model) {
 
-		return "/produce/completeList";
+		return "produce/completeList";
 	}
 
 	// 완제품 list에 ajax주는 것
@@ -381,7 +381,7 @@ public class ProduceController {
 	@GetMapping("/produce/errorPage")
 	public String errorPage(Model model) {
 
-		return "/produce/errorPage";
+		return "produce/errorPage";
 	}
 
 	// 불량리스트

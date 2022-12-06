@@ -65,7 +65,7 @@ public class MaterialController {
 	// 첫 화면
 	@RequestMapping("/material/main") 
 	public String main() {
-		return "/material/main";
+		return "material/main";
 	}
 
 	// 자재 정보 등록폼 (이동)

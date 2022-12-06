@@ -50,7 +50,7 @@ public class EquipController {
 		// 첫 화면
 		@RequestMapping("/equipment/main")
 		public String main() {
-			return "/equipment/main";
+			return "equipment/main";
 		}
 		
 
@@ -65,7 +65,7 @@ public class EquipController {
 			model.addAttribute("ep",eService.getEquipProcess()); // 설비에서 이용중인 공정 번호 조회
 			
 	
-		return "/equipment/process";
+		return "equipment/process";
 		}	
 		
 		// 설비 전체 리스트 조회 데이터
@@ -208,7 +208,7 @@ public class EquipController {
 			model.addAttribute("tno",eService.getTestNo().getTestNo());
 			model.addAttribute("wno",wService.getWorkNo().getWorkNo());
 			
-			return "/equipment/maintenance";
+			return "equipment/maintenance";
 		}
 		
 		
@@ -437,7 +437,7 @@ public class EquipController {
 		public String equipmentPart(Model model) {
 			model.addAttribute("equip",eService.getEquipList());
 			
-			return "/equipment/part";
+			return "equipment/part";
 		}
 		
 		// 부품 전체 리스트 조회

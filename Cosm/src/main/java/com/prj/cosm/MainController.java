@@ -20,6 +20,6 @@ public class MainController {
 
 @RequestMapping("/")
 public String home() {
-	return "/top";
+	return "top";
 }
 }
