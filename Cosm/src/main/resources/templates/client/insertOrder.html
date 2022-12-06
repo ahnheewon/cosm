@@ -55,13 +55,13 @@
 
                      <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">수량</label>
-                        <input placeholder="100000단위로 입력해주세요." type="number" class="form-control" id="totalNum"
+                        <input placeholder="100000kg 단위로 입력해주세요." type="number" class="form-control" id="totalNum"
                            name="totalNum">
                      </div>
 
                      <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">요청사항</label>
-                        <input type="text" class="form-control" id="note" name="note">
+                        <input placeholder="" type="text" class="form-control" id="note" name="note">
                      </div>
 
                      <div class="mb-3">
@@ -70,13 +70,13 @@
                            name="totalPrice" readonly="readonly">
                      </div>
 
-                     <br>
+                     <br><input type="hidden" id="usersNo" name="usersNo">
+                  </form>
 
-                     <button id="orderBtn" type="submit" class="btn btn-primary">주문</button>
+                     <button id="orderBtn" type="btn" class="btn btn-primary">주문</button>
                      <button type="button" class="btn btn-secondary"
                         onclick="location.href='/client/main'">취소</button>
-                     <input type="hidden" id="usersNo" name="usersNo">
-                  </form>
+                     
                </div>
             </div>
          </div>
@@ -101,7 +101,6 @@
             selectableRanges : [ [ today, new Date(2999, 11, 02) ] ]
 
          },
-
       //today.setDate();
       );
       $(window).on('click', function(){
@@ -124,7 +123,7 @@
             return false;
          }
 
-         if ($('#totalNum').val() <= 9999) {
+         if ($('#totalNum').val() <= 99999) {
             //alert('최소 수량보다 작습니다');
             Swal.fire('최소수량은 100000kg입니다!',
                   '100000, 200000, 300000 ... 단위로 입력해주세요.')
@@ -138,8 +137,11 @@
       
       $('#orderBtn').on('click', function(){
          Swal.fire(
-                 '주문이 완료되었습니다.')
-         return true;
+                 '주문이 완료되었습니다.').then((result) =>{
+                	 $('#insertFrm').submit();
+                	 return false;
+                 } )
+         
       })
       
 
