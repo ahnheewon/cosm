@@ -151,7 +151,7 @@
 
 
 
-	<!-- 생산지시시 재고1 업데이트 -->
+	<!-- 생산지시 시 재고1 업데이트 -->
 	<update id="updateMaterialInfo" parameterType="PlanVO">
 		UPDATE material
 		SET m_stock = ( m_stock - (SELECT (plan.plan_quantity *

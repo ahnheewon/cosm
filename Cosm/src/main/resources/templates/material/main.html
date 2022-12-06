@@ -21,7 +21,9 @@
     <div class="container" style="padding-top : 50px; padding-bottom: 20px">
     
     <div class="column" style="padding-top : 20px;">
-            
+            <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+  		<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
+		</svg> > Main </h6>
                <h3 style="text-align: center; font-weight: bold; padding-bottom: 10px">금일 자재 변동 내역</h3>
        			<hr>                
                    <input type="text" id="searchFilter_2" style="width: 200px; float:left;margin-right:3px;margin-bottom:5px" onkeyup="filter2()"
@@ -37,7 +39,7 @@
             </div>
             
              <div class="row">
-            <div class="column">
+            <div class="column" style="padding-top : 20px;">
             <br>
              <h3 style="text-align: center; font-weight: bold; padding-bottom: 10px">현재 재고 내역</h3>
              <hr> 
@@ -137,8 +139,8 @@
         } ],
         
         pageOptions: {                
-           perPage: 10,
-           userClient : true
+           perPage: 5,
+           useClient : true
         }
 
      })
@@ -210,7 +212,7 @@
            ],
         pageOptions: {
            perPage: 10,
-           useClient: true
+           useClient : true
         },
 
      })

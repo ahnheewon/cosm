@@ -182,8 +182,6 @@ public class MaterialController {
 	}
 	
 	
-	
-	
 
 	@GetMapping("/material/minfo")
 	public String mInfoPage(MaterialVO vo, Model model) {
