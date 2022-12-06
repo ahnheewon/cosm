@@ -206,7 +206,6 @@ public class EquipController {
 			model.addAttribute("equip",eService.getEquipList());
 			model.addAttribute("equipFirst",eService.getEquipList().get(0));
 			model.addAttribute("tno",eService.getTestNo().getTestNo());
-
 			model.addAttribute("wno",wService.getWorkNo().getWorkNo());
 			
 			return "/equipment/maintenance";

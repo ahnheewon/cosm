@@ -40,7 +40,14 @@ h5 {
 	user-select: none;
 
 }
-
+.btn-cancel {	
+	display: none;
+	background-color: orange; 
+	color: white;
+}
+.btn-cancel:hover {
+	color: white;
+}
 .onBtn {
 	fill: green;
 	animation-iteration-count: infinite;
@@ -144,7 +151,7 @@ input::placeholder {
 	font-size:12px;
 	height:31px;
 	margin-right: 5px;
-	border: 1px solid #aaa;
+	border: 1px solid #ced4da;
 
 }
 

@@ -295,6 +295,8 @@
 								<input id="update" type="hidden">
 								<button type="button" class="btn btn-primary" id="updateBtn"
 									onclick="updateBtnClick()">수정</button>
+								<button type="button" class="btn btn-cancel" id="updateECBtn"
+									onclick="cancelUpdateEquip()">취소</button>
 								<input type="hidden" id="thisNoUD" name="equipNo">
 								<!-- 업데이트, 삭제 때문에 가져온 설비번호 값. -->
 								<button type="button" onclick="deleteEquip()"
@@ -356,6 +358,8 @@
 							<div class="modal-footer">
 								<button type="button" class="btn btn-primary" id="updateBtn2"
 									onclick="updateProcessBtnClick()">수정</button>
+								<button type="button" class="btn btn-cancel" id="updatePCBtn"
+									onclick="cancelUpdateProcess()">취소</button>
 								<input type="hidden" id="thisNoUD2" name="processNo">
 								<!-- 업데이트, 삭제 때문에 가져온 공정번호 값. -->
 								<button type="button" onclick="deleteProcess()"
@@ -525,6 +529,8 @@ function filter(){
 	function updateBtnClick() {
 		
 		console.log("수정 버튼 클릭");
+		
+		document.getElementById('updateECBtn').style.display='block';	 
 		const wantUpdate = document.getElementsByClassName('wantUpdate');	 
 		for (var i = 0; i< wantUpdate.length; i++) {
             wantUpdate[i].readOnly = false;
@@ -580,6 +586,7 @@ function filter(){
 	
 	function cancelUpdateEquip() {
 		console.log("수정 취소버튼 클릭");
+		document.getElementById('updateECBtn').style.display='none';	 
 		const wantUpdate = document.getElementsByClassName('wantUpdate');	 
 		for (var i = 0; i< wantUpdate.length; i++) {
             wantUpdate[i].readOnly =true;
@@ -648,6 +655,7 @@ function filter(){
 	function updateProcessBtnClick() {
 		
 		console.log("수정버튼 클릭");
+		document.getElementById('updatePCBtn').style.display='block';	 
 		const wu = document.getElementsByClassName('wantUpdate2');	 
 		for (var i = 0; i< wu.length; i++) {
             wu[i].readOnly = false;
@@ -657,8 +665,7 @@ function filter(){
 		const btn = document.querySelector('#updateBtn2')
 		btn.innerText='저장';
 		btn.removeAttribute('onclick'); // 기존 event 제거
-		//btn.removeEventListener('click',updateBtn);
-		btn.addEventListener('click',updateProcess);
+		btn.setAttribute('onclick','updateProcess()');
 			           
 	}
 
@@ -684,7 +691,7 @@ function filter(){
 			 	
 			 	const btn = document.querySelector('#updateBtn2')
 				btn.innerText='수정';
-				btn.removeEventListener('click',updateProcess);
+				btn.removeAttribute('onclick');
 				btn.setAttribute('onclick','updateProcessBtnClick()');
 				
 				Swal.fire({
@@ -707,16 +714,17 @@ function filter(){
 	
 	function cancelUpdateProcess() {
 		console.log("수정 취소버튼 클릭");
-		const wu = document.getElementsByClassName('wantUpdate');	 
-		for (var i = 0; i< wantUpdate.length; i++) {
+		document.getElementById('updatePCBtn').style.display='none';
+		const wu = document.getElementsByClassName('wantUpdate2');	 
+		for (var i = 0; i< wu.length; i++) {
             wu[i].readOnly =true;
             wu[i].required = false;
         }		
-		const btn = document.querySelector('#updateBtn')
+		const btn = document.querySelector('#updateBtn2')
 		
 		btn.innerText='수정';
-		btn.removeEventListener('click',updateEquip);
-		location.reload(true);// 새로고침
+		btn.removeAttribute('onclick');
+		btn.setAttribute('onclick','updateProcessBtnClick()');
 	}
 	
 
@@ -816,12 +824,13 @@ function filter(){
 				header: '공정번호',
 				name: 'processNo'
 				,align : 'center'
-				//,width : 100
+				,width : 100
 			},
 		    {
 		        header: '공정명',
 		        name: 'processName'
 		        ,align : 'center'
+		        	,width : 200
 		    },
 		    {
 		        header: '공정내용',
@@ -833,6 +842,7 @@ function filter(){
 		        header: '공정순서',
 		        name: 'processSeq'
 		        ,align : 'center'
+		        	,width : 150
 		    }
 		    ]
 		});
@@ -866,7 +876,7 @@ function filter(){
 				header: '설비번호',
 				name: 'equipNo'
 				,align : 'center'
-				//,width : 100
+				,width : 100
 			}, 
 			{
 				header: '설비명',
@@ -874,14 +884,14 @@ function filter(){
 				,align : 'center'
 				,filter:'text'
 				
-				//,width : 150
+				,width : 150
 			
 			},
 		    {
 		        header: '설비타입',
 		        name: 'equipType'
 		       ,align : 'center'
-		       //,width : 'auto'
+		    		,width : 200
 		       
 		    },
 		    {
@@ -894,7 +904,7 @@ function filter(){
 		        header: '적용공정',
 		        name: 'equipProcessName'
 		        ,align : 'center'
-		     // ,width : 100
+		       ,width : 200
 		    }
 		    ]
 		});
