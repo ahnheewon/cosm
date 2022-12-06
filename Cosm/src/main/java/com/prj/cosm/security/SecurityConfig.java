@@ -45,7 +45,7 @@ public class SecurityConfig {
 						"/userInfo", "/userConfirm")
 				.permitAll().antMatchers("/produce/**").hasAnyAuthority("ROLE_D0101", "ROLE_D0105")
 				.antMatchers("/client/**").hasAnyAuthority("ROLE_D0109","ROLE_D0101","ROLE_D0103", "ROLE_D0104","ROLE_D0102")
-				.antMatchers("/material/**").hasAnyAuthority("ROLE_D0103", "ROLE_D0104")
+				.antMatchers("/material/**").hasAnyAuthority("ROLE_D0103", "ROLE_D0104", "ROLE_D0101")
 				.antMatchers( "/orders/**").hasAnyAuthority("ROLE_D0109", "ROLE_D0101","ROLE_D0110")
 				.antMatchers("/equipment/**")
 				.hasAnyAuthority("ROLE_D0108", "ROLE_D0107", "ROLE_D0101", "ROLE_D0106", "ROLE_D0111", "ROLE_D0105")

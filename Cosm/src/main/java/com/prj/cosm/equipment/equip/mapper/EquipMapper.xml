@@ -356,6 +356,7 @@
 				test_code = (select code_no from code where code_name=
 				#{testCodeName}),
 			</if>
+			test_reason = #{testReason},
 			test_content = #{testContent}
 		</set>
 		WHERE TEST_NO = #{testNo}
