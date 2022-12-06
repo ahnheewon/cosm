@@ -47,7 +47,7 @@ public class InsServiceImpl implements InsService {
 
 	@Override
 	public int updateInsInfo(InsVO insVO) {
-
+		
 		return mapper.updateIns(insVO);
 	}
 
