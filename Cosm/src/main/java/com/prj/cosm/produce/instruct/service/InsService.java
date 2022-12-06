@@ -29,10 +29,12 @@ public interface InsService {
 	// 진행상황 리스트
 	public List<InsVO> getPlayList();
 
-	// 생산완료된 생산지시 리스트
+	// 생산 진행중, 완료된 생산지시 리스트
 	public List<Map<String, Object>> completeList();
 	
-
+	// 생산 완료된 생산지시 리스트
+	public List<Map<String, Object>> completeInsList();
+	
 	// 생산지시 완료되게 업데이트
 	public int updateInsPlay(InsVO InsVO);
 

@@ -104,21 +104,21 @@
 	INSERT INTO material_io (mio_no, mio_date, mio_quantity, mio_progress)
     				  VALUES( 
     				 		 (SELECT bom.bom_material_no                                             
-                			  FROM produce_bom bom 
-                			  JOIN produce_plan plan 
-                              ON plan.plan_bom_no = bom.bom_no
+                			  FROM produce_plan plan
                               JOIN produce_goods goods
                               ON goods.goods_no = plan.plan_product_no
-                			  WHERE plan_no = #{planNo}),
-                			  sysdate,
-                			 (SELECT (plan.plan_quantity * bom.bom_quantity)/goods.goods_standard as planed_qntt                                             
-                			  FROM produce_bom bom 
-                			  JOIN produce_plan plan 
-                              ON plan.plan_bom_no = bom.bom_no
-                              JOIN produce_goods goods
-                              ON goods.goods_no = plan.plan_product_no
-               				  WHERE plan_no = #{planNo}),
-                		      find_code_name('출고완료'))
+                              JOIN produce_bom bom
+                              ON bom.bom_product_no = goods.goods_no
+                              WHERE plan_no = #{planNo}),
+                              sysdate,
+                              (SELECT (plan.plan_quantity * bom.bom_quantity)/goods.goods_standard as planed_qntt
+                               FROM produce_plan plan
+                               JOIN produce_goods goods
+                               ON goods.goods_no = plan.plan_product_no
+                               JOIN produce_bom bom
+                               ON bom.bom_product_no = goods.goods_no
+                               WHERE plan_no = #{planNo}),
+                               find_code_name('출고완료'))
 
 </insert>
 
@@ -127,21 +127,21 @@
 	INSERT INTO material_io (mio_no, mio_date, mio_quantity, mio_progress)
     				  VALUES( 
     				 		 (SELECT bom.bom_material_nob                                             
-                			  FROM produce_bom bom 
-                			  JOIN produce_plan plan 
-                              ON plan.plan_bom_no = bom.bom_no
+                			  FROM produce_plan plan
                               JOIN produce_goods goods
                               ON goods.goods_no = plan.plan_product_no
-                			  WHERE plan_no = #{planNo}),
-                			  sysdate,
-                			 (SELECT (plan.plan_quantity * bom.bom_quantityb)/goods.goods_standard as planed_qntt                                             
-                			  FROM produce_bom bom 
-                			  JOIN produce_plan plan 
-                              ON plan.plan_bom_no = bom.bom_no
-                              JOIN produce_goods goods
-                              ON goods.goods_no = plan.plan_product_no
-               				  WHERE plan_no = #{planNo}),
-                		      find_code_name('출고완료'))
+                              JOIN produce_bom bom
+                              ON bom.bom_product_no = goods.goods_no
+                              WHERE plan_no = #{planNo}),
+                              sysdate,
+                              (SELECT (plan.plan_quantity * bom.bom_quantityb)/goods.goods_standard as planed_qntt
+                               FROM produce_plan plan
+                               JOIN produce_goods goods
+                               ON goods.goods_no = plan.plan_product_no
+                               JOIN produce_bom bom
+                               ON bom.bom_product_no = goods.goods_no
+                               WHERE plan_no = #{planNo}),
+                               find_code_name('출고완료'))
 
 </insert>
 

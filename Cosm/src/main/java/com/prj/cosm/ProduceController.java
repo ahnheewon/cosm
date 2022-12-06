@@ -41,10 +41,9 @@ public class ProduceController {
 
 	@Autowired
 	GoodsService goodsService;
-	
+
 	@Autowired
 	EquipService equipService;
-	
 
 	// =============================생산관리=======================
 	// 생산계획 list에 ajax주는 것
@@ -74,7 +73,7 @@ public class ProduceController {
 	@PostMapping("/produce/planInsert")
 	public String insertPlanInfo(PlanVO planVO) {
 		planService.insertPlanInfo(planVO);
-		
+
 		return "redirect:/produce/planList";
 	}
 
@@ -136,6 +135,7 @@ public class ProduceController {
 		}
 		return "redirect:/produce/planList";
 	}
+
 	// 생산지시 list에 ajax주는 것
 	@GetMapping("/produce/instruct")
 	@ResponseBody
@@ -170,8 +170,7 @@ public class ProduceController {
 		}
 		return "redirect:/produce/instructList";
 	}
-	
-	
+
 	// 생산지시 등록
 	@PostMapping("/produce/insInsert")
 	public String insertInsInfo(InsVO insVO) {
@@ -208,11 +207,18 @@ public class ProduceController {
 		return "/produce/regist";
 	}
 
-	// 생산완료된 생산지시 list ajax
+	// 생산 진행중, 완료된 생산지시 list ajax
 	@GetMapping("/produce/complete")
 	@ResponseBody
 	public List<Map<String, Object>> completeList() {
 		return insService.completeList();
+	}
+
+	// 생산 진행중 생산지시 list ajax
+	@GetMapping("/produce/completeIns")
+	@ResponseBody
+	public List<Map<String, Object>> completeListIns() {
+		return insService.completeInsList();
 	}
 
 	// 완제품 list에 ajax주는 것
@@ -384,8 +390,8 @@ public class ProduceController {
 	public List<Map<String, Object>> errorList(RegistVO vo) {
 		return registService.errorList(vo);
 	}
-	
-	//자재조회
+
+	// 자재조회
 	@GetMapping("/produce/materialList")
 	@ResponseBody
 	public List<BomVO> materialList() {
