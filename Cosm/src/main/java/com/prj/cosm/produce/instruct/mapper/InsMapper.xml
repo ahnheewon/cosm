@@ -45,7 +45,7 @@
 		ORDER BY i.instruct_no DESC
 	</select>
 
-	<!-- 생산완료된것 전체조회 -->
+	<!-- 생산완료, 진행중된것 전체조회 -->
 	<select id="completeList" resultType="map">
 		SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as
 		planEnd, p.plan_product_no as planProductNo,
@@ -61,6 +61,25 @@
 		JOIN code
 		ON i.instruct_progress_code = code.code_no
 		WHERE instruct_progress_code IN ('A0103','A0102')
+		ORDER BY i.instruct_no DESC
+	</select>
+	
+	<!-- 생산완료, 진행중된것 전체조회 -->
+	<select id="completeInsList" resultType="map">
+		SELECT p.plan_no as planNo, p.plan_start as planStart, p.plan_end as
+		planEnd, p.plan_product_no as planProductNo,
+		i.instruct_no as instructNo, i.instruct_quantity as instructQuantity,
+		i.instruct_date as instructDate, i.instruct_progress_code as
+		instructProgressCode, i.instruct_ex as instructEx,
+		g.goods_name as goodsName,
+		code_name as instruct_progress_code
+		FROM produce_plan p JOIN produce_instruct i
+		ON p.plan_no = i.instruct_plan_no
+		JOIN produce_goods g
+		ON p.plan_product_no = g.goods_no
+		JOIN code
+		ON i.instruct_progress_code = code.code_no
+		WHERE instruct_progress_code IN ('A0103')
 		ORDER BY i.instruct_no DESC
 	</select>
 

@@ -763,8 +763,7 @@
 					success: function (result) {
 						console.log(result)
 						for (let order of result) {
-							order.orderDate = order.orderDate.substr(0, 10);
-							order.deliveryDate = order.deliveryDate.substr(0, 10);
+						
 						}
 						grid.resetData(result);
 					},
@@ -989,13 +988,7 @@
 		//생산계획 수정 확인창
 		$().ready(function () {
             $("#alertStart2").click(function () {
-            	if ($('#selectBom2').val() == "" || $('#selectBom2').val() == null) {
-					Swal.fire({
-                        icon: 'warning',
-                        title: 'BOM번호를 입력하세요!',
-                    })
-					return false;
-				}
+            	
             	if ($('#planStart2').val() == "" || $('#planStart2').val() == null) {
 					Swal.fire({
                         icon: 'warning',
@@ -1012,8 +1005,7 @@
 				}
             	Swal.fire({
                     icon: 'success',
-                    title: '생산계획 수정이 완료되었습니다.',
-                    text: 'success~',
+                    title: '생산계획 수정 완료.',
                 }).then(function(){
                 	$('#insertFrm2').submit();
                 });
@@ -1045,8 +1037,6 @@
             					success : function(data){
             						Swal.fire(
             			                    '삭제가 완료되었습니다.',
-            			                    '화끈하시네요~!',
-            			                    'success'
             						)
             						planList();
             					},

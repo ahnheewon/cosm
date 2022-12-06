@@ -93,4 +93,10 @@ public class InsServiceImpl implements InsService {
 		return mapper.allInsList(vo);
 	}
 
+	@Override
+	public List<Map<String, Object>> completeInsList() {
+		// TODO Auto-generated method stub
+		return mapper.completeInsList();
+	}
+
 }

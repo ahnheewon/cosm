@@ -16,7 +16,7 @@ public class RegistVO {
 	private int registQuantity;
 	private int registError;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date registDate;
 	private String registProductNo;
 	private String registInstructNo;
