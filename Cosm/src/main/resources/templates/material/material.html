@@ -420,7 +420,7 @@
             ------------------------*/
             function mList() {
                 $.ajax({
-                    url: "/material/ajax/minfo",
+                    url: "material/ajax/minfo",
                     method: "GET",
                     success: function (result) {
                         infoGrid.resetData((result.list1));
