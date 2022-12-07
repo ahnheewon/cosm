@@ -42,7 +42,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests((requests) -> requests
 				.antMatchers("/", "/top", "/login", "/joinForm", "/empCheckId", "/userInsert", "/userSelect",
 						"/userCheckId", "/clientInsert", "/getAlertList", "/getAlert", "/insertAlert", "/updateAlert",
-						"/userInfo", "/userConfirm","/userUpdate")
+						"/userInfo", "/userConfirm","/usersUpdate","/userUpdate")
 				.permitAll().antMatchers("/produce/**").hasAnyAuthority("ROLE_D0101", "ROLE_D0105")
 				.antMatchers("/client/**").hasAnyAuthority("ROLE_D0109","ROLE_D0101","ROLE_D0103", "ROLE_D0104","ROLE_D0102")
 				.antMatchers("/material/**").hasAnyAuthority("ROLE_D0103", "ROLE_D0104", "ROLE_D0101")
