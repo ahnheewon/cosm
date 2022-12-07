@@ -62,9 +62,9 @@
 <link href="/css/layout.css" rel="stylesheet" />
 
 
-<style >
-body{
-font-size: large;
+<style>
+body {
+	font-size: large;
 }
 </style>
 
@@ -76,7 +76,23 @@ font-size: large;
 		class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 		<!-- Navbar Brand-->
 		<div style="width: 206px; height: 100px" align="center">
-			<a class="navbar-brand ps-3" href="/main"><img
+		<a class="navbar-brand ps-3" href="/userList"
+				sec:authorize="hasRole('ROLE_D0101')"><img
+				style="padding-top: 30px; width: 68%;" src="/assets/img/logo.PNG"></a>
+			<a class="navbar-brand ps-3" href="/material/main"
+				sec:authorize="hasRole('ROLE_D0103')"><img
+				style="padding-top: 30px; width: 68%;" src="/assets/img/logo.PNG"></a>
+			<a class="navbar-brand ps-3" href="/equipment/main"
+				sec:authorize="hasRole('ROLE_D0107')||hasRole('ROLE_D0108')"><img
+				style="padding-top: 30px; width: 68%;" src="/assets/img/logo.PNG"></a>
+			<a class="navbar-brand ps-3" href="/orders/sMain"
+				sec:authorize="hasRole('ROLE_D0109')"><img
+				style="padding-top: 30px; width: 68%;" src="/assets/img/logo.PNG"></a>
+			<a class="navbar-brand ps-3" href="/client/orderList"
+				sec:authorize="hasRole('ROLE_D0102')"><img
+				style="padding-top: 30px; width: 68%;" src="/assets/img/logo.PNG"></a>
+				<a class="navbar-brand ps-3" href="/produce/planList"
+				sec:authorize="hasRole('ROLE_D0105')"><img
 				style="padding-top: 30px; width: 68%;" src="/assets/img/logo.PNG"></a>
 		</div>
 
@@ -98,8 +114,6 @@ font-size: large;
 			class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
 		</form>
 		<!-- Navbar-->
-		<h6 th:if="${session.usersId != null }" style="color: white;">[[${session.usersAuthor}]]
-			[[${session.usersName}]]</h6>
 		<ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
@@ -127,68 +141,145 @@ font-size: large;
 				</ul></li>
 		</ul>
 	</nav>
-	<div layout:fragment="sidebar" id="layoutSidenav">
-	
-		<div id="layoutSidenav_nav">
+	<div layout:fragment="sidebar" id="layoutSidenav" style="float: none;"
+		align="center">
+		<div id="layoutSidenav_nav" align="center">
 			<nav class="sb-sidenav accordion sb-sidenav-dark"
-				id="sidenavAccordion" style="padding-top: 20px;"><br>
+				id="sidenavAccordion" style="padding-top: 20px;">
+				<br>
 				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0101')">
-					&nbsp; &nbsp; [[${session.usersId}]]님
+					<br> &nbsp; &nbsp; 환영합니다! [[${session.usersName}]] 님
+						<hr
+							style="width: 80%; height: 1px; background-color: white; color: white; border: 1px;">
 					<div class="nav">
-						<div class="sb-sidenav-menu-heading">회원관리</div>
-						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-							data-bs-target="#collapseLayouts" aria-expanded="false"
-							aria-controls="collapseLayouts">
+						<a class="nav-link" href="/userList">
+							<div>
+								<i class="fas fa-columns"></i> 사원조회
+							</div>
+						</a> <a class="nav-link collapsed" href="/client/main"
+							data-bs-toggle="collapse" data-bs-target="#collapseLayouts-b"
+							aria-expanded="false" aria-controls="collapseLayouts-b">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-columns"></i>
-							</div> 사원관리
+							</div> 고객페이지
 							<div class="sb-sidenav-collapse-arrow">
 								<i class="fas fa-angle-down"></i>
 							</div>
 						</a>
-						<div class="collapse" id="collapseLayouts"
+						<div class="collapse" id="collapseLayouts-b"
+							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+							<nav class="sb-sidenav-menu-nested nav">
+								<a class="nav-link" href="/client/insertOrder">주문하기</a> <a
+									class="nav-link" href="/client/orderList">제품활용</a>
+							</nav>
+						</div>
+						<a class="nav-link collapsed" href="/orders/sMain"
+							data-bs-toggle="collapse" data-bs-target="#collapseLayouts-d"
+							aria-expanded="false" aria-controls="collapseLayouts-d">
+							<div class="sb-nav-link-icon">
+								<i class="fas fa-columns"></i>
+							</div> 영업 관리
+							<div class="sb-sidenav-collapse-arrow">
+								<i class="fas fa-angle-down"></i>
+							</div>
+						</a>
+						<div class="collapse" id="collapseLayouts-d"
+							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+							<nav class="sb-sidenav-menu-nested nav">
+								<a class="nav-link" href="/orders/sMain">영업정보 관리</a>
+							</nav>
+						</div>
+						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+							data-bs-target="#collapseLayouts-a" aria-expanded="false"
+							aria-controls="collapseLayouts-a">
+							<div class="sb-nav-link-icon">
+								<i class="fas fa-columns"></i>
+							</div> 생산관리
+							<div class="sb-sidenav-collapse-arrow">
+								<i class="fas fa-angle-down"></i>
+							</div>
+						</a>
+						<div class="collapse" id="collapseLayouts-a"
 							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
 
-								<a class="nav-link" href="/userList">사원조회</a>
+								<a class="nav-link" href="/produce/planList">생산계획 관리</a> <a
+									class="nav-link" href="/produce/instructList">생산지시 관리</a> <a
+									class="nav-link" href="/produce/regist">검수 관리</a> <a
+									class="nav-link" href="/produce/completeList">완제품 리스트</a> <a
+									class="nav-link" href="/produce/bom">BOM 관리</a> <a
+									class="nav-link" href="/produce/goods">제품 관리</a> <a
+									class="nav-link" href="/produce/errorPage">불량 관리</a>
 							</nav>
 						</div>
-					</div>
-				</div>
-				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0105')">				
-					<div class="nav">
-					&nbsp; &nbsp; 생산팀 [[${session.usersId}]]님
-						<div class="sb-sidenav-menu-heading">Main</div>
-						<a class="nav-link" href="/produce/planList">
-							<div class="sb-nav-link-icon">
-								<i class="fas fa-tachometer-alt"></i>
-							</div> 생산관리메인
-						</a>						
-						<div class="nav">
+						<div class="sb-sidenav-menu">
+							<div class="nav">
 
+								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+									data-bs-target="#collapseLayouts-c" aria-expanded="false"
+									aria-controls="collapseLayouts-c">
+									<div class="sb-nav-link-icon">
+										<i class="fas fa-columns"></i>
+									</div> 설비 관리
+									<div class="sb-sidenav-collapse-arrow">
+										<i class="fas fa-angle-down"></i>
+									</div>
+								</a>
+								<div class="collapse" id="collapseLayouts-c"
+									aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+									<nav class="sb-sidenav-menu-nested nav">
+										<a class="nav-link" href="/equipment/main"> 실시간 관리 </a> <a
+											class="nav-link" href="/equipment/process">공정관리</a> <a
+											class="nav-link" href="/equipment/maintenance">보수관리</a> <a
+											class="nav-link" href="/equipment/part">부품관리</a>
+									</nav>
+								</div>
+							</div>
 							<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-								data-bs-target="#collapseLayouts" aria-expanded="false"
-								aria-controls="collapseLayouts">
+								data-bs-target="#collapseLayouts-e" aria-expanded="false"
+								aria-controls="collapseLayouts-e">
 								<div class="sb-nav-link-icon">
 									<i class="fas fa-columns"></i>
-								</div> 생산 관리
+								</div> 자재관리
 								<div class="sb-sidenav-collapse-arrow">
 									<i class="fas fa-angle-down"></i>
 								</div>
 							</a>
-							<div class="collapse" id="collapseLayouts"
+							<div class="collapse" id="collapseLayouts-e"
 								aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 								<nav class="sb-sidenav-menu-nested nav">
-
-									 <a
-										class="nav-link" href="/produce/planList">생산계획 관리</a> <a
-										class="nav-link" href="/produce/instructList">생산지시 관리</a> <a
-										class="nav-link" href="/produce/regist">검수 관리</a> <a
-										class="nav-link" href="/produce/completeList">완제품 리스트</a> <a
-										class="nav-link" href="/produce/bom">BOM 관리</a> <a
-										class="nav-link" href="/produce/goods">제품 관리</a> <a
-										class="nav-link" href="/produce/errorPage">불량 관리</a>
+									<a class="nav-link" href="/material/main">자재변동 내역</a> <a
+										class="nav-link" href="/material/minfo">자재정보 관리</a> <a
+										class="nav-link" href="/material/mcart">발주진행 관리</a> <a
+										class="nav-link" href="/material/miolist">입출고 목록</a> <a
+										class="nav-link" href="#"></a>
 								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+
+
+				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0105')"
+					align="center">
+					<div class="nav" align="center">
+						<br> &nbsp; &nbsp; 환영합니다! [[${session.usersName}]] 님
+						<hr
+							style="width: 80%; height: 1px; background-color: white; color: white; border: 1px;">
+						<div class="nav" align="center">
+							<a class="nav-link" href="/produce/planList">생산계획 관리</a> <a
+								class="nav-link" href="/produce/instructList">생산지시 관리</a> <a
+								class="nav-link" href="/produce/regist">검수 관리</a> <a
+								class="nav-link" href="/produce/completeList">완제품 리스트</a> <a
+								class="nav-link" href="/produce/bom">BOM 관리</a> <a
+								class="nav-link" href="/produce/goods">제품 관리</a> <a
+								class="nav-link" href="/produce/errorPage">불량 관리</a>
+							<div class="collapse" id="collapseLayouts"
+								aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+								<nav class="sb-sidenav-menu-nested nav"></nav>
 							</div>
 						</div>
 					</div>
@@ -197,35 +288,16 @@ font-size: large;
 				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0109')">
 					<div class="nav">
 						<br>
-						<div class="sb-sidenav-menu">
-							&nbsp; &nbsp;영업팀 [[${session.usersName}]] 님
+						<div class="sb-sidenav-menu" align="center">
+							&nbsp; &nbsp; 환영합니다! [[${session.usersName}]] 님
+							<hr
+								style="width: 80%; height: 1px; background-color: white; color: white; border: 1px;">
+
 							<div class="nav">
 								<!-- 영업관리 -->
 								<div class="sb-sidenav-menu"
 									sec:authorize="hasRole('ROLE_D0109')||hasRole('ROLE_D0110')">
-
-									<div class="sb-sidenav-menu-heading"
-										sec:authorize="hasRole('ROLE_D0109')||hasRole('ROLE_D0110')">
-									</div>
-									<a class="nav-link collapsed" href="/orders/sMain"
-										data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
-										aria-expanded="false" aria-controls="collapseLayouts">
-										<div class="sb-nav-link-icon">
-											<i class="fas fa-columns"></i>
-										</div> 영업 관리
-										<div class="sb-sidenav-collapse-arrow">
-											<i class="fas fa-angle-down"></i>
-										</div>
-									</a>
-
-									<div class="collapse" id="collapseLayouts"
-										aria-labelledby="headingOne"
-										data-bs-parent="#sidenavAccordion"
-										sec:authorize="hasRole('ROLE_D0109')||hasRole('ROLE_D0110')">
-										<nav class="sb-sidenav-menu-nested nav">
-											<a class="nav-link" href="/orders/sMain">영업정보 관리</a>
-										</nav>
-									</div>
+									<a class="nav-link" href="/orders/sMain">영업정보 관리</a>
 								</div>
 							</div>
 						</div>
@@ -237,137 +309,53 @@ font-size: large;
 				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0102')">
 					<div class="nav">
 						<br>
-						<div class="sb-sidenav-menu">
+						<div class="sb-sidenav-menu" align="center">
 							&nbsp; &nbsp; 환영합니다! [[${session.usersName}]] 님
+							<hr
+								style="width: 80%; height: 1px; background-color: white; color: white; border: 1px;">
+
 							<div class="nav">
-								<!-- 영업관리 -->								
+								<!-- 영업관리 -->
 								<div class="sb-sidenav-menu"
 									sec:authorize="hasRole('ROLE_D0102')">
-
-									<div class="sb-sidenav-menu-heading"
-										sec:authorize="hasRole('ROLE_D0102')"></div>
-									<a class="nav-link collapsed" href="/client/main"
-										data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
-										aria-expanded="false" aria-controls="collapseLayouts">
-										<div class="sb-nav-link-icon">
-											<i class="fas fa-columns"></i>
-										</div> 고객페이지
-										<div class="sb-sidenav-collapse-arrow">
-											<i class="fas fa-angle-down"></i>
-										</div>
-									</a>
-
-									<div class="collapse" id="collapseLayouts"
-										aria-labelledby="headingOne"
-										data-bs-parent="#sidenavAccordion"
-										sec:authorize="hasRole('ROLE_D0102')">
-										<nav class="sb-sidenav-menu-nested nav">
-											<a class="nav-link" href="/client/insertOrder">주문하기</a> <a
-												class="nav-link" href="/client/orderList">제품활용</a>
-										</nav>
-									</div>
+									<a class="nav-link" href="/client/orderList">제품목록</a> <a
+										class="nav-link" href="/client/insertOrder">주문하기</a>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- jini end -->
+
 				<div class="sb-sidenav-menu"
-					sec:authorize="hasRole('ROLE_D0107')||hasRole('ROLE_D0108')">
-					<nav class="sb-sidenav accordion sb-sidenav-dark"
-						id="sidenavAccordion">
-
-						<div class="sb-sidenav-menu"
-							sec:authorize="hasRole('ROLE_D0111')||hasRole('ROLE_D0106')">
-							<div aria-labelledby="headingOne"
-								data-bs-parent="#sidenavAccordion">
-								<nav class="sb-sidenav-menu-nested nav">
-									<a class="nav-link" href="/equipment/maintenance">설비 관리</a>
-								</nav>
-							</div>
-						</div>
-						<div class="sb-sidenav-menu"
-							sec:authorize="hasRole('ROLE_D0107')||hasRole('ROLE_D0108')">
-							<div class="nav">
-							<p style="font-size:large; text-align: right;">설비팀 [[${session.usersName}]]님&nbsp;&nbsp;<br>환영합니다!&nbsp;&nbsp;</p>
-								<div class="sb-sidenav-menu-heading" style="padding-top: 0px;">Main</div>
-								<a class="nav-link" href="/equipment/main">
-									<div class="sb-nav-link-icon">
-										<i class="fas fa-tachometer-alt"></i>
-									</div> 설비 메인
-								</a>								
-								<div class="sb-sidenav-menu">
-									<div class="nav">
-
-										<a class="nav-link collapsed" href="#"
-											data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
-											aria-expanded="false" aria-controls="collapseLayouts">
-											<div class="sb-nav-link-icon">
-												<i class="fas fa-columns"></i>
-											</div> 설비 관리
-											<div class="sb-sidenav-collapse-arrow">
-												<i class="fas fa-angle-down"></i>
-											</div>
-										</a>
-										<div class="collapse" id="collapseLayouts"
-											aria-labelledby="headingOne"
-											data-bs-parent="#sidenavAccordion">
-											<nav class="sb-sidenav-menu-nested nav">
-
-												<a class="nav-link" href="/equipment/process">공정관리</a> <a
-													class="nav-link" href="/equipment/maintenance">보수관리</a> <a
-													class="nav-link" href="/equipment/part">부품관리</a>
-											</nav>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</nav>
-				</div>
-				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0103')">
-					<div class="nav">						
-						<br>
-							&nbsp; &nbsp; &nbsp; 자재팀 [[${session.usersName}]] 님
-							<br> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 환영합니다.
-							<div class="nav">
-						<div class="sb-sidenav-menu-heading">Main</div>
-						<a class="nav-link" href="/material/main">
-							<div class="sb-nav-link-icon">
-								<i class="fas fa-tachometer-alt"></i>
-							</div> 자재관리메인
-						</a>
-							
-							<div class="nav">
-								<!-- 자재관리 -->
-								<div class="sb-sidenav-menu-heading"
-									sec:authorize="hasRole('ROLE_D0103')||hasRole('ROLE_D0104')">자재관리</div>
-								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-									data-bs-target="#collapseLayouts" aria-expanded="false"
-									aria-controls="collapseLayouts">
-									<div class="sb-nav-link-icon">
-										<i class="fas fa-columns"></i>
-									</div> 자재관리
-									<div class="sb-sidenav-collapse-arrow">
-										<i class="fas fa-angle-down"></i>
-									</div>
-								</a>
-
-								<div class="collapse" id="collapseLayouts"
-									aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion"
-									sec:authorize="hasRole('ROLE_D0103')||hasRole('ROLE_D0104')">
-									<nav class="sb-sidenav-menu-nested nav">
-										<a class="nav-link" href="/material/minfo">자재정보 관리</a> <a
-											class="nav-link" href="/material/mcart">발주진행 관리</a> <a
-											class="nav-link" href="/material/miolist">입출고 목록</a> <a
-											class="nav-link" href="#"></a>
-									</nav>
-								</div>
-							</div>
-						</div>
+					sec:authorize="hasRole('ROLE_D0107')||hasRole('ROLE_D0108')"
+					align="center">
+					<div class="nav">
+						<p style="font-size: large;">
+							<br> &nbsp; &nbsp; 환영합니다! [[${session.usersName}]] 님
+						</p>
+						<hr
+							style="width: 80%; height: 1px; background-color: white; color: white; border: 1px;">
+						<a class="nav-link" href="/equipment/main">실시간 설비</a> <a
+							class="nav-link" href="/equipment/process">공정관리</a> <a
+							class="nav-link" href="/equipment/maintenance">보수관리</a> <a
+							class="nav-link" href="/equipment/part">부품관리</a>
 					</div>
 				</div>
 
+				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0103')"
+					align="center">
+					<div class="nav">
+						<br> &nbsp; &nbsp; 환영합니다! [[${session.usersName}]] 님
+						<hr
+							style="width: 80%; height: 1px; background-color: white; color: white; border: 1px;">
+						<a class="nav-link" href="/material/main">자재변동 내역</a> <a
+							class="nav-link" href="/material/minfo">자재정보 관리</a> <a
+							class="nav-link" href="/material/mcart">발주진행 관리</a> <a
+							class="nav-link" href="/material/miolist">입출고 목록</a> <a
+							class="nav-link" href="#"></a>
+					</div>
+				</div>
 			</nav>
 		</div>
 		<div class="modal fade" id="alertModal" data-backdrop="static"
@@ -455,7 +443,6 @@ font-size: large;
 							for (let val of data) {
 								let send = val['alertSend'];
 								let totalContent = val['alertContent'];
-								console.log(totalContent)
 								let content = "";
 								let address = "";
 								if(totalContent.indexOf("^")!=-1){
@@ -556,13 +543,12 @@ font-size: large;
 				return false;
 			})
 		</script>
-		<div id="layoutSidenav_content">
+		<div id="layoutSidenav_content" style="float: none;">
 			<main>
 				<div layout:fragment="content"></div>
 			</main>
 		</div>
 	</div>
-
 </body>
 
 </html>

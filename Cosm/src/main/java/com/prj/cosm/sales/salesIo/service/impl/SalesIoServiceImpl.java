@@ -72,19 +72,7 @@ public class SalesIoServiceImpl implements SalesIoService {
 	@Override
 	public int updateOutInfo(List<SalesIoVO> list) {
 		// 출고
-		int result = 0;
-		result = mapper.updateOutInfo(list);
-
-		List<EmpVO> eList = new ArrayList<>();
-		eList = eMapper.getReceiveUsers("D0105");
-		for (EmpVO eVO : eList) {
-			AlertVO aVO = new AlertVO();
-			aVO.setAlertContent("/clinet/sMain" + "^"  + "건 생산이 완료되었습니다"); //고객 이름/주문번호 
-			aVO.setAlertReceive(eVO.getUsersNo());
-			aMapper.insertAlert(aVO);
-		}
-
-		return result;
+		return mapper.updateOutInfo(list);
 	}
 
 	/*
