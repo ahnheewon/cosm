@@ -403,7 +403,7 @@ function getPartList() {
     url="/equipment/getPartInfo?partNo="+partNo // get방식이라 ?equipNo=
     fetch(url) 
     .then(res=>res.json())
-    .then(obj=>{
+    .then(obj=>{ 
         console.log(obj);
    
         document.querySelector('#selectPartName').value=obj.partName;

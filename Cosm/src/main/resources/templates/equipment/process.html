@@ -562,9 +562,6 @@ function filter(){
 		        console.log(obj);
 			 	
 			 	const btn = document.querySelector('#updateBtn')
-				btn.innerText='수정';
-			 	btn.removeAttribute('onclick','updateEquip()');
-				btn.setAttribute('onclick','updateBtnClick()');
 				
 				Swal.fire({
 		  		  title:'수정완료',
@@ -599,6 +596,7 @@ function filter(){
 		const btn = document.querySelector('#updateBtn')
 		btn.innerText='수정';
 		btn.removeEventListener('click',updateEquip);
+		btn.setAttribute('onclick','updateBtnClick()');
 	}
 	
 
@@ -692,10 +690,7 @@ function filter(){
 		            wu[i].required = false;
 		        }
 			 	
-			 	const btn = document.querySelector('#updateBtn2')
-				btn.innerText='수정';
-				btn.removeAttribute('onclick');
-				btn.setAttribute('onclick','updateProcessBtnClick()');
+			 	const btn = document.querySelector('#updateBtn2');
 				
 				Swal.fire({
 		  			  title:'수정완료',

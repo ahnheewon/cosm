@@ -40,7 +40,7 @@
 		,equip_date
 		<if test="eFile!=null">
 		,e_file
-		</if>	
+		</if>
 		)
 		values
 		(#{equipNo},#{equipName},#{equipType},#{equipStdVibe},#{equipStdTemp},#{equipProcess},#{equipPurpose},SYSDATE
@@ -290,8 +290,7 @@
 		,test_reason,
 		test_due_date,test_content, test_code, test_date,test_yn, (select
 		code_name from code where code_no=test_code) AS test_code_name,test_equip_no
-		FROM
-		test
+		FROM test
 		Where test_no= #{testNo}
 	</select>
 	
