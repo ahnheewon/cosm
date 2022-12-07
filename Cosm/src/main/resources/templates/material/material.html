@@ -299,7 +299,7 @@
             function formatter(value) {
                 if (!value) { return 0 }
 
-                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
             }
 
 
@@ -315,9 +315,7 @@
             };
 
 
-            let mioGrid;
-
-            mioGrid = new tui.Grid({
+            let mioGrid = new tui.Grid({
 
                 el: document.getElementById('grid2'),
                 rowHeaders: ['rowNum'], // 가장 왼쪽 체크박스
@@ -362,6 +360,7 @@
                             return formatter('+' + el.value)
                         }
                     },
+                    
                     {
                         header: '변동일자',
                         name: 'mioDate',
