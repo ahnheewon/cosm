@@ -637,7 +637,7 @@ function reallyInsertThis2() {
 							fetch(url) 
 							.then(res=>res.json())
 							.then(obj=>{
-
+							   
 							  workGrid.resetData(obj);
 						    
 							})
@@ -649,7 +649,7 @@ function reallyInsertThis2() {
 										fetch(url) 
 										.then(res=>res.json())
 										.then(obj=>{
-									
+										   
 										    workGrid.resetData(obj);
 									})		
 									
@@ -659,7 +659,7 @@ function reallyInsertThis2() {
 										fetch(url) 
 										.then(res=>res.json())
 										.then(obj=>{
-										 
+										   
 										    workGrid.resetData(obj);
 									    
 								})
@@ -783,6 +783,7 @@ function resize(obj) {
 /* 점검할 또는 고장난 또는 공사할 설비명 선택하게 하는 함수 */ 
 function changeSelect(val,id) { 
 		let tag = document.getElementById(id);
+		
 		tag.previousElementSibling.value = val;
 	}
 	
@@ -978,12 +979,15 @@ function testAllListPaging() {
 		fetch(url) 
 		.then(res=>res.json())
 		.then(obj=>{
+		    	 
 		 	 testGrid.resetData(obj.data.contents);
 		 	testGrid.setPerPage(12);
 		 	testGrid.refreshLayout();
 		})
 }            		
 document.querySelector('#test2Grid').style.display='none';
+
+	
 
 /* 점검 단건 조회 불러오는 아작스 함수 */
 
@@ -993,7 +997,7 @@ document.querySelector('#test2Grid').style.display='none';
 		    fetch(url) 
 		    .then(res=>res.json())
 		    .then(obj=>{
-		        
+ 
 				document.querySelector('#sTestEquipName').value=obj.testEquipName;
 				document.querySelector('#thisTNoUD').value=obj.testNo;
 				document.querySelector('#thisTENoS').value=obj.testEquipNo;
@@ -1114,7 +1118,7 @@ document.querySelector('#test2Grid').style.display='none';
 
 /* 점검 수정 버튼 누른 함수 */
 			function updateTBtnClick() {
-
+				
 				document.querySelector('#testUCbtn').style.display='block';
 				const wu = document.getElementsByClassName('wantUpdate1');	 // 점검1 고장2 공사3
 			    const tCode = document.querySelector('.radio2:checked');
@@ -1167,7 +1171,7 @@ document.querySelector('#test2Grid').style.display='none';
 			if(formValid == true){    
 			    
 				if( chked == '점검완료'){
-
+	
 						Swal.fire({
 							
 								   title: '점검 완료 처리하시겠습니까?',
@@ -1184,13 +1188,13 @@ document.querySelector('#test2Grid').style.display='none';
 							   // 만약 Promise리턴을 받으면,
 							   if (result.isConfirmed) {
 								//최종점검완료 아작스 
-
+			
 								 fetch(url1, {method: 'POST', body : data, headers: {
 							         			'header' : header,
 								     			'X-CSRF-Token': token }})
 								    .then(res=>res.json())
 								    .then(obj=>{
-
+		
 								    // 업데이트 하고자 하는 애들  닫아주기
 									 	for (var i = 0; i< wu.length; i++) {
 									 		
@@ -1223,7 +1227,7 @@ document.querySelector('#test2Grid').style.display='none';
 	                                      )
 
 									})
-									.catch((error) =>);
+									
 							}
 						
 						})
@@ -1231,14 +1235,13 @@ document.querySelector('#test2Grid').style.display='none';
 						
 	
 				} else { // 점검완료가 아니면
-						 // 단순 수정 아작스				
-					
-						fetch(url2, {method: 'POST', body : data, headers: {
+						 // 단순 수정 아작스
+					fetch(url2, {method: 'POST', body : data, headers: {
 					         			'header' : header,
 						     			'X-CSRF-Token': token }})
 						    .then(res=>res.json())
 						    .then(obj=>{
-
+	      
 						   // 업데이트 하고자 하는 애들 다시 닫아주기
 							 	for (var i = 0; i< wu.length; i++) {			
 						            wu[i].readOnly = true;
@@ -1273,10 +1276,9 @@ document.querySelector('#test2Grid').style.display='none';
                                         icon:'success',
                                       
 							  	})
-
-						    
+			    
 				 	})
-					.catch((error) => );
+
 					
 				
 					
@@ -1292,7 +1294,7 @@ document.querySelector('#test2Grid').style.display='none';
 /* 점검 수정 취소 함수 */
 			
 			function cancelUpdateTest() { // 되감기^^
-	
+
 				document.querySelector('#testUCbtn').style.display='none';
 				const wu = document.getElementsByClassName('wantUpdate1');
 			    const tCode = document.querySelector('.radio2:checked'); // 체크한 값.
@@ -1381,7 +1383,6 @@ function deleteTest() {
 								fetch(url) 
 								.then(res=>res.json())
 								.then(obj=>{
-
 								    test2Grid.resetData(obj);
 								   
 							})
@@ -1466,7 +1467,6 @@ function deleteTest() {
 	    fetch(url) 
 	    .then(res=>res.json())
 	    .then(obj=>{
-	    	
 	        workGrid.resetData(obj);
 	        
 	    })
@@ -1515,7 +1515,7 @@ function getWorkNo(workNo,workEquipNo) {
 			    fetch(url) 
 			    .then(res=>res.json())
 			    .then(obj=>{
-	
+
 			        if(obj.signEmpNo != usersNo){ // 작성자랑 다른사람이면 수정못하게
 			        	updateWBtn.style.display='none';
 			        	deleteWBtn.style.display='none';
@@ -1610,8 +1610,6 @@ function updateWSBtnClick() {
 					    	completeChk2();
 					
 					    })
-					.catch((error) => );
-				    
 
 
  
@@ -1628,8 +1626,7 @@ function updateWSBtnClick() {
 
 /* 공사 수정 버튼 누른 함수 */
 function updateWBtnClick() {
-	
-	console.log("공사 수정 버튼 클릭");
+
 	document.getElementById('updateWCBtn').style.display='block'; // 보여라
 	let smoney = document.getElementById('sWorkPay');
 	const wu = document.getElementsByClassName('wantUpdate3');	 // 점검1 고장2 공사3
@@ -1689,8 +1686,7 @@ function updateWork() {
 		 	})  
 			    .then(res=>res.json())
 			    .then(obj=>{
-			        console.log(obj);	  
-			      
+
 			   // 업데이트 하고자 하는 애들 다시 닫아주기
 				 	for (var i = 0; i< wu.length; i++) {			
 			            wu[i].readOnly = true;
@@ -1715,7 +1711,7 @@ function updateWork() {
 			  		})
 			 
 	 	})
-		.catch((error) => console.log("error:", error));	
+	
 	
 	
 	
@@ -1730,7 +1726,6 @@ function updateWork() {
 
 function cancelUpdateWork() { // 되감기^^
 
-	console.log("수정 취소버튼 클릭");
 	document.getElementById('updateWCBtn').style.display='none';	
 	const wu = document.getElementsByClassName('wantUpdate3');
 	const btn = document.querySelector('.updateBtn3');
@@ -1809,7 +1804,6 @@ function deleteWork() {
 
 				 
 				})
-				.catch((error) => console.log("error:", error));
 		}
 
 	})
@@ -1919,8 +1913,7 @@ function completeChk1(){ // 전체, 미완료, 완료 라디오박스
 			url="/equipment/incompleteTestList"
 			fetch(url) 
 			.then(res=>res.json())
-			.then(obj=>{
-			    console.log(obj);		   
+			.then(obj=>{	   
 			    test2Grid.resetData(obj);
 			    test2Grid.refreshLayout();
 		   
@@ -1939,7 +1932,7 @@ function completeChk1(){ // 전체, 미완료, 완료 라디오박스
 			fetch(url) 
 			.then(res=>res.json())
 			.then(obj=>{
-			    console.log(obj);
+	
 				test3Grid.refreshLayout();
 			    test3Grid.resetData(obj);
 
@@ -1974,7 +1967,7 @@ function completeChk2(){
 						fetch(url) 
 						.then(res=>res.json())
 						.then(obj=>{
-						    console.log(obj);
+						  
 						    workGrid.resetData(obj);})
 						
 				}else if(ua=='D0106'){
@@ -1984,7 +1977,7 @@ function completeChk2(){
 						fetch(url) 
 						.then(res=>res.json())
 						.then(obj=>{
-						    console.log(obj);
+						    
 						    workGrid.resetData(obj);})
 			
 				}else if(ua=='D0111'){
@@ -1994,7 +1987,7 @@ function completeChk2(){
 						fetch(url) 
 						.then(res=>res.json())
 						.then(obj=>{
-						    console.log(obj);
+						   
 						    workGrid.resetData(obj);})	
 				}else {
 					
@@ -2002,7 +1995,7 @@ function completeChk2(){
 						fetch(url) 
 						.then(res=>res.json())
 						.then(obj=>{
-						    console.log(obj);
+						  
 						    workGrid.resetData(obj);})
 					
 				}
@@ -2016,7 +2009,7 @@ function completeChk2(){
 			fetch(url) 
 			.then(res=>res.json())
 			.then(obj=>{
-			    console.log(obj);
+			   
 			    workGrid.resetData(obj);
 		    
 			})
@@ -2037,7 +2030,6 @@ else insertWBtn.style.display='none';
 
 // 필터 깔때기 아이콘 가리기.
 const filterCon = document.getElementsByClassName('tui-grid-btn-filter');
-console.log(filterCon);
 
 for(let i=0; i<filterCon.length; i++)
 filterCon[i].style.display='none';

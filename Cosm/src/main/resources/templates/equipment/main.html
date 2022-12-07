@@ -25,16 +25,6 @@
 			<h5 style="text-align: left;">실시간 설비 현황</h5>
 			<div class="column" id="mySvg"></div>
 
-			<div class="column" style="margin-top : 30px;" >
-				<h5>점검 관리</h5>
-				<div id="testGrid" ></div>
-			</div>
-
-			<div class="column">
-				<h5>공사 관리</h5>
-				<div id="workGrid"></div>
-			</div>
-
 		</div>
 		<div class="modal fade" id="myModal3" data-backdrop="static"
 			data-keyboard="false">
@@ -111,109 +101,6 @@
 			</div>
 		</div>
 </div>
-		<script>
-            /*  점검 그리드  */
-            const testGrid = new tui.Grid({
-                el: document.querySelector('#testGrid'),
-                pagination: true,
-                pageOptions: {
-                    useClient: true,
-                    perPage: 4
-                },
-                scrollX:false,
-    		    scrollY:false,
-                columns: [{
-                        header: '점검번호',
-                        name: 'testNo'
-                        ,align : 'center'
-                        ,formatter: function(value) {
-    			                return 'COST '+value.value; // 3자리 마다 
-    			        }
-                    },
-                    {
-                        header: '설비명',
-                        name: 'testEquipName'
-                        ,align : 'center'
-                    },
-                    {
-                        header: '점검예정일',
-                        name: 'testDueDate'
-                        ,align : 'center'
-                    },
-                    {
-                        header: '점검이유',
-                        name: 'testReason'
-                        ,align : 'center'
-                    },
-                    {
-                        header: '점검내역',
-                        name: 'testContent'
-                        ,align : 'center'
-                    }
-                ]
-            });
-
-            /* 점검 리스트 불러오는 아작스 */
-
-            url = "/equipment/incompleteTestList"
-            fetch(url)
-                .then(res => res.json())
-                .then(obj => {
-                    testGrid.resetData(obj);
-
-                })
-
-            /*  공사 그리드  */
-            const workGrid = new tui.Grid({
-                el: document.querySelector('#workGrid'),
-                pagination: true,
-                pageOptions: {
-                    useClient: true,
-                    perPage: 4
-                },
-                scrollX:false,
-    		    scrollY:false,
-                columns: [{
-                        header: '공사번호',
-                        name: 'workNo'
-                        ,align : 'center'
-                        ,formatter: function(value) {
-    			                return 'COSW '+value.value; // 3자리 마다 
-    			        }
-                    },
-                    {
-                        header: '공사명',
-                        name: 'workName'
-                        ,align : 'center'
-                    },
-                    {
-                        header: '시공예정일',
-                        name: 'workDate'
-                        ,align : 'center'
-                    },
-                    {
-                        header: '공사내역',
-                        name: 'workContent'
-                        ,align : 'center'
-                    },
-                    {
-                        header: '특이사항',
-                        name: 'workPs'
-                        ,align : 'center'
-                    }
-                ]
-            });
-
-            /* 결재승인 완료된 공사 리스트 불러오는 아작스 */
-
-            url = "/equipment/completeWorkList"
-            fetch(url)
-                .then(res => res.json())
-                .then(obj => {
-                    workGrid.resetData(obj);
-
-                })
-        </script>
 
 		<!-- svg script -->
 		<script>

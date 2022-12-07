@@ -414,7 +414,7 @@ function reallyInsertThis() {
 }
 
 function getMaxEquipNum() { //현재 적용 공정에 달려있는 설비 갯수 조회
-	
+
 	const equipProcess = document.querySelector('#equipProcess').value;
 	const frm = document.querySelector('#insertForm2');
 	
@@ -424,8 +424,7 @@ function getMaxEquipNum() { //현재 적용 공정에 달려있는 설비 갯수
 	         'header' : header,
 		     'X-CSRF-Token': token }})
 	    .then(res=>res.json())
-	    .then(obj=>{
-	        
+	    .then(obj=>{   
 	      if(obj.equipProcess == 3){
 	    	  Swal.fire('해당 공정에 설치 가능한 설비 수를 초과했습니다.','','warning' );	
 	    	}else if (obj.equipProcess < 3)
@@ -565,16 +564,15 @@ function filter(){
 				location.reload(true);// 새로고침
 			})
 		 
-		        
-			})
-			.catch((error) => );
+     })
+			
 	}
 	
 	
 /* 설비 수정 취소 함수 */
 	
 	function cancelUpdateEquip() {
-		
+
 		document.getElementById('updateECBtn').style.display='none';	 
 		const wantUpdate = document.getElementsByClassName('wantUpdate');	 
 		for (var i = 0; i< wantUpdate.length; i++) {
@@ -598,8 +596,7 @@ function filter(){
 	    //get을 제외한 모든 방식은 토큰을 필요로 한다.
 	    
 		const equipNo = document.getElementById('thisNoUD').value
-	
-	    	
+
 		Swal.fire({
 			   title: '해당 설비를 삭제하겠습니까?',
 			   icon: 'warning',
@@ -620,7 +617,7 @@ function filter(){
 		     'X-CSRF-Token': token }})
 			  .then(res=> res.text())
 			  .then(obj=>{
-			   
+	
 			    	
 			    Swal.fire(
                         '삭제완료',
@@ -646,7 +643,7 @@ function filter(){
 
 /* 공정 수정 버튼 누른 함수 */
 	function updateProcessBtnClick() {
-	
+
 		document.getElementById('updatePCBtn').style.display='block';	 
 		const wu = document.getElementsByClassName('wantUpdate2');	 
 		for (var i = 0; i< wu.length; i++) {
@@ -672,8 +669,7 @@ function filter(){
 		 fetch(url, {method: 'POST', body : data})
 		    .then(res=>res.json())
 		    .then(obj=>{
-		    
-		        
+	
 		        const wu = document.getElementsByClassName('wantUpdate2');	 
 			 	for (var i = 0; i< wu.length; i++) {
 		            wu[i].readOnly =true;
@@ -694,7 +690,7 @@ function filter(){
 		 
 		        
 			})
-			.catch((error) => );
+			
 	}
 	
 	
@@ -755,13 +751,14 @@ function filter(){
 			    	'X-CSRF-Token': token }})
 				    .then(res=> res.text())
 				    .then(obj=>{
-				    				    	
+				    	
 				    	fetch(url2,{method: 'post', headers: {
 			                'header' : header,
 					    	'X-CSRF-Token': token,
 					    	'Content-Type' : 'application/json' }})
 						    .then(res=> res.text())
 						    .then(obj=>{
+						    	
 					    	Swal.fire(
 			                        '삭제완료',
 			                        '',
@@ -841,7 +838,6 @@ function filter(){
 		fetch(url) 
 		.then(res=>res.json())
 		.then(obj=>{
-	
 			processGrid.resetData(obj);
 			       
 		})
@@ -903,7 +899,6 @@ function filter(){
 		fetch(url) 
 		.then(res=>res.json())
 		.then(obj=>{
-	
 			equipGrid.resetData(obj);
 			        
 		})
@@ -913,7 +908,7 @@ function filter(){
 	    	equipGrid.on('click', ev => {
 	    	const enoRow = equipGrid.getRow(ev.rowKey);
 	    	const eno = enoRow.equipNo;
-	    	
+
 	    	if(ev.rowKey == enoRow.rowKey){
 				if(eno != null){
 		    	const myModal3 = new bootstrap.Modal('#myModal3',{backdrop: 'static',keyboard:false})
