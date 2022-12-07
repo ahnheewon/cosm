@@ -14,7 +14,7 @@ public class AlertVO {
 	private String alertSend;
 	private String alertReceive;
 	private String alertContent;
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date alertDate;
 	private String codeNo;

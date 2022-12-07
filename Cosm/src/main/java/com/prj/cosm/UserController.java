@@ -100,10 +100,15 @@ public class UserController {
 		return "redirect:login";
 	}
 
-	@PostMapping("/userUpdate")
+	@PostMapping("userUpdate")
 	public String empUpdate(EmpVO empVO) {
 		service.userUpdate(empVO);
 		return "redirect:userList";
+	}
+	@PostMapping("usersUpdate")
+	public String usersUpdate(EmpVO empVO) {
+		service.userUpdate(empVO);
+		return "redirect:userInfo";
 	}
 
 	@PostMapping("/userDelete")

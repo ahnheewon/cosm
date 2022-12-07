@@ -18,14 +18,14 @@
 	<!-- 자재정보 전체조회 -->
 	<select id="mList" resultType="MaterialVO">
         WITH material_order_sum AS
-		(SELECT mo_material_id, sum(mo_num) as total_mo_num
-		FROM material_order 
-		WHERE mo_progress_code IN('L0101','L0102') or mo_progress_code is null 
-		GROUP BY mo_material_id)                 
-	,material_order_plan AS                                                 
-	( SELECT bom_material_no, 
-         SUM(planed_qntt) as total_planed_qntt
-    FROM ( SELECT bom.bom_material_no, (plan.plan_quantity * bom.bom_quantity)/goods.goods_standard as planed_qntt                                             
+			(SELECT mo_material_id, sum(mo_num) as total_mo_num
+			   FROM material_order 
+			  WHERE mo_progress_code IN('L0101','L0102') or mo_progress_code is null 
+	  	   GROUP BY mo_material_id)                 
+		,material_order_plan AS                                                 
+			(SELECT bom_material_no, 
+            		SUM(planed_qntt) as total_planed_qntt
+   			 FROM (SELECT bom.bom_material_no, (plan.plan_quantity * bom.bom_quantity)/goods.goods_standard as planed_qntt            
                 FROM produce_bom bom JOIN produce_goods goods 
                          ON goods.goods_no = bom.bom_product_no
                          
@@ -35,26 +35,26 @@
                         WHERE plan.plan_play_code = 'A0109'                                             
                                    UNION ALL    
                  SELECT  bom.bom_material_nob,  (plan.plan_quantity *bom.bom_quantityB) / goods.goods_standard as planed_qntt 
-                       FROM produce_bom bom JOIN produce_goods goods 
+                    FROM produce_bom bom JOIN produce_goods goods 
                          ON goods.goods_no = bom.bom_product_no
                          JOIN produce_plan plan 
                              ON goods.goods_no = plan.plan_product_no
                         WHERE plan.plan_play_code = 'A0109' )            
-        group by bom_material_no)    
- SELECT m.m_no,
+        group by bom_material_no)   
+SELECT m.m_no,
 	   m. m_company_id,
 	   mc.mc_company_name As m_company_nm,
 	   UPPER(m.m_name) AS m_name,                
 	   m.m_price,
 	   find_code_no(m_unit_code) As m_unit_code,
 	   m.m_category,
-	    NVL(m.m_stock,0)AS m_stock,   
+	   NVL(m.m_stock,0)AS m_stock,   
 	   NVL(total_mo_num,0)AS total_mo_num,
        NVL(total_planed_qntt,0)AS total_planed_qntt, 
            
-      CASE WHEN (NVL(total_planed_qntt,0) - (NVL(m.m_stock,0) + NVL(total_mo_num,0))) > 0
-      THEN (NVL(total_planed_qntt,0) - (NVL(m.m_stock,0) + NVL(total_mo_num,0)))
-      ELSE 0 END AS shortage 
+       CASE WHEN (NVL(total_planed_qntt,0) - (NVL(m.m_stock,0) + NVL(total_mo_num,0))) > 0
+       THEN (NVL(total_planed_qntt,0) - (NVL(m.m_stock,0) + NVL(total_mo_num,0)))
+       ELSE 0 END AS shortage 
       
  FROM material m 			
 			JOIN material_company mc
@@ -66,7 +66,19 @@
         LEFT OUTER JOIN material_order_sum
                 ON m.m_no = mo_material_id
  order by m_no
+  FROM Material m 			
+			JOIN material_company mc			
+                 ON m.m_company_id = mc.mc_company_id
+                
+        LEFT OUTER JOIN material_order_plan
+                     ON m.m_no = bom_material_no
+            
+        LEFT OUTER JOIN material_order_sum
+            		 ON m.m_no = mo_material_id
+order by m_no
 	</select>
+	
+	
 
 
 	<!-- 자재정보 단건조회 (상세조회) -->
