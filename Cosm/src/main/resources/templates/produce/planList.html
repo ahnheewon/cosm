@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/layout/layout}">
+	layout:decorate="~{layout/layout}">
 
 <head>
 <meta charset="UTF-8">
@@ -761,7 +761,6 @@
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
-						console.log(result)
 						for (let order of result) {
 						
 						}
@@ -800,7 +799,6 @@
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
-						console.log(result);
 						grid3.resetData(result);
 					},
 					error: function (reject) {
@@ -841,14 +839,12 @@
 			function getPlanInfo(){
 				var datas = grid2.getCheckedRows();
 				var test = JSON.stringify(datas);
-				console.log(datas);
 				for(plan of datas){
 					$.ajax({
 						url : '/produce/getPlanInfo',
 						type : 'get',
 						data : {planNo : plan.planNo},
 						success : function(data){
-							console.log(data);
 							document.querySelector('#planNo3').value=data.planNo;
 							document.querySelector('#planQuantity3').value=data.planQuantity;
 							document.querySelector('#planStart3').value=data.planStart;
@@ -892,7 +888,6 @@
 		function insertData() {
 			var planData=[];
 			var datas = grid.getCheckedRows();
-			console.log(datas);
 			var test = JSON.stringify(datas);
 			$('#orderNo').val(datas[0].orderNo);
 			$('#selectGoods').val(datas[0].goodsNo);
@@ -939,7 +934,6 @@
 	                   text: 'success~',
 	               }).then(function(){
 	            	   var datas2 = grid.getCheckedRows();
-                   		console.log(datas2);
                    		for(plan of datas2){
                				$.ajax({
                					url : '/produce/updateOrderInfo',
@@ -949,7 +943,6 @@
 	           						xhr.setRequestHeader(header, token);
 	           					},
 	               				success : function(data){
-	               					console.log(data);
 	               					$('#insertFrm').submit();
 	               				},
 	               				error : function(reject){
@@ -1027,7 +1020,6 @@
                     cancelButtonText: '취소'
                 }).then((result) => {
                 	var datas = grid2.getCheckedRows();
-                	console.log(datas);
                     if (result.isConfirmed) {
                     	for(plan of datas){
             				$.ajax({

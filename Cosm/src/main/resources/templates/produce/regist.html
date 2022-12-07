@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/layout/layout}">
+	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
 
@@ -309,7 +309,6 @@
 			method: "GET",
 			dataType: "JSON",
 			success: function (result) {
-				console.log(result);
 				for (let plan of result) {
 					plan.PLANSTART = String(plan.PLANSTART).substr(0, 10);
 					plan.PLANEND = String(plan.PLANEND).substr(0, 10);
@@ -329,7 +328,6 @@
 			method: "GET",
 			dataType: "JSON",
 			success: function (result) {
-				console.log(result);
 				for (let regist of result) {
 					regist.REGIST_DATE = String(regist.REGIST_DATE).substr(0, 10);
 				}
@@ -379,7 +377,6 @@
         						xhr.setRequestHeader(header, token);
         					},
             				success : function(data){
-            					console.log(data);
             					Swal.fire({
             		                icon: 'success',
             		                title: '완제품등록이 완료되었습니다.',

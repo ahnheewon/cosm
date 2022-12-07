@@ -33,19 +33,19 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		System.out.println(vo.getUsersPassword());
 		// 사용자
 		if (vo.getUsersAuthor().equals("D0108") || vo.getUsersAuthor().equals("D0107")) {
-			response.sendRedirect(request.getContextPath() + "/equipment/main");
+			response.sendRedirect(request.getContextPath() + "equipment/main");
 		}else if(vo.getUsersAuthor().equals("D0109")) {
-			response.sendRedirect(request.getContextPath() + "/orders/sMain");
+			response.sendRedirect(request.getContextPath() + "orders/sMain");
 		}else if(vo.getUsersAuthor().equals("D0103")) {
-			response.sendRedirect(request.getContextPath() + "/material/main");	
+			response.sendRedirect(request.getContextPath() + "material/main");	
 		}else if(vo.getUsersAuthor().equals("D0105")) {
-			response.sendRedirect(request.getContextPath() + "/produce/main");	
+			response.sendRedirect(request.getContextPath() + "produce/planList");	
 		}else if(vo.getUsersAuthor().equals("D0102")) {
-			response.sendRedirect(request.getContextPath() + "/client/main");	
+			response.sendRedirect(request.getContextPath() + "client/main");	
 		}else if(vo.getUsersAuthor().equals("D0101")) {
-			response.sendRedirect(request.getContextPath() + "/userList");	
+			response.sendRedirect(request.getContextPath() + "userList");	
 		}else {
-			response.sendRedirect(request.getContextPath() + "/main");
+			response.sendRedirect(request.getContextPath() + "main");
 		}
 	}
 }
