@@ -78,7 +78,6 @@ public class MaterialController {
 	}
 
 	// 자재 정보 등록창 (실행)_multipart (파일업로드)
-
 	@PostMapping("/material/minsert")
 	public String mInsert(MaterialVO mVO, Model model, MultipartFile imageFile) throws IllegalStateException, IOException {
 		
@@ -95,7 +94,7 @@ public class MaterialController {
 		}
 		
 		mService.insertMatarialInfo(mVO);
-		//  
+		 
 		return "redirect:material/minfo"; // 목록으로 돌아가기
 	}
 
@@ -167,12 +166,12 @@ public class MaterialController {
 	@RequestMapping(value="/material/ajax/mioList")
 	public Map<String, Object> mioPageMap(MaterialVO mVO) {
 		Map<String, Object> pagination = new HashMap<String, Object>();
-		pagination.put("page", mVO.getPage());
+		pagination.put("page", mVO.getPage()); // 페이지 
 		pagination.put("totalCount", mService.mioListCount(mVO)); // 데이터 갯수 세는 쿼리
 		
 		Map<String, Object>  gridData = new HashMap<String, Object>();
 		gridData.put("pagination", pagination); 
-		gridData.put("contents", mService.mioList(mVO));
+		gridData.put("contents", mService.mioList(mVO)); // 자재변동 내역 조회 
 		
 		Map<String, Object>  result = new HashMap<String, Object>();
 		result.put("result", true);

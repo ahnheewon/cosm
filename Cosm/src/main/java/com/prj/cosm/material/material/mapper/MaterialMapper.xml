@@ -18,18 +18,20 @@
 	<!-- 자재정보 전체조회 -->
 	<select id="mList" resultType="MaterialVO">
         WITH material_order_sum AS
-		(select mo_material_id, sum(mo_num) as total_mo_num
-		from material_order 
-		where mo_progress_code IN('L0101','L0102') or mo_progress_code is null 
-		group by mo_material_id)                 
-,material_order_plan AS                                                 
-( select bom_material_no, 
-         sum(planed_qntt) as total_planed_qntt
-    from ( SELECT bom.bom_material_no, (plan.plan_quantity * bom.bom_quantity)/goods.goods_standard as planed_qntt                                             
+		(SELECT mo_material_id, sum(mo_num) as total_mo_num
+		FROM material_order 
+		WHERE mo_progress_code IN('L0101','L0102') or mo_progress_code is null 
+		GROUP BY mo_material_id)                 
+	,material_order_plan AS                                                 
+	( SELECT bom_material_no, 
+         SUM(planed_qntt) as total_planed_qntt
+    FROM ( SELECT bom.bom_material_no, (plan.plan_quantity * bom.bom_quantity)/goods.goods_standard as planed_qntt                                             
                 FROM produce_bom bom JOIN produce_goods goods 
                          ON goods.goods_no = bom.bom_product_no
+                         
                          JOIN produce_plan plan 
                              ON goods.goods_no = plan.plan_product_no
+                             
                         WHERE plan.plan_play_code = 'A0109'                                             
                                    UNION ALL    
                  SELECT  bom.bom_material_nob,  (plan.plan_quantity *bom.bom_quantityB) / goods.goods_standard as planed_qntt 
@@ -39,7 +41,7 @@
                              ON goods.goods_no = plan.plan_product_no
                         WHERE plan.plan_play_code = 'A0109' )            
         group by bom_material_no)    
-SELECT m.m_no,
+ SELECT m.m_no,
 	   m. m_company_id,
 	   mc.mc_company_name As m_company_nm,
 	   UPPER(m.m_name) AS m_name,                
@@ -54,14 +56,16 @@ SELECT m.m_no,
       THEN (NVL(total_planed_qntt,0) - (NVL(m.m_stock,0) + NVL(total_mo_num,0)))
       ELSE 0 END AS shortage 
       
-FROM Material m 			
-			JOIN MATERIAL_COMPANY mc
+ FROM material m 			
+			JOIN material_company mc
                 ON m.m_company_id = mc.mc_company_id
+                
         LEFT OUTER JOIN material_order_plan
-            ON m.m_no = bom_material_no
+                ON m.m_no = bom_material_no
+                
         LEFT OUTER JOIN material_order_sum
-            ON m.m_no = mo_material_id
-order by m_no
+                ON m.m_no = mo_material_id
+ order by m_no
 	</select>
 
 
@@ -193,20 +197,20 @@ order by m_no
 
 	<!-- 자재 변동 내역 리스트 -->
 	<select id="mioList" resultType="MaterialVO">
-SELECT B.* FROM ( SELECT ROWNUM RN, A.* FROM ( 
-	SELECT mio_no, 
-		   mio_company_id, 
-		   mio_company_name as mio_company_nm,
-		   m.m_category, 
-		   m.m_name, 
-		   mio_quantity as mioQntt,		   
-	  	   m_stock,  
-		   mio_date, 
-		   find_code_no(mio_progress)as mio_progress		
-	  FROM Material m 
-	  JOIN Material_io mio ON m.m_no = mio.mio_no
+  SELECT B.* FROM ( SELECT ROWNUM RN, A.* FROM ( 
+	  SELECT mio_no, 
+		     mio_company_id, 
+		     mio_company_name as mio_company_nm,
+		     m.m_category, 
+		     m.m_name, 
+		     mio_quantity as mioQntt,		   
+	  	     m_stock,  
+		     mio_date, 
+		     find_code_no(mio_progress)as mio_progress		
+	   FROM Material m 
+	   JOIN Material_io mio ON m.m_no = mio.mio_no
  	 WHERE mio.mio_date IS NOT NULL
-	   AND mio.mio_progress IS NOT NULL	
+	    AND mio.mio_progress IS NOT NULL	
 	<if test="startDate != null and endDate != null">
 		AND TRUNC(mio.mio_date) BETWEEN #{startDate} AND #{endDate}
 	</if>	

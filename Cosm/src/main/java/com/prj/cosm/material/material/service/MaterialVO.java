@@ -105,8 +105,8 @@ public class MaterialVO {
 	
 
 	@JsonIgnore
-	private int perpage = 10;
+	private int perpage = 10; // 페이지 당 데이터 개수
 	@JsonIgnore
-	private int page = 1;
+	private int page = 1; // 페이지 시작
 	
 }
