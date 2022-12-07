@@ -1,242 +1,264 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
-
 <head>
 
-   <title>Sales main</title>
-   <!-- date-picker & time-picker -->
-   <link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
-   <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
-   <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
-   <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<title>Sales main</title>
+<!-- date-picker & time-picker -->
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+<script
+	src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<script
+	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 
-   <!-- 드래그 방지 -->
-   <script type="text/javascript">
+<!-- 드래그 방지 -->
+<script type="text/javascript">
       document.oncontextmenu = function () {
          return false;
       }
    </script>
 
-   <!-- custom style and js -->
-   <link rel="stylesheet" href="/equipmentCss/main.css" />
+<!-- custom style and js -->
+<link rel="stylesheet" href="/equipmentCss/main.css" />
 
 </head>
 
 
 <body>
-   <div layout:fragment="content">
-      <!-- 
+	<div layout:fragment="content">
+		<!-- 
 		☆주문등록 - 고객가입후 조회시 사업자 번호 -> 엑셀파일(어떤시스템 및 DB에도 적용가능)가져와서 -> 모달창 -> 조회누르면 -> 업장상태확인가능하게 
 		-->
-      <div align="center">
-         <h3>영업 관리</h3>
-      </div>
+		<div align="center">
+			<h3>영업 관리</h3>
+		</div>
 
-      <!-- tab btn start  -->
-      <div>
-         <ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
-            <!--주문관리 tab btn-->
-            <li class="nav-item" role="presentation">
-               <button class="nav-link active" id="manage-tab" data-bs-toggle="tab" data-bs-target="#manage"
-                  type="button" role="tab" aria-controls="manage" aria-selected="true">주문관리</button>
-            </li>
+		<!-- tab btn start  -->
+		<div>
+			<ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
+				<!--주문관리 tab btn-->
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="manage-tab"
+						data-bs-toggle="tab" data-bs-target="#manage" type="button"
+						role="tab" aria-controls="manage" aria-selected="true">주문관리</button>
+				</li>
 
-            <!--완제품 검수, 재고, 출고관리 tab 
+				<!--완제품 검수, 재고, 출고관리 tab 
 				aria-selected - 탭활성화 -->
-            <li class="nav-item" role="presentation">
-               <button class="nav-link" id="manage2-tab" data-bs-toggle="tab" data-bs-target="#manage2" type="button"
-                  role="tab" aria-controls="manage2" aria-selected="true">완제품 관리</button>
-            </li>
-         </ul>
-      </div>
-      <!-- tab btn end -->
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="manage2-tab" data-bs-toggle="tab"
+						data-bs-target="#manage2" type="button" role="tab"
+						aria-controls="manage2" aria-selected="true">완제품 관리</button>
+				</li>
+			</ul>
+		</div>
+		<!-- tab btn end -->
 
 
 
 
-      <!-- 주문관리 tab 본문-->
-      <div class="tab-content" id="myTabContent">
-         <!--주문관리 탭-->
-         <div class="tab-pane fade show active" id="manage" role="tabpanel" aria-labelledby="manage-tab">
-            <div style="margin: 15px;">
+		<!-- 주문관리 tab 본문-->
+		<div class="tab-content" id="myTabContent">
+			<!--주문관리 탭-->
+			<div class="tab-pane fade show active" id="manage" role="tabpanel"
+				aria-labelledby="manage-tab">
+				<div style="margin: 15px;">
 
+					<hr>
+					<div>
+						<div>
+							<h3 align="center">신규 주문관리</h3>
+						</div>
 
+						<button style="float: right" id="proPlz"
+							class="btn btn-secondary btn-sm">접수</button>
+						<button style="float: right; margin-right: 8px;" id="newPro"
+							type="button" class="btn btn-secondary btn-sm">신규</button>
 
-               <hr>
-               <div>
-                  <div>
-                     <h3 align="center">신규 주문관리</h3>
-                  </div>
-
-                  <button style="float: right" id="proPlz" class="btn btn-secondary btn-sm">접수</button>
-                  <button style="float: right; margin-right: 8px;" id="newPro" type="button"
-                     class="btn btn-secondary btn-sm">신규</button>
-
-                  <!-- 전체조회 grid filter -->
-                  <div id="grid"></div>
-               </div>
-               <hr>
-               <div>
-                  <div>
-                     <h3 align="center">접수 주문관리</h3>
-                  </div>
-                  <div>
-                     <!-- 검색창 start -->
-                     <input onkeyup="filter()" type="text" style="float: left; border: 1px solid #aaa;"
-                        id="searchFilter" placeholder="거래처명 입력">
-                     <!-- 
+						<!-- 전체조회 grid filter -->
+						<div id="grid"></div>
+					</div>
+					<hr>
+					<div>
+						<div>
+							<h3 align="center">접수 주문관리</h3>
+						</div>
+						<div>
+							<!-- 검색창 start -->
+							<input onkeyup="filter()" type="text"
+								style="float: left; border: 1px solid #aaa;" id="searchFilter"
+								placeholder="거래처명 입력">
+							<!-- 
 						<button style="float: left" class="btn btn-dark btn-sm">검색</button>
 						 -->
-                     <!-- 검색창 end -->
-                  </div>
+							<!-- 검색창 end -->
+						</div>
 
-                  <button style="float: right;" id="exlBtn" class="btn btn-secondary btn-sm">엑셀</button>
-                  <button style="float: right; margin-right: 8px;" id="delbtn"
-                     class="btn btn-secondary btn-sm">삭제</button>
-                  <button style="float: right; margin-right: 8px;" id="updatebtn"
-                     class="btn btn-secondary btn-sm">수정</button>
+						<button style="float: right;" id="exlBtn"
+							class="btn btn-secondary btn-sm">엑셀</button>
+						<button style="float: right; margin-right: 8px;" id="delbtn"
+							class="btn btn-secondary btn-sm">삭제</button>
+						<button style="float: right; margin-right: 8px;" id="updatebtn"
+							class="btn btn-secondary btn-sm">수정</button>
 
-                  <div id="grid4"></div>
-               </div>
+						<div id="grid4"></div>
+					</div>
 
-               <hr>
-               <!-- chart grid 들어갈 곳 -->
-            </div>
-         </div>
-         <!--주문관리 탭 end -->
+					<hr>
+					<!-- chart grid 들어갈 곳 -->
+				</div>
+			</div>
+			<!--주문관리 탭 end -->
 
 
 
-         <!-- 완제품 관리 탭 start body -->
-         <div class="tab-pane fade " id="manage2" role="tabpanel" aria-labelledby="manage2-tab">
-            <div style="margin: 15px;">
-              <!--  <div>
+			<!-- 완제품 관리 탭 start body -->
+			<div class="tab-pane fade " id="manage2" role="tabpanel"
+				aria-labelledby="manage2-tab">
+				<div style="margin: 15px;">
+					<!--  <div>
                   <input type="radio" name="inout" value="out">출고대기
                   <input type="radio" name="inout" value="in">완료
                </div> -->
-               <hr>
-               <div>
-                  <h3 align="center">완제품 출고관리</h3>
-               </div>
+					<hr>
+					<div>
+						<h3 align="center">완제품 출고관리</h3>
+					</div>
 
-               <div>
-                  <button id="exlBtn2" style="float: right;" class="btn btn-secondary btn-sm">엑셀</button>
-                  <button id="newPro5" style="float: right; margin-right: 8px;"
-                     class="btn btn-secondary btn-sm">출고</button>
-               </div>
+					<div>
+						<button id="exlBtn2" style="float: right;"
+							class="btn btn-secondary btn-sm">엑셀</button>
+						<button id="newPro5" style="float: right; margin-right: 8px;"
+							class="btn btn-secondary btn-sm">출고</button>
+					</div>
 
-               <div id="grid2" class="inInfo"></div>
+					<div id="grid2" class="inInfo"></div>
 
-               <!-- 출고/내역 분리 -->
-               <hr>
-               <div>
-                  <h3 align="center">완제품 출고내역</h3>
-               </div>
-               <div>
-                  <!-- 검색창 start -->
-                  <input onkeyup="filter2()" type="text" style="float: left; border: 1px solid #aaa;" id="searchFilter2"
-                     placeholder="거래처명 입력">
-                  <!-- 
+					<!-- 출고/내역 분리 -->
+					<hr>
+					<div>
+						<h3 align="center">완제품 출고내역</h3>
+					</div>
+					<div>
+						<!-- 검색창 start -->
+						<input onkeyup="filter2()" type="text"
+							style="float: left; border: 1px solid #aaa;" id="searchFilter2"
+							placeholder="거래처명 입력">
+						<!-- 
 						<button style="float: left" class="btn btn-dark btn-sm">검색</button>
 						 -->
-                  <!-- 검색창 end -->
-               </div>
-               <div align="left">
-                  <!-- 
+						<!-- 검색창 end -->
+					</div>
+					<div align="left">
+						<!-- 
 						 <button id="upbtn3" class="btn btn-secondary btn-sm">수정</button>
 						 -->
-                  <button id="exlBtn3" style="float: right;" class="btn btn-secondary btn-sm">엑셀</button>
-                  <button id="delbtn3" style="float: right; margin-right: 8px;"
-                     class="btn btn-secondary btn-sm">삭제</button>
-                  <button style="float: right; margin-right: 8px;" id="updatebtn3"
-                     class="btn btn-secondary btn-sm">수정</button>
-               </div>
-               <div id="grid5" class="outInfo"></div>
+						<button id="exlBtn3" style="float: right;"
+							class="btn btn-secondary btn-sm">엑셀</button>
+						<button id="delbtn3" style="float: right; margin-right: 8px;"
+							class="btn btn-secondary btn-sm">삭제</button>
+						<button style="float: right; margin-right: 8px;" id="updatebtn3"
+							class="btn btn-secondary btn-sm">수정</button>
+					</div>
+					<div id="grid5" class="outInfo"></div>
 
-            </div>
-         </div>
-         <!-- 완제품 관리 탭 end -->
+				</div>
+			</div>
+			<!-- 완제품 관리 탭 end -->
 
-      </div>
-      <!-- tab 본문 end -->
+		</div>
+		<!-- tab 본문 end -->
 
-      <!-- ==========================================Modal========================================================== -->
-      <!-- 신규주문 상세정보 모달-->
-      <div class="modal" tabindex="-1" id="newOrderInfo" style="z-index: 1300">
-         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title" style="font-weight: bold;">신규주문 상세내역</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
+		<!-- ==========================================Modal========================================================== -->
+		<!-- 신규주문 상세정보 모달-->
+		<div class="modal" tabindex="-1" id="newOrderInfo"
+			style="z-index: 1300">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">신규주문 상세내역</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
 
-               <div class="modal-body" style="text-align: left">
-                  <div class="row p-3">
-                     <div class="col">
-                        <label for="input" class="col-form-label">주문번호</label> <input type="text" class="form-control"
-                           name="orderNo">
-                     </div>
-                     <div class="col">
-                        <label for="input" class="col-form-label">제품명</label> <input type="text" class="form-control"
-                           name="goodsNo">
-                     </div>
-                     <div class="row p-3">
-                        <label for="input" class="col-form-label">주문일자</label>
-                        <textarea class="form-control col-sm-5" rows="5" name="orderDate"></textarea>
-                     </div>
-                     <div class="col">
-                        <label for="input" class="col-form-label">주문분류</label> <input type="text" class="form-control"
-                           name="orderCode" readonly="readonly">
-                     </div>
+					<div class="modal-body" style="text-align: left">
+						<div class="row p-3">
+							<div class="col">
+								<label for="input" class="col-form-label">주문번호</label> <input
+									type="text" class="form-control" name="orderNo">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">제품명</label> <input
+									type="text" class="form-control" name="goodsNo">
+							</div>
+							<div class="row p-3">
+								<label for="input" class="col-form-label">주문일자</label>
+								<textarea class="form-control col-sm-5" rows="5"
+									name="orderDate"></textarea>
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">주문분류</label> <input
+									type="text" class="form-control" name="orderCode"
+									readonly="readonly">
+							</div>
 
-                  </div>
+						</div>
 
-                  <div class="modal-footer" style="text-align: center">
-                     <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                        onclick="location.href='sMain'">확인</button>
-                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+						<div class="modal-footer" style="text-align: center">
+							<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+							<button type="button" class="btn btn-primary"
+								data-bs-dismiss="modal" onclick="location.href='sMain'">확인</button>
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">취소</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-      <!-- 접수주문 상세정보 모달-->
-      <div class="modal" tabindex="-1" id="orderInfo" style="z-index: 1300">
-         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title" style="font-weight: bold;">접수주문 상세내역</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
+		<!-- 접수주문 상세정보 모달-->
+		<div class="modal" tabindex="-1" id="orderInfo" style="z-index: 1300">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-weight: bold;">접수주문 상세내역</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
 
-               <div class="modal-body" style="text-align: left">
-                  <div class="row p-3">
-                     <div class="col">
-                        <label for="input" class="col-form-label">주문번호</label> <input type="text" class="form-control"
-                           name="orderNo" readonly="readonly">
-                     </div>
-                     <div class="col">
-                        <label for="input" class="col-form-label">제품번호</label> <input type="text" class="form-control"
-                           name="goodsNo" readonly="readonly">
-                     </div>
-                     <div class="col">
-                        <label for="input" class="col-form-label">수량</label> <input type="text" class="form-control"
-                           name="totalNum" readonly="readonly">
-                     </div>
-                     <div class="col">
-                        <label for="input" class="col-form-label">납기일자</label> <input type="text" class="form-control"
-                           name="deliveryDate" readonly="readonly">
-                     </div>
-                     <div class="row p-3">
-                        <label for="input" class="col-form-label">요청사항</label>
-                        <textarea class="form-control col-sm-5" rows="5" name="note" readonly="readonly"></textarea>
-                     </div>
-                     <!--  o.order_no, p.goods_name, c.code_name,
+					<div class="modal-body" style="text-align: left">
+						<div class="row p-3">
+							<div class="col">
+								<label for="input" class="col-form-label">주문번호</label> <input
+									type="text" class="form-control" name="orderNo"
+									readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">제품번호</label> <input
+									type="text" class="form-control" name="goodsNo"
+									readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">수량</label> <input
+									type="text" class="form-control" name="totalNum"
+									readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="input" class="col-form-label">납기일자</label> <input
+									type="text" class="form-control" name="deliveryDate"
+									readonly="readonly">
+							</div>
+							<div class="row p-3">
+								<label for="input" class="col-form-label">요청사항</label>
+								<textarea class="form-control col-sm-5" rows="5" name="note"
+									readonly="readonly"></textarea>
+							</div>
+							<!--  o.order_no, p.goods_name, c.code_name,
                 		o.total_num, o.delivery_date, cl.client_name, o.note -->
-                     <!-- <div class="col">
+							<!-- <div class="col">
 								<label for="input" class="col-form-label">주문번호</label> <input
 									type="text" class="form-control" name="orderNo"
 									readonly="readonly">
@@ -276,28 +298,29 @@
 								<textarea class="form-control col-sm-5" rows="5" name="note"
 									readonly="readonly"></textarea>
 							</div> -->
-                     <!-- <div class="row p-3">
+							<!-- <div class="row p-3">
 		                        <label for="input" class="col-form-label">이미지</label> <img
 		                           name="oImg"></img>
 		                     </div> -->
-                  </div>
+						</div>
 
-                  <div class="modal-footer" style="text-align: center">
-                     <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                        onclick="location.href='sMain'">확인</button>
-                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+						<div class="modal-footer" style="text-align: center">
+							<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+							<button type="button" class="btn btn-primary"
+								data-bs-dismiss="modal" onclick="location.href='sMain'">확인</button>
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">취소</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 
 
-      <!-- ================================================ script ============================================================= -->
-      <script>
+		<!-- ================================================ script ============================================================= -->
+		<script>
          /*-----------
 		  그리드 스타일
 		-------------*/
@@ -660,13 +683,11 @@
 				 */
             const noList = [];
             var obj = grid4.getCheckedRows()
-            console.log(obj);
-            for (key of obj) {
-               //읽어낼 컬럼명
-               console.log(key.orderNo);
+         
+            for (key of obj) {             
                noList.push(key.orderNo); //{}
             }
-            console.log(noList);
+ 
             $.ajax({
                url: "/orders/ajaxDelcheckOrder",
                method: "Post",
@@ -682,8 +703,6 @@
                   //rowKey
                   const delList = [];
                   for (key of obj) {
-                     //읽어낼 컬럼명
-                     console.log(key.rowKey);
                      delList.push(key.rowKey);
                   }
                   Swal.fire(
@@ -717,7 +736,6 @@
                   xhr.setRequestHeader(header, token);
                },
                success: function (result) {
-                  console.log(result);
 
                },
                error: function (reject) {
@@ -733,8 +751,7 @@
          ----------------*/
          function newPro() {
             let data = grid.getColumnValues('orderCode');
-            // console.log(data);
-
+           
             let newP = grid.findRows({
                orderCode: '신규'
             });
@@ -748,18 +765,7 @@
          접수버튼 클릭(신규 -> 접수목록으로 )
          --------------*/
          function proPlz() {
-            /*
-            var recNos = ''; // 접수번호 초기화
-            for(let i=0; i<grid.getCheckedRows().length; i++){
-            	if(i != 0){
-            		recNos += ',';
-            	}
-            	recNos += grid.getCheckedRows()[i].orderNo
-            }
-            grid.getCheckedRows();
-            console.log(recNos);	
-            */
-
+           
             //체크안하고 접수 버튼 클릭시 알림창
             var rec = grid.getCheckedRows();
             if (rec == 0) {
@@ -800,7 +806,6 @@
                method: "GET",
                dataType: "JSON",
                success: function (result) {
-                  console.log('new order: ', result);
                   grid.resetData(result);
                   getReceiptList();
                },
@@ -819,7 +824,6 @@
                method: "GET",
                dataType: "JSON",
                success: function (result) {
-                  console.log('receip: ', result);
                   grid4.resetData(result);
                },
                error: function (reject) {
@@ -842,13 +846,7 @@
                   "orderNo": orderNo
                },
                success: function (result) {
-                  console.log('신규주문 모달 아작스 : ', result);
-                  /*
-                  $('[name="orderNo"]').val(result.orderNo);
-                  $('[name="goodsNo"]').val(result.goodsNo);
-                  $('[name="totalNum"]').val(result.totalNum);
-                  $('[name="note"]').val(result.note);
-                  */
+                
                },
                error: function (reject) {
                   console.log(reject);
@@ -861,7 +859,6 @@
          	------------------------*/
          grid.on('click', ev => {
             if (grid.getRow(ev.rowKey) != null && ev.columnName != '_checked') { // checkbox 클릭시, 모달 안 뜨게끔
-               console.log('모달 : ', ev);
 
                if (ev.rowKey >= 0) {
                   let orderNo = grid.getRow(ev.rowKey).orderNo;
@@ -886,18 +883,11 @@
                   "orderNo": orderNo
                },
                success: function (result) {
-                  console.log('모달 아작스 : ', result);
-
                   $('[name="orderNo"]').val(result.orderNo);
                   $('[name="goodsNo"]').val(result.goodsNo);
                   $('[name="note"]').val(result.note);
                   $('[name="totalNum"]').val(result.totalNum);
                   $('[name="deliveryDate"]').val(result.deliveryDate);
-                  /*  $('[name="codeName"]').val(result.codeName);
-                   $('[name="clientName"]').val(result.clientName); */
-
-                  /*  o.order_no, p.goods_name, c.code_name,
-                		o.total_num, o.delivery_date, cl.client_name, o.note */
                },
                error: function (reject) {
                   console.log(reject);
@@ -911,7 +901,7 @@
 		      ------------------------*/
          grid4.on('click', ev => {
             if (grid4.getRow(ev.rowKey) != null && ev.columnName != '_checked') { // checkbox 클릭시, 모달 안 뜨게끔
-               console.log('모달 : ', ev);
+       
 
                if (ev.rowKey >= 0) {
                   let orderNo = grid4.getRow(ev.rowKey).orderNo;
@@ -1013,10 +1003,8 @@
                method: "GET",
                dataType: "JSON",
                success: function (result) {
-                  console.log('출고관리 : ', result);
-
-                  for (let val of result) {
-                     console.log(val.orderCode);
+                 for (let val of result) {
+     
                      if (val.orderCode == '출고대기') {
                         g2data.push(val);
                      } else if (val.orderCode == '완료') {
@@ -1037,11 +1025,7 @@
          	삭제 클릭 이벤트
          ----------------*/
          function checkDel3() {
-            var data = grid5.getCheckedRows()
-            console.log(data);
-
-            console.log('완료 삭제 : ', data);
-            // debugger
+            var data = grid5.getCheckedRows();
             $.ajax({
                url: "/orders/ajaxDelOutOrder",
                method: "Post",
@@ -1146,13 +1130,10 @@
             if (rec == 0) {
                Swal.fire(
                   '출고대기 주문을 선택해 주세요.'
-
                )
-               //alert('출고 주문을 선택해 주세요.');
             }
 
             let data = grid2.getCheckedRows();
-            console.log(data);
             $.ajax({
                url: "/orders/updateOutInfo",
                method: "POST",
@@ -1214,7 +1195,6 @@
                method: "GET",
                dataType: "JSON",
                success: function (result) {
-                  console.log('ajax re: ', result);
                   grid5.resetData(result);
                },
                error: function (reject) {
@@ -1264,7 +1244,7 @@
       </script>
 
 
-   </div>
+	</div>
 </body>
 
 </html>
