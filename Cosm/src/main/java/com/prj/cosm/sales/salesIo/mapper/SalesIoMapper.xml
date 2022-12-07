@@ -29,6 +29,7 @@
 		ON o.goods_no = g.goods_no
 		JOIN client c
 		ON o.client_name = c.users_no
+		order by DELIVERY_DATE
 	</select>
 
 	<!-- 단건조회 -->
