@@ -49,9 +49,7 @@ public class MaterialServiceImpl implements MaterialService {
 	}
 
 	@Override
-	public int deleteMatrailInfo(List<String> mNo) {
-		// 자재 정보 삭제 - 재고 수량도 삭제됨
-		// if(사용여부 == null)
+	public int deleteMatrailInfo(List<String> mNo) {		
 		int result = 0;
 		for (String no : mNo) {
 			result += mMapper.deleteMatrailInfo(no);
@@ -145,7 +143,6 @@ public class MaterialServiceImpl implements MaterialService {
 		mvo.setMoGrNo(GrNo);
 		mvo.setMoi(strary);
 		result = mMapper.updateOrderGo(mvo);
-		System.out.println(result + "=====================");
 		return result;
 	}
 
