@@ -211,7 +211,6 @@
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
-					console.log(result);
 					for (let plan of result) {
 						plan.PLANSTART = String(plan.PLANSTART).substr(0, 10);
 						plan.PLANEND = String(plan.PLANEND).substr(0, 10);
@@ -231,7 +230,6 @@
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
-					console.log(result);
 					for (let plan of result) {
 						plan.PLANSTART = String(plan.PLANSTART).substr(0, 10);
 						plan.PLANEND = String(plan.PLANEND).substr(0, 10);

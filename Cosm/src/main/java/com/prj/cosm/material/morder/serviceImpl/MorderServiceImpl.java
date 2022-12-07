@@ -72,9 +72,7 @@ public class MorderServiceImpl implements MorderService {
 				aVO.setAlertReceive(eVO.getUsersNo());
 				aMapper.insertAlert(aVO);
 			}
-
 		}
-
 		// 현재 재고 들고오는 매퍼
 		List<MaterialVO> mList = maMapper.mList();
 		List<PlanVO> pList = pMapper.getPlanCompute();

@@ -281,6 +281,7 @@ border-radius: 0.2rem;
 							type="button" id="testDbtn" onclick="deleteTest()" class="btn btn-danger">삭제</button>
 							
 							
+							<input type="hidden" id="thisTENoS"> <!-- 조회 때문에 가져온 설비번호 값. -->
 							<input type="hidden" id="thisTNoUD" name="testNo"> <!-- 업데이트, 삭제 때문에 가져온 점검번호 값. -->
 							<input type="hidden" id="thisTYnUD" name="testYn"> <!-- 업데이트, 삭제 때문에 가져온 점검유무 값. -->
 							<input type="hidden" id="thisTCdUD" name="testCode"> <!-- 업데이트, 삭제 때문에 가져온 점검코드 값. -->
@@ -515,10 +516,12 @@ border-radius: 0.2rem;
 						<!-- Modal footer -->
 						<div class="modal-footer">
 							<button type="button" id="updateWBtn" class="btn btn-primary updateBtn3" onclick="updateWBtnClick()">수정</button>
-							<button type="button" id="updateWCBtn"  class="btn btn-cancel" onclick="cancelUpdateWork()">취소</button>		
+							<button type="button" id="updateWCBtn"  class="btn btn-cancel" onclick="cancelUpdateWork()">취소</button>	
+								
 							<input type="hidden" id="thisSeqU" name="signSeq"> <!-- 결재순서 업데이트 때문에 가져온 값. -->
 							<input type="hidden" id="thisSCdU" name="signCode"> <!-- 업데이트, 삭제 때문에 가져온 결재코드 값. -->
 							<input type="hidden" id="thisWNoUD" name="workNo"> <!-- 업데이트, 삭제 때문에 가져온 공사번호 값. -->
+							<input type="hidden" id="thisWENoS" > <!-- 취소 때문에 가져온 공사설비번호 값. -->
 							<button type="button" id="deleteWBtn" onclick="deleteWork()" class="btn btn-danger">삭제</button>
 						
 						</div>
@@ -1008,6 +1011,7 @@ document.querySelector('#test2Grid').style.display='none';
 		        
 				document.querySelector('#sTestEquipName').value=obj.testEquipName;
 				document.querySelector('#thisTNoUD').value=obj.testNo;
+				document.querySelector('#thisTENoS').value=obj.testEquipNo;
 				document.querySelector('#thisTYnUD').value=obj.testYn;	
 				
 				document.querySelector('#thisTCdUD').value= obj.testCode;
@@ -1358,6 +1362,11 @@ document.querySelector('#test2Grid').style.display='none';
 							else if (testCode=='A0106') radio[2].checked=true;
 							else radio[3].checked = true;
 							
+							const testNo =document.querySelector('#thisTNoUD').value;
+							const testEquipNo =document.querySelector('#thisTENoS').value;
+
+							getTestNo(testNo,testEquipNo);
+							
 							btn.innerText='수정';
 							btn.removeEventListener('click',updateTest);
 							btn.setAttribute('onclick','updateTBtnClick()');
@@ -1588,6 +1597,7 @@ function getWorkNo(workNo,workEquipNo) {
 					document.querySelector('#thisSeqU').value=obj.signSeq;
 					document.querySelector('#thisSCdU').value=obj.signCode;
 					document.querySelector('#thisWNoUD').value=obj.workNo;
+					document.querySelector('#thisWENoS').value=obj.workEquipNo;
 					document.querySelector('#writer').innerText=obj.position+" "+obj.usersName+", 결재 올림";
 					
 					// 숫자 자리에 콤마 찍기
@@ -1792,6 +1802,11 @@ function cancelUpdateWork() { // 되감기^^
 		wu[2].removeAttribute('onkeyup');
 		wu[3].removeAttribute('onkeyup');
 			
+		const workNo =document.querySelector('#thisWNoUD').value;
+		const workEquipNo =document.querySelector('#thisWENoS').value;
+
+		getWorkNo(workNo,workEquipNo);
+		
 		btn.innerText='수정';
 		btn.removeEventListener('click',updateWork);
 		btn.setAttribute('onclick','updateWBtnClick()');

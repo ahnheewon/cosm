@@ -96,7 +96,7 @@ public class MaterialController {
 		
 		mService.insertMatarialInfo(mVO);
 		//  
-		return "redirect:/material/minfo"; // 목록으로 돌아가기
+		return "redirect:material/minfo"; // 목록으로 돌아가기
 	}
 
 	// 파일 다운
@@ -221,7 +221,7 @@ public class MaterialController {
 		}
 		
 		mService.updateMatrailInfo(vo);
-		return "redirect:/material/minfo";
+		return "redirect:material/minfo";
 
 	}
 

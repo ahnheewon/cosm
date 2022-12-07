@@ -13,14 +13,7 @@ import lombok.Data;
 @Data
 public class MaterialVO {
 	
-	
-	
-//	public void setmUnitCode(String mUnitCode) {
-//		this.mUnitCode = mUnitCode;
-//	}
-//	public void setmNo(String mNo) {
-//		this.mNo = mNo; 
-//	}
+
 	// 1. 자재 정보, 재고 관리
 	private String mNo; // 자재번호
 	private String mName; // 자재명

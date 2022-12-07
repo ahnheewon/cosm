@@ -381,33 +381,15 @@ body {
 		개업일자 date -> string 20221111
 		*-----------------*/
 		$('#openDate').change(function(){
-			console.log($('#openDate').val());
-			let str = $('#openDate').val(); //날짜를 받아와서 
-			let strArray = str.split("-") //배열에 담아주고 -을 기준으로 나눠줌
-			console.log(strArray);
-			
+			let str = $('#openDate').val(); 
+			let strArray = str.split("-");	
 			let result = "";
 			for(let el of strArray){
 				result = result.concat(el);
 			}
-			console.log('changeDate',result);
 			$('#changeDate').val(result);
 		})
-		/*-----------------
-		사업자번호 체크여부
-		- 최종테스트시 not null 걸어서 처음부터 받을지, 마이페이지 수정에서 추가로 받을지 결정 
-		function checkBNo() {
-			console.log($('#businessNo').val())
-			if ($('#businessNo').val() == "" || $('#businessNo').val() == null) {
-				alert('사업자번호를 입력해주세요!');
-				return false;
-			}
-			if ($('#checkBtn2').val() != "Yes") {
-				alert('사업자번호 진위확인을 해주세요!');
-			}
-			$('#empInsertForm').submit();
-		}
-		-----------------*/
+		
 		
 		$('#checkPw').on('keyup',function(){
 			$('#chTd').text('')
@@ -431,7 +413,7 @@ body {
 		})
 
 		function checkForm() {
-			console.log($('#usersId').val())
+		
 			if ($('#usersId').val() == "" || $('#usersId').val() == null) {
 				Swal.fire(
                         '아이디 중복확인',
@@ -459,7 +441,6 @@ body {
 			/*----------------
 			진위확인 버튼 
 			------------------*/
-			console.log('진위확인 버튼 : ',$('#checkBtn2').val());
 			if($('#checkBtn2').val() == "no"){
 				Swal.fire(
                         '사업자등록증 확인',
@@ -473,7 +454,7 @@ body {
 
 		function checkId() {
 			var usersId = $('#usersId').val();
-			console.log(usersId);
+
 			$.ajax({
 				url: "/userCheckId",
 				type: "get",
@@ -507,7 +488,6 @@ body {
 						$('#usersId').val("");
 						$('#usersId').focus();
 					}
-					console.log(data);
 				},
 				error: function (reject) {
 					console.log(reject);
@@ -542,25 +522,13 @@ body {
 		 				};
  
 			$.ajax({
-				url: "http://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey="+service+"&returnType=JSON", // serviceKey 값을 xxxxxx에 입력
+				url: "http://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey="+service+"&returnType=JSON", 
 				type: "POST",
-				data: JSON.stringify(data), // json 을 string으로 변환하여 전송
+				data: JSON.stringify(data), 
 				dataType: "JSON",
 				contentType: "application/json",
 				async: false,
 				success: function (result) {
-					console.log('1',result.data[0].valid);
-					console.log('2',result.data);
-					console.log('3',result);
-					/* if(result.data[0].valid == '01' && result.status_code == 'OK'){
-						alert("정상 인증되었습니다.")
-					} else {
-						alert("사업자 번호를 다시 확인해 주세요.")
-						$('#businessNo').val('');
-						$('#businessNo').focus();
-					} */
-					
-					
 					 if (result.data[0].valid == '01' && result.status_code == 'OK' 
 							&&  $('#licenseImg').val() != '' ) {
 						Swal.fire(
@@ -578,9 +546,7 @@ body {
 					}
 				},
 				error: function (result) {
-					//console.log('result : ',result);
-					//console.log(result.responseText); //responseText의 에러메세지 확인
-					 if(result.responseText == "{\"status_code\":\"REQUEST_DATA_MALFORMED\"}\n" ){
+				 if(result.responseText == "{\"status_code\":\"REQUEST_DATA_MALFORMED\"}\n" ){
 							Swal.fire(
 			                        '필수항목을 입력해주세요',
 			                        '사업자번호, 대표자명, 사업자등록일자, 사업자등록증은 필수입니다!',

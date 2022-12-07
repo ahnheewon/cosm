@@ -151,7 +151,7 @@
 		SELECT w.work_no,w.work_name,(select equip_name from equip where equip_no=#{workEquipNo}) AS work_equip_name
 			   ,w.work_content, w.work_pay,work_ps, w.work_company, w.work_date, w.work_end_date
 			   ,(select code_name from code where code_no=u.users_author) as position
-               ,s.sign_emp_no,s.sign_seq,u.users_name, u.users_author,s.sign_code
+               ,s.sign_emp_no,s.sign_seq,u.users_name, u.users_author,s.sign_code,w.work_equip_no
 		FROM work w, work_sign s, users u
 		where w.work_no = s.sign_work_no
 		and s.sign_emp_no = u.users_no

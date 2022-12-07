@@ -241,13 +241,13 @@
 									<tr>
 										<td>정상진동</td>
 										<td colspan="2"><input class="form-control wantUpdate"
-											id="selectEquipStdVibe" name="equipStdVibe" type="text"
+											id="selectEquipStdVibe" name="equipStdVibe" type="number"
 											readonly></td>
 									</tr>
 									<tr>
 										<td>정상온도</td>
 										<td colspan="2"><input class="form-control wantUpdate"
-											id="selectEquipStdTemp" name="equipStdTemp" type="text"
+											id="selectEquipStdTemp" name="equipStdTemp" type="number"
 											readonly>
 										</td>
 									</tr>
@@ -593,6 +593,9 @@ function filter(){
             wantUpdate[i].required = false;
         }
 		
+		const equipNo = document.querySelector('#thisNoUD').value;
+		getEquipNo(equipNo);
+		
 		const btn = document.querySelector('#updateBtn')
 		btn.innerText='수정';
 		btn.removeEventListener('click',updateEquip);
@@ -721,6 +724,9 @@ function filter(){
             wu[i].required = false;
         }		
 		const btn = document.querySelector('#updateBtn2')
+		
+		const processNo = document.querySelector('#thisNoUD2').value;
+		getProcessNo(processNo);
 		
 		btn.innerText='수정';
 		btn.removeAttribute('onclick');

@@ -3,323 +3,331 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>자재정보관리</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자재정보관리</title>
 
 
-<style>
-.col-form-label{
-font-weight: bold;
-font-size: medium;
-}
+    <style>
+        .col-form-label {
+            font-weight: bold;
+            font-size: medium;
+        }
 
-h3{
-text-align: left; 
-font-weight: bold
-}
-</style>
+        h3 {
+            text-align: left;
+            font-weight: bold
+        }
+    </style>
 
 </head>
 
 <body>
-	<div layout:fragment="content">
-	<script	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-		<!-- 도로 주소명 API -->		
-		
-		<div class="container" style="padding-top : 50px; padding-bottom: 20px">
-		<div style="float:right; margin-top:30px; ">
-		<h6 ><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
-  		<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
-		</svg> > 자재 정보 관리 > 자재정보 등록</h6>
-		</div>
-			
-		<br>
+    <div layout:fragment="content">
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <!-- 도로 주소명 API -->
+
+        <div class="container" style="padding-top : 50px; padding-bottom: 20px">
+            <div style="float:right; margin-top:30px; ">
+                <h6><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" fill="currentColor"
+                        class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z" />
+                    </svg> > 자재 정보 관리 > 자재정보 등록</h6>
+            </div>
+
+            <br>
 
 
-			<h3 style="font-weight: bold;" >자재 정보 등록</h3>
-			<hr>
-			<!--자재정보 등록 form-->
-			<form id="frm" name="frm" method="post" action="/material/minsert"
-				enctype="multipart/form-data">
+            <h3 style="font-weight: bold;">자재 정보 등록</h3>
+            <hr>
+            <!--자재정보 등록 form-->
+            <form id="frm" name="frm" method="post" action="/material/minsert" enctype="multipart/form-data">
 
-				<input type="hidden" th:name="${_csrf.parameterName}"
-					th:value="${_csrf.token}" />
-					
-				<div class="row p-3">
-				
-					<div class="col">
-						<div class="form-group">
-							<label for="exampleFormControlSelect1" class="col-form-label">* 자재분류</label>
-							<select class="form-control" id="mCategorySelect"
-								name="mCategory">
-								<option selected="selected"></option>
-								<th:block th:each="category : ${category}">
-									<option th:text="${category.codeName}"></option>
-								</th:block>
-							</select>
-						</div>
-					</div>
-					<div class="col">
-						<label for="input" class="col-form-label">* 자재명</label> <input
-							type="text" class="form-control" name="mName" placeholder=""  >
-					</div>
-				</div>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                <div class="row p-3">
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1" class="col-form-label">* 자재분류</label>
+                            <select class="form-control" id="mCategorySelect" name="mCategory">
+                                <option selected="selected"></option>
+                                <th:block th:each="category : ${category}">
+                                    <option th:text="${category.codeName}"></option>
+                                </th:block>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="input" class="col-form-label">* 자재명</label> <input type="text" class="form-control"
+                            name="mName" placeholder="">
+                    </div>
+                </div>
 
 
 
-				<div class="row p-3">
-					<div class="col">
-						<label for="input" class="col-form-label">* 거래처번호</label> <input
-							type="text" class="form-control" id="selectCno" name="mCompanyId" >
-					</div>
+                <div class="row p-3">
+                    <div class="col">
+                        <label for="input" class="col-form-label">* 거래처번호</label> <input type="text"
+                            class="form-control" id="selectCno" name="mCompanyId">
+                    </div>
 
-					<div class="col">
-						<label for="input" class="col-form-label">* 거래처명</label> <input
-							type="text" class="form-control" name="mCompanyNm"  >
-					</div>
-				</div>
+                    <div class="col">
+                        <label for="input" class="col-form-label">* 거래처명</label> <input type="text" class="form-control"
+                            name="mCompanyNm">
+                    </div>
+                </div>
 
-				<div class="row p-3">
+                <div class="row p-3">
 
-					<div class="col">
-						<div class="form-group">
-							<label for="exampleFormControlSelect1" class="col-form-label">* 자재단위</label>
-							<input type="hidden" class="form-control" id="mUnit" value="L"
-								onchange="mUnitSelect"> <select class="form-control"
-								id="mUnitSelect" name="mUnitCode"  >
-								<option selected="selected"></option>
-								<th:block th:each="unit : ${unit}">
-									<option th:text="${unit.codeName}"></option>
-								</th:block>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1" class="col-form-label">* 자재단위</label>
+                            <input type="hidden" class="form-control" id="mUnit" value="L" onchange="mUnitSelect">
+                            <select class="form-control" id="mUnitSelect" name="mUnitCode">
+                                <option selected="selected"></option>
+                                <th:block th:each="unit : ${unit}">
+                                    <option th:text="${unit.codeName}"></option>
+                                </th:block>
 
-							</select>
-						</div>
-					</div>
-					<div class="col">
-						<label for="input" class="col-form-label">* 단가</label> <input
-							type="text" class="form-control" name="mPrice"  >
-					</div>
-				</div>
-				<div class="row p-3">
-					<label for="input" class="col-form-label">* 자재상세정보</label>
-					<textarea class="form-control col-sm-5" rows="5" name="mInfo" ></textarea>
-				</div>
-				<div class="form-group">
-					<label for="exampleFormControlFile1">첨부파일</label> <input
-						type="file" name="imageFile" class="form-control-file"
-						id="exampleFormControlFile1">
-				</div>
-				<div style="margin-top: 20px; text-align: right;">
-					<button type="submit" class="btn btn-primary" id="saveInfo">저장</button>
-					<button type="button" class="btn btn-secondary" id="cancleInfo"
-						onclick="location.href='minfo'">취소</button>
-				</div>
-			</form>
-			<!--자재 정보 등록 form end-->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="input" class="col-form-label">* 단가</label> <input type="text" class="form-control"
+                            name="mPrice">
+                    </div>
+                </div>
+                <div class="row p-3">
+                    <label for="input" class="col-form-label">* 자재상세정보</label>
+                    <textarea class="form-control col-sm-5" rows="5" name="mInfo"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlFile1">첨부파일</label> <input type="file" name="imageFile"
+                        class="form-control-file" id="exampleFormControlFile1">
+                </div>
+                <div style="margin-top: 20px; text-align: right;">
+                    <button type="submit" class="btn btn-primary" id="saveInfo">저장</button>
+                    <button type="button" class="btn btn-secondary" id="cancleInfo"
+                        onclick="location.href='minfo'">취소</button>
+                </div>
+            </form>
+            <!--자재 정보 등록 form end-->
 
-		</div>
-		<!-- 자재번호 모달-->
-		<div class="modal" tabindex="-1" id="mNoModal">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">거래처 찾기</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close" id="comFilter"></button>
-					</div>
-					<div class="modal-body">
+        </div>
+        <!-- 자재번호 모달-->
+        <div class="modal" tabindex="-1" id="mNoModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="font-weight: bold;">거래처 찾기</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            id="comFilter"></button>
+                    </div>
+                    <div class="modal-body">
 
-						<div class="search" style="margin-left: 30px;">
-							<form>
-								<span>거래처 명</span> <input type="text" id="comSearch"
-									class="searchInput" onkeyup="filter()"
-									style="width: 250px; margin-bottom: 10px;">
-								<button type="button" class="btn btn-secondary btn-sm">
-									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-										fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-  <path
-											d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-</svg>
-								</button>
-								<button type="button" class="btn btn-secondary btn-sm"
-									id="reg-com-btn" onclick="popup()">등록</button>
-								<div id="grid"></div>
-							</form>
-						</div>
+                        <div class="search" style="margin-left: 30px;">
+                            <form>
+                                <span>거래처 명</span> <input type="text" id="comSearch" class="searchInput"
+                                    onkeyup="filter()" style="width: 250px; margin-bottom: 10px;">
+                                <button type="button" class="btn btn-secondary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-search" viewBox="0 0 16 16">
+                                        <path
+                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                                        </path>
+                                    </svg>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-sm" id="reg-com-btn"
+                                    onclick="popup()">등록</button>
+                                <div id="grid"></div>
+                            </form>
+                        </div>
 
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary"
-							data-bs-dismiss="modal">확인</button>
-						<button type="button" class="btn btn-danger"
-							data-bs-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-			<!-- end of #mNoModal modal -->
-			<script>
-				// 모달 새로 그리고 그리드 출력하기   
-				
-				let selectMno = document.getElementById('selectCno'); // input id
-				selectCno.addEventListener('focus', function() {
-					let myModalAlternative = new bootstrap.Modal('#mNoModal')
-					let modalToggle = document.getElementById('mNoModal');
-					myModalAlternative.show(modalToggle)
-					findComGrid.refreshLayout() // modal 만들때 한번 더 toast gird 그려달라는 내용
-					
-				})
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+                    </div>
+                </div>
+            </div>
+            <!-- end of #mNoModal modal -->
+            <script>
+                // 모달 새로 그리고 그리드 출력하기   
 
-				// 거래처명 찾기 tui grid
-				var findComGrid;
+                let selectMno = document.getElementById('selectCno'); // input id
+                selectCno.addEventListener('focus', function () {
+                    let myModalAlternative = new bootstrap.Modal('#mNoModal')
+                    let modalToggle = document.getElementById('mNoModal');
+                    myModalAlternative.show(modalToggle)
+                    findComGrid.refreshLayout() // modal 만들때 한번 더 toast gird 그려달라는 내용
 
-				findComGrid = new tui.Grid({
+                })
 
-					el : document.getElementById('grid'),
-					rowHeaders : [ 'rowNum' ], // 가장 왼쪽 체크박스
-					scrollX : false, // 세로 스크롤 
-					scrollY : false, // 가로 스크롤
-					columns : [ {
+                /*--------------------
+                // 거래처명 tui grid
+                ----------------------*/
+                
+                let findComGrid;
 
-						header : '거래처번호',
-						name : 'mcompanyId'
-						
-						
-					},
+                findComGrid = new tui.Grid({
 
-					{
-						header : '거래처명',
-						name : 'mcompanyNm',
-						filter: 'text'
-					},
+                    el: document.getElementById('grid'),
+                    rowHeaders: ['rowNum'], // 가장 왼쪽 체크박스
+                    scrollX: false, // 세로 스크롤 
+                    scrollY: false, // 가로 스크롤
+                    columns: [{
 
-					{
-						header : '담당자명',
-						name : 'mmngNm'
-						
-					}
+                        header: '거래처번호',
+                        name: 'mcompanyId'
 
-					],
-					pageOptions : {
-						perPage : 5,
-						userClient : true
-					}
 
-				})
+                    },
 
-				tui.Grid.applyTheme("normal", {
-					cell : {
-						nomal : {
-							background : "#fff",
-							border : "#e0e0e0",
-							showVerticalBorder : false,
-							showHorizontalBorder : true
-						},
-						header : {
-							background : "#eaeaea",
-							border : "#e0e0e0",
-							showHorizontalBorder : true
-						},
-						rowHeader : {
-							background : "#eaeaea",
-							border : "#e0e0e0",
-							showVerticalBorder : false,
-							showHorizontalBorder : true
-						},
-					},
+                    {
+                        header: '거래처명',
+                        name: 'mcompanyNm',
+                        filter: 'text'
+                    },
 
-				});
+                    {
+                        header: '담당자명',
+                        name: 'mmngNm'
 
-				// 거래처 명 찾기 ajax			
-					$.ajax({
-						url : "/material/ajax/getComNm",
-						method : "GET",
-						success : function(result) {
-							findComGrid.resetData((result));						
+                    }
 
-						},
+                    ],
+                    pageOptions: {
+                        perPage: 5,
+                        userClient: true
+                    }
 
-						error : function(reject) {
-							console.log(reject)
-						}
-					})
-		
-	
-	//거래처 row 선택시 거래처코드, 이름 들어감
-	findComGrid.on('click', ev =>{
-		let rowData = findComGrid.getRow(ev.rowKey)
-		let comId = rowData.mcompanyId
-		let comNm = rowData.mcompanyNm
-		console.log(rowData)
+                })
 
-		$('[name="mCompanyId"]').val(comId);
-		$('[name="mCompanyNm"]').val(comNm);		
-		
-		
-	})				
-	
-	// 거래처 등록 popup 이벤트 설정
-	function popup(){
-	 let options = "location=no, status=no,width=800, height=700";
-	 window.open('/material/mregcom','mregcom', options); // 팝업주소, 팝업창 이름, 설정
-	}
-					
-		
+                tui.Grid.applyTheme("normal", {
+                    cell: {
+                        nomal: {
+                            background: "#fff",
+                            border: "#e0e0e0",
+                            showVerticalBorder: false,
+                            showHorizontalBorder: true
+                        },
+                        header: {
+                            background: "#eaeaea",
+                            border: "#e0e0e0",
+                            showHorizontalBorder: true
+                        },
+                        rowHeader: {
+                            background: "#eaeaea",
+                            border: "#e0e0e0",
+                            showVerticalBorder: false,
+                            showHorizontalBorder: true
+                        },
+                    },
 
-			<!-- 자재번호 모달 끝-->
-		
-		
-			// 재고 정보 등록
-			$('#saveInfo').on('click', function() {
-				
-				   
-				if($('[name="mCategory"]').val() == ""||
-				   $('[name="mName"]').val() == "" || 
-				   $('[name="mCompanyId"]').val() == "" ||
-				   $('[name="mCompanyNm"]').val()== "" || 
-				   $('[name="mUnitCode"]').val() == ""||
-				   $('[name="mPrice"]').val() == "" || 
-				   $('[name="mInfo"]').val() == "") 
-				  
-					{
-					Swal.fire(
-                            '빈칸이 있습니다.', 
+                });
+
+                /*----------------------
+                // 거래처 명 찾기 ajax		
+                ------------------------*/
+
+                $.ajax({
+                    url: "/material/ajax/getComNm",
+                    method: "GET",
+                    success: function (result) {
+                        findComGrid.resetData((result));
+
+                    },
+
+                    error: function (reject) {
+                    }
+                })
+
+
+                /*--------------------------------
+                //거래처 row 선택시 거래처코드, 이름 들어감		
+                ---------------------------------*/
+
+
+                findComGrid.on('click', ev => {
+                    let rowData = findComGrid.getRow(ev.rowKey)
+                    let comId = rowData.mcompanyId
+                    let comNm = rowData.mcompanyNm
+
+                    $('[name="mCompanyId"]').val(comId);
+                    $('[name="mCompanyNm"]').val(comNm);
+
+
+                })
+                
+                /*-------------------------
+                // 거래처 등록 popup 이벤트 설정
+                --------------------------*/
+                function popup() {
+                    let options = "location=no, status=no,width=800, height=700";
+                    window.open('/material/mregcom', 'mregcom', options); // 팝업주소, 팝업창 이름, 설정
+                }
+
+
+
+
+                /*------------------------
+                //재고 정보 등록
+                --------------------------*/
+
+                $('#saveInfo').on('click', function () {
+
+
+                    if ($('[name="mCategory"]').val() == "" ||
+                        $('[name="mName"]').val() == "" ||
+                        $('[name="mCompanyId"]').val() == "" ||
+                        $('[name="mCompanyNm"]').val() == "" ||
+                        $('[name="mUnitCode"]').val() == "" ||
+                        $('[name="mPrice"]').val() == "" ||
+                        $('[name="mInfo"]').val() == "") {
+                        Swal.fire(
+                            '빈칸이 있습니다.',
                             '다시 확인해주세요.'
                         )
-                   
-					}else{
-						$('#frm').submit();
-					}
-					
-			});
 
-			// 단위코드 선택(변경)
-			function mUnitSelect() {
-				let unit = document.querySelector('#mUnitSelect').value;
-				document.querySelector('#mUnit').value = unit;
+                    } else {
+                        $('#frm').submit();
+                    }
 
-			}
-			
-			 /*--------------------
-	         검색기능(필터이용 검색함수)
-	         ----------------------*/
-	         function filter() { // 토스트그리드 
+                });
 
-	            const search = document.getElementById("comSearch") //인풋태그	         
-	            const state = [{ code: 'contain', value: search.value.toUpperCase() }];
 
-	            if (search.value == '') {
-	            	findComGrid.unfilter('mcompanyNm');	            
-	            } else {
-	            	findComGrid.filter('mcompanyNm', state);	            
-	            }
+                /*--------------------
+                // 단위코드 선택(변경)
+                ----------------------*/
 
-	         }
-		</script>
-		</div>
-	</div>
-	<!-- end of layout -->
+                function mUnitSelect() {
+                    let unit = document.querySelector('#mUnitSelect').value;
+                    document.querySelector('#mUnit').value = unit;
+
+                }
+
+                /*--------------------
+                검색기능(필터이용 검색함수)
+                ----------------------*/
+                function filter() { // 토스트그리드 
+
+                    const search = document.getElementById("comSearch") //인풋태그	         
+                    const state = [{ code: 'contain', value: search.value.toUpperCase() }];
+
+                    if (search.value == '') {
+                        findComGrid.unfilter('mcompanyNm');
+                    } else {
+                        findComGrid.filter('mcompanyNm', state);
+                    }
+
+                }
+            </script>
+        </div>
+    </div>
+    <!-- end of layout -->
 
 </body>
 

@@ -4,555 +4,553 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>입,출고 리스트</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>입,출고 리스트</title>
 
 
-<!--toast date-picker-->
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
-<script
-	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+    <!--toast date-picker-->
+    <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+    <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 
 </head>
+
 <body>
-	<div layout:fragment="content">
-		<div class="container" style="padding-top : 50px; padding-bottom: 20px">
-		 <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
-  		<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
-		</svg> > 입출고 목록 </h6>
-		<h3 style="text-align: center; font-weight: bold;">입고 리스트</h3>
-		<hr>
-			<div class="row">
-				<div class="column">				
-					<div id="select_input" style="float:right; margin-bottom:10px">
-						<span>입고일자</span>
-						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-							style="margin-left: -1px; z-index: 1009">
-							<input id="startpicker-input" type="text" aria-label="Date"
-								style="z-index: 1009"> <span class="tui-ico-date"></span>
-							<div id="startpicker-container"
-								style="margin-left: -1px; z-index: 1009"></div>
-						</div>
-						<span>~</span>
-						<div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index: 1009">
-							<input id="endpicker-input" type="text" aria-label="Date"
-								style=" z-index: 1009"> <span class="tui-ico-date"></span>
-							<div id="endpicker-container" style="margin-left: -1px; z-index: 1009"></div>
-						</div>
-						<button type="button" class="btn btn-secondary btn-sm" id="searchBtn">검색</button>
-						</div>
-						<div>
-						<button type="button" class="btn btn-secondary btn-sm" id="inputBtn"
-							onclick="miStanbyList()" style="float: left">자재검수</button>
-						</div>
-					
-					<div id="grid"></div>
-				</div>
-				<hr>
-				<div class="column">
-					<h3 style="text-align: center; font-weight: bold; margin-top:10px; margin-bottom : 20px;">출고 리스트</h3>
-					<hr>
-					<div id="select_output" style="float:right; margin-bottom:10px">
-						<span>출고일자</span>
-						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-							style="z-index: 1001">
-							<input id="startpicker-input2" type="text" aria-label="Date"
-								style="z-index: 1001"> <span class="tui-ico-date"></span>
-							<div id="startpicker-container2"
-								style="margin-left: -1px; z-index: 1001"></div>
-						</div>
-						<span>~</span>
-						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-							style="z-index: 1001">
-							<input id="endpicker-input2" type="text" aria-label="Date"
-								style="z-index: 1001"> <span class="tui-ico-date"></span>
-							<div id="endpicker-container2"
-								style="margin-left: -1px; z-index: 1001"></div>
-						</div>
+    <div layout:fragment="content">
+        <div class="container" style="padding-top : 50px; padding-bottom: 20px">
+            <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19"
+                    fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z" />
+                </svg> > 입출고 목록 </h6>
+            <h3 style="text-align: center; font-weight: bold;">입고 리스트</h3>
+            <hr>
+            <div class="row">
+                <div class="column">
+                    <div id="select_input" style="float:right; margin-bottom:10px">
+                        <span>입고일자</span>
+                        <div class="tui-datepicker-input tui-datetime-input tui-has-focus"
+                            style="margin-left: -1px; z-index: 1009">
+                            <input id="startpicker-input" type="text" aria-label="Date" style="z-index: 1009"> <span
+                                class="tui-ico-date"></span>
+                            <div id="startpicker-container" style="margin-left: -1px; z-index: 1009"></div>
+                        </div>
+                        <span>~</span>
+                        <div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index: 1009">
+                            <input id="endpicker-input" type="text" aria-label="Date" style=" z-index: 1009"> <span
+                                class="tui-ico-date"></span>
+                            <div id="endpicker-container" style="margin-left: -1px; z-index: 1009"></div>
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" id="searchBtn">검색</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary btn-sm" id="inputBtn" onclick="miStanbyList()"
+                            style="float: left">자재검수</button>
+                    </div>
 
-						<button type="button" class="btn btn-secondary btn-sm" id="findBtn">
-							조회</button>
-					</div>
-					<div id="grid2"></div>
-				</div>
-			</div>
-		</div>
+                    <div id="grid"></div>
+                </div>
+                <hr>
+                <div class="column">
+                    <h3 style="text-align: center; font-weight: bold; margin-top:10px; margin-bottom : 20px;">출고 리스트
+                    </h3>
+                    <hr>
+                    <div id="select_output" style="float:right; margin-bottom:10px">
+                        <span>출고일자</span>
+                        <div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index: 1001">
+                            <input id="startpicker-input2" type="text" aria-label="Date" style="z-index: 1001"> <span
+                                class="tui-ico-date"></span>
+                            <div id="startpicker-container2" style="margin-left: -1px; z-index: 1001"></div>
+                        </div>
+                        <span>~</span>
+                        <div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index: 1001">
+                            <input id="endpicker-input2" type="text" aria-label="Date" style="z-index: 1001"> <span
+                                class="tui-ico-date"></span>
+                            <div id="endpicker-container2" style="margin-left: -1px; z-index: 1001"></div>
+                        </div>
 
-		<!-- 입고 등록 모달 -->
-		<div class="modal" tabindex="-1" id="inputOrderModal"
-			style="z-index: 1300">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">입고 대기 리스트</h5>						
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="text-align: left">
-						<div id="grid3"></div>
-					</div>
-					<div class="modal-footer" style="text-align: center">
-						<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-						<button type="button" class="btn btn-primary"
-							onclick="updateInput()" id="orderIOBtn">등록</button>
-						<button type="button" class="btn btn-danger"
-							data-bs-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-		
+                        <button type="button" class="btn btn-secondary btn-sm" id="findBtn">
+                            조회</button>
+                    </div>
+                    <div id="grid2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 입고 등록 모달 -->
+        <div class="modal" tabindex="-1" id="inputOrderModal" style="z-index: 1300">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="font-weight: bold;">입고 대기 리스트</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align: left">
+                        <div id="grid3"></div>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+                        <button type="button" class="btn btn-primary" onclick="updateInput()"
+                            id="orderIOBtn">등록</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+                    </div>
+                </div>
+            </div>
 
 
-		<script>
-	
 
-			//입고 관리 (상단)
-			let inputGrid;
+            <script>
 
-			inputGrid = new tui.Grid({
+                /*-------------------
+                // 입,출고 현황 toast grid 
+               ---------------------*/
 
-				el : document.getElementById('grid'),
-				rowHeaders : [ 'rowNum' ], //가장 왼쪽 체크박스
-				scrollX : false, // 세로 스크롤 
-				scrollY : false, // 가로 스크롤
-				columns : // 컬럼명
-				[ {
-					header : '발주번호',
-					name : 'moOrderId',
-					align : 'center'
-				},					
-					{
-					header : '자재번호',
-					name : 'mioNo',
-					align : 'center'
-				}, {
-					header : '자재명',
-					name : 'mioName'
-				}, {
-					header : '입고수량',
-					name : 'mioQntt',
-					align : 'right',
-					 formatter: function (el) {
-						 return formatter(el.value); 
-	                     }
-				}, {
-					header : '입고날짜',
-					name : 'mioDate',
-					align : 'center'
-				}
+                //입고 관리 (상단)
+                let inputGrid = new tui.Grid({
 
-				],
+                    el: document.getElementById('grid'),
+                    rowHeaders: ['rowNum'], //가장 왼쪽 체크박스
+                    scrollX: false, // 세로 스크롤 
+                    scrollY: false, // 가로 스크롤
+                    columns: // 컬럼명
+                        [{
+                            header: '발주번호',
+                            name: 'moOrderId',
+                            align: 'center'
+                        },
+                        {
+                            header: '자재번호',
+                            name: 'mioNo',
+                            align: 'center'
+                        }, {
+                            header: '자재명',
+                            name: 'mioName'
+                        }, {
+                            header: '입고수량',
+                            name: 'mioQntt',
+                            align: 'right',
+                            formatter: function (el) {
+                                return formatter(el.value);
+                            }
+                        }, {
+                            header: '입고날짜',
+                            name: 'mioDate',
+                            align: 'center'
+                        }
 
-				pageOptions : {
-					useClient : true,
-					perPage : 10
-				},
+                        ],
 
-			})
+                    pageOptions: {
+                        useClient: true,
+                        perPage: 10
+                    },
 
-			// 출고 현황(하단)
-			let outputGrid;
+                })
 
-			outputGrid = new tui.Grid({
+                // 출고 현황(하단)
+                let outputGrid = new tui.Grid({
 
-				el : document.getElementById('grid2'),
-				rowHeaders : [ 'rowNum' ], // 가장 왼쪽 체크박스
-				scrollX : false, // 세로 스크롤 
-				scrollY : false, // 가로 스크롤
-				columns : [ {
-					header : '자재번호',
-					name : 'mioNo',
-					align : 'center'
-					
-				}, {
-					header : '자재명',
-					name : 'mioName',
-					align : 'left'
-				}, {
-					header : '출고수량',
-					name : 'mioQntt',
-					 align : 'right',
-					 formatter: function (el) {
-						 return formatter(el.value); 
-	                     }               
-					 
-				}, {
-					header : '출고날짜',
-					name : 'mioDate',
-					align : 'center'
-				} ],
+                    el: document.getElementById('grid2'),
+                    rowHeaders: ['rowNum'], // 가장 왼쪽 체크박스
+                    scrollX: false, // 세로 스크롤 
+                    scrollY: false, // 가로 스크롤
+                    columns: [{
+                        header: '자재번호',
+                        name: 'mioNo',
+                        align: 'center'
 
-				pageOptions : {
-					perPage : 10,
-					useClient : true
-				}
+                    }, {
+                        header: '자재명',
+                        name: 'mioName',
+                        align: 'left'
+                    }, {
+                        header: '출고수량',
+                        name: 'mioQntt',
+                        align: 'right',
+                        formatter: function (el) {
+                            return formatter(el.value);
+                        }
 
-			})
+                    }, {
+                        header: '출고날짜',
+                        name: 'mioDate',
+                        align: 'center'
+                    }],
 
-			// 입고 대기 리스트(검수 필요)
-			let stanbyGrid;
+                    pageOptions: {
+                        perPage: 10,
+                        useClient: true
+                    }
 
-			stanbyGrid = new tui.Grid(
-					{
+                })
 
-						el : document.getElementById('grid3'),
-						rowHeaders : [ 'checkbox' ], // 가장 왼쪽 체크박스
-						scrollX : false, // 세로 스크롤 
-						scrollY : false, // 가로 스크롤
-						columns : [
-							
+                /*-------------------
+                // 입고 대기 리스트(검수)
+                ---------------------*/
 
-							{
-								header : '발주번호', // 이름 어떤 걸로 할지 체크
-								name : 'moOrderId',
-								align : 'center'
-							},
 
-								{
-									header : '자재번호', // 이름 어떤 걸로 할지 체크
-									name : 'moMaterialId',
-									align : 'center'
-								},
+                let stanbyGrid = new tui.Grid(
+                    {
 
-								{
-									header : '자재명',
-									name : 'moName',
-									align : 'left'
-								},
+                        el: document.getElementById('grid3'),
+                        rowHeaders: ['checkbox'], // 가장 왼쪽 체크박스
+                        scrollX: false, // 세로 스크롤 
+                        scrollY: false, // 가로 스크롤
+                        columns: [
 
-								{
-									header : '거래처명',
-									name : 'moComNm',
-									align : 'left'
-								},
 
-								{
-									header : '발주수량',
-									name : 'moNum',
-									align : 'right',
-									 formatter: function (el) {
-										 return formatter(el.value); 
-					                     },
-								},
+                            {
+                                header: '발주번호', // 이름 어떤 걸로 할지 체크
+                                name: 'moOrderId',
+                                align: 'center'
+                            },
 
-								{
-									header : '입고수량',
-									name : 'mioQntt',
-									align : 'right',
-									 formatter: function (el) {
-										 return formatter(el.value); 
-					                     },
-									editor : 'text',
-									validation : {
-										dataType : 'text',
-										required : true,
-										min : 0
-									//max :
-									},
-									onAfterChange : function(ev) {
-										let qntt = stanbyGrid.getRow(ev.rowKey).mioQntt
-										let moNum = stanbyGrid.getRow(ev.rowKey).moNum
-										console.log(ev);
+                            {
+                                header: '자재번호', // 이름 어떤 걸로 할지 체크
+                                name: 'moMaterialId',
+                                align: 'center'
+                            },
 
-										if (qntt <= moNum) {
-											stanbyGrid.setValue(ev.rowKey,
-													'mioInQntt', ev.value)
-										} else {
-											
-											alert('입고 수량은 발주 수량보다 클 수 없습니다.');
-											stanbyGrid.setValue(ev.rowKey,
-													'mioQntt', moNum)
-											
-										}
-									}
-								},
+                            {
+                                header: '자재명',
+                                name: 'moName',
+                                align: 'left'
+                            },
 
-								{
-									header : '품질 상태',
-									name : 'mioQuality',
-									align : 'center',
-									editor : {
-										type : 'select',
-										options : {
-											listItems : [ {
-												text : '합격',
-												value : '합격'
-											}, {
-												text : '불합격',
-												value : '불합격'
-											} ]
-										}
-									},
+                            {
+                                header: '거래처명',
+                                name: 'moComNm',
+                                align: 'left'
+                            },
 
-									validation : {
-										dataType : 'text',
-										required : true
+                            {
+                                header: '발주수량',
+                                name: 'moNum',
+                                align: 'right',
+                                formatter: function (el) {
+                                    return formatter(el.value);
+                                },
+                            },
 
-									},
-									onAfterChange : function(ev) {
-										let qlt = stanbyGrid.getRow(ev.rowKey).mioQuality
-										console.log(qlt)
-										console.log('ev', ev)
-										stanbyGrid.setValue(ev.rowKey,
-												'mioQuality', qlt) // sweet alert로 cs 변경하기
-										console.log(ev.rowKey)
+                            {
+                                header: '입고수량',
+                                name: 'mioQntt',
+                                align: 'right',
+                                formatter: function (el) {
+                                    return formatter(el.value);
+                                },
+                                editor: 'text',
+                                validation: {
+                                    dataType: 'text',
+                                    required: true,
+                                    min: 0
+                                },
+                                onAfterChange: function (ev) {
+                                    let qntt = stanbyGrid.getRow(ev.rowKey).mioQntt
+                                    let moNum = stanbyGrid.getRow(ev.rowKey).moNum
 
-									}
+                                    if (qntt <= moNum) {
+                                        stanbyGrid.setValue(ev.rowKey,
+                                            'mioInQntt', ev.value)
+                                    } else {
 
-								}
+                                        alert('입고 수량은 발주 수량보다 클 수 없습니다.');
+                                        stanbyGrid.setValue(ev.rowKey,
+                                            'mioQntt', moNum)
 
-						],
+                                    }
+                                }
+                            },
 
-						pageOptions : {
-							perPage : 10
-						}
+                            {
+                                header: '품질 상태',
+                                name: 'mioQuality',
+                                align: 'center',
+                                editor: {
+                                    type: 'select',
+                                    options: {
+                                        listItems: [{
+                                            text: '합격',
+                                            value: '합격'
+                                        }, {
+                                            text: '불합격',
+                                            value: '불합격'
+                                        }]
+                                    }
+                                },
 
-					})
-			
-			//금액, 숫자 자릿수 표기
-			function formatter(value){
-	        	 if(!value) {return 0}
-	        	 
-	             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-	         }
+                                validation: {
+                                    dataType: 'text',
+                                    required: true
 
-			//tui.Grid 스타일 주기
-			tui.Grid.applyTheme("normal", {
-				cell : {
-					nomal : {
-						background : "#fff",
-						border : "#e0e0e0",
-						showVerticalBorder : false,
-						showHorizontalBorder : true
-					},
-					header : {
-						background : "#eaeaea",
-						border : "#e0e0e0",
-						showHorizontalBorder : true
-					},
-					rowHeader : {
-						background : "#eaeaea",
-						border : "#e0e0e0",
-						showVerticalBorder : false,
-						showHorizontalBorder : true
-					},
-				},
+                                },
+                                onAfterChange: function (ev) {
+                                    let qlt = stanbyGrid.getRow(ev.rowKey).mioQuality
+                                    stanbyGrid.setValue(ev.rowKey,
+                                        'mioQuality', qlt) 
 
-			});
+                                }
 
-			function mioList() {
-				$.ajax({
-					url : "/material/ajax/miolist",
-					method : "GET",
-					success : function(result) {
-						console.log(result);
-						inputGrid.resetData(result.list1);
-						outputGrid.resetData(result.list2);
-					},
-					error : function(reject) {
-						console.log(reject);
-					}
-				})
+                            }
 
-			}
+                        ],
 
-			// 입고 대기 목록 조회
-			function miStanbyList() {
-				$.ajax({
-					url : "/material/ajax/stanby",
-					method : "GET",
-					success : function(result) {
-						console.log('stanby', result);
-						stanbyGrid.resetData(result);
+                        pageOptions: {
+                            perPage: 10,
+                            useClient: true
+                        }
 
-					},
-					error : function(reject) {
-						console.log(reject);
-					}
-				})
+                    })
+                
+                //tui.Grid 스타일 주기
+                tui.Grid.applyTheme("normal", {
+                    cell: {
+                        nomal: {
+                            background: "#fff",
+                            border: "#e0e0e0",
+                            showVerticalBorder: false,
+                            showHorizontalBorder: true
+                        },
+                        header: {
+                            background: "#eaeaea",
+                            border: "#e0e0e0",
+                            showHorizontalBorder: true
+                        },
+                        rowHeader: {
+                            background: "#eaeaea",
+                            border: "#e0e0e0",
+                            showVerticalBorder: false,
+                            showHorizontalBorder: true
+                        },
+                    },
 
-			}
-			let myModalAlternative;
-			/*--------------------------
-			입고 등록 모달 띄우기 
-			-----------------------------*/
-			function inputModalHandler() {
-				$('#inputBtn').on('click', function() {
-							myModalAlternative = new bootstrap.Modal(
-									'#inputOrderModal')
-							let modalToggle = document.getElementById('inputOrderModal');
-							myModalAlternative.show(modalToggle);
-							stanbyGrid.refreshLayout();
-						})
-			}
+                });
 
-	
-			
+                
 
-			// date picker (입고 날짜 조회)
-			let today = new Date();
-			let picker = new tui.DatePicker.createRangePicker({
-				startpicker : {
-					date : today,
-					input : '#startpicker-input',
-					container : '#startpicker-container'
-				},
-				endpicker : {
-					date : today,
-					input : '#endpicker-input',
-					container : '#endpicker-container'
-				},
-				selectableRanges : [ [
-						new Date(today.getFullYear() - 5, today.getMonth(),
-								today.getDate()),
-						new Date(today.getFullYear() + 5, today.getMonth(),
-								today.getDate()) ]]
+                
+                /*-----------------------------
+                // 숫자 3자리마다 comma(,) 
+                // value값 없을 경우 0으로 보이게 하기
+                 -----------------------------*/
+                function formatter(value) {
+                    if (!value) { return 0 }
 
-			});
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+                }
 
-			// date picker (출고 날짜 조회)
-			let picker2 = new tui.DatePicker.createRangePicker({
-				startpicker : {
-					date : today,
-					input : '#startpicker-input2',
-					container : '#startpicker-container2'
-				},
-				endpicker : {
-					date : today,
-					input : '#endpicker-input2',
-					container : '#endpicker-container2'
-				},
-				selectableRanges : [ [
-						new Date(today.getFullYear() - 5, today.getMonth(),
-								today.getDate()),
-						new Date(today.getFullYear() + 5, today.getMonth(),
-								today.getDate()) ] ],
+              
+                
+                
+                
+                /*---------------------------
+                // 입고, 출고 리스트 ajax
+                -----------------------------*/
+                function mioList() {
+                    $.ajax({
+                        url: "/material/ajax/miolist",
+                        method: "GET",
+                        success: function (result) {
+                            inputGrid.resetData(result.list1);
+                            outputGrid.resetData(result.list2);
+                        },
+                        error: function (reject) {
+                        }
+                    })
 
-			});
+                }
+                
+                
+                /*---------------------------
+                // 입고 대기 목록 조회 ajax
+                -----------------------------*/
+               
+                function miStanbyList() {
+                    $.ajax({
+                        url: "/material/ajax/stanby",
+                        method: "GET",
+                        success: function (result) {
+                            stanbyGrid.resetData(result);
 
-			/*-----------------------
-			 	날짜 검색 버튼 이벤트 핸들러
-			 --------------------------*/
-			function searchBtnHandler() {
-				$('#searchBtn').on('click', function() {
-					let getStartDay = $('#startpicker-input').val();
-					let getEndDay = $('#endpicker-input').val();
-					console.log(getStartDay);
-					console.log(getEndDay);
+                        },
+                        error: function (reject) {
+                        }
+                    })
 
-					$.ajax({
-						url : '/material/ajax/miolist',
-						data : {
-							"startDate" : getStartDay,
-							"endDate" : getEndDay
-						},
-						contentType : "application/json",
-						method : 'GET',
-						dataType : 'json',
-						success : function(result) {
-							console.log(result);
-							inputGrid.resetData(result.list1);
-						},
-						error : function(reject) {
-							console.log(reject);
-						}
-					})
+                }
+                
+                /*--------------------------
+                // 입고 등록 모달 띄우기 
+                -----------------------------*/
+                let myModalAlternative;
+                function inputModalHandler() {
+                    $('#inputBtn').on('click', function () {
+                        myModalAlternative = new bootstrap.Modal(
+                            '#inputOrderModal')
+                        let modalToggle = document.getElementById('inputOrderModal');
+                        myModalAlternative.show(modalToggle);
+                        stanbyGrid.refreshLayout();
+                    })
+                }
 
-				})
+                /*--------------------------
+                // date picker 조회
+                -----------------------------*/
 
-			}
+                // 입고 날짜 조회
+                let today = new Date();
+                let picker = new tui.DatePicker.createRangePicker({
+                    startpicker: {
+                        date: today,
+                        input: '#startpicker-input',
+                        container: '#startpicker-container'
+                    },
+                    endpicker: {
+                        date: today,
+                        input: '#endpicker-input',
+                        container: '#endpicker-container'
+                    },
+                    selectableRanges: [[
+                        new Date(today.getFullYear() - 5, today.getMonth(),
+                            today.getDate()),
+                        new Date(today.getFullYear() + 5, today.getMonth(),
+                            today.getDate())]]
 
-			function findBtnHandler() {
-				$('#findBtn').on('click', function() {
-					let getStartDay = $('#startpicker-input2').val();
-					let getEndDay = $('#endpicker-input2').val();
-					console.log(getStartDay);
-					console.log(getEndDay);
+                });
 
-					$.ajax({
-						url : '/material/ajax/miolist',
-						data : {
-							"startDate" : getStartDay,
-							"endDate" : getEndDay
-						},
-						contentType : "application/json",
-						dataType : 'json',
-						method : 'GET',
-						success : function(result) {
-							console.log(result);
-							outputGrid.resetData((result.list2));
-						},
-						error : function(reject) {
-							console.log(reject);
-						}
-					})
+                // 출고 날짜 조회
+                let picker2 = new tui.DatePicker.createRangePicker({
+                    startpicker: {
+                        date: today,
+                        input: '#startpicker-input2',
+                        container: '#startpicker-container2'
+                    },
+                    endpicker: {
+                        date: today,
+                        input: '#endpicker-input2',
+                        container: '#endpicker-container2'
+                    },
+                    selectableRanges: [[
+                        new Date(today.getFullYear() - 5, today.getMonth(),
+                            today.getDate()),
+                        new Date(today.getFullYear() + 5, today.getMonth(),
+                            today.getDate())]],
 
-				})
-			}
-			
+                });
 
-			
-			
-			
+                /*-----------------------
+                // 날짜 검색 버튼 이벤트 핸들러
+                 --------------------------*/
+                 
+                function searchBtnHandler() {
+                    $('#searchBtn').on('click', function () {
+                        let getStartDay = $('#startpicker-input').val();
+                        let getEndDay = $('#endpicker-input').val();
 
-			// 입고 대기 -> 입고 리스트로 넣기
-			function updateInput() {
-				let stanby = [];
-				stanbyGrid.blur(); // focus 없애기
-				let row = stanbyGrid.getModifiedRows().updatedRows;
+                        $.ajax({
+                            url: '/material/ajax/miolist',
+                            data: {
+                                "startDate": getStartDay,
+                                "endDate": getEndDay
+                            },
+                            contentType: "application/json",
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function (result) {
+                                inputGrid.resetData(result.list1);
+                            },
+                            error: function (reject) {
+                            }
+                        })
 
-				for (key in row) {
-					stanby.push(row[key].moMaterialId);
-					stanby.push(row[key].moName);
-					stanby.push(row[key].moComNm);
-					stanby.push(row[key].mioInQntt);
-					stanby.push(row[key].mioQuality);
-					stanby.push(row[key].moOrderId);
-					stanby.push(row[key].mioProgress);
-				}
+                    })
 
-				console.log(row)
+                }
 
-				$.ajax({
-					url : "/material/updateInput",
-					method : "Post",
-					contentType : "application/json",
-					data : JSON.stringify(row),
-					dataType : "json",
-					beforeSend : function(xhr) {
-						xhr.setRequestHeader(header, token);
-					},
-					success : function(result) {
-						console.log(result);
-						let modalToggle = document.getElementById('inputOrderModal');					
-						myModalAlternative.hide(modalToggle);
-						mioList();
+                function findBtnHandler() {
+                    $('#findBtn').on('click', function () {
+                        let getStartDay = $('#startpicker-input2').val();
+                        let getEndDay = $('#endpicker-input2').val();
 
-					},
-					error : function(reject) {
-						console.log(reject);
-					}
-				})
+                        $.ajax({
+                            url: '/material/ajax/miolist',
+                            data: {
+                                "startDate": getStartDay,
+                                "endDate": getEndDay
+                            },
+                            contentType: "application/json",
+                            dataType: 'json',
+                            method: 'GET',
+                            success: function (result) {
+                                outputGrid.resetData((result.list2));
+                            },
+                            error: function (reject) {
+                            }
+                        })
 
-			}
+                    })
+                }
 
-			/*-----------------------
-				 이벤트 핸들러 모음
-			 --------------------------*/
-			searchBtnHandler(); // 입고리스트 조회 
-			findBtnHandler(); // 출고리스트 조회
-			inputModalHandler(); // 입고 등록 모달 띄우기
-			
-			/*----------------------
-			ajax 호출 
-			----------------------*/
-			mioList(); // 입고,출고 리스트
-			
-		</script>
-	</div>
+
+
+
+                /*-----------------------
+                // 입고 대기 -> 입고 리스트로 넣기
+                 --------------------------*/
+                 
+                function updateInput() {
+                    let stanby = [];
+                    stanbyGrid.blur(); // focus 없애기
+                    let row = stanbyGrid.getModifiedRows().updatedRows;
+
+                    for (key in row) {
+                        stanby.push(row[key].moMaterialId);
+                        stanby.push(row[key].moName);
+                        stanby.push(row[key].moComNm);
+                        stanby.push(row[key].mioInQntt);
+                        stanby.push(row[key].mioQuality);
+                        stanby.push(row[key].moOrderId);
+                        stanby.push(row[key].mioProgress);
+                    }
+
+
+                    $.ajax({
+                        url: "/material/updateInput",
+                        method: "Post",
+                        contentType: "application/json",
+                        data: JSON.stringify(row),
+                        dataType: "json",
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success: function (result) {
+                            let modalToggle = document.getElementById('inputOrderModal');
+                            myModalAlternative.hide(modalToggle);
+                            mioList();
+
+                        },
+                        error: function (reject) {
+                        }
+                    })
+
+                }
+
+                /*-----------------------
+                 // 이벤트 핸들러 모음
+                 --------------------------*/
+                searchBtnHandler(); // 입고리스트 조회 
+                findBtnHandler(); // 출고리스트 조회
+                inputModalHandler(); // 입고 등록 모달 띄우기
+
+                /*----------------------
+                // ajax 호출 
+                ----------------------*/
+                mioList(); // 입고,출고 리스트
+
+            </script>
+        </div>
 
 </body>
+
 </html>
