@@ -13,8 +13,6 @@ import lombok.Data;
 public class MorderVO {
 
 	// 1. 자재 입출고 - 입,출고된 자재 리스트
-
-	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date mioDate;// 일자
@@ -37,7 +35,6 @@ public class MorderVO {
 	
 	// 3. 품질관리
 	private String mioQuality; // 품질상태
-	
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
