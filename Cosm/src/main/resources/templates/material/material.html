@@ -1,709 +1,701 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/layout}">
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/layout}">
 
 <head>
 
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>자재정보관리</title>
-   
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자재정보관리</title>
+
 
 </head>
 <style>
-   /*bootstrap grid 스타일 */
-   * {
-      box-sizing: border-box;
-   }
+    /*bootstrap grid 스타일 */
+    * {
+        box-sizing: border-box;
+    }
 
-   /* Create two equal columns that floats next to each other */
-   .column {
-      width: 100%;
-      padding: 10px;
-      height: auto;
-      /* Should be removed. Only for demonstration */
-      outline: solid 1px black;
-   }
+    /* Create two equal columns that floats next to each other */
+    .column {
+        width: 100%;
+        padding: 10px;
+        height: auto;
+        /* Should be removed. Only for demonstration */
+        outline: solid 1px black;
+    }
 
-   /* Clear floats after the columns */
-   .row:after {
-      content: "";
-      display: table;
-      clear: both;
-   }
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 
-   #btn {
-      float: right;
-      margin-right: 5px;
-   }
-
-
-   
+    #btn {
+        float: right;
+        margin-right: 5px;
+    }
 </style>
 </head>
 
 <body>
-   <div layout:fragment="content">
-   
-		
-      <div class="container" style="padding-top : 50px; padding-bottom: 20px">
-      <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
-  		<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
-		</svg> > 자재 정보 관리 </h6>
-         <h3 style="text-align: center; font-weight: bold; ">자재 정보 관리</h3>
-		 <hr>
-         <div class="row">
-            <div class="column">
-               <div id="wrap">
-                  <div id="search_wrap">
-                     <div class="search" style="float: left;" >
-                        <span style="font-weight: bold"></span> <input type="text" id="searchFilter" style="width: 200px; float:left; margin-right:3px;margin-bottom:5px"
-                           onkeyup="filter()" placeholder="자재명 입력">
-                           <button type="button" class="btn btn-secondary btn-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-</svg>
-              </button>    
-                     </div>
-                     <div id ="btn_wrap" style="float: right; margin-bottom: 2px">
-                     <button type="button" class="btn btn-secondary btn-sm" id="insertbtn"
-                           onclick="mInfoInsert()">등록</button>
-                        <button type="button" class="btn btn-secondary btn-sm" id="updatebtn"
-                           onclick="mInfoUpdate()">수정</button>
-                        <button type="button" class="btn btn-secondary btn-sm" id="delbtn">삭제</button>
-                        <button type="button" class="btn btn-secondary btn-sm" id="regbtn">자재 발주</button>
-                     </div>
-                  </div>
+    <div layout:fragment="content">
 
-                  <div>
-                     <div id="grid"></div>
-                  </div>
-               </div>
+
+        <div class="container" style="padding-top : 50px; padding-bottom: 20px">
+            <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19"
+                    fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z" />
+                </svg> > 자재 정보 관리 </h6>
+            <h3 style="text-align: center; font-weight: bold; ">자재 정보 관리</h3>
+            <hr>
+            <div class="row">
+                <div class="column">
+                    <div id="wrap">
+                        <div id="search_wrap">
+                            <div class="search" style="float: left;">
+                                <span style="font-weight: bold"></span> <input type="text" id="searchFilter"
+                                    style="width: 200px; float:left; margin-right:3px;margin-bottom:5px"
+                                    onkeyup="filter()" placeholder="자재명 입력">
+                                <button type="button" class="btn btn-secondary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-search" viewBox="0 0 16 16">
+                                        <path
+                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div id="btn_wrap" style="float: right; margin-bottom: 2px">
+                                <button type="button" class="btn btn-secondary btn-sm" id="insertbtn"
+                                    onclick="mInfoInsert()">등록</button>
+                                <button type="button" class="btn btn-secondary btn-sm" id="updatebtn"
+                                    onclick="mInfoUpdate()">수정</button>
+                                <button type="button" class="btn btn-secondary btn-sm" id="delbtn">삭제</button>
+                                <button type="button" class="btn btn-secondary btn-sm" id="regbtn">자재 발주</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div id="grid"></div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="column" style="padding-top : 20px;">
+
+                    <h3 style="text-align: center; font-weight: bold; padding-bottom: 10px">자재 변동 내역</h3>
+                    <hr>
+                    <input type="text" id="searchFilter_2"
+                        style="width: 200px; float:left;margin-right:3px;margin-bottom:5px" onkeyup="filter2()"
+                        placeholder="자재명 입력">
+                    <button type="button" class="btn btn-secondary btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-search" viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="mdate" style="margin-left: 10px; z-index: 1001; float:right">
+                        <div class="tui-datepicker-input tui-datetime-input tui-has-focus"
+                            style="margin-bottom: 5px; z-index: 1001;">
+                            <input id="startpicker-input" type="text" aria-label="Date"
+                                style="margin-bottom: 5px; z-index: 1001"> <span class="tui-ico-date"></span>
+                            <div id="startpicker-container" class="datePicker" style="z-index: 1001"></div>
+                        </div>
+                        <span>~</span>
+                        <div class="tui-datepicker-input tui-datetime-input tui-has-focus"
+                            style="margin-bottom: 5px; z-index: 1001">
+                            <input id="endpicker-input" type="text" aria-label="Date"
+                                style="margin-bottom: 5px; z-index: 1001"> <span class="tui-ico-date"></span>
+                            <div id="endpicker-container" class="datePicker" style="margin-bottom: 5px; z-index: 1001">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" id="findBtn">검색</button>
+                    </div>
+                    <div id="grid2"></div>
+                </div>
             </div>
-            <hr>   
-		
-            <div class="column" style="padding-top : 20px;">
-            
-               <h3 style="text-align: center; font-weight: bold; padding-bottom: 10px">자재 변동 내역</h3>
-       			<hr>                
-                   <input type="text" id="searchFilter_2" style="width: 200px; float:left;margin-right:3px;margin-bottom:5px" onkeyup="filter2()"
-                     placeholder="자재명 입력"> 
-                     <button type="button" class="btn btn-secondary btn-sm">
-                		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-  							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-						</svg>
-              </button>                    
-               <div id="mdate" style="margin-left: 10px; z-index: 1001; float:right">
-                  <div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-                     style="margin-bottom: 5px; z-index: 1001;">
-                     <input id="startpicker-input" type="text" aria-label="Date"
-                        style="margin-bottom: 5px; z-index: 1001"> <span class="tui-ico-date"></span>
-                     <div id="startpicker-container" class="datePicker" style="z-index: 1001"></div>
-                  </div>
-                  <span>~</span>
-                  <div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-                     style="margin-bottom: 5px; z-index: 1001">
-                     <input id="endpicker-input" type="text" aria-label="Date"
-                        style="margin-bottom: 5px; z-index: 1001"> <span class="tui-ico-date"></span>
-                     <div id="endpicker-container" class="datePicker"
-                        style="margin-bottom: 5px; z-index: 1001"></div>
-                  </div>
-                  <button type="button" class="btn btn-secondary btn-sm" id="findBtn">검색</button>
-               </div>
-             <div id="grid2"></div>
+        </div>
+
+
+        <!-- 자재 정보 상세내역 모달-->
+        <div class="modal" tabindex="-1" id="mInfoModal" style="z-index: 1300">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="font-weight: bold;">자재 정보 상세내역</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align: left">
+
+                        <div class="row p-3">
+                            <label for="input" class="col-form-label"></label>
+                            <img name="mFile"></img>
+                        </div>
+                        <div class="row p-3">
+                            <div class="col">
+                                <label for="input" class="col-form-label">자재번호</label> <input type="text"
+                                    class="form-control" name="mNo">
+                            </div>
+                            <div class="col">
+                                <label for="input" class="col-form-label">자재명</label> <input type="text"
+                                    class="form-control" name="mName">
+                            </div>
+                            <div class="row p-3">
+                                <label for="input" class="col-form-label">자재상세정보</label>
+                                <textarea class="form-control col-sm-5" rows="5" name="mInfo"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer" style="text-align: center">
+                            <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                onclick="location.href='minfo'">확인</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
+        </div>
 
-    
-      <!-- 자재 정보 상세내역 모달-->
-      <div class="modal" tabindex="-1" id="mInfoModal" style="z-index: 1300">
-         <div class="modal-dialog modal-lg">
-            <div class="modal-content">	
-               <div class="modal-header">
-                  <h5 class="modal-title" style="font-weight: bold;">자재 정보 상세내역</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <div class="modal-body" style="text-align: left">
-                  
-                   <div class="row p-3">
-                        <label for="input" class="col-form-label"></label>
-                        <img name="mFile"></img>
-                     </div>
-                     <div class="row p-3">
-                     <div class="col">
-                        <label for="input" class="col-form-label">자재번호</label> <input type="text"
-                           class="form-control" name="mNo">
-                     </div>
-                     <div class="col">
-                        <label for="input" class="col-form-label">자재명</label> <input type="text"
-                           class="form-control" name="mName">
-                     </div>
-                     <div class="row p-3">
-                        <label for="input" class="col-form-label">자재상세정보</label>
-                        <textarea class="form-control col-sm-5" rows="5" name="mInfo"></textarea>
-                     </div>
-                     
-                  </div>
-                  <div class="modal-footer" style="text-align: center">
-                     <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                        onclick="location.href='minfo'">확인</button>
-                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+        <script>
 
-      <script>
 
-  	
-         
-         /*-------------------------
-             재고 변동 내역 수정일자 단위로 조회
-          --------------------------*/
-         
+
+            /*-------------------------
+                재고 변동 내역 수정일자 단위로 조회
+             --------------------------*/
+
             let today = new Date();
             let picker = new tui.DatePicker.createRangePicker({
-               startpicker: {
-                  date: today,
+                startpicker: {
+                    date: today,
 
-                  input: '#startpicker-input',
-                  container: '#startpicker-container',
+                    input: '#startpicker-input',
+                    container: '#startpicker-container',
 
-               },
-               endpicker: {
-                  date: today,
+                },
+                endpicker: {
+                    date: today,
 
-                  input: '#endpicker-input',
-                  container: '#endpicker-container',
+                    input: '#endpicker-input',
+                    container: '#endpicker-container',
 
-               },
-               selectableRanges : [ [
-					new Date(today.getFullYear() - 5, today.getMonth(),
-							today.getDate()),
-					new Date(today.getFullYear() + 5, today.getMonth(),
-							today.getDate()) ]]
+                },
+                selectableRanges: [[
+                    new Date(today.getFullYear() - 5, today.getMonth(),
+                        today.getDate()),
+                    new Date(today.getFullYear() + 5, today.getMonth(),
+                        today.getDate())]]
 
             });
 
-         
-         /*-------------------------
-            재고 정보 관리 (상단) grid 초기화
-         --------------------------*/
 
-         
+            /*-------------------------
+               재고 정보 관리 (상단) grid 초기화
+            --------------------------*/
+
+
 
 
             let infoGrid = new tui.Grid({
 
-               el: document.getElementById('grid'),
-               rowHeaders: ['checkbox'], // 가장 왼쪽 체크박스
-               scrollX: false, // 세로 스크롤 
-               scrollY: false, // 가로 스크롤
-               columns: // 컬럼명
-                  [{
-                     header: '자재번호',
-                     name: 'mno',
-                     align: 'center'
-                  }, {
-                     header: '거래처번호',
-                     name: 'mcompanyId',
-                     align: 'center'
-                  }, {
-                     header: '자재명',
-                     name: 'mname',
-                     align: 'left',
-                     filter: {
-                        type: 'text',
-                        showClearBtn: true
-                     }
-                  }, {
-                     header: '거래처명',
-                     name: 'mcompanyNm',
-                     align: 'left'
-                  }, {
-                     header: '단가',
-                     name: 'mprice',
-                     align: 'right',
-                     formatter: function (el) {
-                    	 return formatter(el.value)  
-                     }
-                  }, {
-                     header: '단위',
-                     name: 'munitCode',
-                     align: 'center'
-                  }, {
-                     header: '분류',
-                     name: 'mcategory',
-                     align: 'left'
-                  }, {
-                     header: '현재 재고',
-                     name: 'mstock',
-                     align: 'right',
-                     formatter: function (el) {
-                    	 return formatter(el.value)  
-                     }
-                  }, {
-                     header: '필요수량',
-                     name: 'totalPlanedQntt',
-                     align: 'right',
-                     formatter: function (el) {
-                    	 return formatter(el.value)  
-                     }
-                  }, {
-                     header: '발주중인 수량',
-                     name: 'totalMoNum',
-                     align: 'right',
-                     formatter: function (el) {
-                    	 return formatter(el.value)  
-                     }
-                  }, {
-                     header: '부족한 수량',
-                     name: 'shortage',
-                     align: 'right',
-                     validation: {
-                        dataType: 'text',
-                        required: true,
-                        max: 1
-                     },
-                     formatter: function (el) {
-                    	 return formatter(el.value)
-                    	 
-                     }
-                  }
+                el: document.getElementById('grid'),
+                rowHeaders: ['checkbox'], // 가장 왼쪽 체크박스
+                scrollX: false, // 세로 스크롤 
+                scrollY: false, // 가로 스크롤
+                columns: // 컬럼명
+                    [{
+                        header: '자재번호',
+                        name: 'mno',
+                        align: 'center'
+                    }, {
+                        header: '거래처번호',
+                        name: 'mcompanyId',
+                        align: 'center'
+                    }, {
+                        header: '자재명',
+                        name: 'mname',
+                        align: 'left',
+                        filter: {
+                            type: 'text',
+                            showClearBtn: true
+                        }
+                    }, {
+                        header: '거래처명',
+                        name: 'mcompanyNm',
+                        align: 'left'
+                    }, {
+                        header: '단가',
+                        name: 'mprice',
+                        align: 'right',
+                        formatter: function (el) {
+                            return formatter(el.value)
+                        }
+                    }, {
+                        header: '단위',
+                        name: 'munitCode',
+                        align: 'center'
+                    }, {
+                        header: '분류',
+                        name: 'mcategory',
+                        align: 'left'
+                    }, {
+                        header: '현재 재고',
+                        name: 'mstock',
+                        align: 'right',
+                        formatter: function (el) {
+                            return formatter(el.value)
+                        }
+                    }, {
+                        header: '필요수량',
+                        name: 'totalPlanedQntt',
+                        align: 'right',
+                        formatter: function (el) {
+                            return formatter(el.value)
+                        }
+                    }, {
+                        header: '발주중인 수량',
+                        name: 'totalMoNum',
+                        align: 'right',
+                        formatter: function (el) {
+                            return formatter(el.value)
+                        }
+                    }, {
+                        header: '부족한 수량',
+                        name: 'shortage',
+                        align: 'right',
+                        validation: {
+                            dataType: 'text',
+                            required: true,
+                            max: 1
+                        },
+                        formatter: function (el) {
+                            return formatter(el.value)
+
+                        }
+                    }
 
 
-                  ],
-               pageOptions: {
-                  perPage: 10,
-                  useClient: true
-               },
+                    ],
+                pageOptions: {
+                    perPage: 10,
+                    useClient: true
+                },
 
             })
 
-      
-
-         
-         function formatter(value){
-        	 if(!value) {return 0}
-        	 
-             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-         }
-         
 
 
-         /*-------------------------
-                 재고 변동 내역 grid 초기화
+
+            function formatter(value) {
+                if (!value) { return 0 }
+
+                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+            }
+
+
+
+            /*-------------------------
+               재고 변동 내역 grid 초기화
              --------------------------*/
 
-             const dataSource = {
-            		  api: {
-            		    readData: { url: '/material/ajax/mioList', method: 'GET', initParams: { param: 'param' } }
-            		  }
-            		};
-              
+            const dataSource = {
+                api: {
+                    readData: { url: '/material/ajax/mioList', method: 'GET', initParams: { param: 'param' } }
+                }
+            };
+
 
             let mioGrid;
 
             mioGrid = new tui.Grid({
 
-               el: document.getElementById('grid2'),
-               rowHeaders: ['rowNum'], // 가장 왼쪽 체크박스
-               data : dataSource, 
-               scrollX: false, // 세로 스크롤 
-               scrollY: false, // 가로 스크롤
-               columns: [
-                  {
-                     header: '분류',
-                     name: 'mcategory',
-                     width : 100
-                  },   
-                  {
-                  header: '자재번호',                  
-                  name: 'mioNo',
-                  align: 'center'
-               },   {
-                  header: '자재명',
-                  name: 'mname',
-                  align: 'center',
-                  filter: {
-                     type: 'text',
-                     showClearBtn: true
-                  }
-               },
-                
-               {
-                  header: '변동사항',
-                  name: 'mioProgress',
-                  align: 'center',
-                  width : 100
-               },
-               
-               {
-                  header: '변동수량',
-                  name: 'mioQntt',
-                  align: 'right',
-                  formatter: function (el) {
-                	 if(el.row.mioProgress=='출고완료'){
-                		  return formatter('-'+el.value)
-                	 }                	 
-                	  return formatter('+' + el.value)  
-                  }
-               }, 
-               {
-                  header: '변동일자',
-                  name: 'mioDate',
-                  align: 'right'
-               }, ],
-               pageOptions: {                
-                  perPage: 10
-               }
+                el: document.getElementById('grid2'),
+                rowHeaders: ['rowNum'], // 가장 왼쪽 체크박스
+                data: dataSource,
+                scrollX: false, // 세로 스크롤 
+                scrollY: false, // 가로 스크롤
+                columns: [
+                    {
+                        header: '분류',
+                        name: 'mcategory',
+                        width: 100
+                    },
+                    {
+                        header: '자재번호',
+                        name: 'mioNo',
+                        align: 'center'
+                    }, {
+                        header: '자재명',
+                        name: 'mname',
+                        align: 'center',
+                        filter: {
+                            type: 'text',
+                            showClearBtn: true
+                        }
+                    },
 
-            })
+                    {
+                        header: '변동사항',
+                        name: 'mioProgress',
+                        align: 'center',
+                        width: 100
+                    },
 
-         
-
-
-         //tui.Grid 스타일 주기
-         tui.Grid.applyTheme("normal", {
-            cell: {
-               nomal: {
-                  background: "#fff",
-                  border: "#e0e0e0",
-                  showVerticalBorder: false,
-                  showHorizontalBorder: true
-               },
-               header: {
-                  background: "#eaeaea",
-                  border: "#e0e0e0",
-                  showHorizontalBorder: true
-               },
-               rowHeader: {
-                  background: "#eaeaea",
-                  border: "#e0e0e0",
-                  showVerticalBorder: false,
-                  showHorizontalBorder: true
-               },
-            },
-
-         });
-
-            
-		// mouse hover
-            tui.Grid.applyTheme('custom', { 
-                row: { 
-                  hover: { 
-                    background: '#dcdfec' 
-                  }
+                    {
+                        header: '변동수량',
+                        name: 'mioQntt',
+                        align: 'right',
+                        formatter: function (el) {
+                            if (el.row.mioProgress == '출고완료') {
+                                return formatter('-' + el.value)
+                            }
+                            return formatter('+' + el.value)
+                        }
+                    },
+                    {
+                        header: '변동일자',
+                        name: 'mioDate',
+                        align: 'right'
+                    },],
+                pageOptions: {
+                    perPage: 10
                 }
-           });
 
-
-         /*----------------------- 
-         자재 정보, 자재 현황 내역 ajax 
-         ------------------------*/
-         function mList() {
-            $.ajax({
-               url: "/material/ajax/minfo",
-               method: "GET",
-               success: function (result) {
-                  infoGrid.resetData((result.list1));
-                  //mioGrid.resetData((result.list2));               
-                  
-                  console.log(result);
-
-
-               },
-               error: function (reject) {
-                  console.log(reject);
-               }
             })
 
-         }
-         
-         
-         
-         
-         
-       
-         /*----------------------- 
-            자재 정보 상세내역
-         ------------------------*/
-         
-         function mInfo(mno) {
-            $.ajax({
-               url: "/material/mInfoView",
-               method: "GET",
-               data: { "mNo": mno },
-               success: function (result) {
-                  console.log(result);
-                  $('[name="mNo"]').val(result.mno);
-                  $('[name="mName"]').val(result.mname);
-                  $('[name="mInfo"]').val(result.minfo);
+
+
+			/*---------------------------
+			//tui.Grid 스타일 주기
+			----------------------------*/
             
-                  /* 파일이 존재하면 업로드한 이미지 띄우기, 존재하지 않으면 no Image 띄우기*/ 
-                  if(result.mfile != null){ 
-				  	$('[name="mFile"]').attr("src", "/material/filedown?fname=" +result.mfile);
-				  	$('[name="mFile"]').css("width", "500px");
-				  	$('[name="mFile"]').css("display", "block");
-					$('[name="mFile"]').css("margin", "0px auto");
-                  }else{
-                	$('[name="mFile"]').attr("src", "/assets/img/noImage.jpg" );  
-                	$('[name="mFile"]').css("width", "500px");
-                	$('[name="mFile"]').css("display", "block");
-					$('[name="mFile"]').css("margin", "0px auto");
-                  }
-               },
-               error: function (reject) {
-                  console.log(reject);
-               }
-            })
+            tui.Grid.applyTheme("normal", {
+                cell: {
+                    nomal: {
+                        background: "#fff",
+                        border: "#e0e0e0",
+                        showVerticalBorder: false,
+                        showHorizontalBorder: true
+                    },
+                    header: {
+                        background: "#eaeaea",
+                        border: "#e0e0e0",
+                        showHorizontalBorder: true
+                    },
+                    rowHeader: {
+                        background: "#eaeaea",
+                        border: "#e0e0e0",
+                        showVerticalBorder: false,
+                        showHorizontalBorder: true
+                    },
+                },
 
-         }
-       
-         
-
-         
-         // 자재 정보 상세조회
-         infoGrid.on('click', ev => {
-            if (infoGrid.getRow(ev.rowKey) != null && ev.columnName != '_checked') { // checkbox 클릭시, 모달 안 뜨게끔
-               console.log(ev);
-
-               if (ev.rowKey >= 0) {
-                  let mno = infoGrid.getRow(ev.rowKey).mno;
-                  mInfo(mno);
-               }
-               // 상세 조회 모달 열기
-               let myModalAlternative = new bootstrap.Modal('#mInfoModal')
-               let modalToggle = document.getElementById('mInfoModal');
-               myModalAlternative.show(modalToggle)
-            }
-         });
-
-         
-         
-
-         // 자재 등록 click -> 페이지 전환
-         function mInfoInsert() {
-            window.location.href = 'minsert'
-         }
-
-         
-         
-         // 자재 정보 수정 check box ->  click -> 페이지 전환
-         // 1. check box 선택
-         // 2. 정보 가져오기      
-
-         function mInfoUpdate() {
-            location.href = "mUpdate?mNo=" + infoGrid.getCheckedRows()[0].mno // 하나만 읽음
-
-         }
-  
-
-         /* ------------------ 
-         자재 삭제
-          1. checkbox 선택
-          2. 선택된 checkbox의 값에서 mno 가져오기  버튼 -> 함수(onclick -> ajax 실행) -> mno 보내주고 삭제
-          3. 삭제 실행 (모달창의 확인 클릭)
-          --------------------------*/
-          
-       // 삭제    
-      	 $().ready(function () {
-            $("#delbtn").click(function () {
-                Swal.fire({
-                    title: '자재정보를 삭제하시겠습니까?',
-                    text: "삭제된 정보는 복구가 불가능합니다.",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: '승인',
-                    cancelButtonText: '취소'
-                }).then((result) => {
-               	 checkDel();
-                 
-                })
-               
             });
-        });
-           
-         function checkDel() {
 
-            let delmno = [];
-            let obj = infoGrid.getCheckedRows()
 
-            for (key in obj) {
-               delmno.push(obj[key].mno);
+            // mouse hover
+            tui.Grid.applyTheme('custom', {
+                row: {
+                    hover: {
+                        background: '#dcdfec'
+                    }
+                }
+            });
+
+
+            /*----------------------- 
+            // 자재 정보, 자재 현황 내역 ajax 
+            ------------------------*/
+            function mList() {
+                $.ajax({
+                    url: "/material/ajax/minfo",
+                    method: "GET",
+                    success: function (result) {
+                        infoGrid.resetData((result.list1));
+                       
+                    },
+                    error: function (reject) {
+                      
+                    }
+                })
 
             }
-            // debugger
 
-            $.ajax({
-               url: "/material/mdelinfo",
-               method: "Post",
-               contentType: "application/json",
-               data: JSON.stringify({ "delmno": delmno }),
-               beforeSend: function (xhr) {
-                  xhr.setRequestHeader(header, token);
-               },
-               success: function (result) {
-            	   console.log('del',result);
-                  if (result == 0){                	
-                         Swal.fire({
-                                  icon: 'warning',
-                                  title: '삭제가 불가능합니다.',
-                                  text: '사용 중인 자재 입니다.',
-                              });
-                                            
-                } else {                	
-                	 Swal.fire({
-                         icon: 'info',
-                         title: '삭제가 완료되었습니다.'
-                     });
+
+
+            /*----------------------- 
+            // 자재 정보 상세내역
+            ------------------------*/
+
+            function mInfo(mno) {
+                $.ajax({
+                    url: "/material/mInfoView",
+                    method: "GET",
+                    data: { "mNo": mno },
+                    success: function (result) {
+
+                        $('[name="mNo"]').val(result.mno);
+                        $('[name="mName"]').val(result.mname);
+                        $('[name="mInfo"]').val(result.minfo);
+
+                        /* 파일이 존재하면 업로드한 이미지 띄우기, 존재하지 않으면 no Image 띄우기*/
+                        if (result.mfile != null) {
+                            $('[name="mFile"]').attr("src", "/material/filedown?fname=" + result.mfile);
+                            $('[name="mFile"]').css("width", "500px");
+                            $('[name="mFile"]').css("display", "block");
+                            $('[name="mFile"]').css("margin", "0px auto");
+                        } else {
+                            $('[name="mFile"]').attr("src", "/assets/img/noImage.jpg");
+                            $('[name="mFile"]').css("width", "500px");
+                            $('[name="mFile"]').css("display", "block");
+                            $('[name="mFile"]').css("margin", "0px auto");
+                        }
+                    },
+                    error: function (reject) {
+
+                    }
+                })
+
+            }
+
+            /*----------------------- 
+            // 자재 정보 상세조회
+            ------------------------*/
+            infoGrid.on('click', ev => {
+            	// checkbox 클릭시, 모달 안 뜨게끔    
+                if (infoGrid.getRow(ev.rowKey) != null && ev.columnName != '_checked') {               
+
+                    if (ev.rowKey >= 0) {
+                        let mno = infoGrid.getRow(ev.rowKey).mno;
+                        mInfo(mno);
+                    }
+                    // 상세 조회 모달 열기
+                    let myModalAlternative = new bootstrap.Modal('#mInfoModal')
+                    let modalToggle = document.getElementById('mInfoModal');
+                    myModalAlternative.show(modalToggle)
                 }
-                  console.log(result);
-                  mList();
+            });
 
-               },
-               error: function (reject) {
-                  console.log(reject);
-               }
-            })
-        }
+            /*----------------------- 
+            // 자재 등록 click -> 페이지 전환
+            ------------------------*/
+
+            function mInfoInsert() {
+                window.location.href = 'minsert'
+            }
+
+            /*-------------------------------------------             
+            // 자재 정보 수정     
+            --------------------------------------------*/
+            function mInfoUpdate() {
+                location.href = "mUpdate?mNo=" + infoGrid.getCheckedRows()[0].mno // 하나만 읽음
+
+            }
 
 
-      // 발주 대기 이동
-         $().ready(function () {
-             $("#regbtn").click(function () {
-                 Swal.fire({
-                     title: '발주를 진행하시겠습니까?',
-                     text: "발주 대기 페이지로 이동합니다",                      
-                     icon: 'question',
-                     showCancelButton: true,
-                     confirmButtonColor: '#3085d6',
-                     cancelButtonColor: '#d33',
-                     confirmButtonText: '승인',
-                     cancelButtonText: '취소'
-                 }).then(function() {
-               	   
-                     let obj = infoGrid.getCheckedRows();
-                     console.log(obj);
+            /* ------------------ 
+            자재 삭제
+             1. checkbox 선택
+             2. 선택된 checkbox의 값에서 mno 가져오기  버튼 -> 함수(onclick -> ajax 실행) -> mno 보내주고 삭제
+             3. 삭제 실행 (모달창의 확인 클릭)
+             --------------------------*/
 
-                     $.ajax({
-                        url: "/material/ajax/mcart",
-                        method: "Post",
-                        contentType: "application/json",
-                        data: JSON.stringify(obj),
-                        beforeSend: function (xhr) {
-                           xhr.setRequestHeader(header, token);
+           // 자재 삭제 swal
+            $().ready(function () {
+                $("#delbtn").click(function () {
+                    Swal.fire({
+                        title: '자재정보를 삭제하시겠습니까?',
+                        text: "삭제된 정보는 복구가 불가능합니다.",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '승인',
+                        cancelButtonText: '취소'
+                    }).then((result) => {
+                        checkDel();
+
+                    })
+
+                });
+            });
+
+             // 자재 삭제 
+            function checkDel() {
+
+                let delmno = [];
+                let obj = infoGrid.getCheckedRows()
+
+                for (key in obj) {
+                    delmno.push(obj[key].mno);
+
+                }
+             
+
+                $.ajax({
+                    url: "/material/mdelinfo",
+                    method: "Post",
+                    contentType: "application/json",
+                    data: JSON.stringify({ "delmno": delmno }),
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function (result) {
+
+                        if (result == 0) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: '삭제가 불가능합니다.',
+                                text: '사용 중인 자재 입니다.',
+                            });
+
+                        } else {
+                            Swal.fire({
+                                icon: 'info',
+                                title: '삭제가 완료되었습니다.'
+                            });
+                        }
+
+                        mList();
+
+                    },
+                    error: function (reject) {
+
+                    }
+                })
+            }
+
+
+            /*-----------
+            // 발주 대기 이동
+            ---------------*/
+
+            $().ready(function () {
+                $("#regbtn").click(function () {
+                    Swal.fire({
+                        title: '발주를 진행하시겠습니까?',
+                        text: "발주 대기 페이지로 이동합니다",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '승인',
+                        cancelButtonText: '취소'
+                    }).then(function () {
+
+                        let obj = infoGrid.getCheckedRows();                     
+
+                        $.ajax({
+                            url: "/material/ajax/mcart",
+                            method: "Post",
+                            contentType: "application/json",
+                            data: JSON.stringify(obj),
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success: function (result) {
+                                mList();
+
+                            },
+                            error: function (reject) {
+
+                            }
+                        })
+
+                    })
+                });
+            });
+
+
+            /*-----------------------
+             // 날짜 검색 버튼 이벤트 핸들러
+             --------------------------*/
+
+
+
+            function findBtnHandler() {
+
+                $('#findBtn').on('click', function () {
+                    let getStartDay = $('#startpicker-input').val();
+                    let getEndDay = $('#endpicker-input').val();
+                   
+                    $.ajax({
+                        url: '/material/ajax/mioList',
+
+                        method: 'GET',
+                        data: {
+                            "startDate": getStartDay,
+                            "endDate": getEndDay
                         },
-                        success: function (result) {
-                          mList();
+                        dataType: 'json',
+                        contentType: 'application/json',
 
+
+                        success: function (result) {
+                            mioGrid.resetData((result.data.contents));
                         },
                         error: function (reject) {
-                           console.log(reject);
+
                         }
-                     })
-                  
-                 })
-             });
-         });
-         
- 
-         
-         
+                    })
 
+                })
 
-         /*-----------------------
-               날짜 검색 버튼 이벤트 핸들러
-          --------------------------*/
-         
-
-
-          function findBtnHandler(){
-        /* 	  const pagination = mioGrid.getPagination();
-        	   const currentPage = pagination.getCurrentPage();
-        	   const perPage =pagination._options.itemsPerPage; */
-        	 
-            $('#findBtn').on('click', function () {
-               let getStartDay = $('#startpicker-input').val();
-               let getEndDay = $('#endpicker-input').val();
-               console.log(getStartDay);
-               console.log(getEndDay);
-
-               $.ajax({
-                  url: '/material/ajax/mioList',
-                  
-                  method: 'GET',
-                  data: {
-                     "startDate": getStartDay,
-                     "endDate": getEndDay
-                  },
-                  dataType: 'json',
-                  contentType: 'application/json',
-                 
-                  
-                  success: function (result) {
-                     console.log(result);
-                     mioGrid.resetData((result.data.contents));
-                    // mioGrid.setPerPage(perPage);
-                  },
-                  error: function (reject) {
-                     console.log(reject);
-                  }
-               })
-
-            })
-         
-         }
-
-         /*--------------------
-         검색기능(필터이용 검색함수)
-         ----------------------*/
-         function filter() { // 토스트그리드 
-
-            const search = document.getElementById("searchFilter") //인풋태그
-       
-            const state = [{ code: 'contain', value: search.value.toUpperCase() }];
-
-            if (search.value == '') {
-               infoGrid.unfilter('mname');
-            } else {
-               infoGrid.filter('mname', state);
             }
 
-         }
+            /*--------------------
+            검색기능(필터이용 검색함수)
+            ----------------------*/
+            function filter() { // 토스트그리드 
 
+                const search = document.getElementById("searchFilter") //인풋태그
 
+                const state = [{ code: 'contain', value: search.value.toUpperCase() }];
 
-         function filter2() {
+                if (search.value == '') {
+                    infoGrid.unfilter('mname');
 
-            const search2 = document.getElementById("searchFilter_2")
-            const state2 = [{ code: 'contain', value: search2.value.toUpperCase() }];
+                } else {
+                    infoGrid.filter('mname', state);
 
-            if (search2.value == '') {
-               mioGrid.unfilter('mname');
+                }
 
-            } else {
-               mioGrid.filter('mname', state2);
             }
 
-         }
 
-    
-     	
-     	findBtnHandler(); // date picker handler
-   	    mList(); // ajax로 상단 페이지 데이터 부르기
 
-  	
-   	       	    
-   	    
-      </script>
-   </div>
-   <!-- end of layout -->
+            function filter2() {
+
+                const search2 = document.getElementById("searchFilter_2")
+                const state2 = [{ code: 'contain', value: search2.value.toUpperCase() }];
+
+                if (search2.value == '') {
+                    mioGrid.unfilter('mname');
+
+                } else {
+                    mioGrid.filter('mname', state2);
+                }
+
+            }
+
+
+
+            findBtnHandler(); // date picker handler      
+
+            mList();   // ajax로 상단 페이지 데이터 부르기
+
+
+
+
+        </script>
+    </div>
 
 </body>
 

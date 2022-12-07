@@ -1,339 +1,346 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/layout}">
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/layout}">
 
 <head>
 
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>자재정보관리</title>
-   
-   <!--toast date-picker-->
-   <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
-   <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자재정보메인</title>
+
+    <!--toast date-picker-->
+    <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+    <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 
 
 
 </head>
 
 <body>
-   <div layout:fragment="content">
-    <div class="container" style="padding-top : 50px; padding-bottom: 20px">
-    
-    <div class="column" style="padding-top : 20px;">
-            <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
-  		<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
-		</svg> > Main </h6>
-               <h3 style="text-align: center; font-weight: bold; padding-bottom: 10px">금일 자재 변동 내역</h3>
-       			<hr>                
-                   <input type="text" id="searchFilter_2" style="width: 200px; float:left;margin-right:3px;margin-bottom:5px" onkeyup="filter2()"
-                     placeholder="자재명 입력"> 
-                     <button type="button" class="btn btn-secondary btn-sm">
-                		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-  							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-						</svg>
-              </button>                    
-              
-             <div id="grid2"></div>
-           
-            </div>
-            
-             <div class="row">
+    <div layout:fragment="content">
+        <div class="container" style="padding-top : 50px; padding-bottom: 20px">
+
             <div class="column" style="padding-top : 20px;">
-            <br>
-             <h3 style="text-align: center; font-weight: bold; padding-bottom: 10px">현재 재고 내역</h3>
-             <hr> 
-               <div id="wrap">
-                  <div id="search_wrap">
-                     <div class="search" style="float: left;" >
-                        <span style="font-weight: bold"></span> <input type="text" id="searchFilter" style="width: 200px; float:left; margin-right:3px;margin-bottom:5px"
-                           onkeyup="filter()" placeholder="자재명 입력">
-                           <button type="button" class="btn btn-secondary btn-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-</svg>
-              </button>    
-                     </div>
-                     
-                  <div>
-                     <div id="grid"></div>
-                  </div>
-               </div>
+                <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19"
+                        fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z" />
+                    </svg> > Main </h6>
+                <h3 style="text-align: center; font-weight: bold; padding-bottom: 10px">금일 자재 변동 내역</h3>
+                <hr>
+                <input type="text" id="searchFilter_2"
+                    style="width: 200px; float:left;margin-right:3px;margin-bottom:5px" onkeyup="filter2()"
+                    placeholder="자재명 입력">
+                <button type="button" class="btn btn-secondary btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                        </path>
+                    </svg>
+                </button>
+
+                <div id="grid2"></div>
+
             </div>
-            
-            
-            
-         </div>
-     
-   <script>
-   
-  
-   
-  
-  function formatter(value){
- 	 if(!value) {return 0}
- 	 
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
-  }
 
-  /*-------------------------
-          재고 변동 내역 grid 초기화
-      --------------------------*/
+            <div class="row">
+                <div class="column" style="padding-top : 20px;">
+                    <br>
+                    <h3 style="text-align: center; font-weight: bold; padding-bottom: 10px">현재 재고 내역</h3>
+                    <hr>
+                    <div id="wrap">
+                        <div id="search_wrap">
+                            <div class="search" style="float: left;">
+                                <span style="font-weight: bold"></span> <input type="text" id="searchFilter"
+                                    style="width: 200px; float:left; margin-right:3px;margin-bottom:5px"
+                                    onkeyup="filter()" placeholder="자재명 입력">
+                                <button type="button" class="btn btn-secondary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-search" viewBox="0 0 16 16">
+                                        <path
+                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
 
-
-     let mioGrid;
-
-     mioGrid = new tui.Grid({
-
-        el: document.getElementById('grid2'),
-        rowHeaders: ['rowNum'], // 가장 왼쪽 체크박스       
-        scrollX: false, // 세로 스크롤 
-        scrollY: false, // 가로 스크롤
-        columns: [
-           {
-              header: '분류',
-              name: 'mcategory',
-              width : 100
-           },   
-           {
-           header: '자재번호',                  
-           name: 'mioNo',
-           align: 'center'
-        },   {
-           header: '자재명',
-           name: 'mname',
-           align: 'left',
-           filter: {
-              type: 'text',
-              showClearBtn: true
-           }
-        },
-         
-        {
-           header: '변동사항',
-           name: 'mioProgress',
-           align: 'center',
-           width : 100,
-           filter: {
-               type: 'text',
-               showClearBtn: true
-            }
-        },
-        
-        {
-           header: '변동수량',
-           name: 'mioQntt',
-           align: 'right',
-           formatter: function (el) {
-          	 if(el.row.mioProgress == '출고완료') {
-         	  return formatter('-' + el.value)
-          	}else{
-          		 return formatter('+' + el.value)
-          	}  
-           }
-        }, 
-        {
-           header: '변동일자',
-           name: 'mioDate',
-           align: 'right'
-        } ],
-        
-        pageOptions: {                
-           perPage: 5,
-           useClient : true
-        }
-
-     })
-     
-     
-    /*-------------------------
-     재고 정보 관리  grid 초기화
-  --------------------------*/
-
-  
-
-
-     let infoGrid = new tui.Grid({
-
-        el: document.getElementById('grid'),
-        rowHeaders: ['rowNum'], // 가장 왼쪽 체크박스
-        scrollX: false, // 세로 스크롤 
-        scrollY: false, // 가로 스크롤
-        columns: // 컬럼명
-           [{
-              header: '자재번호',
-              name: 'mno',
-              align: 'center'
-           },  {
-              header: '자재명',
-              name: 'mname',
-              align: 'left',
-              filter: {
-                 type: 'text',
-                 showClearBtn: true
-              }
-           },  {
-              header: '현재 재고',
-              name: 'mstock',
-              align: 'right',
-              formatter: function (el) {
-             	 return formatter(el.value)  
-              }
-           }, {
-              header: '필요수량',
-              name: 'totalPlanedQntt',
-              align: 'right',
-              formatter: function (el) {
-             	 return formatter(el.value)  
-              }
-           }, {
-              header: '발주중인 수량',
-              name: 'totalMoNum',
-              align: 'right',
-              formatter: function (el) {
-             	 return formatter(el.value)  
-              }
-           }, {
-              header: '부족한 수량',
-              name: 'shortage',
-              align: 'right',
-              validation: {
-                 dataType: 'text',
-                 required: true,
-                 max: 1
-              },
-              formatter: function (el) {
-             	 return formatter(el.value)
-             	 
-              }
-           }
-
-
-           ],
-        pageOptions: {
-           perPage: 10,
-           useClient : true
-        },
-
-     })
+                            <div>
+                                <div id="grid"></div>
+                            </div>
+                        </div>
+                    </div>
 
 
 
-  //tui.Grid 스타일 주기
-  tui.Grid.applyTheme("normal", {
-     cell: {
-        nomal: {
-           background: "#fff",
-           border: "#e0e0e0",
-           showVerticalBorder: false,
-           showHorizontalBorder: true
-        },
-        header: {
-           background: "#eaeaea",
-           border: "#e0e0e0",
-           showHorizontalBorder: true
-        },
-        rowHeader: {
-           background: "#eaeaea",
-           border: "#e0e0e0",
-           showVerticalBorder: false,
-           showHorizontalBorder: true
-        },
-     },
+                </div>
 
-  });
-
-     tui.Grid.applyTheme('custom', { 
-         row: { 
-           hover: { 
-             background: '#dcdfec' 
-           }
-         }
-    });
-
-     /*----------------------- 
-     자재 정보, 자재 현황 내역 ajax 
-     ------------------------*/
-     
-  	 function mioMain(){  
-  	 $.ajax({
-         url: "/material/mioMain",  
-         method: 'GET',        
-         success: function (result) {
-            console.log(result);
-            mioGrid.resetData((result.main));
-          
-         },
-         error: function (reject) {
-            console.log(reject);
-         }
-      })
-     }
-    	 
-  
-       
-         function mList() {
-            $.ajax({
-               url: "/material/ajax/minfo",
-               method: "GET",
-               success: function (result) {
-                  infoGrid.resetData((result.list1));
-                
-                  console.log(result);
+                <script>
 
 
-               },
-               error: function (reject) {
-                  console.log(reject);
-               }
-            })
+                /*-----------------------------
+                // 숫자 3자리마다 comma(,) 
+                // value값 없을 경우 0으로 보이게 하기
+                 -----------------------------*/
 
-         }
-         
-      
-         mioMain();
-         mList();
+                    function formatter(value) {
+                        if (!value) { return 0 }
 
-     /*--------------------
-     검색기능(필터이용 검색함수)
-     ----------------------*/
+                        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 3자리 마다 
+                    }
 
-
-
-     function filter2() {
-
-        const search2 = document.getElementById("searchFilter_2")
-        const state2 = [{ code: 'contain', value: search2.value.toUpperCase() }];
-
-        if (search2.value == '') {
-           mioGrid.unfilter('mname');
-
-        } else {
-           mioGrid.filter('mname', state2);
-        }
-
-     }
-
-     
-     function filter() {
-
-         const search = document.getElementById("searchFilter")
-         const state = [{ code: 'contain', value: search.value.toUpperCase() }];
-
-         if (search.value == '') {
-        	 infoGrid.unfilter('mname');
-
-         } else {
-        	 infoGrid.filter('mname', state);
-         }
-
-      }
+                    
+                    
+                    /*-------------------------
+                    // 재고 변동 내역 grid 초기화
+                     --------------------------*/
 
 
+                    let mioGrid;
 
-   </script>
-   
-    </div>
+                    mioGrid = new tui.Grid({
+
+                        el: document.getElementById('grid2'),
+                        rowHeaders: ['rowNum'], // 가장 왼쪽 체크박스       
+                        scrollX: false, // 세로 스크롤 
+                        scrollY: false, // 가로 스크롤
+                        columns: [
+                            {
+                                header: '분류',
+                                name: 'mcategory',
+                                width: 100
+                            },
+                            {
+                                header: '자재번호',
+                                name: 'mioNo',
+                                align: 'center'
+                            }, {
+                                header: '자재명',
+                                name: 'mname',
+                                align: 'left',
+                                filter: {
+                                    type: 'text',
+                                    showClearBtn: true
+                                }
+                            },
+
+                            {
+                                header: '변동사항',
+                                name: 'mioProgress',
+                                align: 'center',
+                                width: 100,
+                                filter: {
+                                    type: 'text',
+                                    showClearBtn: true
+                                }
+                            },
+
+                            {
+                                header: '변동수량',
+                                name: 'mioQntt',
+                                align: 'right',
+                                formatter: function (el) {
+                                    if (el.row.mioProgress == '출고완료') {
+                                        return formatter('-' + el.value)
+                                    } else {
+                                        return formatter('+' + el.value)
+                                    }
+                                }
+                            },
+                            {
+                                header: '변동일자',
+                                name: 'mioDate',
+                                align: 'right'
+                            }],
+
+                        pageOptions: {
+                            perPage: 5,
+                            useClient: true
+                        }
+
+                    })
+
+
+                    /*-------------------------
+                    // 재고 정보 관리  grid 초기화
+                    --------------------------*/
+                  
+                    let infoGrid = new tui.Grid({
+
+                        el: document.getElementById('grid'),
+                        rowHeaders: ['rowNum'], // 가장 왼쪽 체크박스
+                        scrollX: false, // 세로 스크롤 
+                        scrollY: false, // 가로 스크롤
+                        columns: // 컬럼명
+                            [{
+                                header: '자재번호',
+                                name: 'mno',
+                                align: 'center'
+                            }, {
+                                header: '자재명',
+                                name: 'mname',
+                                align: 'left',
+                                filter: {
+                                    type: 'text',
+                                    showClearBtn: true
+                                }
+                            }, {
+                                header: '현재 재고',
+                                name: 'mstock',
+                                align: 'right',
+                                formatter: function (el) {
+                                    return formatter(el.value)
+                                }
+                            }, {
+                                header: '필요수량',
+                                name: 'totalPlanedQntt',
+                                align: 'right',
+                                formatter: function (el) {
+                                    return formatter(el.value)
+                                }
+                            }, {
+                                header: '발주중인 수량',
+                                name: 'totalMoNum',
+                                align: 'right',
+                                formatter: function (el) {
+                                    return formatter(el.value)
+                                }
+                            }, {
+                                header: '부족한 수량',
+                                name: 'shortage',
+                                align: 'right',
+                                validation: {
+                                    dataType: 'text',
+                                    required: true,
+                                    max: 1
+                                },
+                                formatter: function (el) {
+                                    return formatter(el.value)
+
+                                }
+                            }
+
+
+                            ],
+                        pageOptions: {
+                            perPage: 10,
+                            useClient: true
+                        },
+
+                    })
+
+                    /*-------------------------
+                    //tui.Grid 스타일 주기
+                   --------------------------*/
+
+                    
+                    tui.Grid.applyTheme("normal", {
+                        cell: {
+                            nomal: {
+                                background: "#fff",
+                                border: "#e0e0e0",
+                                showVerticalBorder: false,
+                                showHorizontalBorder: true
+                            },
+                            header: {
+                                background: "#eaeaea",
+                                border: "#e0e0e0",
+                                showHorizontalBorder: true
+                            },
+                            rowHeader: {
+                                background: "#eaeaea",
+                                border: "#e0e0e0",
+                                showVerticalBorder: false,
+                                showHorizontalBorder: true
+                            },
+                        },
+
+                    });
+
+                    tui.Grid.applyTheme('custom', {
+                        row: {
+                            hover: {
+                                background: '#dcdfec'
+                            }
+                        }
+                    });
+
+                    /*----------------------- 
+                    자재 정보, 자재 현황 내역 ajax 
+                    ------------------------*/
+
+                    function mioMain() {
+                        $.ajax({
+                            url: "/material/mioMain",
+                            method: 'GET',
+                            success: function (result) {
+                                mioGrid.resetData((result.main));
+
+                            },
+                            error: function (reject) {
+
+                            }
+                        })
+                    }
+
+
+					
+                    function mList() {
+                        $.ajax({
+                            url: "/material/ajax/minfo",
+                            method: "GET",
+                            success: function (result) {
+                                infoGrid.resetData((result.list1));
+
+                            },
+                            error: function (reject) {
+
+                            }
+                        })
+
+                    }
+
+
+                    mioMain(); // 금일 자재 입고 현황 
+                    mList(); // 자재 수량
+
+                    /*--------------------
+                    검색기능(필터이용 검색함수)
+                    ----------------------*/
+                    function filter2() {
+
+                        const search2 = document.getElementById("searchFilter_2")
+                        const state2 = [{ code: 'contain', value: search2.value.toUpperCase() }];
+
+                        if (search2.value == '') {
+                            mioGrid.unfilter('mname');
+
+                        } else {
+                            mioGrid.filter('mname', state2);
+                        }
+
+                    }
+
+
+                    function filter() {
+
+                        const search = document.getElementById("searchFilter")
+                        const state = [{ code: 'contain', value: search.value.toUpperCase() }];
+
+                        if (search.value == '') {
+                            infoGrid.unfilter('mname');
+
+                        } else {
+                            infoGrid.filter('mname', state);
+                        }
+
+                    }
+
+
+
+                </script>
+
+            </div>
 </body>
 
 </html>
