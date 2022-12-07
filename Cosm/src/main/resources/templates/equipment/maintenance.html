@@ -722,8 +722,7 @@ function filter2(){
 			
 			if(ts='전체') testAllListPaging();
 		
-		}else {
-			
+		}else {		
 			test3Grid.filter('testDate', state);
 			test2Grid.filter('testDueDate', state);
 			testGrid.filter('testDueDate', state);
@@ -1855,6 +1854,10 @@ function deleteWork() {
 		//const after2Weeks = new Date(today.setDate(today.getDate() + 14));
 		//selectableRanges는 이렇게 하면 안먹네요 ㅡㅡ
 		
+		
+		
+		const today = new Date();
+		
 	     let workPicker = new tui.DatePicker.createRangePicker({
 	    		language: 'ko',  
 	    	    startpicker: {
@@ -1869,11 +1872,16 @@ function deleteWork() {
 	    	
 	    			},
 	    			selectableRanges: [
-		                [new Date(today.setDate(today.getDate() + 14)), new Date(2999, 11,31)]
+		                [new Date(today.setDate(today.getDate())), new Date(2999, 11,31)]
 		            ]
 	    	        
 		    }); 
 		
+	     
+	     
+	     
+	     
+	     
 	   function setNull() {
 		   document.getElementById('searchFilter').value='';
 		   tFilterDate.setNull();
