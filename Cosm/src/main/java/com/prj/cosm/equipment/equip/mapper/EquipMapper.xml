@@ -289,7 +289,7 @@
 		equip_no=#{testEquipNo}) AS test_equip_name
 		,test_reason,
 		test_due_date,test_content, test_code, test_date,test_yn, (select
-		code_name from code where code_no=test_code) AS test_code_name
+		code_name from code where code_no=test_code) AS test_code_name,test_equip_no
 		FROM
 		test
 		Where test_no= #{testNo}

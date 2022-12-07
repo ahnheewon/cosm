@@ -259,6 +259,10 @@ function cancelUpdatePart() { // 되감기^^
 	document.getElementById('selectPartStockUsed').removeAttribute("onkeyup");
 	document.getElementById('sEquipNameSelect').style.display='none';
 	document.getElementById('selectPartEquipName').style.display='block';
+	
+	const pno =document.querySelector('#partNo').value;
+	getPart(pno);
+	
 	 const wu = document.getElementsByClassName('wu');
 	 
 	 for (var i = 0; i< wu.length; i++){
