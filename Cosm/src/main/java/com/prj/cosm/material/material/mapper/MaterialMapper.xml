@@ -66,16 +66,6 @@ SELECT m.m_no,
         LEFT OUTER JOIN material_order_sum
                 ON m.m_no = mo_material_id
  order by m_no
-  FROM Material m 			
-			JOIN material_company mc			
-                 ON m.m_company_id = mc.mc_company_id
-                
-        LEFT OUTER JOIN material_order_plan
-                     ON m.m_no = bom_material_no
-            
-        LEFT OUTER JOIN material_order_sum
-            		 ON m.m_no = mo_material_id
-order by m_no
 	</select>
 	
 	
