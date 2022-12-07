@@ -79,7 +79,8 @@
                 <div class="column" style="padding-top : 20px;">
                     <h3 style="text-align: center; font-weight: bold; margin-bottom : 30px;">발주 진행 현황</h3>
                     <hr>
-                    <div id="mdate">
+                    <div id="mdate" >
+                        <div style="float:left; margin-top:10px">
                         <span>확정일자</span>
                         <div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="z-index: 1001;">
                             <input id="startpicker-input" type="text" aria-label="Date" name="startDate"
@@ -94,6 +95,7 @@
                             <div id="endpicker-container" class="datePicker2" style="z-index: 1001"></div>
                         </div>
                         <button type="button" class="btn btn-secondary btn-sm" id="searchBtn">검색</button>
+                        </div>
                         <!--  </div> -->
                         <!--  <div id="btn" style="float: right">-->
                         <div class="btn" style="float: right">
@@ -265,11 +267,11 @@
                 }
 
             })
-            //tui.Grid 스타일 주기
+            
             tui.Grid.applyTheme("normal", {
                 cell: {
                     nomal: {
-                        background: "#ffffff",
+                        background: "#fff",
                         border: "#e0e0e0",
                         showVerticalBorder: false,
                         showHorizontalBorder: true
@@ -288,6 +290,7 @@
                 },
 
             });
+
 
             /* 발주 대기목록, 발주현황관리 ajax */
             function mOrder() {

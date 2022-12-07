@@ -1,180 +1,170 @@
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
 <head>
 
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>자재정보관리</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자재정보관리</title>
+
+
+</head>
 <style>
-/*bootstrap grid 스타일 */
-* {
-	box-sizing: border-box;
-}
+    /*bootstrap grid 스타일 */
+    * {
+        box-sizing: border-box;
+    }
 
-/* Create two equal columns that floats next to each other */
-.column {
-	width: 100%;
-	padding: 10px;
-	height: auto;
-	/* Should be removed. Only for demonstration */
-	outline: solid 1px black;
-}
+    /* Create two equal columns that floats next to each other */
+    .column {
+        width: 100%;
+        padding: 10px;
+        height: auto;
+        /* Should be removed. Only for demonstration */
+        outline: solid 1px white;
+    }
 
-/* Clear floats after the columns */
-.row:after {
-	content: "";
-	display: table;
-	clear: both;
-}
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 
-#btn {
-	float: right;
-	margin-right: 5px;
-}
+    #btn {
+        float: right;
+        margin-right: 5px;
+    }
 </style>
 </head>
+
 <body>
-	<div layout:fragment="content">
-		<div class="container" style="padding-top: 50px; padding-bottom: 20px">
-			<h6 style="float: right; margin-top: 20px;">
-				<svg xmlns="http://www.w3.org/2000/svg" width="17" height="19"
-					fill="currentColor" class="bi bi-house-door-fill"
-					viewBox="0 0 16 16">
+    <div layout:fragment="content">
+
+
+        <div class="container" style="padding-top : 50px; padding-bottom: 20px">
+            <h6 style="float:right; margin-top:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19"
+                    fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
                     <path
-						d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z" />
-                </svg>
-				> 자재 정보 관리
-			</h6>
-			<h3 style="text-align: center; font-weight: bold;">자재 정보 관리</h3>
-			<hr>
-			<div class="row">
-				<div class="column">
-					<div id="wrap">
-						<div id="search_wrap">
-							<div class="search" style="float: left;">
-								<span style="font-weight: bold"></span> <input type="text"
-									id="searchFilter"
-									style="width: 200px; float: left; margin-right: 3px; margin-bottom: 5px"
-									onkeyup="filter()" placeholder="자재명 입력">
-								<button type="button" class="btn btn-secondary btn-sm">
-									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-										fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z" />
+                </svg> > 자재 정보 관리 </h6>
+            <h3 style="text-align: center; font-weight: bold; ">자재 정보 관리</h3>
+            <hr>
+            <div class="row">
+                <div class="column">
+                    <div id="wrap">
+                        <div id="search_wrap">
+                            <div class="search" style="float: left;">
+                                <span style="font-weight: bold"></span> <input type="text" id="searchFilter"
+                                    style="width: 200px; float:left; margin-right:3px;margin-bottom:5px"
+                                    onkeyup="filter()" placeholder="자재명 입력">
+                                <button type="button" class="btn btn-secondary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-search" viewBox="0 0 16 16">
                                         <path
-											d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
                                         </path>
                                     </svg>
-								</button>
-							</div>
-							<div id="btn_wrap" style="float: right; margin-bottom: 2px">
-								<button type="button" class="btn btn-secondary btn-sm"
-									id="insertbtn" onclick="mInfoInsert()">등록</button>
-								<button type="button" class="btn btn-secondary btn-sm"
-									id="updatebtn" onclick="mInfoUpdate()">수정</button>
-								<button type="button" class="btn btn-secondary btn-sm"
-									id="delbtn">삭제</button>
-								<button type="button" class="btn btn-secondary btn-sm"
-									id="regbtn">자재 발주</button>
-							</div>
-						</div>
+                                </button>
+                            </div>
+                            <div id="btn_wrap" style="float: right; margin-bottom: 2px">
+                                <button type="button" class="btn btn-secondary btn-sm" id="insertbtn"
+                                    onclick="mInfoInsert()">등록</button>
+                                <button type="button" class="btn btn-secondary btn-sm" id="updatebtn"
+                                    onclick="mInfoUpdate()">수정</button>
+                                <button type="button" class="btn btn-secondary btn-sm" id="delbtn">삭제</button>
+                                <button type="button" class="btn btn-secondary btn-sm" id="regbtn">자재 발주</button>
+                            </div>
+                        </div>
 
-						<div>
-							<div id="grid"></div>
-						</div>
-					</div>
-				</div>
-				<hr>
+                        <div>
+                            <div id="grid"></div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
 
-				<div class="column" style="padding-top: 20px;">
+                <div class="column" style="padding-top : 20px;">
 
-					<h3
-						style="text-align: center; font-weight: bold; padding-bottom: 10px">자재
-						변동 내역</h3>
-					<hr>
-					<input type="text" id="searchFilter_2"
-						style="width: 200px; float: left; margin-right: 3px; margin-bottom: 5px"
-						onkeyup="filter2()" placeholder="자재명 입력">
-					<button type="button" class="btn btn-secondary btn-sm">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-							fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path
-								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
-                            </path>
-                        </svg>
-					</button>
-					<div id="mdate"
-						style="margin-left: 10px; z-index: 1001; float: right">
-						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-							style="margin-bottom: 5px; z-index: 1001;">
-							<input id="startpicker-input" type="text" aria-label="Date"
-								style="margin-bottom: 5px; z-index: 1001"> <span
-								class="tui-ico-date"></span>
-							<div id="startpicker-container" class="datePicker"
-								style="z-index: 1001"></div>
-						</div>
-						<span>~</span>
-						<div class="tui-datepicker-input tui-datetime-input tui-has-focus"
-							style="margin-bottom: 5px; z-index: 1001">
-							<input id="endpicker-input" type="text" aria-label="Date"
-								style="margin-bottom: 5px; z-index: 1001"> <span
-								class="tui-ico-date"></span>
-							<div id="endpicker-container" class="datePicker"
-								style="margin-bottom: 5px; z-index: 1001"></div>
-						</div>
-						<button type="button" class="btn btn-secondary btn-sm"
-							id="findBtn">검색</button>
-					</div>
-					<div id="grid2"></div>
-				</div>
-			</div>
-		</div>
+                    <h3 style="text-align: center; font-weight: bold; padding-bottom: 10px">자재 변동 내역</h3>
+                    <hr>
+                   <div class="search" style="float: left;">
+                                <span style="font-weight: bold"></span> <input type="text" id="searchFilter_2"
+                                    style="width: 200px; float:left; margin-right:3px;margin-bottom:5px"
+                                    onkeyup="filter2()" placeholder="자재명 입력">
+                                <button type="button" class="btn btn-secondary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-search" viewBox="0 0 16 16">
+                                        <path
+                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                    <div id="mdate" style="margin-left: 10px; z-index: 1001; float:right">
+                        <div class="tui-datepicker-input tui-datetime-input tui-has-focus"
+                            style="margin-bottom: 5px; z-index: 1001;">
+                            <input id="startpicker-input" type="text" aria-label="Date"
+                                style="margin-bottom: 5px; z-index: 1001"> <span class="tui-ico-date"></span>
+                            <div id="startpicker-container" class="datePicker" style="z-index: 1001"></div>
+                        </div>
+                        <span>~</span>
+                        <div class="tui-datepicker-input tui-datetime-input tui-has-focus"
+                            style="margin-bottom: 5px; z-index: 1001">
+                            <input id="endpicker-input" type="text" aria-label="Date"
+                                style="margin-bottom: 5px; z-index: 1001"> <span class="tui-ico-date"></span>
+                            <div id="endpicker-container" class="datePicker" style="margin-bottom: 5px; z-index: 1001">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" id="findBtn">검색</button>
+                    </div>
+                    <div id="grid2"></div>
+                </div>
+            </div>
+        </div>
 
 
-		<!-- 자재 정보 상세내역 모달-->
-		<div class="modal" tabindex="-1" id="mInfoModal" style="z-index: 1300">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" style="font-weight: bold;">자재 정보 상세내역</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="text-align: left">
+        <!-- 자재 정보 상세내역 모달-->
+        <div class="modal" tabindex="-1" id="mInfoModal" style="z-index: 1300">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="font-weight: bold;">자재 정보 상세내역</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align: left">
 
-						<div class="row p-3">
-							<label for="input" class="col-form-label"></label> <img
-								name="mFile"></img>
-						</div>
-						<div class="row p-3">
-							<div class="col">
-								<label for="input" class="col-form-label">자재번호</label> <input
-									type="text" class="form-control" name="mNo">
-							</div>
-							<div class="col">
-								<label for="input" class="col-form-label">자재명</label> <input
-									type="text" class="form-control" name="mName">
-							</div>
-							<div class="row p-3">
-								<label for="input" class="col-form-label">자재상세정보</label>
-								<textarea class="form-control col-sm-5" rows="5" name="mInfo"></textarea>
-							</div>
+                        <div class="row p-3">
+                            <label for="input" class="col-form-label"></label>
+                            <img name="mFile"></img>
+                        </div>
+                        <div class="row p-3">
+                            <div class="col">
+                                <label for="input" class="col-form-label">자재번호</label> <input type="text"
+                                    class="form-control" name="mNo">
+                            </div>
+                            <div class="col">
+                                <label for="input" class="col-form-label">자재명</label> <input type="text"
+                                    class="form-control" name="mName">
+                            </div>
+                            <div class="row p-3">
+                                <label for="input" class="col-form-label">자재상세정보</label>
+                                <textarea class="form-control col-sm-5" rows="5" name="mInfo"></textarea>
+                            </div>
 
-						</div>
-						<div class="modal-footer" style="text-align: center">
-							<!-- data-bs-dismiss :  모달 닫아주는 역할  -->
-							<button type="button" class="btn btn-primary"
-								data-bs-dismiss="modal" onclick="location.href='minfo'">확인</button>
-							<button type="button" class="btn btn-danger"
-								data-bs-dismiss="modal">취소</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                        </div>
+                        <div class="modal-footer" style="text-align: center">
+                            <!-- data-bs-dismiss :  모달 닫아주는 역할  -->
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                onclick="location.href='minfo'">확인</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<script>
+        <script>
 
 
 
@@ -199,10 +189,10 @@
 
                 },
                 selectableRanges: [[
-    				new Date(today.getFullYear() - 5, today.getMonth(),
-    						today.getDate()),
-    				new Date(today.getFullYear() + 5, today.getMonth(),
-    						today.getDate()) ] ]
+                    new Date(today.getFullYear() - 5, today.getMonth(),
+                        today.getDate()),
+                    new Date(today.getFullYear() + 5, today.getMonth(),
+                        today.getDate())] ]
 
             });
 
@@ -411,7 +401,7 @@
                 },
 
             });
-
+            
 
             // mouse hover
             tui.Grid.applyTheme('custom', {
@@ -421,6 +411,8 @@
                     }
                 }
             });
+
+
 
 
             /*----------------------- 
@@ -714,7 +706,7 @@
 
 
         </script>
-	</div>
+    </div>
 
 </body>
 
