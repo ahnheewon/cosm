@@ -415,8 +415,6 @@ function reallyInsertThis() {
 
 function getMaxEquipNum() { //현재 적용 공정에 달려있는 설비 갯수 조회
 	
-	console.log('적용공정 개수 조회 아작스 전송');
-	
 	const equipProcess = document.querySelector('#equipProcess').value;
 	const frm = document.querySelector('#insertForm2');
 	
@@ -427,7 +425,7 @@ function getMaxEquipNum() { //현재 적용 공정에 달려있는 설비 갯수
 		     'X-CSRF-Token': token }})
 	    .then(res=>res.json())
 	    .then(obj=>{
-	      console.log(obj);     
+	        
 	      if(obj.equipProcess == 3){
 	    	  Swal.fire('해당 공정에 설치 가능한 설비 수를 초과했습니다.','','warning' );	
 	    	}else if (obj.equipProcess < 3)
@@ -496,8 +494,7 @@ function filter(){
     fetch(url) 
     .then(res=>res.json())
     .then(obj=>{
-  		console.log(obj);
-  		console.log(obj.ei.eFile);
+
         document.querySelector('#thisNoUD').value=obj.ei.equipNo; // 업데이트때문에 가져온 데이터 값.
         
         document.querySelector('#selectEquipName').value=obj.ei.equipName;
@@ -528,8 +525,6 @@ function filter(){
 /* 설비 수정 버튼 누른 함수 */
 	function updateBtnClick() {
 		
-		console.log("수정 버튼 클릭");
-		
 		document.getElementById('updateECBtn').style.display='block';	 
 		const wantUpdate = document.getElementsByClassName('wantUpdate');	 
 		for (var i = 0; i< wantUpdate.length; i++) {
@@ -546,9 +541,7 @@ function filter(){
 
 /* 설비 수정 함수 */	
 	function updateEquip() {
-		
 
-		console.log("아작스 전송");
 		 const url="/equipment/updateEquip";
 		 
 		 const data = new FormData(document.getElementById('updateForm1'));
@@ -559,8 +552,7 @@ function filter(){
 		    .then(res=>res.json()
 		    	  )
 		    .then(obj=>{
-		        console.log(obj);
-			 	
+
 			 	const btn = document.querySelector('#updateBtn')
 				
 				Swal.fire({
@@ -575,14 +567,14 @@ function filter(){
 		 
 		        
 			})
-			.catch((error) => console.log("error:", error));
+			.catch((error) => );
 	}
 	
 	
 /* 설비 수정 취소 함수 */
 	
 	function cancelUpdateEquip() {
-		console.log("수정 취소버튼 클릭");
+		
 		document.getElementById('updateECBtn').style.display='none';	 
 		const wantUpdate = document.getElementsByClassName('wantUpdate');	 
 		for (var i = 0; i< wantUpdate.length; i++) {
@@ -606,7 +598,7 @@ function filter(){
 	    //get을 제외한 모든 방식은 토큰을 필요로 한다.
 	    
 		const equipNo = document.getElementById('thisNoUD').value
-		console.log(equipNo);
+	
 	    	
 		Swal.fire({
 			   title: '해당 설비를 삭제하겠습니까?',
@@ -628,7 +620,7 @@ function filter(){
 		     'X-CSRF-Token': token }})
 			  .then(res=> res.text())
 			  .then(obj=>{
-			    console.log(obj);
+			   
 			    	
 			    Swal.fire(
                         '삭제완료',
@@ -654,8 +646,7 @@ function filter(){
 
 /* 공정 수정 버튼 누른 함수 */
 	function updateProcessBtnClick() {
-		
-		console.log("수정버튼 클릭");
+	
 		document.getElementById('updatePCBtn').style.display='block';	 
 		const wu = document.getElementsByClassName('wantUpdate2');	 
 		for (var i = 0; i< wu.length; i++) {
@@ -672,8 +663,7 @@ function filter(){
 
 /* 공정 수정 함수 */	
 	function updateProcess() {
-	
-		console.log("아작스 전송");
+
 		 const url="/equipment/updateProcess";
 		 
 
@@ -682,7 +672,7 @@ function filter(){
 		 fetch(url, {method: 'POST', body : data})
 		    .then(res=>res.json())
 		    .then(obj=>{
-		        console.log(obj);
+		    
 		        
 		        const wu = document.getElementsByClassName('wantUpdate2');	 
 			 	for (var i = 0; i< wu.length; i++) {
@@ -704,14 +694,14 @@ function filter(){
 		 
 		        
 			})
-			.catch((error) => console.log("error:", error));
+			.catch((error) => );
 	}
 	
 	
 /* 공정 수정 취소 함수 */
 	
 	function cancelUpdateProcess() {
-		console.log("수정 취소버튼 클릭");
+
 		document.getElementById('updatePCBtn').style.display='none';
 		const wu = document.getElementsByClassName('wantUpdate2');	 
 		for (var i = 0; i< wu.length; i++) {
@@ -750,7 +740,6 @@ function filter(){
 	   	if(use == 0){
 			    //get을 제외한 모든 방식은 토큰을 필요로 한다.
 			    
-			console.log(processNo);
 			const url1="/equipment/deleteProcess/"+processNo // 매개변수 번호를 넘겨야됨.
 			const url2="/equipment/updateDeleteProcessNo/"+processNo // 매개변수 번호를 넘겨야됨.
 		
@@ -766,15 +755,13 @@ function filter(){
 			    	'X-CSRF-Token': token }})
 				    .then(res=> res.text())
 				    .then(obj=>{
-				    	console.log(obj);
-				    	
+				    				    	
 				    	fetch(url2,{method: 'post', headers: {
 			                'header' : header,
 					    	'X-CSRF-Token': token,
 					    	'Content-Type' : 'application/json' }})
 						    .then(res=> res.text())
 						    .then(obj=>{
-					    	console.log(obj);
 					    	Swal.fire(
 			                        '삭제완료',
 			                        '',
@@ -803,8 +790,7 @@ function filter(){
 		    fetch(url) 
 		    .then(res=>res.json())
 		    .then(obj=>{
-		        console.log(obj);
-		        
+
 				document.querySelector('#thisNoUD2').value=obj.processNo;
 				document.querySelector('#selectProcessName').value=obj.processName;
 		        document.querySelector('#selectProcessContent').value=obj.processContent;
@@ -855,7 +841,7 @@ function filter(){
 		fetch(url) 
 		.then(res=>res.json())
 		.then(obj=>{
-			console.log(obj);
+	
 			processGrid.resetData(obj);
 			       
 		})
@@ -917,7 +903,7 @@ function filter(){
 		fetch(url) 
 		.then(res=>res.json())
 		.then(obj=>{
-			console.log(obj);
+	
 			equipGrid.resetData(obj);
 			        
 		})
@@ -927,10 +913,6 @@ function filter(){
 	    	equipGrid.on('click', ev => {
 	    	const enoRow = equipGrid.getRow(ev.rowKey);
 	    	const eno = enoRow.equipNo;
-	    	console.log(eno);
-	    	console.log(enoRow);
-	   /*  if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
-	    	console.log(ev);
 	    	
 	    	if(ev.rowKey == enoRow.rowKey){
 				if(eno != null){
@@ -950,10 +932,7 @@ function filter(){
 	    processGrid.on('click', ev => {
 	    	const pnoRow = processGrid.getRow(ev.rowKey); // 행 (객체)
 	    	const pno = pnoRow.processNo; // 행의 공정번호
-	    	console.log(pno);
-	   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
-	    	console.log(ev);
-	    	
+
 	    	if(ev.rowKey == pnoRow.rowKey){
 				if(pno != null){
 		    	const myModal4 = new bootstrap.Modal('#myModal4',{backdrop: 'static',keyboard:false})

@@ -637,7 +637,7 @@ function reallyInsertThis2() {
 							fetch(url) 
 							.then(res=>res.json())
 							.then(obj=>{
-							    console.log(obj);
+
 							  workGrid.resetData(obj);
 						    
 							})
@@ -649,7 +649,7 @@ function reallyInsertThis2() {
 										fetch(url) 
 										.then(res=>res.json())
 										.then(obj=>{
-										    console.log(obj);
+									
 										    workGrid.resetData(obj);
 									})		
 									
@@ -659,7 +659,7 @@ function reallyInsertThis2() {
 										fetch(url) 
 										.then(res=>res.json())
 										.then(obj=>{
-										    console.log(obj);
+										 
 										    workGrid.resetData(obj);
 									    
 								})
@@ -783,7 +783,6 @@ function resize(obj) {
 /* 점검할 또는 고장난 또는 공사할 설비명 선택하게 하는 함수 */ 
 function changeSelect(val,id) { 
 		let tag = document.getElementById(id);
-		console.log(tag.previousElementSibling.id);	
 		tag.previousElementSibling.value = val;
 	}
 	
@@ -979,24 +978,12 @@ function testAllListPaging() {
 		fetch(url) 
 		.then(res=>res.json())
 		.then(obj=>{
-		    console.log(obj);	 
 		 	 testGrid.resetData(obj.data.contents);
 		 	testGrid.setPerPage(12);
 		 	testGrid.refreshLayout();
 		})
 }            		
 document.querySelector('#test2Grid').style.display='none';
-
-/*	url="/equipment/testAllList"
-	fetch(url) 
-	.then(res=>res.json())
-	.then(obj=>{
-	    console.log(obj);
-	  testGrid.resetData(obj);
-	}) */
-	
-
-	
 
 /* 점검 단건 조회 불러오는 아작스 함수 */
 
@@ -1006,8 +993,6 @@ document.querySelector('#test2Grid').style.display='none';
 		    fetch(url) 
 		    .then(res=>res.json())
 		    .then(obj=>{
-		        console.log(obj);
-		    
 		        
 				document.querySelector('#sTestEquipName').value=obj.testEquipName;
 				document.querySelector('#thisTNoUD').value=obj.testNo;
@@ -1029,9 +1014,7 @@ document.querySelector('#test2Grid').style.display='none';
 				const radios = document.getElementsByClassName('radio2');
 			    const btn1 = document.querySelector('#testUbtn'); // 수정버튼
 			    const btn2 = document.querySelector('#testDbtn'); // 삭제버튼
-				
-				console.log(tCode);
-			    
+
 			    //라디오 버튼 초기화
 				if(tCode=='A0101') radios[0].checked=true;
 				else if (tCode=='A0102') radios[1].checked=true;
@@ -1077,10 +1060,7 @@ document.querySelector('#test2Grid').style.display='none';
 	    	const tnoRow = testGrid.getRow(ev.rowKey); // 행 (객체)
 	    	const tno = tnoRow.testNo; // 행의 점검번호
 	    	const eno = tnoRow.testEquipNo; // 행의 설비번호
-	    	console.log(tno);
-	   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
-	    	console.log(ev);
-	    	
+
 	    	if(ev.rowKey == tnoRow.rowKey){
 				if(tno != null){
 		    	const myModal2 = new bootstrap.Modal('#myModal2',{backdrop: 'static',keyboard:false})
@@ -1098,10 +1078,7 @@ document.querySelector('#test2Grid').style.display='none';
 	    	const tnoRow = test2Grid.getRow(ev.rowKey); // 행 (객체)
 	    	const tno = tnoRow.testNo; // 행의 점검번호
 	    	const eno = tnoRow.testEquipNo; // 행의 설비번호
-	    	console.log(tno);
-	   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
-	    	console.log(ev);
-	    	
+
 	    	if(ev.rowKey == tnoRow.rowKey){
 				if(tno != null){
 		    	const myModal2 = new bootstrap.Modal('#myModal2',{backdrop: 'static',keyboard:false})
@@ -1119,10 +1096,7 @@ document.querySelector('#test2Grid').style.display='none';
 	    	const tnoRow = test3Grid.getRow(ev.rowKey); // 행 (객체)
 	    	const tno = tnoRow.testNo; // 행의 점검번호
 	    	const eno = tnoRow.testEquipNo; // 행의 설비번호
-	    	console.log(tno);
-	   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
-	    	console.log(ev);
-	    	
+
 	    	if(ev.rowKey == tnoRow.rowKey){
 				if(tno != null){
 		    	const myModal2 = new bootstrap.Modal('#myModal2',{backdrop: 'static',keyboard:false})
@@ -1140,9 +1114,7 @@ document.querySelector('#test2Grid').style.display='none';
 
 /* 점검 수정 버튼 누른 함수 */
 			function updateTBtnClick() {
-				
-				console.log("점검 수정 버튼 클릭");
-				
+
 				document.querySelector('#testUCbtn').style.display='block';
 				const wu = document.getElementsByClassName('wantUpdate1');	 // 점검1 고장2 공사3
 			    const tCode = document.querySelector('.radio2:checked');
@@ -1165,9 +1137,6 @@ document.querySelector('#test2Grid').style.display='none';
 			        }
 				}
 
-				console.log(tCode);		
-				
-				
 				btn.innerHTML='저장';
 				btn.removeAttribute("onclick"); // 기존 onclick 제거.
 				btn.addEventListener('click',updateTest); // 저장버튼에 수정함수 클릭이벤 도입
@@ -1198,7 +1167,6 @@ document.querySelector('#test2Grid').style.display='none';
 			if(formValid == true){    
 			    
 				if( chked == '점검완료'){
-						console.log(tcon);	
 
 						Swal.fire({
 							
@@ -1216,16 +1184,13 @@ document.querySelector('#test2Grid').style.display='none';
 							   // 만약 Promise리턴을 받으면,
 							   if (result.isConfirmed) {
 								//최종점검완료 아작스 
-								console.log("최종수정 아작스 전송");
-								
-								
+
 								 fetch(url1, {method: 'POST', body : data, headers: {
 							         			'header' : header,
 								     			'X-CSRF-Token': token }})
 								    .then(res=>res.json())
 								    .then(obj=>{
-								        console.log(obj);
-								     
+
 								    // 업데이트 하고자 하는 애들  닫아주기
 									 	for (var i = 0; i< wu.length; i++) {
 									 		
@@ -1258,7 +1223,7 @@ document.querySelector('#test2Grid').style.display='none';
 	                                      )
 
 									})
-									.catch((error) => console.log("error:", error));
+									.catch((error) =>);
 							}
 						
 						})
@@ -1266,18 +1231,14 @@ document.querySelector('#test2Grid').style.display='none';
 						
 	
 				} else { // 점검완료가 아니면
-						 // 단순 수정 아작스
-					
-						console.log("단순 수정 아작스 전송");
+						 // 단순 수정 아작스				
 					
 						fetch(url2, {method: 'POST', body : data, headers: {
 					         			'header' : header,
 						     			'X-CSRF-Token': token }})
 						    .then(res=>res.json())
 						    .then(obj=>{
-						        console.log(obj);	  
-						        console.log(obj.testCodeName);
-						      
+
 						   // 업데이트 하고자 하는 애들 다시 닫아주기
 							 	for (var i = 0; i< wu.length; i++) {			
 						            wu[i].readOnly = true;
@@ -1315,7 +1276,7 @@ document.querySelector('#test2Grid').style.display='none';
 
 						    
 				 	})
-					.catch((error) => console.log("error:", error));
+					.catch((error) => );
 					
 				
 					
@@ -1332,8 +1293,6 @@ document.querySelector('#test2Grid').style.display='none';
 			
 			function cancelUpdateTest() { // 되감기^^
 	
-				console.log("수정 취소버튼 클릭");
-				
 				document.querySelector('#testUCbtn').style.display='none';
 				const wu = document.getElementsByClassName('wantUpdate1');
 			    const tCode = document.querySelector('.radio2:checked'); // 체크한 값.
@@ -1409,8 +1368,7 @@ function deleteTest() {
 					     'X-CSRF-Token': token }})
 						 .then(res=> res.text())
 					     .then(obj=>{
-							console.log(obj);
-							
+
 							if(ts == '전체'){
 	 
 								testAllListPaging();
@@ -1423,7 +1381,7 @@ function deleteTest() {
 								fetch(url) 
 								.then(res=>res.json())
 								.then(obj=>{
-								    console.log(obj);
+
 								    test2Grid.resetData(obj);
 								   
 							})
@@ -1508,7 +1466,7 @@ function deleteTest() {
 	    fetch(url) 
 	    .then(res=>res.json())
 	    .then(obj=>{
-	        console.log(obj);
+	    	
 	        workGrid.resetData(obj);
 	        
 	    })
@@ -1519,10 +1477,7 @@ function deleteTest() {
 	    	const wnoRow = workGrid.getRow(ev.rowKey); // 행 (객체)
 	    	const wno = wnoRow.workNo; // 행의 공사번호
 	    	const eno = wnoRow.workEquipNo; // 행의 설비번호
-	    	console.log(wno);
-	   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
-	    	console.log(ev);
-	    	
+
 	    	if(ev.rowKey == wnoRow.rowKey){
 				if(wno != null){
 		    	const myModal6 = new bootstrap.Modal('#myModal6',{backdrop: 'static',keyboard:false})
@@ -1560,8 +1515,7 @@ function getWorkNo(workNo,workEquipNo) {
 			    fetch(url) 
 			    .then(res=>res.json())
 			    .then(obj=>{
-			        console.log(obj);
-			        
+	
 			        if(obj.signEmpNo != usersNo){ // 작성자랑 다른사람이면 수정못하게
 			        	updateWBtn.style.display='none';
 			        	deleteWBtn.style.display='none';
@@ -1637,10 +1591,7 @@ function updateWSBtnClick() {
 				   	let money = document.getElementById('sWorkPay');
 					money.value= Number(money.value.replaceAll(',', ''));
 					const data = new FormData(document.getElementById('updateForm3'));
-				  
-					
-					console.log("승인 아작스 전송");
-					
+
 					 url="/equipment/updateSignSeq"
 					 fetch(url, {method: 'POST', body : data, headers: {
 				         'header' : header,
@@ -1659,7 +1610,7 @@ function updateWSBtnClick() {
 					    	completeChk2();
 					
 					    })
-					.catch((error) => console.log("error:", error));
+					.catch((error) => );
 				    
 
 

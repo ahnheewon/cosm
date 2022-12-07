@@ -167,8 +167,7 @@ function filter(){
 
 /* 부품 수정 버튼 누른 함수 */
 function updatePBtnClick() {
-	
-console.log("부품 수정 버튼 클릭");
+
 document.getElementById('partUbtn1').style.display='none';
 document.getElementById('partUbtn2').style.display='block';
 document.getElementById('partUbtn3').style.display='block';
@@ -180,7 +179,7 @@ document.getElementById('sEquipNameSelect').style.display='block';
 document.getElementById('selectPartEquipName').style.display='none';
 
 const wu = document.getElementsByClassName('wu');
- console.log(wu);
+
  for (var i = 0; i< wu.length; i++){
 	 wu[i].readOnly =  false;
  	 wu[i].required = true;
@@ -214,15 +213,14 @@ function updatePart() {
 			 
 			 if(formValid == true){
 						 const data = new FormData(form);
-						 console.log("최종수정 아작스 전송");
-							
+
 						 	 url="/equipment/updatePart";
 							 fetch(url, {method: 'POST', body : data, headers: {
 						         			'header' : header,
 							     			'X-CSRF-Token': token }})
 							    .then(res=>res.json())
 							    .then(obj=>{
-							        console.log(obj);
+
 							        $('#myModal').modal('hide');
 							        Swal.fire('수정이 완료 되었습니다','', 'success');
 							        getPartList();
@@ -241,7 +239,6 @@ function updatePart() {
 /* 설비명 선택하게 하는 함수 */ 
 function changeSelect(val,id) { 
 		let tag = document.getElementById(id);
-		console.log(tag.previousElementSibling.id);	
 		tag.previousElementSibling.value = val;
 	}
 	
@@ -250,7 +247,6 @@ function changeSelect(val,id) {
 
 function cancelUpdatePart() { // 되감기^^
 
-	console.log("수정 취소버튼 클릭");
 	document.getElementById('partUbtn1').style.display='block';
 	document.getElementById('partUbtn2').style.display='none';
 	document.getElementById('partUbtn3').style.display='none';
@@ -329,7 +325,7 @@ function getPartList() {
 	fetch(url) 
 	.then(res=>res.json())
 	.then(obj=>{
-	    console.log(obj);
+	  
 	    partGrid.resetData(obj);
     
 	})
@@ -374,11 +370,6 @@ function getPartList() {
     	
     	
     	 if (partGrid.getRow(ev.rowKey) != null && ev.columnName != '_checked' && ev.columnName != '_number') { // checkbox 클릭시, 모달 안 뜨게끔
-           
-    	
-    	console.log(pno);
-   	/* if(equip.getValue(ev.rowKey,ev.columnName) == equipInfo)) */
-    	console.log(ev);
     	
     	if(ev.rowKey == pnoRow.rowKey){
 			if(pno != null){
@@ -404,7 +395,6 @@ function getPartList() {
     fetch(url) 
     .then(res=>res.json())
     .then(obj=>{ 
-        console.log(obj);
    
         document.querySelector('#selectPartName').value=obj.partName;
         document.querySelector('#selectPartInfo').value=obj.partInfo;
