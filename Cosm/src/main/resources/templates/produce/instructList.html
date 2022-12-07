@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/layout/layout}">
+	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
 
@@ -576,7 +576,6 @@
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
-					console.log(result);
 					for (let plan of result) {
 						plan.PLANSTART = String(plan.PLANSTART).substr(0, 10);
 						plan.PLANEND = String(plan.PLANEND).substr(0, 10);
@@ -618,9 +617,6 @@
 			$('#searchBtn').on('click', function() {
 				let getStartDay = $('#startpicker-input').val();
 				let getEndDay = $('#endpicker-input').val();
-				console.log(getStartDay);
-				console.log(getEndDay);
-
 				$.ajax({
 					url : '/produce/allInsList',
 					data : {
@@ -636,7 +632,6 @@
 							plan.PLANEND = String(plan.PLANEND).substr(0, 10);
 							plan.INSTRUCTDATE = String(plan.INSTRUCTDATE).substr(0, 10);
 						}
-						console.log(result);
 						grid5.resetData(result);
 					},
 					error : function(reject) {
@@ -655,7 +650,6 @@
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
-					console.log(result);
 					for (let plan of result) {
 						plan.PLANSTART = String(plan.PLANSTART).substr(0, 10);
 						plan.PLANEND = String(plan.PLANEND).substr(0, 10);
@@ -710,7 +704,6 @@
                     text: 'success~',
                 }).then(function(){
                 	var datas2 = grid.getCheckedRows(); 
-                    	console.log(datas2);
                     	for(instruct of datas2){
                 			$.ajax({
                 				url : '/produce/insPlay',
@@ -720,8 +713,6 @@
             						xhr.setRequestHeader(header, token);
             					},
                 				success : function(data){
-                					
-                					console.log(data);
                     				$('#insertFrm').submit();	
                 				},
                 				error : function(reject){
@@ -739,7 +730,6 @@
 		// 지시 수정
 		function updateData(){	
 			var datas1 = grid5.getCheckedRows();
-			console.log(datas1);
 			var test = JSON.stringify(datas1);
 			$('#planNo').val(datas1[0].PLANNO);
 			$('#instructNo').val(datas1[0].INSTRUCTNO);

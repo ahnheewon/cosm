@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{/layout/layout.html}">
+	  layout:decorate="~{layout/layout.html}">
 <head>
 
 <title>Insert title here</title>
@@ -60,9 +60,9 @@ border-radius: 0.2rem;
 	                                    <div >
 								            <div class="header">
 								           	
-									         		<input type="radio" name="tStatus0" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD; ">전체ㅤ
-													<input type="radio" name="tStatus0" value="미완료" onclick="completeChk()" style="accent-color : #0000CD;">미완료ㅤ
-													<input type="radio" name="tStatus0" value="완료" onclick="completeChk()" style="accent-color :#0000CD;">완료
+									         		<input type="radio" name="tStatus0" checked="checked" onclick="completeChk1()" value="전체" style="accent-color :#0000CD; ">전체ㅤ
+													<input type="radio" name="tStatus0" value="미완료" onclick="completeChk1()" style="accent-color : #0000CD;">미완료ㅤ
+													<input type="radio" name="tStatus0" value="완료" onclick="completeChk1()" style="accent-color :#0000CD;">완료
 											<br>	
 											<div style="margin-top: 5px;">
 									         		<button type="button" id="insertTBtn" style="float:right; display: inline-block; margin-right: 10px;" class="btn btn-dark btn-sm" 
@@ -114,9 +114,9 @@ border-radius: 0.2rem;
 							              <div class="header">
 							         	  <button type="button" class="btn btn-dark btn-sm"
 							         	  		data-bs-toggle="modal" id="insertWBtn" style="float: right;" data-bs-target="#myModal5">등록</button>
-										     <input type="radio" class="radio4" name="tStatus2" checked="checked" onclick="completeChk()" value="전체" style="accent-color :#0000CD;">전체ㅤ
-											 <input type="radio" class="radio4" name="tStatus2" value="미승인" onclick="completeChk()" style="accent-color : #0000CD;">미승인ㅤ
-											 <input type="radio" class="radio4" name="tStatus2" value="승인완료" onclick="completeChk()" style="accent-color :#0000CD;">승인완료	     
+										     <input type="radio" class="radio4" name="tStatus2" checked="checked" onclick="completeChk2()" value="전체" style="accent-color :#0000CD;">전체ㅤ
+											 <input type="radio" class="radio4" name="tStatus2" value="미승인" onclick="completeChk2()" style="accent-color : #0000CD;">미승인ㅤ
+											 <input type="radio" class="radio4" name="tStatus2" value="승인완료" onclick="completeChk2()" style="accent-color :#0000CD;">승인완료	     
 										     
 										  </div>
                      
@@ -570,54 +570,10 @@ function reallyInsertThis() {
 										    	 
 												$('#myModal1').modal('hide');
 												
-												if(ts == '전체'){
-											/* 점검 전체 리스트 불러오는 아작스 */	
-													document.querySelector('#test2Grid').style.display='none';
-													document.querySelector('#test3Grid').style.display='none';
-													 
-													testAllListPaging();
-													
-														document.querySelector('#testGrid').style.display='block';
-													
-												}else if (ts =='미완료'){
-													
-											/* 점검 미완료 리스트 불러오는 아작스 */
+												completeChk1();
 												
-													document.querySelector('#testGrid').style.display='none';
-													document.querySelector('#test3Grid').style.display='none';
-											
-													document.querySelector('#test2Grid').style.display='block';
-													test2Grid.refreshLayout();
-													
-													url="/equipment/incompleteTestList"
-													fetch(url) 
-													.then(res=>res.json())
-													.then(obj=>{
-														
-													    test2Grid.resetData(obj);
-													 
-												})
-													
-												 document.querySelector('#testGrid').style.display='block';
-													
-												}else if (ts=='완료'){
-													
-											/* 점검 완료 리스트 불러오는 아작스 */
-													document.querySelector('#test2Grid').style.display='none';
-													document.querySelector('#testGrid').style.display='none';
-													
-													document.querySelector('#test3Grid').style.display='block';
-													test2Grid.refreshLayout();
-													
-													url="/equipment/completeTestList"
-													fetch(url) 
-													.then(res=>res.json())
-													.then(obj=>{
-														
-													    test3Grid.resetData(obj);
-													   
-													})
-												}	
+												// 다음 번호 조회하는 아작스
+												
 													url="/equipment/maintenanceNo"
 													fetch(url) 
 													.then(res=>res.json())
@@ -838,6 +794,7 @@ function test(id){
 /*------------
    // 탭 버튼 클릭
    ----------------*/
+   
 	const mt = document.querySelector('#maintenanceTab');
   	mt.addEventListener('shown.bs.tab',function(){ // 탭과 관련되어있어서
 	   testGrid.refreshLayout();
@@ -1286,26 +1243,9 @@ document.querySelector('#test2Grid').style.display='none';
 									radio[3].checked = true; // 그대로 점검완료에 checked
 	  								tContent.value = tcon;
 									
-									if(ts == '전체'){
-										
-										testAllListPaging();
-						
-										
-									}else if (ts =='미완료'){
-										
-								/* 점검 미완료 리스트 불러오는 아작스 */	
-								
-										url="/equipment/incompleteTestList"
-										fetch(url) 
-										.then(res=>res.json())
-										.then(obj=>{
-										    console.log(obj);
-										    test2Grid.resetData(obj);									   
-									})
-														
-								}
 		
-								$('#myModal2').modal('hide');
+									$('#myModal2').modal('hide');
+	  								completeChk1();
 								
 									Swal.fire(
 	                                          '점검완료',
@@ -1361,50 +1301,7 @@ document.querySelector('#test2Grid').style.display='none';
 										
 						        }
 								
-								if(ts == '전체'){
-											document.querySelector('#test3Grid').style.display='none';
-											document.querySelector('#test2Grid').style.display='none';
-											
-											testAllListPaging();
-								
-												document.querySelector('#testGrid').style.display='block';
-											
-										}else if (ts =='미완료'){
-											
-									/* 점검 미완료 리스트 불러오는 아작스 */
-										
-										document.querySelector('#test2Grid').style.display='none';
-										
-									
-											url="/equipment/incompleteTestList"
-											fetch(url) 
-											.then(res=>res.json())
-											.then(obj=>{
-												
-											    test2Grid.resetData(obj);
-											 
-										 	document.querySelector('#test2Grid').style.display='block';
-										})
-											
-											
-										}else if (ts=='완료'){
-									/* 점검 완료 리스트 불러오는 아작스 */
-											
-											document.querySelector('#testGrid').style.display='none';
-											document.querySelector('#test2Grid').style.display='none';
-											
-											document.querySelector('#test3Grid').style.display='block';
-											test3Grid.refreshLayout();
-											
-											url="/equipment/completeTestList"
-											fetch(url) 
-											.then(res=>res.json())
-											.then(obj=>{
-												
-											    test3Grid.resetData(obj);
-											   
-											})
-										}	
+								completeChk1();
 								
 							  	Swal.fire({
 							  			title:'수정완료',
@@ -1645,10 +1542,10 @@ function getWorkNo(workNo,workEquipNo) {
 		        document.getElementById('seq2').style.visibility='hidden';
 		        document.getElementById('seq3').style.visibility='hidden';
 		        document.getElementById('seq4').style.visibility='hidden';
+		        
 		        updateWSBtn.style.visibility='hidden';
 		        updateWBtn.style.display='block'; 
-	        	deleteWBtn.style.display='block';
-				
+	        	deleteWBtn.style.display='block';		
 				
 			    url="/equipment/getWorkInfo?workNo="+workNo+"&workEquipNo="+workEquipNo // get방식이라 ?equipNo=
 			    fetch(url) 
@@ -1749,45 +1646,7 @@ function updateWSBtnClick() {
                                 
                                 $('#myModal6').modal('hide'); // 모달 끄기
 					    	
-					    	if(ua=='D0108') {
-								//설비 팀장이면.. seq=1인것만
-						
-									url="/equipment/incompleteWork1"
-									fetch(url) 
-									.then(res=>res.json())
-									.then(obj=>{
-									    console.log(obj);
-									    workGrid.resetData(obj);})
-									
-							}else if(ua=='D0106'){
-								//생산 팀장이면.. seq=2인것만
-								
-								url="/equipment/incompleteWork2"
-									fetch(url) 
-									.then(res=>res.json())
-									.then(obj=>{
-									    console.log(obj);
-									    workGrid.resetData(obj);})
-						
-							}else if(ua=='D0111'){
-								//생산 팀장이면.. seq=3인것만
-								
-								url="/equipment/incompleteWork3"
-									fetch(url) 
-									.then(res=>res.json())
-									.then(obj=>{
-									    console.log(obj);
-									    workGrid.resetData(obj);})	
-							}else {
-								
-								url="/equipment/incompleteWorkList"
-									fetch(url) 
-									.then(res=>res.json())
-									.then(obj=>{
-									    console.log(obj);
-									    workGrid.resetData(obj);})
-								
-							}
+					    	completeChk2();
 					
 					    })
 					.catch((error) => console.log("error:", error));
@@ -1887,40 +1746,7 @@ function updateWork() {
 					btn.removeEventListener('click',updateWork); 
 				  	btn.setAttribute('onclick','updateWBtnClick()');
 				  	
-								if(ws == '전체'){
-			
-									 url="/equipment/workAllList"
-									fetch(url) 
-									.then(res=>res.json())
-									.then(obj=>{
-									    console.log(obj);
-									  workGrid.resetData(obj);
-								    
-									})
-								}else if (ws =='미승인'){
-						
-													
-											url="/equipment/incompleteWorkList"
-												fetch(url) 
-												.then(res=>res.json())
-												.then(obj=>{
-												    console.log(obj);
-												    workGrid.resetData(obj);})
-											
-									
-									
-								}else if (ws=='승인완료'){				
-					
-									// seq=3 인것만
-									
-									url="/equipment/completeWorkList"
-									fetch(url) 
-									.then(res=>res.json())
-									.then(obj=>{
-									    console.log(obj);
-									    workGrid.resetData(obj);
-									})
-								}
+				  	completeChk2();
 								
 				  	Swal.fire({
 			  			  title:'수정완료',
@@ -1976,7 +1802,6 @@ function deleteWork() {
 	 // 삭제하는데 사용할 변수 가져오기
 	const workNo = document.getElementById('thisWNoUD').value
 	const wu = document.getElementsByClassName('wantUpdate3');
-	const ws = document.querySelector('input[name="tStatus2"]:checked').value; //공사 라디오박스
 					
 			for (var i = 0; i< wu.length; i++) {
 				wu[i].readOnly =true;
@@ -2006,42 +1831,8 @@ function deleteWork() {
 				 .then(res=> res.text())
 			     .then(obj=>{
 					
-			    	 $('#myModal6').modal('hide');
-					  	
-						if(ws == '전체'){
-	
-							 url="/equipment/workAllList"
-							fetch(url) 
-							.then(res=>res.json())
-							.then(obj=>{
-							    console.log(obj);
-							  workGrid.resetData(obj);
-						    
-							})
-						}else if (ws =='미승인'){
-				
-											
-									url="/equipment/incompleteWorkList"
-										fetch(url) 
-										.then(res=>res.json())
-										.then(obj=>{
-										    console.log(obj);
-										    workGrid.resetData(obj);})
-									
-							
-							
-						}else if (ws=='승인완료'){				
-			
-							// seq=3 인것만
-							
-							url="/equipment/completeWorkList"
-							fetch(url) 
-							.then(res=>res.json())
-							.then(obj=>{
-							    console.log(obj);
-							    workGrid.resetData(obj);
-							})
-						}
+			    	 $('#myModal6').modal('hide');  	
+			    	 completeChk2();
 			    	 
 			 		Swal.fire({
 			  			  title:'삭제완료',
@@ -2100,8 +1891,7 @@ function deleteWork() {
 		});
 	
 		const before2Weeks = new Date(today.setDate(today.getDate() - 14));
-		
-    	
+			
 		//const after2Weeks = new Date(today.setDate(today.getDate() + 14));
 		//selectableRanges는 이렇게 하면 안먹네요 ㅡㅡ
 		
@@ -2127,7 +1917,7 @@ function deleteWork() {
 	   function setNull() {
 		   document.getElementById('searchFilter').value='';
 		   tFilterDate.setNull();
-		  // completeChk();
+		 
 	    	}
  
 let TC = document.querySelector('#sTestContent');
@@ -2135,14 +1925,13 @@ TC.style.height = '8'+`${TC.scrollHeight}`+'px';
 
 
 	
-function completeChk(){ // 전체, 미완료, 완료 라디오박스
+function completeChk1(){ // 전체, 미완료, 완료 라디오박스
+	
 	setNull();
 	const ts = document.querySelector('input[name="tStatus0"]:checked').value; //점검 라디오박스
-	const ws = document.querySelector('input[name="tStatus2"]:checked').value; //공사 라디오박스
-	const ua = `[[${session.usersAuthor}]]`;	
-///////////////////////////////////////////////////////////////
+
 // 점검
-	
+
 		if(ts == '전체'){
 		
 			document.querySelector('#test3Grid').style.display='none';
@@ -2173,7 +1962,7 @@ function completeChk(){ // 전체, 미완료, 완료 라디오박스
 			
 			
 		}else if (ts=='완료'){
-/* 점검 완료 리스트 불러오는 아작스 */
+	/* 점검 완료 리스트 불러오는 아작스 */
 			document.querySelector('#test2Grid').style.display='none';
 			document.querySelector('#testGrid').style.display='none';		
 			
@@ -2192,20 +1981,23 @@ function completeChk(){ // 전체, 미완료, 완료 라디오박스
 			})
 		}	
 		
-	
-///////////////////////////////////////////////////////////////
+}	
+
+function completeChk2(){
 // 공사
 
+	setNull();
+	const ws = document.querySelector('input[name="tStatus2"]:checked').value; //공사 라디오박스
+	const ua = `[[${session.usersAuthor}]]`;
+	
 		if(ws == '전체'){
 
 			 url="/equipment/workAllList"
 			fetch(url) 
 			.then(res=>res.json())
-			.then(obj=>{
-			    console.log(obj);
-			  workGrid.resetData(obj);
-		    
-			})
+			.then(obj=>{  
+			  workGrid.resetData(obj);    
+			 })
 		}else if (ws =='미승인'){
 /* 공사 승인 미완료 리스트 불러오는 아작스 */		
 			
@@ -2268,29 +2060,22 @@ function completeChk(){ // 전체, 미완료, 완료 라디오박스
 // 권한에 따른 버튼 가리개
 const ua = `[[${session.usersAuthor}]]`;
 
-if( ua == 'D0107' || ua == 'D0108'){
-	insertTBtn.style.display='block';
-	
-}else {
-	insertTBtn.style.display='none';
-}
+if( ua == 'D0107' || ua == 'D0108')
+insertTBtn.style.display='block';
+else insertTBtn.style.display='none';
 
-if( ua == 'D0107'){
-	insertWBtn.style.display='block';
-	
-}else {
-	insertWBtn.style.display='none';
-}
+if( ua == 'D0107')
+insertWBtn.style.display='block';
+else insertWBtn.style.display='none';
+
 
 // 필터 깔때기 아이콘 가리기.
 const filterCon = document.getElementsByClassName('tui-grid-btn-filter');
 console.log(filterCon);
 
-filterCon[0].style.display='none';
-filterCon[1].style.display='none';
-filterCon[2].style.display='none';
-filterCon[3].style.display='none';
-filterCon[4].style.display='none';
+for(let i=0; i<filterCon.length; i++)
+filterCon[i].style.display='none';
+
 
 tui.Grid.applyTheme("normal", {
     cell : {

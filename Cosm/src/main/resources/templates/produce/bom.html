@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/layout/layout}">
+	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -279,7 +279,6 @@
          })
         $("#setData2").click(function () {	
             var datas = grid3.getCheckedRows();
-            console.log(datas);
             $('#selectMaterial').val(datas[0].mno);
             
          })
@@ -809,7 +808,6 @@
 				dataType: "JSON",
 				success: function (result) {
 					grid.resetData(result);
-					console.log(result);
 				},
 				error: function (reject) {
 					console.log(reject);
@@ -842,7 +840,6 @@
 					grid4.resetData(result);
 					grid8.resetData(result);
 					grid9.resetData(result);
-					console.log(result);
 				},
 				error : function(reject) {
 					console.log(reject);
@@ -905,7 +902,6 @@
 		// bom수정
 		function updateData(){	
 			var datas1 = grid.getCheckedRows();
-			console.log(datas1)
 			var test = JSON.stringify(datas1);
 			$('#bomNo').val(datas1[0].bomNo);
 			$('#selectGoods2').attr("placeholder", datas1[0].bomProductNo);
@@ -992,7 +988,6 @@
                     cancelButtonText: '취소'
                 }).then((result) => {
                 	var datas = grid.getCheckedRows();
-    				console.log(datas);
                     if (result.isConfirmed) {
                     	for(bom of datas){
             				$.ajax({

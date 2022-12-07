@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/layout/layout}">
+	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
 
@@ -136,7 +136,6 @@
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
-					console.log(result);
 					for (let regist of result) {
 						regist.REGIST_DATE = String(regist.REGIST_DATE).substr(0, 10);
 					}
@@ -176,9 +175,6 @@
 		$('#searchBtn').on('click', function() {
 			let getStartDay = $('#startpicker-input').val();
 			let getEndDay = $('#endpicker-input').val();
-			console.log(getStartDay);
-			console.log(getEndDay);
-
 			$.ajax({
 				url : '/produce/errorList',
 				data : {
@@ -192,7 +188,6 @@
 					for (let regist of result) {
 						regist.REGIST_DATE = String(regist.REGIST_DATE).substr(0, 10);
 					}
-					console.log(result);
 					grid.resetData(result);
 				},
 				error : function(reject) {

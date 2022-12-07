@@ -93,7 +93,7 @@ public class EquipController {
 		       }
 		      
 			eService.insertEquip(vo);
-		return "redirect:/equipment/process";
+		return "redirect:equipment/process";
 		
 		}
 		
@@ -161,7 +161,7 @@ public class EquipController {
 		@PostMapping("/equipment/insertProcess")
 		public String insertProcess(EquipVO vo, RedirectAttributes ratt) {
 				eService.insertProcess(vo);
-		return "redirect:/equipment/process"; 
+		return "redirect:equipment/process"; 
 		}
 		
 		// 공정 단건 조회
@@ -251,9 +251,10 @@ public class EquipController {
 		
 		// 점검 등록
 		@PostMapping("/equipment/insertTest")
-		public String insertTest(EquipVO vo, RedirectAttributes ratt) {
-			eService.insertTest(vo);
-			return "redirect:/equipment/maintenance";
+		@ResponseBody
+		public int insertTest(EquipVO vo, RedirectAttributes ratt) {
+			
+			return eService.insertTest(vo);
 		}
 
 		// 점검 단건 조회
