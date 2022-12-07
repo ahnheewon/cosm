@@ -161,14 +161,10 @@
 			method: "GET",
 			dataType: "JSON",
 			success: function (result) {
-				console.log(result);
 				for (let regist of result) {
 					regist.REGIST_DATE = String(regist.REGIST_DATE).substr(0, 10);
 				}
 				grid.resetData(result);
-			
-			
-			
 			},
 			error: function (reject) {
 				console.log(reject);
@@ -203,9 +199,6 @@ function searchBtnHandler() {
 	$('#searchBtn').on('click', function() {
 		let getStartDay = $('#startpicker-input').val();
 		let getEndDay = $('#endpicker-input').val();
-		console.log(getStartDay);
-		console.log(getEndDay);
-
 		$.ajax({
 			url : '/produce/completedList',
 			data : {
@@ -219,7 +212,6 @@ function searchBtnHandler() {
 				for (let regist of result) {
 					regist.REGIST_DATE = String(regist.REGIST_DATE).substr(0, 10);
 				}
-				console.log(result);
 				grid.resetData(result);
 			},
 			error : function(reject) {
