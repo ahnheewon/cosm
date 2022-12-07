@@ -201,9 +201,6 @@
                재고 정보 관리 (상단) grid 초기화
             --------------------------*/
 
-
-
-
             let infoGrid = new tui.Grid({
 
                 el: document.getElementById('grid'),
@@ -426,6 +423,7 @@
                        
                     },
                     error: function (reject) {
+                    	console.log(reject);
                       
                     }
                 })
