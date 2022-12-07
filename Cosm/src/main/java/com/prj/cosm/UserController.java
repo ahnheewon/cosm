@@ -105,6 +105,11 @@ public class UserController {
 		service.userUpdate(empVO);
 		return "redirect:userList";
 	}
+	@PostMapping("usersUpdate")
+	public String usersUpdate(EmpVO empVO) {
+		service.userUpdate(empVO);
+		return "redirect:userInfo";
+	}
 
 	@PostMapping("/userDelete")
 	@ResponseBody
