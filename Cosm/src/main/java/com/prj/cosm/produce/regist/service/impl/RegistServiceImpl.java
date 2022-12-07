@@ -54,6 +54,13 @@ public class RegistServiceImpl implements RegistService {
 			aVO.setAlertReceive(eVO.getUsersNo());
 			aMapper.insertAlert(aVO);
 		}
+		eList = eMapper.getReceiveUsers("D0101"); //받는사람
+		for (EmpVO eVO : eList) {
+			AlertVO aVO = new AlertVO();
+			aVO.setAlertContent("/orders/sMain"+"^"+registVO.getRegistLOT()+"건 검수가 완료되었습니다.");
+			aVO.setAlertReceive(eVO.getUsersNo());
+			aMapper.insertAlert(aVO);
+		}
 		return mapper.insertRegist(registVO);
 	}
 

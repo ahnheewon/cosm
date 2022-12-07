@@ -13,9 +13,11 @@ public class InsVO {
 	private String instructNo;
 	private int instructQuantity;
 	private String instructEx;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date instructDate;
+	
 	private String instructPlanNo;
 	private String instructMNo;
 	private String instructProgressCode;

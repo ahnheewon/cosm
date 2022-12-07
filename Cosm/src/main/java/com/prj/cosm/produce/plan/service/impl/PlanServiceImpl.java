@@ -76,6 +76,29 @@ public class PlanServiceImpl implements PlanService {
 				aMapper.insertAlert(aVO);
 			}
 		}	
+		eList = eMapper.getReceiveUsers("D0101");
+		if(vo.getYn1() == 1) {
+			for (EmpVO eVO : eList) {
+				AlertVO aVO = new AlertVO();
+				aVO.setAlertContent(vo.getBom1() + "의 자재재고가 부족합니다. 확인바랍니다.");
+				aVO.setAlertReceive(eVO.getUsersNo());
+				aMapper.insertAlert(aVO);
+			}
+		} else if (vo.getYn2() == 1) {
+			for (EmpVO eVO : eList) {
+				AlertVO aVO = new AlertVO();
+				aVO.setAlertContent(vo.getBom2() + "의 자재재고가 부족합니다. 확인바랍니다.");
+				aVO.setAlertReceive(eVO.getUsersNo());
+				aMapper.insertAlert(aVO);
+			}
+		} else {
+			for (EmpVO eVO : eList) {
+				AlertVO aVO = new AlertVO();
+				aVO.setAlertContent("/material/minfo" + "^" +"생산 1건이 계획되었습니다.");
+				aVO.setAlertReceive(eVO.getUsersNo());
+				aMapper.insertAlert(aVO);
+			}
+		}	
 		
 		return result;
 	}
