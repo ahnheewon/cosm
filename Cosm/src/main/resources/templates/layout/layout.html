@@ -76,6 +76,9 @@ body {
 		class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 		<!-- Navbar Brand-->
 		<div style="width: 206px; height: 100px" align="center">
+		<a class="navbar-brand ps-3" href="/userList"
+				sec:authorize="hasRole('ROLE_D0101')"><img
+				style="padding-top: 30px; width: 68%;" src="/assets/img/logo.PNG"></a>
 			<a class="navbar-brand ps-3" href="/material/main"
 				sec:authorize="hasRole('ROLE_D0103')"><img
 				style="padding-top: 30px; width: 68%;" src="/assets/img/logo.PNG"></a>
@@ -146,6 +149,8 @@ body {
 				<br>
 				<div class="sb-sidenav-menu" sec:authorize="hasRole('ROLE_D0101')">
 					<br> &nbsp; &nbsp; 환영합니다! [[${session.usersName}]] 님
+						<hr
+							style="width: 80%; height: 1px; background-color: white; color: white; border: 1px;">
 					<div class="nav">
 						<a class="nav-link" href="/userList">
 							<div>
