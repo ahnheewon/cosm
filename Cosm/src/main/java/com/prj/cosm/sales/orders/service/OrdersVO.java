@@ -35,10 +35,10 @@ public class OrdersVO {
 		private String goodsName; 			//제품명
 		private String clientName;			//거래처명
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
-		@JsonFormat(pattern = "yyyy-MM-dd")
+		@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 		private Date orderDate; 			//주문일자  
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
-		@JsonFormat(pattern = "yyyy-MM-dd")
+		@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 		private Date deliveryDate; 			//납기일자 
 		private int totalNum; 				//수량 
 		private int proPrice; 				//공급가액(부가세 제외한 금액)
