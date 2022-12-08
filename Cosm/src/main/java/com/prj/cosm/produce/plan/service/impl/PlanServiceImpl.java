@@ -1,6 +1,5 @@
 package com.prj.cosm.produce.plan.service.impl;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,23 +16,21 @@ import com.prj.cosm.user.alert.service.AlertVO;
 import com.prj.cosm.user.emp.mapper.EmpMapper;
 import com.prj.cosm.user.emp.service.EmpVO;
 
-
-
 @Service
 public class PlanServiceImpl implements PlanService {
-	
+
 	@Autowired
 	AlertMapper aMapper;
 
 	@Autowired
 	EmpMapper eMapper;
-	
+
 	@Autowired
 	BomMapper bomMapper;
-	
+
 	@Autowired
 	PlanMapper mapper;
-	
+
 	@Autowired
 	InsMapper insMapper;
 
@@ -54,52 +51,36 @@ public class PlanServiceImpl implements PlanService {
 		vo = mapper.selectMaterialSum(planVO);
 		List<EmpVO> eList = new ArrayList<>();
 		eList = eMapper.getReceiveUsers("D0103");
-		if(vo.getYn1() == 1) {
+		if (vo.getYn1() == 1) {
 			for (EmpVO eVO : eList) {
 				AlertVO aVO = new AlertVO();
-				aVO.setAlertContent(vo.getBom1() + "의 자재재고가 부족합니다. 확인바랍니다.");
+				aVO.setAlertContent("/material/minfo" + "^" + vo.getBom1() + "의 자재재고가 부족합니다. 확인바랍니다.");
 				aVO.setAlertReceive(eVO.getUsersNo());
 				aMapper.insertAlert(aVO);
 			}
 		} else if (vo.getYn2() == 1) {
 			for (EmpVO eVO : eList) {
 				AlertVO aVO = new AlertVO();
-				aVO.setAlertContent(vo.getBom2() + "의 자재재고가 부족합니다. 확인바랍니다.");
+				aVO.setAlertContent("/material/minfo" + "^" + vo.getBom2() + "의 자재재고가 부족합니다. 확인바랍니다.");
 				aVO.setAlertReceive(eVO.getUsersNo());
 				aMapper.insertAlert(aVO);
 			}
 		} else {
 			for (EmpVO eVO : eList) {
 				AlertVO aVO = new AlertVO();
-				aVO.setAlertContent("/material/minfo" + "^" +"생산 1건이 계획되었습니다.");
+				aVO.setAlertContent("/material/minfo" + "^" + "생산 1건이 계획되었습니다.");
 				aVO.setAlertReceive(eVO.getUsersNo());
 				aMapper.insertAlert(aVO);
 			}
-		}	
+		}
 		eList = eMapper.getReceiveUsers("D0101");
-		if(vo.getYn1() == 1) {
-			for (EmpVO eVO : eList) {
-				AlertVO aVO = new AlertVO();
-				aVO.setAlertContent(vo.getBom1() + "의 자재재고가 부족합니다. 확인바랍니다.");
-				aVO.setAlertReceive(eVO.getUsersNo());
-				aMapper.insertAlert(aVO);
-			}
-		} else if (vo.getYn2() == 1) {
-			for (EmpVO eVO : eList) {
-				AlertVO aVO = new AlertVO();
-				aVO.setAlertContent(vo.getBom2() + "의 자재재고가 부족합니다. 확인바랍니다.");
-				aVO.setAlertReceive(eVO.getUsersNo());
-				aMapper.insertAlert(aVO);
-			}
-		} else {
-			for (EmpVO eVO : eList) {
-				AlertVO aVO = new AlertVO();
-				aVO.setAlertContent("/material/minfo" + "^" +"생산 1건이 계획되었습니다.");
-				aVO.setAlertReceive(eVO.getUsersNo());
-				aMapper.insertAlert(aVO);
-			}
-		}	
-		
+		for (EmpVO eVO : eList) {
+			AlertVO aVO = new AlertVO();
+			aVO.setAlertContent("/material/minfo" + "^" + "생산 1건이 계획되었습니다.");
+			aVO.setAlertReceive(eVO.getUsersNo());
+			aMapper.insertAlert(aVO);
+		}
+
 		return result;
 	}
 
@@ -111,7 +92,7 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	public int deletePlanInfo(String planNo) {
 		return mapper.deletePlan(planNo);
-		
+
 	}
 
 	@Override
@@ -134,16 +115,15 @@ public class PlanServiceImpl implements PlanService {
 
 	@Override
 	public int updatePlay(PlanVO planVO) {
-		
-		//자재출고완료 테이블 insert
+
+		// 자재출고완료 테이블 insert
 		bomMapper.insertMaterialInfo(planVO);
 		bomMapper.insertMaterialInfo2(planVO);
-		//자재재고량 업데이트
+		// 자재재고량 업데이트
 		mapper.updateMaterialInfo(planVO);
 		mapper.updateMaterialInfo2(planVO);
-		
-		
-		//생산지시 시 페이지 빠지기
+
+		// 생산지시 시 페이지 빠지기
 		return mapper.updatePlay(planVO);
 	}
 
@@ -168,13 +148,13 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	public void updateMaterialInfo(PlanVO planVO) {
 		mapper.updateMaterialInfo(planVO);
-		
+
 	}
 
 	@Override
 	public void updateMaterialInfo2(PlanVO planVO) {
 		mapper.updateMaterialInfo2(planVO);
-		
+
 	}
 
 	@Override
@@ -182,8 +162,5 @@ public class PlanServiceImpl implements PlanService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-	
 
 }
