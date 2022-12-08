@@ -20,7 +20,7 @@
 		FROM produce_plan p JOIN code
 		ON p.plan_play_code = code.code_no
 		WHERE plan_play_code = 'A0108'
-		order by plan_no desc
+		ORDER BY PLAN_NO DESC
 	</select>
 
 	<!-- 생산계획번호 +1 -->
